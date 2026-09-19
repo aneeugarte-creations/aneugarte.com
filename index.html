@@ -719,7 +719,7 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    medida en la referencia — allí la carcasa flota alrededor de la
    cabeza y puede deslizarse; aquí está PUESTA, y un deslizamiento
    grande no se leería como profundidad sino como un error de registro. */
-.ghost,.scan,.cowl{ translate:var(--hx,0px) var(--hy,0px); }
+.scan,.cowl{ translate:var(--hx,0px) var(--hy,0px); }
 .hero__cut{
   position:relative; margin:0; width:100%; height:100%;
   container-type:inline-size; will-change:transform;
@@ -770,51 +770,85 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    que sus ojos siguen mirando, y baja hasta pasada la barbilla. De un
    color, como un casco, y encima la librea: palabras, banderas y objetos
    puestos a distintos tamaños y ángulos, como se pegan de verdad. */
-/* La malla fantasma: el casco existe en reposo, pero sólo como líneas.
-   Se apaga a medida que se materializa.
+/* EL ESCANEO, Y LA MALLA CON ÉL.
 
-   Y VA POR FUERA DE SU CARA, no encima. Antes era el propio dibujo de la
-   chapa —las líneas de ane-helmlines.png— puesto sobre ella, o sea un
-   calco. En la referencia no es un calco: es una CÁSCARA transparente
-   alrededor de la cabeza, y el pelo se ve por dentro. Lo que la hace
-   parecer una pieza y no un dibujo es que la malla es tridimensional de
-   verdad, meridianos y paralelos sobre una superficie proyectada, y que
-   se amontona sola en el canto porque ahí la superficie se gira.
+   Lo pidió Ane así: «a Lando sólo se le ve el casco de fuera gris al
+   hacerse el escaneo, y yo quiero lo mismo: cuando se escanee aparece y
+   vuelve a irse cuando acaba». Eso es lo que hay aquí ahora, y AQUÍ
+   ANTES HABÍA DOS CAPAS: `.ghost` pintaba la cáscara alámbrica entera,
+   siempre, y esto le pasaba una banda por encima.
 
-   Y SU FORMA ES LA DEL CASCO, no la de un domo aparte. Se traza sobre
-   EL MISMO POLÍGONO que rellena ane-helm.png —el perfil de helmet.py—,
-   así que el fantasma es el alámbrico de la pieza que luego se
-   materializa: medido, el canto de una y el de la otra no se separan
-   más de 2,0 px del cuadro, y eso en el fondo de la copa del mentón.
-   Antes era un elipsoide inventado, un 19 % más ancho y con un faldón
-   redondo por debajo, y al pasar el ratón aparecía encima una silueta
-   distinta.
+   Y NO ES LO QUE HACE LA REFERENCIA — conviene dejarlo escrito para que
+   nadie lo «arregle» creyendo que lo acerca al original. Medida en vivo:
+   allí el revelado del casco no va por reloj, va por SCROLL, y es
+   monótono —está entero arriba del todo y se va retirando según bajas,
+   hasta desaparecer sobre los 580 px: área con color 33.685 px a
+   scroll 120, 23.467 a 334 y 1.908 a 580—. Tampoco lo mueve el puntero:
+   con el ratón paseando de y=150 a y=450 por su cabeza, el centro de la
+   zona revelada no se mueve de y≈338. Y en el fotograma de scroll 334 su
+   alámbrico gris se ve A LA VEZ que la franja de color, o sea que allí
+   la malla no aparece sólo durante el barrido. Esto de aquí es lo que
+   ella pidió, que es otra cosa y es su página.
 
-   Por eso la caja ya no sube por encima del retrato: el casco empieza en
-   la fila 14 de las 1069 y cabe entero. Se acabó el 3,8354 % —y con él
-   la única cosa que ataba la cáscara a los 38,6 px de cielo y, por
-   tanto, a --cutH—. */
-.ghost{
-  /* Hilo finísimo y gris claro, casi un velo. Antes era tinta gruesa y
-     se leía como un dibujo encima de su cara; el casco tiene que estar
-     ahí sin taparla. El tono y la opacidad no se tocan; lo que ha
-     cambiado es que hay menos hilo y que la cara de atrás va al 30 %,
-     porque la cáscara es transparente y donde las dos mitades se juntan
-     —la corona, el mentón— la línea salía doble. Medidas las dos con la
-     misma vara sobre el papel: la cáscara vieja oscurecía 0,054 de
-     mediana y 0,130 en el p90, y ésta 0,046 y 0,107. En la referencia,
-     0,043 y 0,094. */
-  position:absolute; inset:0;
-  background:#9C9CA4;
-  -webkit-mask-image:url("ane-dome.png"); mask-image:url("ane-dome.png");
-  -webkit-mask-size:100% 100%; mask-size:100% 100%;
-  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  opacity:calc(.78 - .78 * var(--rev,0));
-}
-/* El escaneo. Una banda recorre el cableado ella sola, sin ratón: en
-   reposo el casco no está puesto, pero se está leyendo. Va enmascarada
-   por el mismo dibujo de líneas, así que sólo se enciende donde hay
-   línea, y se apaga según el casco se materializa de verdad. */
+   Medido en vivo sobre el dominio, 44 fotogramas en 10 s con el ratón
+   lejos de su cara, y CONTRA SU PROPIO CERO —el mismo encuadre con las
+   dos capas apagadas—: entre barridos el alambre se quedaba en 0,20
+   puntos de luma por debajo del papel de al lado, nunca menos de 0,17, y
+   subía a 0,79 al pasar la banda. O sea que en reposo la malla estaba
+   puesta a la cuarta parte de su máximo, el 100 % del tiempo. Por eso no
+   se leía como un escaneo: no aparecía nada, ya estaba todo ahí.
+
+   EL CERO NO ES UN LUJO, y esto vale para la próxima medida de esta
+   página: sin restar el fotograma con las capas apagadas, la misma vara
+   daba 11,73 en vez de 0,20, porque los once puntos y pico que sobran no
+   son malla sino el canto de su silueta, que el mismo juego de píxeles
+   recoge. Y hay un segundo sesgo aún más fino: el paralaje del puntero
+   mueve el retrato una fracción de píxel, el redondeo del recorte cae a
+   un lado o a otro y las dos tiras quedan desplazadas UNA FILA; esa fila
+   se cuela por todos los cantos y aparece como -0,16 de tinta que no
+   existe, un tercio del pico. Se arregla fijando el rectángulo a mano en
+   las dos pasadas.
+
+   La capa de reposo se ha ido entera. La que queda es ésta, que ya era
+   la banda recortada por el mismo alámbrico, y con ella el pico se
+   mantiene: 0,61 medido, contra los 0,59 que la banda aportaba antes
+   —0,79 menos los 0,20 del reposo—. Lo que desaparece es el suelo, que
+   pasa a 0,00.
+
+   EL ALÁMBRICO ES EL DEL CASCO, no el de un domo aparte —esto venía con
+   la capa que se ha ido y es lo único suyo que había que salvar—. Se
+   traza sobre EL MISMO POLÍGONO que rellena ane-helm.png, el perfil de
+   helmet.py, así que lo que la banda enciende es el alambre de la pieza
+   que luego se materializa al pasar el ratón: medido, el canto de una y
+   el de la otra no se separan más de 2,0 px del cuadro, y eso en el
+   fondo de la copa del mentón. Y va POR FUERA de su cara, no encima: es
+   una cáscara transparente alrededor de la cabeza, con el pelo dentro, y
+   se amontona sola en el canto porque allí la superficie se gira.
+
+   DÓNDE APARCA, que es aritmética y no gusto. Con `background-size:100%
+   30%`, un `background-position` del p % pone el canto de arriba de la
+   banda en 0,7p del alto del cuadro y el de abajo en 0,7p + 0,3. Y el
+   alámbrico —medido sobre ane-dome.png, fila a fila— va de la fila 20 a
+   la 1185 de 1603, o sea del 1,25 % al 73,92 %. De ahí salen los dos
+   extremos: la banda toca el alambre por primera vez en p = -41,1 % y lo
+   suelta en p = 105,6 %. Aparca en -50 % y en 115 %, fuera de esa
+   ventana por los dos lados, y por eso no hace falta animar una segunda
+   propiedad para apagarla: cuando está aparcada no hay nada que apagar.
+   Los -22 % y 122 % de antes no cumplían eso, y daba igual mientras la
+   malla estuviera encendida de todas formas.
+
+   Y VA EN RECTA, no en la curva de antes. Ahora la banda ES la malla, y
+   una curva lenta en los extremos se pasa el barrido fuera del alambre y
+   lo cruza en un fogonazo: medido, con la curva vieja entre estos dos
+   aparcamientos el alambre sólo se encendía 400 ms. En recta se enciende
+   2,0 s de los 3,6 s que dura el barrido, prácticamente lo mismo que
+   duraba el paso de la banda antes de tocar nada (2,3 s).
+
+   EL CICLO NO ESTÁ COPIADO DE NADIE, porque allí no hay ciclo que
+   copiar: lo suyo cuelga del scroll. Los 7,5 s dejan 2,0 s de escaneo y
+   5,5 s de nada, o sea la malla ausente más del doble de lo que está
+   puesta, que es la mitad del encargo —«vuelve a irse cuando acaba»—.
+   Cambiarlo es UN número. */
 .scan{
   position:absolute; inset:0;
   pointer-events:none;
@@ -825,11 +859,13 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   opacity:calc(.9 - .9 * var(--rev,0));
-  animation:scansweep 4.4s cubic-bezier(.62,0,.38,1) infinite;
+  animation:scansweep 7.5s linear infinite;
 }
+/* El barrido ocupa el 48 % del ciclo; el resto la banda está aparcada
+   fuera del cuadro y no se ve nada, que es la mitad del encargo. */
 @keyframes scansweep{
-  0%,7%    { background-position:0 -22%; }
-  93%,100% { background-position:0 122%; }
+  0%        { background-position:0 -50%; }
+  48%,100%  { background-position:0 115%; }
 }
 .cowl{
   position:absolute; inset:0; opacity:var(--rev,0);
@@ -1358,96 +1394,128 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    178 px se midio a 744, 820 y 834, que es la franja que se arregla. */
 @media (min-width:600px) and (max-width:879px){ .body--split > *:last-child{ justify-self:end; } }
 
-/* Aquí vivían .prose y .cita, y se van las dos juntas porque su único
-   usuario era esta banda. .cita eran tres frases sueltas colgando cada
-   una de una regla de pelo, en una columna, con una palabra grande a la
-   derecha como cita destacada.
+/* Aquí vivían .prose y .cita, y se fueron las dos: su único usuario era
+   esta banda. Eran tres frases colgando de reglas de pelo, con una
+   palabra grande a la derecha. MEDIDO, aquella maqueta pintaba el 0,85 %
+   de su propia banda a 1440 —de cada 128 píxeles, 127 eran papel—
+   contra el 33,6 % del carril que va justo antes, y usaba la MISMA
+   rejilla que #formacion hasta la milésima (676,188 / 499,812 px): dos
+   bandas seguidas con una sola maqueta.
 
-   MEDIDO, esa maqueta pintaba el 0,85 % de su propia banda a 1440 —de
-   cada 128 píxeles, 127 eran papel— contra el 33,6 % del carril que va
-   justo antes: la tinta caía a 1/40 de una sección a la siguiente y sin
-   escalón. La columna derecha estaba llena al 19 % de su propia altura
-   —una palabra de 107 px en una columna de 500—, a la derecha de las
-   frases quedaban 996 px hasta el borde del .wrap, y la banda medía
-   media pantalla clavada en los siete tamaños medidos, de 390 a 1512:
-   la única de la página que no llega a llenar la pantalla en ningún
-   sitio. Y era la MISMA rejilla que #formacion hasta la milésima
-   (676,188 / 499,812 px), o sea dos bandas seguidas con la misma
-   maqueta, que es lo único que la referencia no hace ni una vez.
+   Después vino una pila de cuatro frases a 66 px con un barrido de
+   entrada. Resolvía la tinta y no resolvía lo otro: el barrido dura
+   1,35 s, se acaba, y la banda vuelve a estar tan quieta como antes.
+   De ahí sale ésta.
 
-   La referencia resuelve su única banda de sólo texto sin una imagen:
-   su único medio mide 81x43 px, 205 veces menos que el bloque de
-   letras. Lo que la llena es el cuerpo —105,8 px, el 7,35 % del ancho—.
-   Así que aquí tampoco entra una imagen: entra escala.
+   ═══ LA TORRE ═══
+   Una pila de renglones MÁS ALTA QUE SU VENTANA, que se desliza dentro
+   de ella mientras la sección cruza la pantalla. No es una marquesina:
+   VELOCIDAD PROPIA CERO. Sin tocar el scroll no se mueve ni un píxel, y
+   nunca se da la vuelta. Eso es lo que la separa de las dos bandas de
+   la portada, que sí ruedan solas a 30 y 35 px/s; y es lo que hace que
+   esto se mueva cada vez que se pasa por delante, y no una sola vez.
 
-   Las cuatro frases son las mismas y no se toca una palabra. «Imagine»
-   deja de ser cita aparte y pasa a ser el cuarto renglón, el remate
-   corto. Con 21, 34, 22 y 7 caracteres la silueta sale desigual sola
-   —4,9x entre el más largo y el más corto—, que es lo que impide que
-   un bloque a esta escala se lea como un ladrillo.
+   Y NO ES UN BUCLE, a propósito. El bloque son 8 renglones sobre una
+   ventana de 4,5: ratio 1,78x medido, cuando la marquesina horizontal tiene
+   9.539/1.440 = 6,6x. Por debajo de eso el bucle se ve —reaparece
+   arriba lo que acabas de leer abajo—, y con frases el empalme
+   IMAGINE -> PASSIONATELY no se lee como bucle sino como un error de
+   maquetación. Además «Imagine» está escrita para cerrar: en bucle no
+   cierra nada. Así que la pila es finita, viaja y se acaba.
 
-   Y EL PAR TIPOGRÁFICO VA INVERTIDO respecto al manifiesto. Allí el
-   cuerpo es la grotesca y tres palabras saltan a la serif de display;
-   aquí el cuerpo es la serif y una palabra por frase salta a la
-   grotesca, en acento. Misma pareja —ya cargada, hoy usada sólo en el
-   manifiesto— y proporción al revés: es un eco, no una repetición.
-   Cero bytes de fuente nuevos.
+   LOS CORTES DE RENGLÓN NO SE FUERZAN. No hay un solo <br>: se fija la
+   medida en 75vw y caen solos. MEDIDO a 1440: 59/38/66/41/49/46/57/34
+   %vw, media 48,9 y dentado de 32 puntos, con «PASSIONATELY» de pico y
+   «IMAGINE» corto y solo al final. Abrir con el renglón más ancho no es
+   casual: fija la referencia con la que el ojo juzga los demás; si el
+   pico llegara al final, la torre parecería ensancharse.
 
-   El cuerpo sale de una cuenta y no del gusto: a igual número de
-   caracteres la tinta escala con el CUADRADO del cuerpo, así que ir de
-   0,85 % a ~9 % con los mismos 84 caracteres pide 3,2x → 72 px. Se
-   queda en 66 para que el manifiesto (91,8 px) siga siendo el pico de
-   la página y ésta quede al 72 % de él: de su familia de escala, pero
-   subordinada. El sumando de 1rem del clamp no es decorativo: sin él, a
-   390 px saldrían 18 px y el teléfono se quedaría igual de vacío. */
-.pf{ margin-top:clamp(28px,5vh,52px); }
-.pf__l{
-  position:relative; margin:0 0 clamp(10px,1.4vh,20px);
-  width:fit-content; max-width:100%;
-  font-family:var(--brier); font-variation-settings:var(--brier-vs);
-  font-size:clamp(1.65rem,1rem + 4vw,4.125rem);
-  line-height:.98; letter-spacing:-.01em;
-  color:var(--ink); text-wrap:balance;
+   En vw y no en ch porque abajo tiene que partir MÁS: a 390 el bloque
+   pasa de 8 renglones a 9 y por eso sigue habiendo viaje; con la medida
+   en caracteres el bloque cabría entero en la ventana y el teléfono se
+   quedaría sin movimiento. Criterio si alguna vez se toca: renglón más
+   largo por debajo del 75 % del ancho —a 390 se va al 83 %, porque ahí
+   «PASSIONATELY» es más ancha que la medida y una palabra no se parte;
+   entra por 25 px en el .wrap y por eso el suelo del clamp lleva un
+   min() con 11,2vw, que la retira por debajo de 371 px de pantalla— y
+   renglones totales >= 1,7x los visibles.
+
+   Probado también con la medida en 62vw: parte en otro sitio, el
+   dentado cae a 26 puntos y a 390 deja un renglón con «is» solo al
+   10 %, que no es silueta sino descuido. Se quedó en 75.
+
+   EL CUERPO, 110 px. Estuvo en 88 y se subió por una medida: a 88 el
+   viaje daba 0,32 px de torre por px de scroll en el portátil pero
+   0,15 en tableta y teléfono, que es el umbral exacto por debajo del
+   cual un movimiento ligado al scroll deja de leerse —el referente es
+   el carril, que va a 1,000 px/px—. Y el teléfono se quedaba en 28 px,
+   POR DEBAJO de los 31,6 de la maqueta anterior: en el móvil habríamos
+   ido hacia atrás. A 110 son 0,42 / 0,22 / 0,25 y el teléfono sube a
+   41,6 px.
+
+   Sí, 110 px le quita el cuerpo mayor al manifiesto (91,8 px, o sea
+   1,20x). Se le quita a sabiendas y el manifiesto conserva el pico que
+   de verdad importa: su renglón más largo mide 1.132 px contra los 955
+   del nuestro. Dos picos distintos —la torre la letra más alta, el
+   manifiesto el renglón más ancho y toda la masa—, y el manifiesto ya
+   tiene además el pin, el paso, el suelo que vira y la firma. Nota para
+   quien venga: el techo del «72 %» sólo se cumplía a 1440; medido en
+   los seis anchos, la banda anterior ya iba al 90-93 % en tableta y al
+   107 % en móvil.
+
+   CUATRO RENGLONES Y MEDIO DE VENTANA. El número sale de la frase más
+   larga: «Nothing turns out to be unrelated.» ocupa cuatro renglones y
+   tiene que caber entera, con medio de margen para que se vea que la
+   lista sigue. MEDIDO a 1440: paso de renglón 96,3 px, bloque 770,
+   ventana 433, y el recorrido va del PRIMER renglón centrado al ÚLTIMO,
+   o sea siete pasos = 674 px, repartidos en los 1.594 px que la banda
+   está a la vista: factor 0,42. Esa definición del recorrido no es un
+   adorno: es lo que hace que los ocho renglones pasen por el acento una
+   vez cada uno y que la banda cierre con «Imagine» encendido. Con el
+   reparto anterior —el hueco que sobra más un renglón de sobrepaso por
+   lado— el último se quedaba a 39,0 px del centro contra 38,65 de
+   tolerancia y no se encendía NUNCA.
+
+   LO QUE CUESTA DE SCROLL: 694 px medidos = 0,77 pantallas a 1440,
+   contra los 558 px —0,62— de la maqueta anterior. Son 136 px más en
+   toda la página. Por debajo de una pantalla en los seis anchos
+   (0,77 / 0,75 / 0,69 / 0,49 / 0,48 / 0,40), sin pin nuevo, y el ~49 %
+   de scroll anclado no se mueve, que es la condición que importaba.
+
+   CON MOVIMIENTO REDUCIDO no hay ventana ni máscara ni viaje: la pila
+   se lee entera y quieta. Cuelga de body.js, que la página sólo se pone
+   cuando NO hay movimiento reducido, así que es también lo que se ve si
+   el JS no llega. Se prefirió eso a dejar la ventana puesta y quieta:
+   con la ventana, 3 de los 7 renglones quedarían escondidos para
+   siempre, y no se le esconde contenido a quien pide menos movimiento. */
+.pf{
+  margin-top:clamp(28px,5vh,52px);
+  font-family:var(--impact); font-variation-settings:"wght" 800,"wdth" 110;
+  font-size:clamp(min(2.6rem,11.2vw),7.6vw,6.875rem);   /* 41,6 -> 110 px */
+  line-height:.88; letter-spacing:-.02em;
+  text-transform:uppercase; text-align:center; color:var(--ink);
 }
-.pf__l:last-child{ margin-bottom:0; }
-/* La palabra que carga el sentido de cada frase. <em> y no <b>: es
-   énfasis de verdad y el lector de pantalla lo dice. Sin cursiva, que
-   aquí el énfasis ya lo pone el cambio de letra y de color. */
-.pf__l em{
-  font-style:normal; font-family:var(--impact);
-  font-variation-settings:"wght" 700,"wdth" 100;
-  color:var(--accent);
-}
+/* posicionada para que el offsetTop de cada renglón se mida contra
+   ella y no contra media página */
+.pf__col{ position:relative; }
+.pf__l{ margin:0; max-width:75vw; margin-inline:auto; }
+/* cada renglón pintado, envuelto por el JS */
+.pf__r{ display:block; }
+/* EL RELEVO DEL ACENTO. Se enciende el renglón que cruza el centro de
+   la ventana, con media caja de tolerancia: hay uno o ninguno, nunca
+   dos. SIN transition a propósito —el chasquido es el efecto; un
+   fundido de 0,3 s deja dos renglones medio teñidos y se pierde—. Son
+   siete relevos en el paso completo de la banda, o sea la mitad del
+   movimiento que se percibe: los otros 674 px son deslizamiento. */
+.pf__r.is-hot{ color:var(--accent); }
 
-/* EL BARRIDO, renglón a renglón. Es la mecánica de la referencia sin su
-   librería: allí lo hace GSAP y son dos transiciones con retardo
-   escalonado, que es exactamente lo que se escribe a mano. El texto se
-   des-recorta de izquierda a derecha y una barra de acento se retira
-   por detrás, 0,3 s más tarde.
-
-   Cuelga de body.js, que la página sólo se pone cuando NO hay
-   movimiento reducido: con la preferencia puesta no hay recorte ni
-   barra y el bloque nace entero. Eso se puede hacer porque el diseño NO
-   depende del movimiento —lo que llena la banda es la escala; el
-   barrido es el remate—. Una banda que sólo fuera interesante mientras
-   se anima seguiría estando vacía el resto del tiempo.
-
-   EL DISPARO VA AL 78 % DE LA PANTALLA y no al 90 % como el resto de
-   los revelados. Medido sobre la maqueta vieja: la entrada terminaba a
-   los 0,82 s cuando todavía faltaban 426 px de scroll para centrar la
-   banda, o sea que ocurría entera fuera de campo y sólo se veía
-   bajando a menos de 520 px/s. Una rueda normal va a 1000-3000. */
-body.js .pf__l{
-  clip-path:inset(0 100% 0 0);
-  transition:clip-path .6s var(--ease) var(--d,0ms);
+body.js .pf__win{
+  height:3.96em;                               /* 4,5 renglones x .88 */
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);
+          mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);
 }
-body.js .pf__l::after{
-  content:""; position:absolute; inset:0; background:var(--accent);
-  transform-origin:100% 50%; transform:scaleX(1);
-  transition:transform .6s var(--ease) calc(var(--d,0ms) + .3s);
-}
-body.js .pf.is-on .pf__l{ clip-path:inset(0 0 0 0); }
-body.js .pf.is-on .pf__l::after{ transform:scaleX(0); }
+body.js .pf__col{ will-change:transform; }
 
 .pull{
   margin:0; font-family:var(--display);
@@ -2489,7 +2557,17 @@ body.is-live .rise > i{ transform:none; }
 
 @media (prefers-reduced-motion:reduce){
   .hero__dot{ animation:none !important; }
-  .scan{ animation:none !important; background-position:0 46% !important; }
+  /* Sin barrido, pero la malla NO se va: quien pide menos movimiento
+     pide eso y no menos pieza. Se queda la cáscara entera y quieta, que
+     es exactamente lo que se veía aquí antes de que el escaneo la
+     revelara por tramos —mismo gris y misma fuerza—. Con la banda
+     clavada en el 46 %, que es lo que había, sólo se vería una franja
+     cruzándole la cara para siempre. */
+  .scan{
+    animation:none !important;
+    background:#9C9CA4 !important;
+    opacity:calc(.78 - .78 * var(--rev,0)) !important;
+  }
   .pin{ height:auto !important; }
   /* `relative`, NO `static` —que es lo que habia y estaba mal—. Lo que
      hay que apagar aqui es el `sticky` de los 900 px, no el anclaje: en
@@ -2606,7 +2684,6 @@ body.is-live .rise > i{ transform:none; }
         <img class="face__img" src="ane-cut.webp" width="928" height="1069"
              alt="Cut-out portrait of Ane Ugarte." fetchpriority="high">
         <div class="face__som" aria-hidden="true"></div>
-        <div class="ghost" aria-hidden="true"></div>
         <div class="scan" aria-hidden="true"></div>
 
         <div class="cowl" aria-hidden="true">
@@ -2966,11 +3043,19 @@ body.is-live .rise > i{ transform:none; }
     <div class="wrap">
       <h2 class="sr">Profile</h2>
 
+      <!-- Las frases van enteras y sin <br>: los renglones los parte el
+           navegador contra la medida (max-width:75vw) y luego el JS los
+           envuelve uno a uno para poder encender el que cruza el centro.
+           Sin JS no se envuelve nada y se lee la pila entera, quieta. -->
       <div class="pf">
-        <p class="pf__l" style="--d:0ms">Passionately <em>curious</em>.</p>
-        <p class="pf__l" style="--d:150ms">Nothing turns out to be <em>unrelated</em>.</p>
-        <p class="pf__l" style="--d:300ms">Nothing is <em>everything</em>?</p>
-        <p class="pf__l" style="--d:450ms"><em>Imagine</em></p>
+        <div class="pf__win">
+          <div class="pf__col">
+            <p class="pf__l">Passionately curious.</p>
+            <p class="pf__l">Nothing turns out to be unrelated.</p>
+            <p class="pf__l">Nothing is everything?</p>
+            <p class="pf__l">Imagine</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -3611,6 +3696,9 @@ body.is-live .rise > i{ transform:none; }
     seqW1 = anchoSeq(band1h) || anchoSeq(band1);
     seqW2 = anchoSeq(band2h) || anchoSeq(band2);
   }
+  /* una sola ronda de medidas para todo lo que depende del ancho */
+  function medirTodo(){ measureBands(); layoutTorre(); }
+
   function mueveBanda(a, b, x){
     var t = "translate3d(" + x.toFixed(1) + "px,0,0)";
     if (a) a.style.transform = t;
@@ -4022,6 +4110,7 @@ body.is-live .rise > i{ transform:none; }
       b2x += (0.030 + boost * 0.05) * dt;
       if (seqW1) mueveBanda(band1, band1h, -wrap(b1x, seqW1));
       if (seqW2) mueveBanda(band2, band2h,  wrap(b2x, seqW2) - seqW2);
+      torrePaso(y);
     }
 
     if (bctx && finePtr && !reduce) {
@@ -4092,7 +4181,7 @@ body.is-live .rise > i{ transform:none; }
   var rt;
   window.addEventListener("resize", function(){
     clearTimeout(rt);
-    rt = setTimeout(function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); sizeBlob(); }, 140);
+    rt = setTimeout(function(){ layoutPin(); layoutPass(); layoutMont(); medirTodo(); sizeBlob(); }, 140);
   }, { passive:true });
 
   /* ════════════════════════════════════════════════════════
@@ -4113,21 +4202,111 @@ body.is-live .rise > i{ transform:none; }
     });
   }
 
-  /* El barrido del perfil. Observador propio y clase propia DENTRO de
-     #perfil: .rv, [data-split] y splitWords() son maquinaria compartida
-     con la portada y no se tocan. El umbral es el 78 % de la pantalla y
-     no el 90 % de los demás revelados —ver la nota del CSS de .pf—. */
-  var pfEl = document.querySelector("#perfil .pf");
-  if (pfEl) {
-    if (reduce || !("IntersectionObserver" in window)) {
-      pfEl.classList.add("is-on");
-    } else {
-      var pfObs = new IntersectionObserver(function(es){
-        if (es[0].isIntersecting) { pfEl.classList.add("is-on"); pfObs.disconnect(); }
-      }, { rootMargin:"0px 0px -22% 0px", threshold:0 });
-      pfObs.observe(pfEl);
+  /* ════════════════════════════════════════════════════════
+     LA TORRE DEL PERFIL. Maquinaria propia dentro de #perfil: .rv,
+     [data-split] y splitWords() son las de la portada y no se tocan.
+     Tres cosas y ninguna más: partir los renglones, medirlos, y en
+     cada fotograma mover la pila y encender la que cruza el centro.
+     ════════════════════════════════════════════════════════ */
+  var pfWin = document.querySelector("#perfil .pf__win");
+  var pfCol = document.querySelector("#perfil .pf__col");
+  var pfSrc = [], pfR = [], pfOff = [], pfStep = 0, pfWinH = 0, pfBlkH = 0,
+      pfTop = 0, pfVH = 1, pfHot = -1;
+
+  /* Envuelve cada renglón PINTADO en su propio <span>. No se puede
+     teñir media frase con CSS, y tampoco se quiere escribir los cortes
+     a mano: así que se deja que el navegador parta contra los 75vw, se
+     leen las alturas y se agrupan las palabras que comparten renglón.
+     Se rehace en cada cambio de ancho, porque los cortes cambian. */
+  function torreParte(){
+    var ps = pfCol.querySelectorAll(".pf__l"), i, j;
+    if (!pfSrc.length) {
+      for (i = 0; i < ps.length; i++) pfSrc.push(ps[i].textContent.trim());
+    }
+    for (i = 0; i < ps.length; i++) {
+      var frag = document.createDocumentFragment();
+      var pal = pfSrc[i].split(/\s+/);
+      for (j = 0; j < pal.length; j++) {
+        if (!pal[j]) continue;
+        if (j) frag.appendChild(document.createTextNode(" "));
+        var w = document.createElement("span");
+        w.textContent = pal[j];
+        frag.appendChild(w);
+      }
+      ps[i].textContent = "";
+      ps[i].appendChild(frag);
+    }
+    pfR = [];
+    for (i = 0; i < ps.length; i++) {
+      var ws = ps[i].children, lin = [], alt = null;
+      for (j = 0; j < ws.length; j++) {
+        var t = ws[j].offsetTop;
+        /* 2 px de holgura: la misma caja puede diferir por redondeo */
+        if (alt === null || Math.abs(t - alt) > 2) { lin.push([]); alt = t; }
+        lin[lin.length - 1].push(ws[j].textContent);
+      }
+      ps[i].textContent = "";
+      for (j = 0; j < lin.length; j++) {
+        var r = document.createElement("span");
+        r.className = "pf__r";
+        r.textContent = lin[j].join(" ");
+        ps[i].appendChild(r);
+        pfR.push(r);
+      }
     }
   }
+
+  function layoutTorre(){
+    if (!pfWin || !pfCol) return;
+    pfHot = -1;
+    torreParte();
+    if (reduce) return;                     /* sin ventana no hay viaje */
+    pfVH   = Math.max(1, window.innerHeight);
+    pfWinH = pfWin.getBoundingClientRect().height / Z;
+    pfBlkH = pfCol.getBoundingClientRect().height / Z;
+    pfStep = pfR.length ? pfBlkH / pfR.length : 0;
+    pfOff  = [];
+    for (var i = 0; i < pfR.length; i++) pfOff.push(pfR[i].offsetTop);
+    /* el alto de la ventana en px de documento, medido y no supuesto */
+    pfTop = pfWin.getBoundingClientRect().top / Z +
+            (lenis ? lenis.scroll : (window.scrollY || root.scrollTop || 0));
+    torrePaso(lenis ? lenis.scroll : (window.scrollY || root.scrollTop || 0));
+  }
+
+  /* p va de 0 (la ventana entra por abajo) a 1 (sale por arriba).
+
+     EL RECORRIDO VA DEL PRIMER RENGLÓN CENTRADO AL ÚLTIMO CENTRADO, y
+     de ahí sale todo lo demás: son (n-1) pasos, cada renglón pasa por
+     el centro exactamente una vez, en 0,5 la pila queda centrada en su
+     ventana justo cuando la banda está centrada en la pantalla, y la
+     banda CIERRA con «Imagine» encendido —que es la palabra escrita
+     para cerrar—. Medido: 464 px a 1440, factor 0,32.
+
+     Antes esto era «el hueco que sobra más un renglón de sobrepaso por
+     lado», 386 px. Medido, con ese reparto el último renglón se quedaba
+     a 39,0 px del centro contra una tolerancia de 38,65: «Imagine» no
+     se encendía NUNCA, y era el único de los siete. */
+  function torrePaso(y){
+    if (!pfWin || reduce || !pfStep) return;
+    var p = (pfVH - (pfTop - y)) / (pfVH + pfWinH);
+    p = p < 0 ? 0 : p > 1 ? 1 : p;
+    var ini = pfWinH / 2 - pfStep * 0.5;                        /* 1º centrado */
+    var fin = pfWinH / 2 - pfStep * (pfOff.length - 0.5);       /* último centrado */
+    var yy  = ini + (fin - ini) * p;
+    pfCol.style.transform = "translate3d(0," + yy.toFixed(1) + "px,0)";
+
+    var c = pfWinH / 2, cual = -1, i;
+    for (i = 0; i < pfOff.length; i++) {
+      if (Math.abs(yy + pfOff[i] + pfStep / 2 - c) <= pfStep / 2) { cual = i; break; }
+    }
+    if (cual !== pfHot) {
+      if (pfHot >= 0 && pfR[pfHot]) pfR[pfHot].classList.remove("is-hot");
+      if (cual  >= 0 && pfR[cual])  pfR[cual].classList.add("is-hot");
+      pfHot = cual;
+    }
+  }
+
+  layoutTorre();
 
   /* ════════════════════════════════════════════════════════
      Secuencia de carga: contador, cortina que se abre en dos
@@ -4229,7 +4408,7 @@ body.is-live .rise > i{ transform:none; }
     setTimeout(function(){
       body.classList.add("is-live");
       if (lenis) lenis.start();
-      layoutPin(); layoutPass(); layoutMont(); measureBands();
+      layoutPin(); layoutPass(); layoutMont(); medirTodo();
     }, 260);
     setTimeout(function(){ body.classList.add("is-gone"); }, 1600);
   }
@@ -4237,7 +4416,7 @@ body.is-live .rise > i{ transform:none; }
   if (reduce || !load) {
     body.classList.add("is-done","is-live","is-gone");
     if (lenis) lenis.start();
-    layoutPin(); layoutPass(); layoutMont(); measureBands();
+    layoutPin(); layoutPass(); layoutMont(); medirTodo();
   } else {
     window.scrollTo(0, 0);
     var n = 0, t0 = performance.now();
@@ -4252,14 +4431,14 @@ body.is-live .rise > i{ transform:none; }
   }
 
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); });
+    document.fonts.ready.then(function(){ layoutPin(); layoutPass(); layoutMont(); medirTodo(); });
   }
-  window.addEventListener("load", function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); });
-  if (wide.addEventListener) wide.addEventListener("change", function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); });
+  window.addEventListener("load", function(){ layoutPin(); layoutPass(); layoutMont(); medirTodo(); });
+  if (wide.addEventListener) wide.addEventListener("change", function(){ layoutPin(); layoutPass(); layoutMont(); medirTodo(); });
   /* Girar el teléfono cruza el umbral de ALTO sin cambiar el de anchura,
      así que este oyente no es redundante: sin él, el carril se queda
      montado (o desmontado) hasta el siguiente cambio de ancho. */
-  if (railOk.addEventListener) railOk.addEventListener("change", function(){ layoutMont(); measureBands(); });
+  if (railOk.addEventListener) railOk.addEventListener("change", function(){ layoutMont(); medirTodo(); });
 })();
 </script>
 
