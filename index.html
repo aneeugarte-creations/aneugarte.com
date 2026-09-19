@@ -1460,16 +1460,6 @@ body.js .shot{ opacity:var(--fade,1); }
   .shot:nth-child(8) .shot__lbl{ text-align:right; }
 }
 .shot__lbl{ margin:0; color:var(--ink-3); }
-/* FUERA LOS ROTULOS. "Prefiero las imagenes sin la linea", dijo Ane, por
-   los `01 · Denaliving`, `06 · Tokyo, Japan` que iban encima de cada
-   pieza con el numero en el color de su pais. Se apagan y no se borran:
-   los ocho parrafos siguen en el documento —la novena pieza es el CTA y
-   nunca llevo rotulo— y devolverlos es quitar esta
-   regla. Vale para las dos composiciones, la del carril y la columna del
-   movil, porque las dos cuelgan del mismo elemento. Las piezas suben los
-   28 px que ocupaba el rotulo; el hueco entre ellas lo sigue mandando
-   --top pieza a pieza, que no se toca. */
-.shot__lbl{ display:none; }
 .shot__lbl b{ color:var(--c,var(--accent)); font-weight:400; }
 /* El rótulo es lo único de la sección que se apoya directamente sobre el
    suelo, así que mientras el suelo vira tiene que virar con él — con el
@@ -1595,7 +1585,15 @@ body.js.in-mont .wm{
 .card{
   width:100%;
   background:var(--ground-2); border:1px solid var(--rule);
-  border-top:2px solid var(--c,var(--accent));
+  /* AQUI IBA EL FILETE DE COLOR: `border-top:2px solid var(--c)`, o sea una
+     linea del color del pais cruzando el canto de arriba de cada pieza
+     —naranja en las espanolas, roja en la japonesa, azul en la de EE.UU.—.
+     "Prefiero las imagenes sin la linea". El marco se queda en el filo de
+     1 px de --rule por los cuatro lados, que es el que ya llevaba por los
+     otros tres, asi que el canto no desaparece: deja de tener color. La
+     caja pierde 1 px de alto y nada mas. El codigo de paises sigue vivo
+     donde dice algo —el numero del rotulo y el fondo de la cara oculta—,
+     que ahi no es adorno. */
   padding:clamp(20px,2.4vw,30px);
   display:flex; flex-direction:column; gap:14px;
 }
