@@ -11,6 +11,7 @@
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
+
 <title>Ane Ugarte</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -254,8 +255,16 @@ html:not(.lenis){ scroll-behavior:smooth; }
      700 por el navegador. Mientras Archivo viaja, el sustituto pinta el
      nombre en Helvetica Neue BOLD — medido: la caja va de 163 px a 150 a
      393, y de 273 a 251 a 1440, cuando entra la buena. O sea que durante
-     el swap se veia exactamente la negrita que se ha pedido quitar. */
-  font-weight:250; font-variation-settings:"wdth" 100,"wght" 250;
+     el swap se veia exactamente la negrita que se ha pedido quitar.
+
+     Y vale 300 aunque el eje vaya a 250, que no es un descuido: este
+     numero no pinta Archivo —lo hace `font-variation-settings`, que va
+     por debajo y gana—, solo elige el corte del SUSTITUTO. Por debajo de
+     400 el navegador busca primero hacia abajo, asi que con 250 la
+     Helvetica Neue de macOS da su UltraLight 200 y el sustituto sale mas
+     fino que el destino. Medido a 1440 contra los 258,5 px de la linea ya
+     con Archivo: 250 -> 247,4; 300 -> 255,8; 400 -> 265,0. */
+  font-weight:300; font-variation-settings:"wdth" 100,"wght" 250;
   font-size:clamp(30px,3.5vw,58px); line-height:1;
   letter-spacing:.02em; text-indent:.02em;   /* la prosa sobra por la derecha */
 }
@@ -272,19 +281,19 @@ html:not(.lenis){ scroll-behavior:smooth; }
    su sitio definitivo y el centrado no baila mientras se teclea.
    Reservar el ancho midiendolo en JS no valdria: la fuente llega
    despues del primer pintado y el ancho cambia al intercambiarse
-   —medido con la cache fria, 147 px con el sustituto y 154 con Archivo
-   a 393; 247 y 258 a 1440—.
+   —medido con la cache fria: 152 px con el sustituto y 154 con Archivo a
+   393; 256 y 258 a 1440—.
 
-   ESE INTERCAMBIO SE VE, Y SE DEJA VER A PROPOSITO. Grabando fotograma a
-   fotograma: a 1440 la «A» se enciende a los 383 ms y la fuente entra a
-   los 416, asi que durante 33 ms la primera letra esta pintada con el
-   sustituto y al cambiar la linea —centrada— se corre 5 px. Se puede
-   quitar arrancando el tecleo con `document.fonts`, y NO se hace: la
-   fuente tarda unos 400 ms en cache fria, y esperarla empuja el final del
-   tecleo de 780 ms a 980 y deja el reposo en 370 ms, por debajo del suelo
-   de 420 que esta pantalla tiene medido. Cinco pixeles en una letra
-   durante la primera visita cuestan menos que eso. En la segunda visita,
-   con la fuente en cache, no ocurre nada de esto.
+   ESOS DOS PIXELES SON EL RESIDUO DE ALGO QUE ERA TRECE. Con el
+   `font-weight` mal puesto el sustituto pintaba en negrita y la distancia
+   era de 13 px a 393; eligiendo el corte fino correcto —ver el
+   font-weight de .load__n b— baja a 2, o sea un pixel de desplazamiento
+   en una linea centrada. Se podria dejar en cero arrancando el tecleo con
+   `document.fonts`, y NO se hace: la fuente tarda unos 400 ms en cache
+   fria, y esperarla empujaria el final del tecleo de 740 ms a 940 y
+   dejaria el reposo por debajo del suelo de 420 ms que esta pantalla
+   tiene medido. Un pixel durante la primera visita cuesta menos que eso.
+   En la segunda, con la fuente en cache, no ocurre nada de esto.
 
    EL CURSOR existe mientras se escribe Y SE VA CON LA ULTIMA LETRA.
    Sin el, las letras aparecen de la nada y el gesto se lee como un fallo
@@ -911,83 +920,115 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    alrededor de la cabeza, con el pelo dentro, y se amontona sola en el
    canto porque allí la superficie se gira.
 
-   DÓNDE APARCA, que es aritmética y no gusto. Con `background-size:100%
-   30%`, un `background-position` del p % pone el canto de arriba de la
-   banda en 0,7p del alto del cuadro y el de abajo en 0,7p + 0,3. Y el
+   DÓNDE EMPIEZA Y DÓNDE ACABA, que es aritmética y no gusto. El
    alámbrico —medido sobre ane-dome.png, fila a fila— va de la fila 20 a
-   la 1185 de 1603, o sea del 1,25 % al 73,92 %. De ahí salen los dos
-   extremos: la banda toca el alambre por primera vez en p = -41,1 % y lo
-   suelta en p = 105,6 %. Aparca en -42 % y en 106 %, JUSTO fuera de esa
-   ventana por los dos lados, y por eso no hace falta animar una segunda
-   propiedad para apagarla: cuando está aparcada no hay nada que apagar.
-   Los -22 % y 122 % de antes no cumplían eso, y daba igual mientras la
-   malla estuviera encendida de todas formas. Y justo fuera, no más
-   lejos: los -50 % y 115 % que hubo aquí un rato también apagaban, pero
-   se gastaban 18 de los 165 puntos del recorrido paseando la banda por
-   donde no hay alambre. Ese viaje en balde es hueco muerto, y con el
-   ciclo corto se nota.
+   la 1185 de 1603, o sea del 1,25 % al 73,92 % del alto del cuadro. Ese
+   par de números manda todo lo demás.
 
-   Y VA EN RECTA, no en la curva de antes. Ahora la banda ES la malla, y
-   una curva lenta en los extremos se pasa el barrido fuera del alambre y
-   lo cruza en un fogonazo: medido, con la curva vieja entre estos dos
-   aparcamientos el alambre sólo se encendía 400 ms. Y en recta el
-   reparto no depende de la velocidad: se puede elegir el ciclo sin que
-   cambie la proporción de tiempo encendida.
+   YA NO ES UNA BANDA QUE CRUZA, SINO UN NIVEL QUE BAJA Y LO VA DEJANDO
+   TODO PINTADO. Lo pidió Ane con estas palabras: «haz que el escaneo sea
+   más lento y que cuando pase no se borre lo anterior hasta que llegue
+   abajo del todo». Son dos cosas, y la segunda no se arregla con la
+   velocidad: una banda de 30 % de alto deja atrás lo que ya ha cruzado
+   por definición, y para que no lo deje hay que darle estela. Así que el
+   degradado mide ahora TRES altos de cuadro y va, de su canto de arriba
+   al de abajo: nada hasta el 15 %, entrada suave hasta el 23,3 %, estela
+   lisa al 0,33 hasta el 61,3 %, rampa que sube al 0,95, barra maciza de
+   0,06 de alto de cuadro y, en el 66,667 % —dos tercios exactos—, CORTE
+   SECO a nada.
 
-   EL CICLO ES DE 1 s, QUE ES EL DE LA REFERENCIA, y lo pidió Ane con
-   esas palabras: «quiero que el escaneo sea más recurrente, como
-   landonorris.com». Allí el número no es de vista, está en su shader:
-   `pow(fract(-vPosition.y * 10. - uTime), 4.)` con `uTime` en segundos
-   repite cada 1,000 s, y con una cabeza de 0,0771 de alto contra un
-   periodo espacial de 0,1 salen 0,771 s de barrido y 0,229 s de hueco,
-   77 % encendida contra 23 % apagada.
+   Ese corte seco es toda la pieza. Por debajo de la cabeza del barrido
+   no hay nada encendido; por encima quedan 1,30 altos de cuadro de
+   estela. Una sola propiedad recta, `background-position`, hace
+   entonces las tres cosas seguidas: llenar de arriba abajo, quedarse
+   entera y vaciarse de arriba abajo. Sin animar una segunda propiedad y
+   sin una pausa programada: lo que parece pausa es el tramo en que la
+   cabeza ya ha salido por abajo y el borrado aún no ha entrado por
+   arriba.
 
-   Y EL REPARTO SALE SOLO, sin ajustar nada a ojo, porque lo pone la
-   misma aritmética de arriba aplicada al NÚCLEO del degradado en vez de
-   a la banda entera: lo macizo va del 44 % al 72 % de la banda, o sea de
-   0,132 a 0,216 por debajo de su canto de arriba, y eso cruza el alambre
-   entre p = -29,1 % y p = 86,8 %. Son 115,8 puntos de los 148 que hay de
-   -42 % a 106 %: 78 % encendida, 22 % apagada. Los aparcamientos los
-   manda la banda entera —para que no asome nada— y el reparto lo manda
-   el núcleo, y por eso una cosa se eligió y la otra tocó.
+   LAS CUENTAS. Con `background-size:100% 300%`, un `background-position`
+   del p % sube la imagen 0,02p altos de cuadro, así que la cabeza del
+   barrido —que va en los dos tercios de la imagen— cae en 2 − 0,02p. De
+   ahí salen los cinco instantes, y no hay ninguno elegido a ojo:
+     p = 100    la cabeza está clavada en el canto de arriba del cuadro
+     p =  99,4  toca el alambre por primera vez
+     p =  63,0  lo suelta por abajo: el casco está entero
+     p =  34,4  el borrado le muerde la coronilla
+     p = −14,5  lo ha limpiado del todo
+   Aparca en 100 % y en −48 %, y el salto de vuelta cae con todo apagado,
+   que es donde un salto no se ve.
+
+   Y EL REPARTO VUELVE A SER EL DE LA REFERENCIA. Encendida de 99,4 a
+   −14,5 son 113,8 puntos de los 148 que hay de 100 a −48: 77 % encendida
+   contra 23 % apagada. landonorris.com da 77/23, y eso lo pone su shader
+   y no la vista: `pow(fract(-vPosition.y * 10. - uTime), 4.)` repite cada
+   1,000 s, y con una cabeza de 0,0771 de alto contra un periodo espacial
+   de 0,1 salen 0,771 s de barrido y 0,229 s de hueco. El aparcamiento de
+   abajo se eligió para eso: entre todos los puntos que dejan el alambre
+   limpio, el −48 % es el que reproduce su reparto.
+
+   EL CICLO ES DE 4 s, que es lo de «más lento» —había 1 s—. Repartidos:
+   1,21 s dibujándose, 0,56 s entera y quieta, 1,32 s deshaciéndose por
+   arriba y 0,91 s a oscuras. El tramo más largo es el borrado, y por eso
+   el casco se lee entero aunque sólo esté liso medio segundo: cuando
+   empieza a irse todavía le queda casi todo.
+
+   EL 0,33 DE LA ESTELA NO ES A OJO: es el 34,7 % del 0,95 de la barra, y
+   34,7 % es exactamente el suelo de la referencia —su línea no se apaga
+   nunca, y en el peor instante le queda esa fracción del pico—. O sea
+   que la estela se queda en el nivel relativo en que ellos viven
+   siempre.
+
+   Y VA EN RECTA, no en curva: en recta el reparto no depende de la
+   velocidad, así que el ciclo se puede volver a cambiar sin que se mueva
+   la proporción de tiempo encendida. Con una curva lenta en los extremos
+   el barrido se pasa el rato fuera del alambre y lo cruza en un
+   fogonazo: medido con la curva que hubo aquí, el alambre sólo se
+   encendía 400 ms.
 
    MEDIDO en esta misma página, con el puntero lejos de su cara y contra
-   su propio cero: a ciclo de 1 s salen 0,69 s encendida y 0,29 s
-   apagada, o sea 72-76 % según la pasada —el umbral de la medida está al
-   10 % del recorrido y se come los cantos del barrido, de ahí que dé
-   algo menos que el 78 % de la aritmética—. Y el pico no se resiente por
-   ir deprisa: 0,60 a 0,68 en tres pasadas contra los 0,56 que daba a
-   7,5 s. Esa diferencia va toda del muestreo —capturar un fotograma
-   cuesta unos 100 ms, así que a un barrido por segundo la tira cae más
-   veces cerca del pico— y no de la animación, que es recta y pinta en
-   cada instante lo que pintaba.
+   su propio cero: el periodo sale 3,91, 3,94, 4,06 y 4,13 s en cuatro
+   vueltas seguidas —media 4,01— y el pico 0,76, contra los 0,60 que
+   daba la banda de 1 s; la barra maciza más la estela pintan más que la
+   banda sola. El reparto medido va del 60 % al 84 % según dónde se ponga
+   el umbral, y esa horquilla ya no es ruido de muestreo: la cola del
+   borrado se apaga despacio, así que cuánto cuenta como «encendida»
+   depende de dónde se corte. La cifra firme es la de la aritmética,
+   77 %.
 
    LO QUE NO SE PARECE, y conviene no «arreglarlo» creyendo que lo
    acerca: la suya no se apaga nunca. Su línea es negro al 0,1 de alfa y
-   el barrido sólo se lo RESTA, así que en el peor instante aún le queda
-   el 34,7 % del pico. La nuestra se va del todo, y eso es la otra mitad
-   de lo que Ane pidió —«cuando se escanee aparece y vuelve a irse cuando
-   acaba el escaneo»—. Mismo ritmo, distinto suelo. */
+   el barrido sólo se lo RESTA. La nuestra se va del todo al final de
+   cada vuelta, y eso es lo que Ane pidió el primer día —«cuando se
+   escanee aparece y vuelve a irse cuando acaba el escaneo»—. Mismo ritmo
+   y misma estela, distinto suelo. */
 .scan{
   position:absolute; inset:0;
   pointer-events:none;
-  background:linear-gradient(180deg,transparent 0,rgba(96,96,104,.95) 44%,
-             rgba(96,96,104,.22) 72%,transparent 100%);
-  background-size:100% 30%; background-repeat:no-repeat;
+  background:linear-gradient(180deg,
+             rgba(96,96,104,0) 0,
+             rgba(96,96,104,0) 15%,
+             rgba(96,96,104,.33) 23.333%,
+             rgba(96,96,104,.33) 61.333%,
+             rgba(96,96,104,.95) 64.667%,
+             rgba(96,96,104,.95) 66.667%,
+             rgba(96,96,104,0) 66.667%,
+             rgba(96,96,104,0) 100%);
+  background-size:100% 300%; background-repeat:no-repeat;
   -webkit-mask-image:url("ane-dome.png"); mask-image:url("ane-dome.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   opacity:calc(.9 - .9 * var(--rev,0));
-  animation:scansweep 1s linear infinite;
+  animation:scansweep 4s linear infinite;
 }
-/* El ciclo entero es barrido: la banda no se detiene en ningún extremo.
-   El hueco en que no se ve nada no es una pausa programada, es el tramo
-   del recorrido en que lo macizo del degradado va por fuera del alambre.
-   Y el salto de vuelta del 106 % al -42 % cae con la banda ya fuera, que
-   es donde un salto no se ve. */
+/* El ciclo entero es recorrido: nada se detiene en ningún extremo. Del
+   100 % al -48 % la cabeza del barrido baja, sale por abajo del cuadro y
+   sigue bajando mientras el canto de arriba de la estela entra por la
+   coronilla y la borra. El salto de vuelta cae con todo fuera del
+   alambre, que es donde un salto no se ve. */
 @keyframes scansweep{
-  0%   { background-position:0 -42%; }
-  100% { background-position:0 106%; }
+  0%   { background-position:0 100%; }
+  100% { background-position:0 -48%; }
 }
 .cowl{
   position:absolute; inset:0; opacity:var(--rev,0);
@@ -2711,9 +2752,12 @@ body.is-live .rise > i{ transform:none; }
   /* Sin barrido, pero la malla NO se va: quien pide menos movimiento
      pide eso y no menos pieza. Se queda la cáscara entera y quieta, que
      es exactamente lo que se veía aquí antes de que el escaneo la
-     revelara por tramos —mismo gris y misma fuerza—. Con la banda
-     clavada en el 46 %, que es lo que había, sólo se vería una franja
-     cruzándole la cara para siempre. */
+     revelara por tramos —mismo gris y misma fuerza—. Y ahora hace más
+     falta que antes: parada en el 0 % del ciclo, la banda vieja dejaba
+     una franja cruzándole la cara, pero el degradado nuevo arranca con
+     la cabeza clavada en el canto de arriba y no enciende NADA. Sin
+     este relleno plano, quien pide menos movimiento se quedaría sin
+     casco. */
   .scan{
     animation:none !important;
     background:#9C9CA4 !important;
