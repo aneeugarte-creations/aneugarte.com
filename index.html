@@ -608,6 +608,40 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
      convierte en una costura donde la curva cambia de tono */
   opacity:calc(.12 * var(--wa,0));
 }
+/* Y EL CAMPO DEL PANEL SE VA CON ELLA. Mismo verde y mismo 0,438 que la
+   sombra de su retrato —ver la nota de `.face__som`—, pero sobre el
+   papel: el panel deja de ser un folio blanco y pasa a ser el verde de
+   la pagina aclarado, que es exactamente lo que es el fondo de la
+   referencia.
+
+   POR QUE HACIA FALTA, con el numero: en la referencia su cara esta 57
+   puntos de luma por debajo de su fondo (104,2 contra 161,5). Con la
+   sombra solo encima de ella, aqui la distancia era 145 —101,1 contra
+   los 246,5 del papel—, o sea una figura oscura sobre blanco en vez de
+   una figura dentro de un mundo. Tenido el campo, el papel cae a
+   rgb(143,145,135) —luma 143,9— y la distancia queda en 42,8.
+
+   LLEGA MAS TARDE QUE ELLA, y ese es el unico numero que no sale de la
+   referencia: `--somc` es `--som` elevado a 1,5. Con el mismo recorrido
+   para las dos capas, a mitad de camino su cara ya esta teñida y el
+   campo todavia no, y el contraste entre los dos cae a 1,57 —por debajo
+   del 1,76 que esta pagina ya rechazo por barro en el paso del blanco—.
+   Retrasando el campo la curva baja sola hasta su destino y NINGUN
+   fotograma queda por debajo del final: medido, 2,22 → 1,80 sin un solo
+   hundimiento. El 1,5 es el exponente mas pequeño que lo consigue; con
+   2,0 aguanta mas arriba, pero esto es la correccion minima.
+   Y ojo: retrasar LAS DOS a la vez no sirve —medido, el hundimiento
+   sigue en 1,61—, porque lo que se corrige no es cuando llega el verde
+   sino la distancia entre las dos capas.
+
+   Va DENTRO del recorte, asi que se contrae con el panel y no hay nada
+   que sincronizar: es el mismo rectangulo. Y va antes del retrato en el
+   HTML, o sea por debajo de ella y del casco. */
+.hero__clipsom{
+  position:absolute; inset:0; pointer-events:none;
+  background:var(--night);
+  opacity:calc(var(--somc,0) * .438);
+}
 /* ── La firma ────────────────────────────────────────────────
    Se traza sola con el mismo recorrido, como en la referencia (allí
    es un archivo de Rive; aquí basta un trazo con la línea de puntos
@@ -2563,6 +2597,7 @@ body.is-live .rise > i{ transform:none; }
          y acaba siendo el panel; ella va dentro y se encoge. -->
     <div class="hero__clip" id="clip">
       <div class="hero__cliptopo" id="clipTopo" aria-hidden="true"></div>
+      <div class="hero__clipsom" aria-hidden="true"></div>
 
     <!-- envoltorio aparte: la entrada va aquí y el paso en el
          recorte, para que un transform no pise al otro -->
@@ -3486,7 +3521,8 @@ body.is-live .rise > i{ transform:none; }
       clip.style.removeProperty("--wa");
       hNight.style.opacity = "";
       hNight.style.backgroundColor = "";
-      if (face) face.style.removeProperty("--som");
+      root.style.removeProperty("--som");
+      root.style.removeProperty("--somc");
       if (nightTp) nightTp.style.opacity = "";
       if (face) face.style.transform = "";
       for (var q = 0; q < corners.length; q++) corners[q].style.removeProperty("--cop");
@@ -3698,7 +3734,14 @@ body.is-live .rise > i{ transform:none; }
          nada que corregir: el recorte termina exactamente en `pinE` = 1,
          no antes, así que un adelanto sería un número sin motivo. La
          fuerza —el 0,438— vive en el CSS, con la medida que la explica. */
-      if (face) face.style.setProperty("--som", pinE.toFixed(3));
+      /* Las dos sombras, en :root y no en `face`: cuelgan de ramas
+         distintas del arbol y las lee el CSS de las dos. La de ella va
+         con el recorrido a pelo; la del campo llega mas tarde, elevada a
+         1,5, por el motivo medido que hay en la nota de
+         `.hero__clipsom`. La fuerza —el 0,438— vive en el CSS, con la
+         medida de la referencia que la explica. */
+      root.style.setProperty("--som", pinE.toFixed(3));
+      root.style.setProperty("--somc", Math.pow(pinE, 1.5).toFixed(3));
 
       if (face && cutH) {
         /* La cabeza llena el 88 % del alto del panel. CAB_K vale 1,3307 y
