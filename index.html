@@ -312,6 +312,33 @@ body.is-gone .load{ display:none; }
    logotipo al bajar. Si alguna vez molesta, lo barato es apagar el
    logotipo pasada la portada, no devolver los velos. */
 
+/* Y molestó, en el móvil. Medido a 390 px: el logotipo tiene algo
+   debajo el 38 % del recorrido, y cuando lo que pasa por debajo es una
+   tarjeta oscura el contraste cae a 1,10:1 — invisible. La causa del
+   segundo es fina: el color cambia al entrar en una SECCIÓN oscura,
+   pero una TARJETA oscura que le pasa por debajo no dispara nada, y
+   nunca lo hará, porque la tarjeta no sabe que hay un logotipo.
+
+   De las tres salidas sólo una vale. Apartarlo como hace el carril
+   —bajarle la opacidad cuando algo se le acerca— serían 36 encendidos
+   y apagados en una columna: eso no es un logotipo que se aparta, es
+   uno que parpadea. Darle una pastilla detrás arregla el contraste y
+   no arregla que tape texto, y mete una rama que sólo existe abajo.
+   Queda apagarlo, que es lo que el comentario de arriba ya había
+   escrito y lo que hace la referencia: su logotipo de navegación está
+   a 1440 y no está a 390. Es una de las tres únicas cosas que apagan.
+
+   Durante la portada se queda: ahí el fondo es nuestro y el contraste
+   está garantizado. Lo que no tiene sitio es un rótulo de texto suelto
+   flotando sobre contenido que no controla. */
+@media (max-width:899px), (max-height:659px){
+  body.js.sin-marca .wm{
+    opacity:0; pointer-events:none;
+    transform:translate3d(0,-7px,0);
+    transition:opacity .35s ease,transform .35s var(--ease);
+  }
+}
+
 /* La contrapartida en la otra esquina: en un currículum lo útil
    no es una tienda, es escribirle. */
 .pill{
@@ -1201,14 +1228,125 @@ body.in-pass .pill{
    el año sobre cada foto— y debajo la tarjeta. */
 .shot{
   margin:0; display:flex; flex-direction:column; gap:10px;
-  width:min(100%,420px);
+  /* El ancho lo pone --wm, en vw, pieza a pieza (LA COMPOSICION DEL
+     MOVIL, mas abajo). El suelo de 110 px es lo unico que de verdad
+     manda: sin el, las piezas menores caerian a 66 px —un sello, no
+     una foto—. En el carril esta regla no pinta nada: la de
+     `body.js .shot` gana por especificidad y usa --w en svh. */
+  width:clamp(110px, var(--wm,100%), 420px);
+  /* --wm va en vmin y no en vw a propósito. De pie, vmin ES la anchura y
+     no cambia nada. Girado, vmin pasa a ser el ALTO y todas las piezas
+     encogen JUNTAS, que es lo que conserva la variedad de tamaños. Se
+     probó antes con un techo (`min(420px,62svh)`) y hacía justo lo
+     contrario: a 932x430 dejaba las nueve piezas entre 261 y 267 px, o
+     sea la misma enfermedad que el suelo de 248 px del carril, sólo que
+     por arriba. */
 }
 /* Nadie aparece de golpe por el borde: cada pieza entra con un
    desvanecido corto —los primeros 120 px de su cruce— que el bucle
    escribe en --fade. Es poco recorrido a propósito: lo justo para que
    no haya un canto duro apareciendo, no un fundido que se note. */
 body.js .shot{ opacity:var(--fade,1); }
-.shot:nth-child(even){ margin-left:auto; }
+
+/* --- LA COMPOSICION DEL MOVIL ---------------------------------
+   Por debajo de 900 px no hay carril. Hasta ahora las piezas caian
+   en una columna unica de nueve cajas a ancho completo: 3.482 px de
+   alto, 4,13 pantallas, y las nueve en la MISMA x. La alternancia
+   estaba escrita aqui —`nth-child(even){margin-left:auto}`— pero no
+   podia moverse: con `width:min(100%,420px)` cada pieza media los
+   350 px de contenido enteros y no quedaba hueco por el que correrse.
+
+   La referencia no apila: GIRA 90 grados. Su contenedor pasa de
+   `row` a `column` y lo que conserva al girar no es la direccion,
+   es la DENSIDAD y el DESORDEN. Medido en ella a 390 px: diez
+   piezas en 2,2 pantallas, seis posiciones distintas de x, racimos
+   de dos o tres que se TOCAN (0 px) separados por vacios de 55 a
+   165 px. El solape del escritorio se convierte en contacto, y
+   nada tapa a nada: ni en movil ni en escritorio se superpone una
+   sola caja con otra.
+
+   Los anchos NO son un reescalado de los de escritorio. En la
+   referencia el orden se invierte —su pieza mas pequena en movil es
+   la sexta mas grande en escritorio, y dos identicas en escritorio
+   dan 163 y 127— porque lo que manda es un SUELO. Nueve tamanos
+   distintos arriba se convierten en seis abajo. La proporcion que
+   sale, 1,85:1, es la consecuencia aritmetica del suelo y no el
+   objetivo, asi que aqui se pone el suelo y se deja que salga sola.
+
+   Y la regla que no se adivina sin medir: DOS PIEZAS QUE SE TOCAN
+   SUMAN COMO MUCHO EL 80 % DEL ANCHO. Verificada en sus cinco
+   parejas (78, 69, 64, 74, 69 %). Es lo que obliga a que cada pieza
+   grande vaya emparejada con una del suelo; aqui 02+03 = 78 %,
+   04+05 = 79 % y 07+08 = 80 %, y el canal libre entre las dos
+   nunca baja de 37 px.
+   ---------------------------------------------------------------- */
+@media (max-width:899px), (max-height:659px){
+  /* La condición es el complemento exacto de la del carril: esto vale
+     siempre que el carril NO esté montado, y eso incluye la ventana
+     ancha y baja del teléfono girado. */
+  /* Los huecos no son uniformes: son racimos. El `gap` de la reja
+     los igualaba a todos y es justo lo que hay que quitar. */
+  .mont__rail{ gap:0; }
+
+  /* Ancho y hueco de arriba, pieza a pieza. Paleta de seis valores
+     para nueve piezas, con el suelo repetido dos veces —igual que
+     ella, seis para diez—, y el orden roto a proposito: 02 y 08
+     bajan al suelo sin ser las menores del carril, y 05 sube por
+     encima de 04. Si el orden se conservara, esto se leeria como
+     una version encogida del escritorio en vez de como una
+     composicion propia. */
+  .shot:nth-child(1){ --wm:33vmin; margin-top:0;     }  /* 128 px a 390 */
+  .shot:nth-child(2){ --wm:28vmin; margin-top:55px;  }  /* 110 · suelo  */
+  .shot:nth-child(3){ --wm:50vmin; margin-top:0;     }  /* 195 · pegada */
+  .shot:nth-child(4){ --wm:37vmin; margin-top:96px;  }  /* 145 */
+  .shot:nth-child(5){ --wm:42vmin; margin-top:0;     }  /* 165 · pegada */
+  .shot:nth-child(6){ --wm:46vmin; margin-top:76px;  }  /* 180 */
+  .shot:nth-child(7){ --wm:52vmin; margin-top:120px; }  /* 203 · la mayor */
+  .shot:nth-child(8){ --wm:28vmin; margin-top:0;     }  /* 110 · suelo, pegada */
+  .shot:nth-child(9){ --wm:33vmin; margin-top:164px; }  /* 128 · el CTA */
+
+  /* Lados alternos: nunca dos seguidas al mismo margen. Cuatro a la
+     izquierda, cuatro a la derecha, una flotando. Son las tres
+     posiciones que hacen falta para que el ojo no las lea en fila. */
+  .shot:nth-child(1),
+  .shot:nth-child(3),
+  .shot:nth-child(5),
+  .shot:nth-child(8){ margin-left:auto; margin-right:0; }
+  .shot:nth-child(2),
+  .shot:nth-child(4),
+  .shot:nth-child(7),
+  .shot:nth-child(9){ margin-left:0; margin-right:auto; }
+  .shot:nth-child(6){ margin-inline:auto; }
+
+  /* La pista se encoge con la tarjeta. A 34 px con 20 px de margen, en una
+     pieza de 129x97 el disco caía justo encima de la última letra de
+     «Denaliving»: el badge medía un tercio del alto de la tarjeta. Con 26
+     y 10 el logotipo llega hasta el 56 % del alto y el disco empieza en el
+     63 %, y no se tocan. En el carril no cambia nada: allí la pieza más
+     pequeña mide 248 px y le sobra sitio.
+     (Lleva `.card` delante por especificidad: las reglas de la tarjeta
+     viven más abajo en la hoja y a igualdad de peso ganarían ellas.) */
+  .card .card__cap{ padding:10px; }
+  .card .card__go,.card .card__turn{ width:26px; font-size:.8rem; }
+  /* Y el logotipo deja de estar centrado en las caras de marca: con 95 px
+     de alto, un logotipo centrado y un disco en la esquina se tocan
+     aunque los dos quepan. Se sube 15 px y se tocan cero.
+     Va en `transform` y no en `margin`: el margen entraba en la reja y
+     estiraba la tarjeta de 97 a 121 px, o sea cambiaba la composición
+     entera para apartar un disco. */
+  .card .card__face--brand:has(.card__go,.card__turn) .card__mark{
+    transform:translateY(-15px);
+  }
+
+  /* El rotulo va pegado al mismo margen que su pieza, como en la
+     referencia: el lugar y el ano alineados al canto de la foto, no
+     siempre a la izquierda. Es lo que ata el texto a su imagen
+     cuando las piezas van alternando lado. */
+  .shot:nth-child(1) .shot__lbl,
+  .shot:nth-child(3) .shot__lbl,
+  .shot:nth-child(5) .shot__lbl,
+  .shot:nth-child(8) .shot__lbl{ text-align:right; }
+}
 .shot__lbl{ margin:0; color:var(--ink-3); }
 .shot__lbl b{ color:var(--c,var(--accent)); font-weight:400; }
 /* El rótulo es lo único de la sección que se apoya directamente sobre el
@@ -1250,7 +1388,31 @@ body.js.in-mont .wm{
   transform:translate3d(0,calc((1 - var(--wmo,1)) * -7px),0);
 }
 
-@media (min-width:900px){
+/* Y el ALTO, no sólo la anchura. El umbral era `min-width:900px` a secas
+   y eso encendía el carril en un teléfono girado (932x430 es el caso
+   real). Medido ahí: el pie de la pieza más baja cae en 532 px dentro de
+   un escenario de 430, o sea 102 px recortados en cuatro piezas, y ocho
+   de las nueve se clavan en el suelo de 248 px, que es justo perder la
+   variedad de anchos de la que vive el carril.
+
+   Subir el umbral a los 992 px de la referencia NO lo arregla: a 992x430
+   corta exactamente los mismos 102 px que a 900x430. El mecanismo es el
+   suelo de 248 px de `.shot`, que rompe la proporcionalidad en svh — la
+   pieza no puede estrecharse, y con `aspect-ratio` fijo tampoco puede
+   bajar de altura, así que desborda un escenario que sí está encogiendo.
+   Barrido del corte por alto de ventana: 400 → 118 px, 430 → 102, 460 →
+   87, 500 → 66, 540 → 45, 580 → 24, 620 → 4, y 660 cabe con 17 px de
+   holgura. El umbral real está en ~625 px de ALTO, y es independiente de
+   la anchura; 660 le deja margen.
+
+   OJO al mantener esto: el umbral está escrito DOS VECES, aquí y en el
+   JS (`railOk`). Mover una sola copia es lo que rompe, y rompe feo en las
+   dos direcciones. Con el CSS encendido y el JS apagado, ocho de las
+   nueve piezas quedan fuera de un contenedor con `overflow:clip` que no
+   se puede desplazar por ningún medio, y la sección entera desaparece de
+   la página. Con el JS encendido y el CSS apagado, `montMax` sale 0 y se
+   escribe `height:0px` en una sección cuyo contenido mide 3.975 px. */
+@media (min-width:900px) and (min-height:660px){
   /* El carril nace 105svh POR ENCIMA del final del mensaje. El número no
      es de estilo, es de relevo: el mensaje empieza a aclarar el suelo a
      los 0,20 de SU recorrido —234 px de 1170— y el carril tiene que estar
@@ -1572,6 +1734,31 @@ html.is-reading{ overflow:hidden; }
   border:1px solid var(--cream-2); color:var(--cream);
   font-size:1rem; line-height:1;
 }
+/* La otra pista, la que dice que esto NO se da la vuelta sino que lleva a
+   otro sitio. Hacía falta porque en el móvil el sistema se partía en dos
+   sin avisar: con ratón giran las nueve piezas y es coherente, pero al
+   tocar giran siete y dos navegan — y las dos que navegan llevan la misma
+   clase, la misma estructura de dos caras y el mismo aspecto que las
+   otras siete. La 01 no tenía ninguna pista y la 04 enseñaba el ↻, que
+   promete un giro que no ocurre.
+
+   Es disco sólido y no aro como `.card__turn`, por la misma razón por la
+   que la píldora sobrevive donde el logotipo muere: su contraste lo pone
+   su propio fondo y no lo que tenga detrás. La 01 se apoya sobre papel
+   blanco, y ahí un aro crema sencillamente no existe.
+
+   Y dos glifos distintos a propósito: ↗ sale del sitio, + abre aquí
+   dentro. Nunca el mismo para las dos cosas. La pista va en la cara de
+   DELANTE: la del dorso es código muerto en táctil, porque para leerla
+   habría que dar la vuelta a la tarjeta, que es justo lo que estas dos
+   no hacen. */
+.card__go{
+  flex:none; display:grid; place-items:center;
+  width:34px; aspect-ratio:1; border-radius:50%;
+  background:var(--accent); color:var(--ground);
+  font-family:var(--display); font-size:1.05rem; line-height:1;
+}
+
 /* Sin velo, la pista de la vuelta se queda sola sobre la fotografía, y hay
    imágenes donde no se vería: el cuadro de Klee es naranja justo en esa
    esquina. Se le pone un disco propio —del tamaño del botón y ni un píxel
@@ -1605,6 +1792,31 @@ html.is-reading{ overflow:hidden; }
 .mont__cta:hover,.mont__cta:focus-visible{ transform:translateY(-3px); }
 .mont__cta:hover b,.mont__cta:focus-visible b{ color:var(--accent); }
 .mont__cta:hover::after,.mont__cta:focus-visible::after{ transform:scaleX(1); }
+
+/* ÁREA TOCABLE — cuatro controles por debajo del mínimo
+   Medido: la píldora 89x31, el «Let's talk» 350x34, el correo 323x42 y la
+   × del panel 42x42. El mínimo es 44 (Apple; Google pide 48). Ninguno
+   llegaba, y es el único defecto real del móvil de la referencia también:
+   sus enlaces de pie miden 17 px de alto y sus iconos de redes 11.
+
+   Se estira el área con un pseudo-elemento y NO con relleno, porque los
+   cuatro tienen forma visible —la píldora es una plancha de color, la ×
+   un disco— y el relleno los haría crecer. Así el dedo gana sitio y el
+   ojo no ve absolutamente nada distinto.
+
+   Va en ::before y no en ::after porque el ::after de la píldora, del
+   correo y del CTA ya está ocupado por su subrayado. Y la píldora y la ×
+   no llevan `position:relative`: la una ya es `fixed` y la otra `sticky`,
+   y las dos cosas ya crean el marco que el absoluto necesita. Ponérselo
+   les rompería el anclaje. */
+.mont__cta,.mail{ position:relative; }
+.pill::before,.mont__cta::before,.mail::before,.read__x::before{
+  content:""; position:absolute; left:0; right:0;
+  top:50%; height:44px; transform:translateY(-50%);
+}
+/* El disco tiene que crecer por los cuatro lados, no sólo por arriba y
+   por abajo: le faltaban 2 px en cada eje. */
+.read__x::before{ left:-1px; right:-1px; }
 
 /* Las tarjetas responden al puntero: sin esto el tablero se lee como una
    lámina impresa y no como algo que se está mirando. */
@@ -1882,6 +2094,15 @@ body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0
   display:flex; flex-wrap:wrap; gap:12px 24px; align-items:baseline; color:var(--ink-3);
 }
 .foot__sp{ margin-left:auto; }
+/* Enlace, pero sin pinta de enlace: es la firma del pie, y sólo por
+   debajo de 899 px carga además con el «volver arriba». El área tocable
+   se estira a 44 px con relleno y margen negativo, que no mueve ni un
+   píxel de lo que se ve. */
+.foot__up{
+  color:inherit; text-decoration:none;
+  padding:14px 0; margin:-14px 0;
+}
+.foot__up:hover,.foot__up:focus-visible{ color:var(--ink); }
 
 /* ============================================================
    Movimiento: revelados por palabra con máscara, y entrada
@@ -2153,6 +2374,9 @@ body.is-live .rise > i{ transform:none; }
             <div class="card__face card__face--front card__face--brand">
               <img class="card__mark" src="dena.webp" loading="lazy" width="382" height="68"
                    alt="Denaliving" decoding="async" fetchpriority="low">
+              <div class="card__cap card__cap--end">
+                <span class="card__go" aria-hidden="true">&#8599;</span>
+              </div>
             </div>
 
           </div>
@@ -2238,7 +2462,7 @@ body.is-live .rise > i{ transform:none; }
             <div class="card__face card__face--front card__face--bare" aria-hidden="true">
               <img class="card__img" src="art-klee-p.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
               <div class="card__cap card__cap--end">
-                <span class="card__turn">&#8635;</span>
+                <span class="card__go" aria-hidden="true">&#43;</span>
               </div>
             </div>
 
@@ -2328,6 +2552,9 @@ body.is-live .rise > i{ transform:none; }
               <img class="card__img" src="art-08bg.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
               <img class="card__mark" src="keni.webp" loading="lazy" width="657" height="658"
                    alt="Keni Engineering" decoding="async" fetchpriority="low">
+              <div class="card__cap card__cap--end">
+                <span class="card__turn">&#8635;</span>
+              </div>
             </div>
 
           </div>
@@ -2474,7 +2701,11 @@ body.is-live .rise > i{ transform:none; }
       </div>
 
       <div class="foot mono">
-        <span>Ane Ugarte</span>
+        <!-- Es un enlace y no un rótulo porque al apagarse el logotipo en
+             el móvil éste queda como único «volver arriba» de la página.
+             La referencia hace lo mismo: quita la marca grande y conserva
+             el enlace en un control pequeño. -->
+        <a class="foot__up" href="#top">Ane Ugarte</a>
         <span>Let&rsquo;s make a better place</span>
         <span class="foot__sp">Spain &middot; <span class="num">2026</span></span>
       </div>
@@ -2703,6 +2934,11 @@ glob.Globo=Globo;
   var reduce  = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePtr = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var wide    = window.matchMedia("(min-width: 900px)");
+  /* El carril pide además ALTO: en una ventana baja el suelo de 248 px de
+     `.shot` desborda el escenario y corta las piezas. La condición es
+     gemela de la `@media` del carril y las dos tienen que moverse juntas
+     (ver el comentario largo que hay allí). */
+  var railOk  = window.matchMedia("(min-width: 900px) and (min-height: 660px)");
 
   /* LA ESCALA A LA QUE SE DIBUJA LA PAGINA. Dentro del artifact vale 1
      y todo lo que sigue es inerte; publicada en el dominio, el visor se
@@ -3114,12 +3350,15 @@ glob.Globo=Globo;
   var ctx0=0, cty0=0, ctw=0, cth=0, cPan=0;
   /* los tres huecos y la baldosa que los cubre, en fracción del cuadro;
      medidos sobre ane-glass.png y ane-dark.png, no puestos a ojo */
-  /* Las tres aberturas del casco, medidas sobre ane-glass.png y
-     ane-dark.png y no puestas a mano. Cambian porque los visores han
-     bajado a sus ojos (la linea de los ojos esta en 433, no en 423) y
-     la boca ha subido a sus labios (612..690 en vez de 656..744). */
-  var CAJAS = [[0.289,0.373,0.466,0.438], [0.496,0.373,0.670,0.438],
-               [0.369,0.571,0.582,0.646]];
+  /* Las tres aberturas del casco, medidas sobre ane-void.png —que es
+     justo por donde asoma el cosmos— y no puestas a mano. Las dos de
+     arriba vuelven a cambiar porque la lente ya no es una rendija sino
+     la forma calcada de su referencia: punta afilada hacia la nariz,
+     casquete redondo hacia la sien, panza honda y catorce grados de
+     caida. Mas alta (86 milesimas del cuadro en vez de 65) y un pelo
+     mas corta por el lado de dentro. */
+  var CAJAS = [[0.289,0.363,0.459,0.448], [0.500,0.363,0.670,0.448],
+               [0.369,0.573,0.580,0.646]];
   var TELA  = [0.13,0.22,0.82,0.83];
   var HONDO = [0.06, 0.26, 0.62, 1.00];       /* lo que se mueve cada plano */
 
@@ -3659,7 +3898,7 @@ glob.Globo=Globo;
   var montOn = false, montTop = 0, montMax = 0, montIni = 0, montVW = 1, montVH = 1;
   function layoutMont(){
     Z = parseFloat(getComputedStyle(root).zoom) || 1;
-    montOn = wide.matches && !reduce && !!mont && !!mRail;
+    montOn = railOk.matches && !reduce && !!mont && !!mRail;
     if (!montOn) {
       if (mont) mont.style.height = "";
       if (mRail) mRail.style.transform = "";
@@ -3808,6 +4047,12 @@ glob.Globo=Globo;
     /* La cabeza se abre con el ratón o con el propio scroll, y ella
        se queda un poco rezagada mientras la portada sale de pantalla. */
     body.classList.toggle("is-scrolled", y > window.innerHeight * 0.5);
+
+    /* El logotipo sólo vive durante la portada en pantalla estrecha (el
+       CSS decide dónde se aplica; aquí sólo se dice cuándo). El umbral
+       es 0,85 de pantalla y no 1, para que se haya ido ANTES de que
+       empiece a pasarle contenido por debajo y no justo al chocar. */
+    body.classList.toggle("sin-marca", y > window.innerHeight * 0.85);
 
     /* ── EL PASO ─────────────────────────────────────────────
        Un solo recorrido manda cuatro cosas a la vez: el recorte de la
@@ -4281,6 +4526,10 @@ glob.Globo=Globo;
   }
   window.addEventListener("load", function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); tamGlobo(); tamCielo(); });
   if (wide.addEventListener) wide.addEventListener("change", function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); tamGlobo(); tamCielo(); });
+  /* Girar el teléfono cruza el umbral de ALTO sin cambiar el de anchura,
+     así que este oyente no es redundante: sin él, el carril se queda
+     montado (o desmontado) hasta el siguiente cambio de ancho. */
+  if (railOk.addEventListener) railOk.addEventListener("change", function(){ layoutMont(); measureBands(); });
 })();
 </script>
 
@@ -4498,5 +4747,6 @@ glob.Globo=Globo;
   }
 })();
 </script>
-</body>
-</html>
+
+
+</body></html>
