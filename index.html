@@ -4,13 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ane Ugarte</title>
+<script>(function(){var d=document,w=window;if(w.self!==w.top)return;var z=0.75,m=/[?&]z=(\d{2,3})/.exec(location.search);if(m)z=+m[1]/100;if(!(z>.1&&z<=4))z=0.75;if(!w.matchMedia("(min-width:900px)").matches)return;d.write('<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;'+'background:#F7F7F0}body>plaintext{display:none}#marco{display:block;position:fixed;'+'top:0;left:0;border:0;width:calc(100vw / '+z+');height:calc(100svh / '+z+');'+'transform:scale('+z+');transform-origin:0 0}'+'@media (max-width:899px){#marco{width:100vw;height:100svh;transform:none}}</style>'+'<iframe id="marco" title="'+d.title+'" src="'+location.pathname+location.search+location.hash+'"></iframe><plaintext>');function ancla(){try{history.replaceState(null,"",f.contentWindow.location.hash||location.pathname)}catch(e){}}var f;function listo(){try{var v=f.contentWindow;v.focus();v.addEventListener("hashchange",ancla)}catch(e){}}d.addEventListener("DOMContentLoaded",function(){var t=d.querySelector("plaintext");if(t)t.parentNode.removeChild(t);f=d.getElementById("marco");if(!f)return;f.addEventListener("load",listo);try{if(f.contentDocument&&f.contentDocument.readyState==="complete")listo()}catch(e){}});})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Fraunces:opsz,wght,SOFT,WONK@144,600,0,1&family=JetBrains+Mono:wght@400;500&family=Mona+Sans:wdth,wght@75..125,200..900&family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&display=swap">
-<script>try{var m=/[?&]z=(\d{2,3})/.exec(location.search);if(m){var z=+m[1]/100;var r=document.documentElement.style;r.setProperty("zoom",z);r.setProperty("--uvw","calc(1vw / "+z+")");r.setProperty("--usvh","calc(1svh / "+z+")");r.setProperty("--uvh","calc(1vh / "+z+")");}}catch(e){}</script>
-<style>:root{--uvw:1vw;--usvh:1svh;--uvh:1vh}
-@media (min-width:900px){:root{zoom:0.75;--uvw:calc(1vw / 0.75);--usvh:calc(1svh / 0.75);--uvh:calc(1vh / 0.75)}}
-:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
 <!-- Lenis NO va aqui. Arriba del todo bloquea el parseo, y por tanto el
@@ -135,7 +133,7 @@
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
 
   --ease:cubic-bezier(.19,1,.22,1);
-  --gutter:clamp(20px,calc(5 * var(--uvw)),64px);
+  --gutter:clamp(20px,5vw,64px);
 }
 *,*::before,*::after{ box-sizing:border-box; }
 
@@ -152,7 +150,7 @@ body{
   background:transparent;
   color:var(--ink);
   font-family:var(--serif);
-  font-size:clamp(1rem,calc(.62 * var(--uvw)) + .87rem,1.16rem);
+  font-size:clamp(1rem,.62vw + .87rem,1.16rem);
   line-height:1.62;
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
@@ -178,7 +176,12 @@ body.is-scrolled .blob{ opacity:.55; }
   position:fixed; inset:0; z-index:1; pointer-events:none;
   background-image:url("ane-topo.png");
   background-size:980px 980px; background-repeat:repeat;
-  opacity:.18;
+  /* 22,6 puntos de luma por debajo del crema. La referencia esta en 21,9
+     —medido en su pantalla, no en su hoja de estilos, que declara un color
+     bastante mas oscuro y lo convierte antes de pintarlo—. Al 18 % que
+     habia aqui eran 40,7: el doble de contraste que ellos. El numero sale
+     de medir el resultado, no de la formula: ver la nota del script. */
+  opacity:.12;
 }
 main{ position:relative; z-index:2; }
 ::selection{ background:var(--accent); color:var(--ground); }
@@ -234,14 +237,14 @@ html:not(.lenis){ scroll-behavior:smooth; }
 }
 .load__n b{
   display:block; font-variation-settings:"wdth" 100,"wght" 700;
-  font-size:clamp(30px,calc(3.5 * var(--uvw)),58px); line-height:1; letter-spacing:-.01em;
+  font-size:clamp(30px,3.5vw,58px); line-height:1; letter-spacing:-.01em;
 }
 .load__n i{
   display:block; font-style:normal;
   font-variation-settings:"wdth" 100,"wght" 300;
-  font-size:clamp(9px,calc(.778 * var(--uvw)),13px); line-height:1.5;
+  font-size:clamp(9px,.778vw,13px); line-height:1.5;
   letter-spacing:.3em; text-indent:.3em;   /* la prosa sobra por la derecha */
-  margin-top:clamp(11px,calc(1.18 * var(--uvw)),20px);
+  margin-top:clamp(11px,1.18vw,20px);
   color:var(--cream-2);
 }
 @keyframes marcaEntra{ from{ opacity:0 } to{ opacity:1 } }
@@ -284,7 +287,7 @@ body.is-gone .load{ display:none; }
   top:calc(env(safe-area-inset-top,0px) + 18px); left:var(--gutter);
   display:block; text-decoration:none; line-height:.84;
   font-family:var(--display); text-transform:uppercase; color:var(--ink);
-  font-size:clamp(17px,calc(1.4 * var(--uvw)),21px);
+  font-size:clamp(17px,1.4vw,21px);
   transition:color .5s ease;
 }
 .wm__a{ display:block; font-size:2.05em; font-variation-settings:"wdth" 74,"wght" 800; }
@@ -331,7 +334,7 @@ body.is-gone .load{ display:none; }
 .chat{
   position:fixed; z-index:55;
   top:calc(env(safe-area-inset-top,0px) + 68px); right:var(--gutter);
-  max-width:min(calc(76 * var(--uvw)),320px);
+  max-width:min(76vw,320px);
   display:grid; gap:5px;
   padding:11px 15px 12px; border-radius:16px 5px 16px 16px;
   background:#FFF; color:var(--ink);
@@ -397,7 +400,7 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    ============================================================ */
 .hero{
   position:relative; overflow:clip;
-  min-height:calc(100 * var(--usvh));
+  min-height:100svh;
   padding-inline:var(--gutter);
 }
 
@@ -424,8 +427,8 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    hoja espera detrás sin que se note. */
 .pin{ position:relative; z-index:4; }
 @media (min-width:900px){
-  .pin{ height:calc(200 * var(--usvh)); }
-  .hero{ position:sticky; top:0; height:calc(100 * var(--usvh)); min-height:0; }
+  .pin{ height:200svh; }
+  .hero{ position:sticky; top:0; height:100svh; min-height:0; }
 }
 
 /* el mundo oscuro espera detrás y se enciende con el recorrido */
@@ -464,7 +467,10 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
   position:absolute; inset:0; pointer-events:none;
   background-image:url("ane-topo.png");
   background-size:980px 980px; background-repeat:repeat;
-  opacity:calc(.18 * var(--wa,0));
+  /* el mismo gris que .topo, y por el mismo motivo: son el mismo mapa a
+     los dos lados del borde del panel, y si no coinciden el borde se
+     convierte en una costura donde la curva cambia de tono */
+  opacity:calc(.12 * var(--wa,0));
 }
 /* ── La firma ────────────────────────────────────────────────
    Se traza sola con el mismo recorrido, como en la referencia (allí
@@ -493,7 +499,7 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
      El trazo, 26 sobre un lienzo de 1408, sale a unos 17 px en pantalla,
      que es lo que mide el suyo. Más no: a 30 el lacito del cruce se
      empasta y la firma deja de leerse como un trazo. */
-  width:min(calc(72 * var(--uvw)),940px); height:auto;
+  width:min(72vw,940px); height:auto;
   overflow:visible;
 }
 .sig path{
@@ -511,8 +517,8 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    del archivo: la cabeza va del 2 % al 55 %) */
 .hero__cut{ transform-origin:50% 30%; }
 
-/* Ella manda. El lienzo de la cabeza de la referencia mide calc(100 * var(--uvw)) por
-   calc(100 * var(--usvh)), así que aquí el retrato va recortado más abajo —su imagen es
+/* Ella manda. El lienzo de la cabeza de la referencia mide 100vw por
+   100svh, así que aquí el retrato va recortado más abajo —su imagen es
    muy alta— para que la cabeza ocupe el 60% del alto en vez del 48%.
    El tope por ancho evita que en vertical se salga de la pantalla.
 
@@ -523,7 +529,7 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    la pantalla. La figura se amplía en la misma proporción para que lo
    visible sea al menos tan grande como antes — de hecho queda mayor. */
 .hero__cutwrap{
-  --cutH:min(calc(110.5 * var(--usvh)),calc(124.3 * var(--uvw)),1438px);      /* = lo de antes / 0,869 */
+  --cutH:min(110.5svh,124.3vw,1438px);      /* = lo de antes / 0,869 */
   position:absolute; z-index:2; left:50%;
   bottom:calc(var(--cutH) * -0.131);
   height:var(--cutH); aspect-ratio:928/1069;
@@ -800,8 +806,8 @@ body.is-gone .hero__corner.intro{
      caía sobre negro y no se leía. A esta altura hay 390 px y cabe de
      sobra, y ella no encoge ni un píxel. */
   .hero__corner{
-    position:absolute; bottom:clamp(26px,calc(20 * var(--usvh)),200px);
-    max-width:min(26ch,calc(27 * var(--uvw)));
+    position:absolute; bottom:clamp(26px,20svh,200px);
+    max-width:min(26ch,27vw);
   }
   .hero__corner--l{ left:var(--gutter); }
   .hero__corner--r{ right:var(--gutter); text-align:right; }
@@ -814,7 +820,7 @@ body.is-gone .hero__corner.intro{
      disimular y no hace falta inventar ningún degradado. */
   .hero{
     display:flex; flex-direction:column; justify-content:flex-start;
-    height:calc(100 * var(--usvh)); gap:20px; padding-block:clamp(78px,calc(12 * var(--usvh)),110px) 0;
+    height:100svh; gap:20px; padding-block:clamp(78px,12svh,110px) 0;
   }
   .hero__corner{ order:-1; flex:none; }
   /* sin pin el recorte estorba: display:contents lo disuelve y el
@@ -825,7 +831,7 @@ body.is-gone .hero__corner.intro{
      mismo tramo se recorta y se descuenta del hueco que deja */
   .hero__cutwrap{
     position:relative; bottom:auto; left:auto; translate:none;
-    flex:none; margin-inline:auto; margin-top:clamp(18px,calc(3 * var(--usvh)),38px);
+    flex:none; margin-inline:auto; margin-top:clamp(18px,3svh,38px);
   }
   .hero__corner{ text-align:center; }
 }
@@ -834,7 +840,7 @@ body.is-gone .hero__corner.intro{
   margin:0; font-family:var(--display);
   font-variation-settings:"wdth" 88,"wght" 500;
   text-transform:uppercase;
-  font-size:clamp(1.02rem,calc(2.1 * var(--uvw)),1.62rem);
+  font-size:clamp(1.02rem,2.1vw,1.62rem);
   letter-spacing:.18em; line-height:1.3; color:var(--ink);
   text-wrap:balance;
 }
@@ -854,7 +860,7 @@ body.is-gone .hero__corner.intro{
 .dk{
   position:relative; z-index:3; overflow:hidden;
   color:var(--cream);
-  padding-block:clamp(58px,calc(11 * var(--uvh)),124px) clamp(72px,calc(15 * var(--uvh)),168px);
+  padding-block:clamp(58px,11vh,124px) clamp(72px,15vh,168px);
 }
 /* El verde de la sección. En escritorio con JS se apaga: allí el verde
    lo pone el suelo fijo, que es el que sabe virar a papel. Si siguiera
@@ -888,14 +894,14 @@ body.is-gone .hero__corner.intro{
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
           mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
 }
-.mq + .mq{ margin-top:clamp(2px,calc(.6 * var(--uvh)),8px); }
+.mq + .mq{ margin-top:clamp(2px,.6vh,8px); }
 .band__row{ display:flex; width:max-content; will-change:transform; }
 .band__seq{ display:flex; align-items:center; flex:none; }
 .band__w{
   line-height:1; padding-inline:.26em; white-space:nowrap;
-  font-size:clamp(2.1rem,calc(7.2 * var(--uvw)),6rem);
+  font-size:clamp(2.1rem,7.2vw,6rem);
 }
-.band__sep{ font-size:clamp(.55rem,calc(1.5 * var(--uvw)),1.25rem); opacity:.5; padding-inline:.2em; }
+.band__sep{ font-size:clamp(.55rem,1.5vw,1.25rem); opacity:.5; padding-inline:.2em; }
 /* arriba la serif, como en la referencia: es la voz que cita */
 .mq--a .band__w{
   font-family:var(--brier); font-variation-settings:var(--brier-vs);
@@ -918,11 +924,11 @@ body.is-gone .hero__corner.intro{
 .dk__mqs{ position:relative; z-index:2; }
 .dk__in{
   position:relative; z-index:2; text-align:center;
-  margin-top:clamp(62px,calc(15 * var(--uvh)),180px); padding-inline:var(--gutter);
+  margin-top:clamp(62px,15vh,180px); padding-inline:var(--gutter);
 }
 /* sin la banda encima, el manifiesto no necesita ese hueco: lo que le
    separa del borde es ya el relleno de la sección */
-@media (min-width:900px){ .dk__in{ margin-top:clamp(16px,calc(5 * var(--uvh)),64px); } }
+@media (min-width:900px){ .dk__in{ margin-top:clamp(16px,5vh,64px); } }
 /* Aquí vivían una insignia redonda con las iniciales y el rótulo
    «Mensaje de Ane». Fuera las dos: en la referencia el bloque de impacto
    no lleva nada encima, y eran justo lo que obligaba a la frase a
@@ -951,7 +957,7 @@ body.is-gone .hero__corner.intro{
      a una pantalla exacta, así que el tope real es cuántas líneas caben.
      El término en vw sólo evita que en pantallas muy anchas y bajas la
      frase se salga por los lados. */
-  font-size:clamp(1.85rem,min(calc(6.6 * var(--uvw)),calc(10.2 * var(--usvh))),7.6rem);
+  font-size:clamp(1.85rem,min(6.6vw,10.2svh),7.6rem);
   /* Su interlínea y su prosa, tal cual: 90,6 % y -.0625rem. La prosa va en
      rem y no en em porque así la tiene ella — es un píxel fijo, no una
      proporción del cuerpo. */
@@ -994,8 +1000,8 @@ body.is-gone .hero__corner.intro{
    no hay dos zonas: hay un solo suelo que cambia de tono a la vez en
    todos sus píxeles.
 
-   Eso es lo que hay aquí. El envoltorio mide calc(230 * var(--usvh)) y la sección se
-   queda pegada calc(130 * var(--usvh)), que es el recorrido; dentro de él la frase se
+   Eso es lo que hay aquí. El envoltorio mide 230svh y la sección se
+   queda pegada 130svh, que es el recorrido; dentro de él la frase se
    apaga, el suelo vira de verde a papel y el perfil entra por abajo
    cuando la luz ya ha ganado, que es donde su tinta se lee.
    ------------------------------------------------------------- */
@@ -1040,22 +1046,22 @@ body.js.in-pass .topo{ opacity:0; }
 }
 
 @media (min-width:900px){
-  body.js .pass{ height:calc(230 * var(--usvh)); }
+  body.js .pass{ height:230svh; }
   body.js .dk__bg{ display:none; }
   body.js .dk{
-    position:sticky; top:0; height:calc(100 * var(--usvh)); padding-block:0;
+    position:sticky; top:0; height:100svh; padding-block:0;
     display:grid; align-content:center;
     pointer-events:none;        /* el suelo y el perfil viven debajo */
   }
   /* Al perfil no lo mueve nadie: sube al ritmo del scroll, en su sitio.
-     El margen negativo es lo único que decide CUÁNDO asoma —calc(70 * var(--usvh)) por
+     El margen negativo es lo único que decide CUÁNDO asoma —70svh por
      encima del final del recorrido, o sea con el suelo ya aclarado. Antes
-     eran calc(100 * var(--usvh)) y un transform por fotograma, porque tenía que estar
+     eran 100svh y un transform por fotograma, porque tenía que estar
      colocado detrás de la hoja antes de que ésta se retirase; sin hoja,
      sobra el transform entero y sobra su capa de composición. */
   body.js .sec--under{
     position:relative; z-index:1;
-    margin-top:-calc(70 * var(--usvh));
+    margin-top:-70svh;
   }
   /* Ya invisible, el manifiesto seguía siendo texto encontrable con
      Ctrl+F flotando sobre el perfil. */
@@ -1064,7 +1070,7 @@ body.js.in-pass .topo{ opacity:0; }
   body.js .dk__in{
     margin-top:0;
     opacity:calc(1 - var(--mo,0));
-    transform:translate3d(0,calc(-calc(4.5 * var(--uvh)) * var(--mo,0)),0) scale(calc(1 + .055 * var(--mo,0)));
+    transform:translate3d(0,calc(-4.5vh * var(--mo,0)),0) scale(calc(1 + .055 * var(--mo,0)));
     will-change:transform,opacity;
   }
 }
@@ -1090,8 +1096,8 @@ body.in-pass .pill{
 /* ============================================================
    Secciones
    ============================================================ */
-.sec{ padding-block:clamp(70px,calc(12 * var(--uvh)),140px); }
-.sec--tight{ padding-block:clamp(56px,calc(9 * var(--uvh)),104px); }
+.sec{ padding-block:clamp(70px,12vh,140px); }
+.sec--tight{ padding-block:clamp(56px,9vh,104px); }
 
 /* Aquí vivía la cabecera de sección: número, título grande, un apunte a
    la derecha y una regla debajo, pegada al borde de arriba. Fuera entera,
@@ -1102,7 +1108,7 @@ body.in-pass .pill{
    <h3> de las tarjetas no quedan colgando sin nivel superior y quien
    navegue por encabezados sigue teniendo las cuatro secciones. */
 
-.body{ margin-top:clamp(28px,calc(5 * var(--uvh)),52px); display:grid; gap:clamp(24px,calc(4 * var(--uvw)),56px); grid-template-columns:1fr; }
+.body{ margin-top:clamp(28px,5vh,52px); display:grid; gap:clamp(24px,4vw,56px); grid-template-columns:1fr; }
 @media (min-width:880px){ .body--split{ grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); } }
 
 .prose p{ margin:0 0 1.05em; max-width:62ch; }
@@ -1117,14 +1123,14 @@ body.in-pass .pill{
    arranca a la misma altura que la cita grande de la derecha. */
 .cita{
   margin:0; max-width:56ch;
-  padding:clamp(20px,calc(2.6 * var(--uvh)),30px) 0;
+  padding:clamp(20px,2.6vh,30px) 0;
   border-top:1px solid var(--rule);
 }
 .cita:first-child{ border-top:0; padding-top:0; }
 .cita:last-child{ padding-bottom:0; }
 .cita p{
   margin:0; font-family:var(--serif); font-weight:300;
-  font-size:clamp(1.1rem,calc(1.9 * var(--uvw)),1.4rem); line-height:1.36;
+  font-size:clamp(1.1rem,1.9vw,1.4rem); line-height:1.36;
   color:var(--ink); text-wrap:pretty;
 }
 .cita cite{
@@ -1136,9 +1142,9 @@ body.in-pass .pill{
 .pull{
   margin:0; font-family:var(--display);
   font-variation-settings:"wdth" 82,"wght" 500;
-  text-transform:uppercase; font-size:clamp(1.15rem,calc(2.6 * var(--uvw)),1.8rem);
+  text-transform:uppercase; font-size:clamp(1.15rem,2.6vw,1.8rem);
   line-height:1.24; letter-spacing:.01em;
-  border-left:2px solid var(--accent); padding-left:clamp(16px,calc(2.4 * var(--uvw)),26px);
+  border-left:2px solid var(--accent); padding-left:clamp(16px,2.4vw,26px);
   text-wrap:balance;
 }
 .pull cite{ display:block; margin-top:12px; font:400 .7rem/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); font-style:normal; }
@@ -1167,7 +1173,7 @@ body.in-pass .pill{
    · Todo se dimensiona en ALTURA DE VENTANA, también en el eje X: los
      anchos de las piezas van en svh, no en vw. Así la composición no se
      deshace al estrechar o ensanchar la ventana, sólo al cambiar su alto.
-   · El relleno de calc(56 * var(--uvw)) por la izquierda es lo que deja el carril fuera de
+   · El relleno de 56vw por la izquierda es lo que deja el carril fuera de
      cuadro al empezar: las piezas entran por el borde derecho en vez de
      estar ya puestas.
 
@@ -1182,9 +1188,9 @@ body.in-pass .pill{
 .mont{ position:relative; }
 .mont__pin{ position:relative; }
 .mont__rail{
-  display:grid; gap:clamp(38px,calc(7 * var(--uvh)),72px);
+  display:grid; gap:clamp(38px,7vh,72px);
   max-width:1360px; margin-inline:auto;
-  padding:clamp(46px,calc(9 * var(--uvh)),110px) var(--gutter);
+  padding:clamp(46px,9vh,110px) var(--gutter);
 }
 /* Cada pieza: el rótulo encima —como la referencia, que pone el lugar y
    el año sobre cada foto— y debajo la tarjeta. */
@@ -1240,19 +1246,19 @@ body.js.in-mont .wm{
 }
 
 @media (min-width:900px){
-  /* El carril nace calc(105 * var(--usvh)) POR ENCIMA del final del mensaje. El número no
+  /* El carril nace 105svh POR ENCIMA del final del mensaje. El número no
      es de estilo, es de relevo: el mensaje empieza a aclarar el suelo a
      los 0,20 de SU recorrido —234 px de 1170— y el carril tiene que estar
      mandando ya en ese instante. Si entra después, el suelo sube un
      trecho hacia el papel y al llegar el carril vuelve al verde de golpe:
-     un destello claro que aparece y se va. Con calc(105 * var(--usvh)) el carril toma el
+     un destello claro que aparece y se va. Con 105svh el carril toma el
      mando 9 px antes que el otro, sostiene el verde en cero mientras las
      primeras piezas entran, y a partir de ahí vira él. Los dos tramos
      nunca discrepan porque sólo uno de los dos decide, y siempre el
      mismo. (Las piezas empiezan a asomar 113 px después, con el
      manifiesto ya al 15 % de opacidad: no se pisan.)
      La altura la escribe el bucle; aquí sólo hay que no ponerla. */
-  body.js .mont{ position:relative; z-index:1; margin-top:-calc(105 * var(--usvh)); }
+  body.js .mont{ position:relative; z-index:1; margin-top:-105svh; }
   body.js .mont__pin{
     position:sticky; top:0;
     /* `clip` y no `hidden`. `hidden` crea un contenedor de desplazamiento,
@@ -1260,7 +1266,7 @@ body.js.in-mont .wm{
        llevar el foco a algo que queda fuera. Medido: tras diez tabulaciones
        el carril se habia ido 3.011 px y la seccion se quedaba en blanco.
        `clip` recorta exactamente igual y no se puede desplazar. */
-    height:calc(100 * var(--usvh)); overflow:clip;
+    height:100svh; overflow:clip;
   }
   body.js .mont__rail{
     display:flex; align-items:flex-start;
@@ -1268,10 +1274,10 @@ body.js.in-mont .wm{
     max-width:none; margin:0; gap:0;
     /* Sin relleno vertical: --top se mide desde el borde de arriba de la
        pantalla, no desde una cornisa. Es lo que deja colocar una pieza a
-       calc(3 * var(--usvh)) del techo y otra terminando a calc(96 * var(--usvh)), que es el reparto de la
+       3svh del techo y otra terminando a 96svh, que es el reparto de la
        referencia —su banda va del 10 % al 95 % del alto— y lo que hace
        que la seccion se lea como pantalla llena y no como una tira. */
-    padding:0 clamp(40px,calc(6 * var(--uvw)),120px) 0 calc(56 * var(--uvw));
+    padding:0 clamp(40px,6vw,120px) 0 56vw;
     will-change:transform;
   }
   body.js .shot{
@@ -1301,7 +1307,7 @@ body.js.in-mont .wm{
   width:100%;
   background:var(--ground-2); border:1px solid var(--rule);
   border-top:2px solid var(--c,var(--accent));
-  padding:clamp(20px,calc(2.4 * var(--uvw)),30px);
+  padding:clamp(20px,2.4vw,30px);
   display:flex; flex-direction:column; gap:14px;
 }
 .card__top{ display:flex; align-items:center; gap:12px; }
@@ -1310,7 +1316,7 @@ body.js.in-mont .wm{
 .card__t{
   margin:0; font-family:var(--display);
   font-variation-settings:"wdth" 74,"wght" 800;
-  text-transform:uppercase; font-size:clamp(1.45rem,calc(3.1 * var(--uvw)),2.05rem);
+  text-transform:uppercase; font-size:clamp(1.45rem,3.1vw,2.05rem);
   line-height:.98; letter-spacing:-.005em; text-wrap:balance;
 }
 .card__d{ margin:0; color:var(--ink-2); font-size:.98rem; }
@@ -1356,7 +1362,7 @@ body.js.in-mont .wm{
 .card__face--back{
   transform:rotateY(180deg);
   display:flex; flex-direction:column; gap:14px;
-  padding:clamp(20px,calc(2.4 * var(--uvw)),30px);
+  padding:clamp(20px,2.4vw,30px);
   background:var(--ground-2);
 }
 /* el frente va DESPUÉS en el HTML: con giro el orden lo decide la
@@ -1419,7 +1425,7 @@ body.js.in-mont .wm{
 .card__face--brand{
   background:var(--ground);
   display:grid; place-items:center;
-  padding:clamp(24px,calc(4.5 * var(--uvw)),44px);
+  padding:clamp(24px,4.5vw,44px);
 }
 /* El logotipo no llena el hueco: le deja aire a los lados. A tamaño
    completo se comía la tarjeta entera y se leía como un icono, no como
@@ -1446,39 +1452,39 @@ body.js.in-mont .wm{
    enlace sigue llevando al texto, porque ahí abajo el panel deja de ser
    panel y se convierte en una sección más. */
 .read{
-  width:min(1100px,calc(92 * var(--uvw))); max-height:calc(92 * var(--usvh));
+  width:min(1100px,92vw); max-height:92svh;
   margin:auto; padding:0; border:0; border-radius:2px;
   background:var(--ground); color:var(--ink);
   overflow:auto; overscroll-behavior:contain;
 }
 .read::backdrop{ background:rgba(20,20,22,.66); }
 .read__x{
-  position:sticky; top:clamp(12px,calc(1.6 * var(--uvw)),18px); z-index:3;
+  position:sticky; top:clamp(12px,1.6vw,18px); z-index:3;
   display:grid; place-items:center;
   width:42px; height:42px; border:0; border-radius:50%;
-  margin-left:auto; margin-right:clamp(12px,calc(1.6 * var(--uvw)),18px); margin-bottom:-42px;
+  margin-left:auto; margin-right:clamp(12px,1.6vw,18px); margin-bottom:-42px;
   background:var(--ground-3); color:var(--ink);
   font-size:1.35rem; line-height:1; cursor:pointer;
   transition:background .3s ease;
 }
 .read__x:hover,.read__x:focus-visible{ background:var(--rule-2); }
 .read__in{
-  display:grid; gap:clamp(22px,calc(3.2 * var(--uvw)),42px);
-  padding:clamp(28px,calc(4 * var(--uvw)),56px);
+  display:grid; gap:clamp(22px,3.2vw,42px);
+  padding:clamp(28px,4vw,56px);
 }
 @media (min-width:900px){
   .read__in{ grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); align-items:start; }
   .read__head{ grid-column:1/-1; }
   /* el cuadro se queda quieto mientras el texto corre a su lado: es de lo
      que habla el texto, así que tiene que estar delante todo el rato */
-  .read__fig{ position:sticky; top:clamp(28px,calc(4 * var(--uvw)),56px); }
+  .read__fig{ position:sticky; top:clamp(28px,4vw,56px); }
 }
-.read__head{ border-bottom:1px solid var(--rule); padding-bottom:clamp(14px,calc(2 * var(--uvh)),22px); }
+.read__head{ border-bottom:1px solid var(--rule); padding-bottom:clamp(14px,2vh,22px); }
 .read__kind{ margin:0 0 10px; }
 .read__t{
   margin:0; font-family:var(--display);
   font-variation-settings:"wdth" 74,"wght" 800;
-  text-transform:uppercase; font-size:clamp(1.45rem,calc(3.2 * var(--uvw)),2.5rem);
+  text-transform:uppercase; font-size:clamp(1.45rem,3.2vw,2.5rem);
   line-height:.98; letter-spacing:-.005em; text-wrap:balance;
 }
 .read__fig{ margin:0; }
@@ -1546,12 +1552,12 @@ html.is-reading{ overflow:hidden; }
 .card__cap{
   position:absolute; inset:0; z-index:2;
   display:flex; align-items:flex-end; gap:14px;
-  padding:clamp(20px,calc(2.4 * var(--uvw)),30px); color:var(--cream);
+  padding:clamp(20px,2.4vw,30px); color:var(--cream);
 }
 .card__ft{
   flex:1; margin:0; font-family:var(--display);
   font-variation-settings:"wdth" 74,"wght" 800;
-  text-transform:uppercase; font-size:clamp(1.45rem,calc(3.1 * var(--uvw)),2.05rem);
+  text-transform:uppercase; font-size:clamp(1.45rem,3.1vw,2.05rem);
   line-height:.98; letter-spacing:-.005em; text-wrap:balance;
 }
 /* la única pista de que la tarjeta se da la vuelta */
@@ -1583,7 +1589,7 @@ html.is-reading{ overflow:hidden; }
 }
 .mont__cta b{
   font-family:var(--display); font-variation-settings:"wdth" 74,"wght" 800;
-  text-transform:uppercase; font-size:clamp(1.45rem,calc(3.1 * var(--uvw)),2.05rem);
+  text-transform:uppercase; font-size:clamp(1.45rem,3.1vw,2.05rem);
   line-height:.98; letter-spacing:-.005em; color:var(--ink); font-weight:400;
   transition:color .35s ease;
 }
@@ -1628,11 +1634,11 @@ html.is-reading{ overflow:hidden; }
 
    UN SOLO NÚMERO manda: --run, cuánto dura el corte. De él salen la
    altura, el margen y el recorte, así que no se pueden desincronizar.
-   Está en calc(68 * var(--usvh)) porque es lo que tarda el filo en comerse la última
+   Está en 68svh porque es lo que tarda el filo en comerse la última
    línea de tinta —medido: la tinta empieza a 292 px del borde de arriba
    del panel, así que el filo necesita 608 de los 900 de pantalla, y eso
    se mantiene entre 66 y 69 svh desde una ventana de 700 px hasta una de
-   1100—. Con calc(100 * var(--usvh)) el corte terminaba al 59 % del recorrido y el resto
+   1100—. Con 100svh el corte terminaba al 59 % del recorrido y el resto
    era papel en blanco haciendo perder el tiempo. El recorrido que
    le cuesta a la página es el mismo pase lo que pase —media pantalla,
    427 px— porque en el flujo el envoltorio ocupa siempre una pantalla:
@@ -1652,8 +1658,8 @@ html.is-reading{ overflow:hidden; }
    ============================================================ */
 @media (min-width:760px){
   body.js .filo{
-    --run:calc(68 * var(--usvh));
-    height:calc(calc(100 * var(--usvh)) + var(--run));
+    --run:68svh;
+    height:calc(100svh + var(--run));
     margin-bottom:calc(var(--run) * -1);
     clip-path:inset(0 0 var(--run) 0);
   }
@@ -1661,7 +1667,7 @@ html.is-reading{ overflow:hidden; }
      escasa, leída como un apunte al margen— y pasa a llenar la pantalla
      con su contenido centrado. */
   body.js .filo > .sec{
-    position:sticky; top:0; height:calc(100 * var(--usvh));
+    position:sticky; top:0; height:100svh;
     display:grid; align-content:center; padding-block:0;
   }
   /* Y las filas respiran. No es cosmética: lo que se rebana es la tinta,
@@ -1669,7 +1675,7 @@ html.is-reading{ overflow:hidden; }
      lo demás es crema. Abiertas, la lista mide el doble y el filo tiene
      algo que comerse durante todo el recorrido. De paso la sección deja
      de parecer un bloque flotando en medio de una pantalla vacía. */
-  body.js .filo .dl__row{ padding-block:clamp(16px,calc(4.4 * var(--usvh)),50px); }
+  body.js .filo .dl__row{ padding-block:clamp(16px,4.4svh,50px); }
   /* EL BORDE DE LA HOJA. La primera versión no llevaba ninguno, porque
      los dos lados son el mismo crema y la idea era justamente que no se
      viera nada entrar en escena. Error: una transición que nadie ve no
@@ -1689,7 +1695,7 @@ html.is-reading{ overflow:hidden; }
      entre el borde y la primera tinta quedaba un cuarto de pantalla de
      crema muerto justo en el momento en que hay que mirar. */
   body.js #contacto{
-    padding-top:clamp(36px,calc(6 * var(--usvh)),64px);
+    padding-top:clamp(36px,6svh,64px);
     box-shadow:0 -26px 46px -26px rgba(20,20,22,.34);
   }
 }
@@ -1732,7 +1738,7 @@ html.is-reading{ overflow:hidden; }
      contenido pegado al techo los 110 px sobrantes se leen como un error
      de maquetación. En escritorio no cambia nada: ahí el contenido ya
      mide más que la ventana. */
-  min-height:calc(100 * var(--usvh));
+  min-height:100svh;
   display:grid; align-content:center;
   background:var(--night);
   --ink:#E9E6DA;
@@ -1825,14 +1831,14 @@ body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0
 .mail{
   display:inline-block; margin:0; font-family:var(--display);
   font-variation-settings:"wdth" 64,"wght" 800; text-transform:uppercase;
-  font-size:clamp(1.8rem,calc(8.4 * var(--uvw)),5.6rem); line-height:.9; letter-spacing:-.01em;
+  font-size:clamp(1.8rem,8.4vw,5.6rem); line-height:.9; letter-spacing:-.01em;
   text-decoration:none; word-break:break-word; will-change:transform;
 }
 .mail span{ color:var(--accent); }
 .mail::after{ content:""; display:block; height:3px; margin-top:10px; background:var(--accent); transform:scaleX(0); transform-origin:0 50%; transition:transform .55s var(--ease); }
 .mail:hover::after,.mail:focus-visible::after{ transform:scaleX(1); }
 
-.links{ list-style:none; margin:clamp(26px,calc(4 * var(--uvh)),46px) 0 0; padding:0; }
+.links{ list-style:none; margin:clamp(26px,4vh,46px) 0 0; padding:0; }
 .links li{ border-top:1px solid var(--rule); }
 .links li:last-child{ border-bottom:1px solid var(--rule); }
 .links a{ display:flex; align-items:baseline; gap:16px; padding-block:15px; text-decoration:none; transition:color .3s ease,padding .35s var(--ease); }
@@ -1853,7 +1859,7 @@ body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0
      claro de antes era un rectángulo encendido en mitad de la noche */
   margin:0; overflow:hidden; background:var(--night-2);
   aspect-ratio:1400/895;
-  width:min(100%, calc(clamp(190px,calc(36 * var(--usvh)),380px) * 1.564));
+  width:min(100%, calc(clamp(190px,36svh,380px) * 1.564));
 }
 .lk__fig img{ display:block; width:100%; height:100%; object-fit:cover; }
 .lk__row{
@@ -1906,7 +1912,7 @@ body.is-live .rise > i{ transform:none; }
   .hero__dot{ animation:none !important; }
   .scan{ animation:none !important; background-position:0 46% !important; }
   .pin{ height:auto !important; }
-  .hero{ position:static !important; height:auto !important; min-height:calc(100 * var(--usvh)); }
+  .hero{ position:static !important; height:auto !important; min-height:100svh; }
   .hero__night{ opacity:0 !important; }
   .hero__clip{ clip-path:none !important; }
   .sig{ display:none !important; }
@@ -2120,7 +2126,7 @@ body.is-live .rise > i{ transform:none; }
            El --mw:100% deja el logotipo a su tamaño de siempre: la regla de
            la cara lo baja al 80 %, y eso se pidió para el de Keni, no para
            este. -->
-      <figure class="shot" style="--w:calc(30 * var(--usvh));--ml:0;--top:calc(14 * var(--usvh));--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:30svh;--ml:0;--top:14svh;--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>01</b> &middot; Denaliving</p>
         <a class="card card--flip card--fig card--link" style="--ar:4/3;--mw:100%"
            href="https://www.instagram.com/denaliving/"
@@ -2153,7 +2159,7 @@ body.is-live .rise > i{ transform:none; }
            sólo dice a qué se dedica la pieza. Fuera el número, el lugar, la
            métrica y el recuadro del año: no los pidió y eran lo que hacía
            que la tarjeta pareciese un formulario a medio rellenar. -->
-      <figure class="shot" style="--w:calc(34 * var(--usvh));--ml:calc(16 * var(--usvh));--top:calc(48 * var(--usvh));--sat:0.70;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:34svh;--ml:16svh;--top:48svh;--sat:0.70;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>02</b> &middot; Spain</p>
         <article class="card card--flip card--fig" tabindex="0">
           <div class="card__flip">
@@ -2179,7 +2185,7 @@ body.is-live .rise > i{ transform:none; }
            que el recorte se queda en nada; las piezas sin ficha llevan cada
            una la suya en --ar, porque lo que manda es la forma de lo que
            enseñan y no un formato común. -->
-      <figure class="shot" style="--w:calc(58 * var(--usvh));--ml:calc(9 * var(--usvh));--top:max(96px,calc(10 * var(--usvh)));--sat:0.95;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:58svh;--ml:9svh;--top:max(96px,10svh);--sat:0.95;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>03</b> &middot; Spain</p>
         <article class="card card--flip card--fig" style="--ar:3/2" tabindex="0">
           <div class="card__flip">
@@ -2204,7 +2210,7 @@ body.is-live .rise > i{ transform:none; }
            (href="#ensayo-klee"), no un botón: con JS abre el panel de
            lectura y sin JS baja hasta el mismo texto, que ahí abajo se
            pinta como una sección. Proporción 7/10, la del cuadro. -->
-      <figure class="shot" style="--w:calc(44 * var(--usvh));--ml:calc(18 * var(--usvh));--top:calc(28 * var(--usvh));--sat:1;--con:1;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:44svh;--ml:18svh;--top:28svh;--sat:1;--con:1;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>04</b> &middot; Some essays</p>
         <a class="card card--flip card--fig card--link" style="--ar:7/10"
            href="#ensayo-klee" data-read="ensayo-klee">
@@ -2240,7 +2246,7 @@ body.is-live .rise > i{ transform:none; }
            archivo (2500×2838), así que no se recorta por ningún lado.
            Y el alt sí existe: quien no ve la página tiene que saber qué
            hay aquí, aunque en pantalla no haya una sola palabra. -->
-      <figure class="shot" style="--w:calc(32 * var(--usvh));--ml:calc(10 * var(--usvh));--top:max(118px,calc(14 * var(--usvh)));--sat:0.82;--c:var(--jp);--cl:var(--jp-lt)">
+      <figure class="shot" style="--w:32svh;--ml:10svh;--top:max(118px,14svh);--sat:0.82;--c:var(--jp);--cl:var(--jp-lt)">
         <p class="shot__lbl mono"><b>05</b></p>
         <article class="card card--fig card--plain" style="--ar:2500/2838">
           <img class="card__img" src="art-05.webp" loading="lazy" decoding="async" fetchpriority="low"
@@ -2252,7 +2258,7 @@ body.is-live .rise > i{ transform:none; }
            frase debajo. Proporción 3/2, la exacta de la fotografía. Y el
            código de color pasa de España a Japón, que es lo que tiñe el
            número del rótulo mientras el suelo cambia. -->
-      <figure class="shot" style="--w:calc(52 * var(--usvh));--ml:calc(16 * var(--usvh));--top:calc(58 * var(--usvh));--sat:0.95;--c:var(--jp);--cl:var(--jp-lt)">
+      <figure class="shot" style="--w:52svh;--ml:16svh;--top:58svh;--sat:0.95;--c:var(--jp);--cl:var(--jp-lt)">
         <p class="shot__lbl mono"><b>06</b> &middot; Tokyo, Japan</p>
         <article class="card card--flip card--fig" style="--ar:3/2" tabindex="0">
           <div class="card__flip">
@@ -2277,7 +2283,7 @@ body.is-live .rise > i{ transform:none; }
            exacta del archivo (2984×1720) para no recortarle nada: la
            fotografía se juega entre la pared de piedra y la ventana, y
            cualquier recorte se come uno de los dos. -->
-      <figure class="shot" style="--w:calc(76 * var(--usvh));--ml:calc(7 * var(--usvh));--top:max(104px,calc(11 * var(--usvh)));--sat:1.00;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:76svh;--ml:7svh;--top:max(104px,11svh);--sat:1.00;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>07</b> &middot; Bizkaia, Spain</p>
         <article class="card card--flip card--fig" style="--ar:2984/1720" tabindex="0">
           <div class="card__flip">
@@ -2303,7 +2309,7 @@ body.is-live .rise > i{ transform:none; }
            —el archivo trae su propia transparencia, así que no hay ningún
            folio blanco recortado— y detrás el nombre y a qué se dedica.
            Cuadrada, que es la forma del logotipo. -->
-      <figure class="shot" style="--w:calc(36 * var(--usvh));--ml:calc(14 * var(--usvh));--top:calc(53 * var(--usvh));--c:var(--us);--cl:var(--us-lt)">
+      <figure class="shot" style="--w:36svh;--ml:14svh;--top:53svh;--c:var(--us);--cl:var(--us-lt)">
         <p class="shot__lbl mono"><b>08</b> &middot; USA &middot; Mexico</p>
         <article class="card card--flip card--fig" style="--ar:1/1;--mw:70%" tabindex="0">
           <div class="card__flip">
@@ -2323,7 +2329,7 @@ body.is-live .rise > i{ transform:none; }
         </article>
       </figure>
 
-      <div class="shot" style="--w:calc(26 * var(--usvh));--ml:calc(18 * var(--usvh));--top:calc(44 * var(--usvh))">
+      <div class="shot" style="--w:26svh;--ml:18svh;--top:44svh">
         <a class="mont__cta" href="#contacto">
           <b>Let&rsquo;s talk</b>
         </a>
