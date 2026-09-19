@@ -4,6 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ane Ugarte</title>
+<!-- El favicon. Corazon naranja sobre verde oscuro; la geometria y los dos
+     colores estan en el guion que lo genera. VA ANTES DEL SCRIPT DEL MARCO,
+     y no es indiferente: en escritorio ese script cierra con <plaintext> y
+     se traga todo lo que venga detras, asi que aqui detras no existiria.
+     Delante se parsea con normalidad y el icono vale para las dos ramas.
+     El .ico lleva tres imagenes rasterizadas por separado —16, 32 y 48—; el
+     navegador lo pide por convencion aunque no hubiera ninguna etiqueta. -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script>(function(){var d=document,w=window;if(w.self!==w.top)return;var z=0.75,m=/[?&]z=(\d{2,3})/.exec(location.search);if(m)z=+m[1]/100;if(!(z>.1&&z<=4))z=0.75;if(!w.matchMedia("(min-width:900px)").matches)return;d.write('<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;'+'background:#F7F7F0}body>plaintext{display:none}#marco{display:block;position:fixed;'+'top:0;left:0;border:0;width:calc(100vw / '+z+');height:calc(100svh / '+z+');'+'transform:scale('+z+');transform-origin:0 0}'+'@media (max-width:899px){#marco{width:100vw;height:100svh;transform:none}}</style>'+'<iframe id="marco" title="'+d.title+'" src="'+location.pathname+location.search+location.hash+'"></iframe><plaintext>');function ancla(){try{history.replaceState(null,"",f.contentWindow.location.hash||location.pathname)}catch(e){}}var f;function listo(){try{var v=f.contentWindow;v.focus();v.addEventListener("hashchange",ancla);if(!v.__gz){v.__gz=1;v.addEventListener("wheel",function(e){if(e.__gz||e.ctrlKey)return;e.__gz=1;try{Object.defineProperty(e,"deltaY",{value:e.deltaY/z,configurable:true});Object.defineProperty(e,"deltaX",{value:e.deltaX/z,configurable:true})}catch(_){}if(!v.Lenis){e.preventDefault();v.scrollBy(e.deltaX,e.deltaY)}},{capture:true,passive:false})}}catch(e){}}d.addEventListener("DOMContentLoaded",function(){var t=d.querySelector("plaintext");if(t)t.parentNode.removeChild(t);f=d.getElementById("marco");if(!f)return;f.addEventListener("load",listo);try{if(f.contentDocument&&f.contentDocument.readyState==="complete")listo()}catch(e){}});})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
