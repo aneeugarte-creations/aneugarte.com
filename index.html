@@ -543,9 +543,16 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    2,2 contra el papel */
 @media (max-width:899px){ .sig{ display:none; } }
 
-/* ella se encoge sobre su propia cara, no sobre el centro de la caja:
-   la cara está al 30 % de la altura del recorte (medido sobre el alfa
-   del archivo: la cabeza va del 2 % al 55 %) */
+/* Ella se encoge sobre su propia CABEZA, no sobre el centro de la caja.
+   El punto exacto lo escribe `layoutPin()` desde las constantes CAB_*, que
+   salen de leer el alfa de ane-cut.webp fila a fila: la cabeza va del
+   4,68 % al 70,81 % del alto y su centro horizontal esta en el 45,47 %
+   del ancho, no en el 50 %.
+   Aqui habia `transform-origin:50% 30%`, con un comentario que decia que
+   la cabeza iba del 2 % al 55 %. Los dos numeros eran falsos: el 55 % cae
+   en la nariz y el 30 % cae en la frente, por encima de las cejas.
+   Lo que queda es el valor de respaldo, para cuando no hay JS —y entonces
+   tampoco hay paso, asi que no se usa—. */
 .hero__cut{ transform-origin:50% 30%; }
 
 /* Ella manda. El lienzo de la cabeza de la referencia mide 100vw por
@@ -592,13 +599,32 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    color, como un casco, y encima la librea: palabras, banderas y objetos
    puestos a distintos tamaños y ángulos, como se pegan de verdad. */
 /* La malla fantasma: el casco existe en reposo, pero sólo como líneas.
-   Se apaga a medida que se materializa. */
+   Se apaga a medida que se materializa.
+
+   Y VA POR FUERA DE SU CARA, no encima. Antes era el propio dibujo de la
+   chapa —las líneas de ane-helmlines.png— puesto sobre ella, o sea un
+   calco. En la referencia no es un calco: es una CÁSCARA transparente
+   alrededor de la cabeza, y el pelo se ve por dentro. Lo que la hace
+   parecer una pieza y no un dibujo es que la malla es tridimensional de
+   verdad, meridianos y paralelos sobre una superficie proyectada, y que
+   se amontona sola en el canto porque ahí la superficie se gira.
+
+   La caja sube un 3,8354 % por encima del retrato (41 filas de las 1069
+   del archivo) porque la corona tiene que quedar por encima de su pelo y
+   su pelo empieza en la fila 11. Cabe: medido en vivo, por encima del
+   borde del retrato quedan 38,6 px de imagen a 1280x800, 1440x900,
+   1512x860 y 1100x900 —los cuatro dan lo mismo, que es el caso peor— y
+   la corona pide 31,7. Por debajo de 900 sobra sitio de sobra (282 px a
+   744 y 529 a 390). */
 .ghost{
   /* Hilo finísimo y gris claro, casi un velo. Antes era tinta gruesa y
      se leía como un dibujo encima de su cara; el casco tiene que estar
-     ahí sin taparla. */
-  position:absolute; inset:0; background:#9C9CA4;
-  -webkit-mask-image:url("ane-helmlines.png"); mask-image:url("ane-helmlines.png");
+     ahí sin taparla. El tono y la opacidad no se tocan: medidos contra
+     la referencia, con la malla nueva la línea oscurece el papel 0,033
+     de mediana y 0,078 en el percentil 90, y allí son 0,043 y 0,094. */
+  position:absolute; inset:-3.8354% 0 auto 0; height:103.8354%;
+  background:#9C9CA4;
+  -webkit-mask-image:url("ane-dome.png"); mask-image:url("ane-dome.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   opacity:calc(.78 - .78 * var(--rev,0));
@@ -608,11 +634,12 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    por el mismo dibujo de líneas, así que sólo se enciende donde hay
    línea, y se apaga según el casco se materializa de verdad. */
 .scan{
-  position:absolute; inset:0; pointer-events:none;
+  position:absolute; inset:-3.8354% 0 auto 0; height:103.8354%;
+  pointer-events:none;
   background:linear-gradient(180deg,transparent 0,rgba(96,96,104,.95) 44%,
              rgba(96,96,104,.22) 72%,transparent 100%);
   background-size:100% 30%; background-repeat:no-repeat;
-  -webkit-mask-image:url("ane-helmlines.png"); mask-image:url("ane-helmlines.png");
+  -webkit-mask-image:url("ane-dome.png"); mask-image:url("ane-dome.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   opacity:calc(.9 - .9 * var(--rev,0));
@@ -1048,7 +1075,10 @@ body.is-gone .hero__corner.intro{
      es exactamente la interlínea de la frase. */
   line-height:.869;
 }
-@media (max-width:640px){ .stmt{ max-width:15ch; } }
+/* Aqui vivia `@media (max-width:640px){ .stmt{ max-width:15ch } }`, que
+   contradecia el comentario de la propia regla y estrangulaba la frase en el
+   movil: once lineas de catorce caracteres en una caja del 65 % del ancho.
+   Sin ella son ocho de diecinueve al 90 %. No devolverla. */
 
 /* --- EL CAMBIO DE MUNDO -------------------------------------
    Sólo en pantalla ancha, igual que el paso de la portada.
@@ -3996,7 +4026,22 @@ glob.Globo=Globo;
      retrato no se mueve de sitio, así que su posición en reposo sale
      de la altura de la portada y no hace falta leerla cada fotograma
      (leer geometría después de escribir estilos fuerza un relayout). */
-  var pinOn = false, pinTop = 0, pinRun = 1, cutH = 0, cutTopRest = 0;
+  /* LA CABEZA, MEDIDA. Leido con getImageData sobre el alfa de
+     ane-cut.webp (928x1069), fila a fila, dentro del navegador:
+       coronilla  fila  50 = 4,68 %   (primera fila con alfa > 60)
+       barbilla   fila 757 = 70,81 %  (ultima con piel dominante)
+       el jersey empieza en la fila 776 = 72,59 %
+       de lado, la tinta de la cabeza va de x=167 a x=676 sobre 928
+     Si algun dia se cambia el retrato, ESTOS son los cuatro numeros que
+     hay que volver a medir: no se sustituye la foto, se REGISTRA. */
+  var CAB_T = 0.0468, CAB_B = 0.7081;        /* coronilla y barbilla */
+  var CAB_H = CAB_B - CAB_T;                 /* 0,6613 del alto del archivo */
+  var CAB_CY = (CAB_T + CAB_B) / 2;          /* 0,37745 — a la altura de las cejas */
+  var CAB_CX = 0.4547;                       /* centro horizontal de la cabeza */
+  var CAB_LLENA = 0.88;                      /* cuanto del panel llena la cabeza */
+  var CAB_K = CAB_LLENA / CAB_H;             /* 1,3307. Antes ponia 1,66 = 0,88/0,53 */
+  var pinOn = false, pinTop = 0, pinRun = 1, cutH = 0, cutW = 0;
+  var cutTopRest = 0, cutLeftRest = 0;
   function layoutPin(){
     Z = parseFloat(getComputedStyle(root).zoom) || 1;
     if (!pin || !heroEl || !cutwrap || !clip || !hNight) { pinOn = false; return; }
@@ -4016,8 +4061,35 @@ glob.Globo=Globo;
     pin.style.height = (Math.round(vh * 2) / Z) + "px";
     pinTop = pin.getBoundingClientRect().top + (window.scrollY || 0);
     pinRun = Math.max(1, vh);
-    cutH = cutwrap.getBoundingClientRect().height;
-    cutTopRest = cutwrap.getBoundingClientRect().top - heroEl.getBoundingClientRect().top;
+    /* SE MIDE CON LA ENTRADA NEUTRALIZADA, y no es paranoia: `.hero__cutwrap`
+       lleva la clase `intro`, que le pone `transform:translateY(24px)` con
+       220 ms de retardo, y las TRES llamadas de arranque a layoutPin()
+       —el bloque sincrono de `is-live`, `document.fonts.ready` y `load`—
+       ocurren antes de que esa transicion termine. Medido: la posicion en
+       reposo salia 24,00 px de mas, y ese desfase se quedaba clavado en el
+       transform durante todo el recorrido. Un `resize` lo arreglaba solo,
+       que es la pista de que era una lectura a destiempo y no un calculo.
+       Se neutralizan `transform` (la entrada) y `translate` (el paralaje
+       del puntero, que puede anadir hasta ~35 px en el mismo sentido),
+       se mide, y se devuelven los dos a lo que estaban. */
+    var _tn = cutwrap.style.transition;
+    var _tf = cutwrap.style.transform, _tl = cutwrap.style.translate;
+    cutwrap.style.transition = "none";
+    cutwrap.style.transform = "none";
+    cutwrap.style.translate = "-50% 0px";
+    var _r = cutwrap.getBoundingClientRect(), _h = heroEl.getBoundingClientRect();
+    cutH = _r.height;
+    cutW = _r.width;
+    cutTopRest  = _r.top  - _h.top;
+    cutLeftRest = _r.left - _h.left;
+    cutwrap.style.transform = _tf;
+    cutwrap.style.translate = _tl;
+    void cutwrap.offsetWidth;          /* reflujo: el regreso tampoco se anima */
+    cutwrap.style.transition = _tn;
+    /* y el origen del escalado, escrito desde las mismas constantes que la
+       escala, para que no puedan desincronizarse */
+    if (face) face.style.transformOrigin =
+      (CAB_CX * 100).toFixed(2) + "% " + (CAB_CY * 100).toFixed(2) + "%";
   }
 
   /* ── La apertura: mismo patrón que el paso. El envoltorio mide 2,3
@@ -4141,15 +4213,23 @@ glob.Globo=Globo;
       clip.style.setProperty("--wa", pinE.toFixed(3));
 
       if (face && cutH) {
-        /* la cabeza ocupa del 2 % al 55 % del recorte, o sea el 53 % de
-           su altura. Se escala para que llene el 88 % del panel, con el
-           ancho como segundo tope, y nunca crece: el tope en 1. */
-        var sTo = Math.min(1.66 * ph / cutH, 1.094 * pw / cutH, 1);
+        /* La cabeza llena el 88 % del alto del panel. CAB_K vale 1,3307 y
+           sale de 0,88 / 0,6613; antes ponia 1,66, que es 0,88 / 0,53 —el
+           alto de cabeza equivocado—, y con el la cabeza salia al 109,8 %
+           del panel: le cortaba 56,2 px de barbilla a 1512x982.
+           El segundo tope sigue mirando la CAJA y no la cabeza, a
+           proposito: es lo que impide que sus hombros toquen los cantos
+           verticales del panel. Y ninguno de los dos la deja crecer. */
+        var sTo = Math.min(CAB_K * ph / cutH, 1.094 * pw / cutH, 1);
         var sNow = 1 + (sTo - 1) * pinE;
-        /* el origen del escalado es su cara, así que sólo queda llevarla
-           al centro del panel */
-        var dy = (cy - (cutTopRest + cutH * 0.30)) * pinE;
-        face.style.transform = "translate3d(0," + (dy / Z).toFixed(1) + "px,0) scale(" + sNow.toFixed(4) + ")";
+        /* El origen del escalado ES el centro de su cabeza, asi que ese
+           punto no se mueve al encoger y solo queda llevarlo al centro del
+           panel. Los dos ejes, no solo el vertical: su cabeza no esta
+           centrada en el archivo y el mecanismo centraba la caja. */
+        var dy = (cy - (cutTopRest  + cutH * CAB_CY)) * pinE;
+        var dx = (cx - (cutLeftRest + cutW * CAB_CX)) * pinE;
+        face.style.transform = "translate3d(" + (dx / Z).toFixed(1) + "px," +
+          (dy / Z).toFixed(1) + "px,0) scale(" + sNow.toFixed(4) + ")";
       }
 
       /* la firma se escribe sola, cada trazo en su tramo del recorrido */
@@ -4809,4 +4889,5 @@ glob.Globo=Globo;
   }
 })();
 </script>
+
 </body></html>
