@@ -487,7 +487,25 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
 .hero__clip{
   position:absolute; inset:0; z-index:2;
   background:rgb(247 247 240 / var(--wa,0));   /* = --ground, a pelo porque lleva alfa variable */
-  clip-path:inset(0px 0px 0px 0px);
+  /* EL CANTO, CON ANTIALIAS Y NO ENCAJADO. Aqui habia
+     `clip-path:inset(...)`, que el navegador redondea al pixel del
+     dispositivo: medido en el visor —que dibuja al 75 %— el borde de
+     abajo avanzaba de pixel entero en pixel entero y se paraba un
+     fotograma de cada cuatro, sin ningun valor intermedio entre el
+     papel y la noche. Contra una foto que se encoge con un transform
+     continuo, ese canto a tirones es la linea que parpadea debajo.
+     Un alfa si se interpola, asi que el mismo rectangulo se hace con
+     dos mascaras cruzadas de un pixel de rampa —lo que habria puesto
+     el antialias— y el borde pasa a moverse en subpixel como todo lo
+     demas. Las cuatro medidas las escribe el mismo bucle del paso. */
+  --ct:0px; --cr:0px; --cb:0px; --cl:0px;
+  -webkit-mask-image:
+    linear-gradient(to bottom,#0000 var(--ct),#000 calc(var(--ct) + 1px),#000 calc(100% - var(--cb) - 1px),#0000 calc(100% - var(--cb))),
+    linear-gradient(to right,#0000 var(--cl),#000 calc(var(--cl) + 1px),#000 calc(100% - var(--cr) - 1px),#0000 calc(100% - var(--cr)));
+          mask-image:
+    linear-gradient(to bottom,#0000 var(--ct),#000 calc(var(--ct) + 1px),#000 calc(100% - var(--cb) - 1px),#0000 calc(100% - var(--cb))),
+    linear-gradient(to right,#0000 var(--cl),#000 calc(var(--cl) + 1px),#000 calc(100% - var(--cr) - 1px),#0000 calc(100% - var(--cr)));
+  -webkit-mask-composite:source-in;  mask-composite:intersect;
 }
 /* el mapa de dentro del recorte deriva al mismo paso que el global,
    que queda tapado: si no, al contraerse el panel se vería el salto */
@@ -2166,7 +2184,13 @@ html.is-reading{ overflow:hidden; }
      cortina. El 101 % evita que quede una uña de píxel encendida en el
      borde derecho por el redondeo. El zoom del hover no se toca: va en
      la imagen y esto va en el marco. */
-  #contacto .lk__fig{ clip-path:inset(0 calc((1 - var(--ec,1)) * 101%) 0 0); }
+  /* Con rampa de un pixel, por lo mismo que el canto del panel: un
+     clip-path se encaja al pixel del dispositivo y el barrido avanza a
+     tirones; un alfa se interpola. */
+  #contacto .lk__fig{
+    -webkit-mask-image:linear-gradient(to right,#000 calc(100% - (1 - var(--ec,1)) * 101% - 1px),#0000 calc(100% - (1 - var(--ec,1)) * 101%));
+            mask-image:linear-gradient(to right,#000 calc(100% - (1 - var(--ec,1)) * 101% - 1px),#0000 calc(100% - (1 - var(--ec,1)) * 101%));
+  }
 
   /* EL PIE entra el último y desde más cerca: es una línea de texto
      pequeño, y lo que en un titular es un gesto, aquí sería un salto. */
@@ -2279,7 +2303,7 @@ body.is-live .rise > i{ transform:none; }
   .pin{ height:auto !important; }
   .hero{ position:static !important; height:auto !important; min-height:100svh; }
   .hero__night{ opacity:0 !important; }
-  .hero__clip{ clip-path:none !important; }
+  .hero__clip{ -webkit-mask-image:none !important; mask-image:none !important; }
   .sig{ display:none !important; }
   .js .rv,.js .intro{ opacity:1 !important; transform:none !important; }
   .sp > i,.js .rise > i{ transform:none !important; }
@@ -4075,7 +4099,10 @@ glob.Globo=Globo;
     pinOn = wide.matches && !reduce;
     if (!pinOn) {
       pin.style.height = "";
-      clip.style.clipPath = "";
+      clip.style.removeProperty("--ct");
+      clip.style.removeProperty("--cr");
+      clip.style.removeProperty("--cb");
+      clip.style.removeProperty("--cl");
       clip.style.removeProperty("--wa");
       hNight.style.opacity = "";
       if (face) face.style.transform = "";
@@ -4230,11 +4257,14 @@ glob.Globo=Globo;
       var pw = Math.min(vw * 0.58, 880 * Z), ph = Math.min(vh * 0.46, 520 * Z);
       var cx = vw / 2, cy = vh * 0.48;
 
-      clip.style.clipPath = "inset(" +
-        ((cy - ph / 2) * pinE / Z).toFixed(1) + "px " +
-        ((vw - cx - pw / 2) * pinE / Z).toFixed(1) + "px " +
-        ((vh - cy - ph / 2) * pinE / Z).toFixed(1) + "px " +
-        ((cx - pw / 2) * pinE / Z).toFixed(1) + "px)";
+      /* las cuatro medidas del recorte. Tres decimales y no uno: el
+         borde se dibuja con alfa, asi que la precision de mas SE VE
+         —es justo lo que le quita los tirones— en vez de perderse al
+         redondear. */
+      clip.style.setProperty("--ct", ((cy - ph / 2) * pinE / Z).toFixed(3) + "px");
+      clip.style.setProperty("--cr", ((vw - cx - pw / 2) * pinE / Z).toFixed(3) + "px");
+      clip.style.setProperty("--cb", ((vh - cy - ph / 2) * pinE / Z).toFixed(3) + "px");
+      clip.style.setProperty("--cl", ((cx - pw / 2) * pinE / Z).toFixed(3) + "px");
 
       hNight.style.opacity = pinE.toFixed(3);
       /* EL BLANCO VA POR DELANTE DEL VERDE, y es deliberado: si los dos suben
