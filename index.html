@@ -574,6 +574,27 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
 .hero__clip{
   position:absolute; inset:0; z-index:2;
   background:rgb(247 247 240 / var(--wa,0));   /* = --ground, a pelo porque lleva alfa variable */
+  /* Y ESE BLANCO NO LLEGA AL CANTO DE SU PROPIA CAJA. La caja es la del
+     .hero entero, asi que su borde de abajo cae justo en la juntura con
+     el suelo, unos 336 px por debajo del canto del panel — donde la
+     mascara ya vale cero y no tendria que pintarse nada. En el dominio
+     ahi salia UNA RAYA de un pixel de dispositivo, del ancho exacto del
+     panel: el visor dibuja con transform:scale(.75), el borde de la caja
+     cae en un pixel partido, y en esa fila de cobertura parcial se
+     aplica la mascara horizontal pero no la vertical —medido: quitando
+     la mascara entera la raya sale de lado a lado y cuatro veces mas
+     fuerte, +65 de luma contra +17—, asi que el papel del panel asomaba
+     al 7 %. Sin marco no pasa: mismas posiciones, limpio.
+     El borde transparente deja el fondo 2 px dentro y en esa fila ya no
+     hay blanco que asome. DOS y no uno: a dpr 1 un pixel interior son
+     0,75 de dispositivo y la raya vuelve (+11 a 1280x800). Y no vale
+     mover la caja: con bottom:1px se va a 1512x860 y sube a +35 a
+     1440x900, porque eso acierta la paridad en vez de quitar el blanco.
+     Comprobado en cuatro ventanas —1512x860 y 1440x900 a dpr 2,
+     1920x1080 y 1280x800 a dpr 1— y en siete posiciones de cada una.
+     La geometria del panel no se entera: la mascara se mide sobre la
+     caja de borde, que no cambia de tamano. */
+  border-bottom:2px solid transparent; background-clip:padding-box;
   /* EL CANTO, CON ANTIALIAS Y NO ENCAJADO. Aqui habia
      `clip-path:inset(...)`, que el navegador redondea al pixel del
      dispositivo: medido en el visor —que dibuja al 75 %— el borde de
@@ -1451,9 +1472,9 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    EL CONTENIDO lo eligió Ane: las cuatro cosas que hace. Antes fueron
    cuatro frases suyas —«Passionately curious.», «Nothing turns out to
    be unrelated.», «Nothing is everything?» e «Imagine»— y se
-   sustituyeron enteras. OJO, porque esto hay que vigilarlo: son
-   LITERALMENTE la fila «Craft» de #formacion, que va justo debajo. Hoy
-   la misma lista se lee dos veces en dos secciones seguidas.
+   sustituyeron enteras. Venían de la fila «Craft» de #formacion, que se
+   quitó de allí el mismo día: dicho dos veces en dos secciones seguidas,
+   lo segundo no añadía nada. Vive aquí y sólo aquí.
 
    NO ES UN BUCLE, a propósito. La pila es finita: viaja de punta a
    punta y se acaba. Un bucle necesita que el ciclo sea mucho mayor que
@@ -3108,9 +3129,7 @@ body.is-live .rise > i{ transform:none; }
       <!-- La lista va entera y sin <br>: los renglones los parte el
            navegador contra la medida (max-width:75vw) y luego el JS los
            envuelve uno a uno para poder encender el que cruza el centro.
-           Sin JS no se envuelve nada y se lee la pila entera, quieta.
-           Son las mismas cuatro cosas que la fila «Craft» de #formacion:
-           si una cambia, la otra también. -->
+           Sin JS no se envuelve nada y se lee la pila entera, quieta. -->
       <div class="pf">
         <div class="pf__win">
           <div class="pf__col">
@@ -3127,11 +3146,19 @@ body.is-live .rise > i{ transform:none; }
     <div class="wrap">
       <h2 class="sr">Education</h2>
 
+      <!-- AQUÍ HUBO UNA TERCERA FILA, «Craft»: «Spatial design, business
+           operations, automation and artificial intelligence.» Se fue cuando
+           esas mismas cuatro cosas pasaron a ser la torre de #perfil, dos
+           secciones más arriba: dicho dos veces seguidas, la segunda no
+           añade nada y quita fuerza a la primera. Si algún día vuelve, que
+           vuelva SÓLO en uno de los dos sitios.
+           OJO al quitarla: lo que el filo rebana es la TINTA de esta
+           sección, así que una fila menos es un corte más corto. Ver la
+           medida en la nota de .filo. -->
       <div class="body body--split">
         <dl class="dl rv">
           <div class="dl__row"><dt class="dl__k mono">Academic</dt><dd class="dl__v">Three years of Business Administration and Management&nbsp;+ Sales Management at the University of the Basque&nbsp;Country (EHU)</dd></div>
           <div class="dl__row"><dt class="dl__k mono">Languages</dt><dd class="dl__v">Spanish, English and Basque. A little French and Japanese.</dd></div>
-          <div class="dl__row"><dt class="dl__k mono">Craft</dt><dd class="dl__v">Spatial design, business operations, automation and artificial intelligence.</dd></div>
         </dl>
 
         <div class="rv" style="--d:120ms">
@@ -4762,4 +4789,5 @@ body.is-live .rise > i{ transform:none; }
 })();
 </script>
 
-</body></html>
+</body>
+</html>
