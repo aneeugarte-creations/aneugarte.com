@@ -627,20 +627,30 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    verdad, meridianos y paralelos sobre una superficie proyectada, y que
    se amontona sola en el canto porque ahí la superficie se gira.
 
-   La caja sube un 3,8354 % por encima del retrato (41 filas de las 1069
-   del archivo) porque la corona tiene que quedar por encima de su pelo y
-   su pelo empieza en la fila 11. Cabe: medido en vivo, por encima del
-   borde del retrato quedan 38,6 px de imagen a 1280x800, 1440x900,
-   1512x860 y 1100x900 —los cuatro dan lo mismo, que es el caso peor— y
-   la corona pide 31,7. Por debajo de 900 sobra sitio de sobra (282 px a
-   744 y 529 a 390). */
+   Y SU FORMA ES LA DEL CASCO, no la de un domo aparte. Se traza sobre
+   EL MISMO POLÍGONO que rellena ane-helm.png —el perfil de helmet.py—,
+   así que el fantasma es el alámbrico de la pieza que luego se
+   materializa: medido, el canto de una y el de la otra no se separan
+   más de 2,0 px del cuadro, y eso en el fondo de la copa del mentón.
+   Antes era un elipsoide inventado, un 19 % más ancho y con un faldón
+   redondo por debajo, y al pasar el ratón aparecía encima una silueta
+   distinta.
+
+   Por eso la caja ya no sube por encima del retrato: el casco empieza en
+   la fila 14 de las 1069 y cabe entero. Se acabó el 3,8354 % —y con él
+   la única cosa que ataba la cáscara a los 38,6 px de cielo y, por
+   tanto, a --cutH—. */
 .ghost{
   /* Hilo finísimo y gris claro, casi un velo. Antes era tinta gruesa y
      se leía como un dibujo encima de su cara; el casco tiene que estar
-     ahí sin taparla. El tono y la opacidad no se tocan: medidos contra
-     la referencia, con la malla nueva la línea oscurece el papel 0,033
-     de mediana y 0,078 en el percentil 90, y allí son 0,043 y 0,094. */
-  position:absolute; inset:-3.8354% 0 auto 0; height:103.8354%;
+     ahí sin taparla. El tono y la opacidad no se tocan; lo que ha
+     cambiado es que hay menos hilo y que la cara de atrás va al 30 %,
+     porque la cáscara es transparente y donde las dos mitades se juntan
+     —la corona, el mentón— la línea salía doble. Medidas las dos con la
+     misma vara sobre el papel: la cáscara vieja oscurecía 0,054 de
+     mediana y 0,130 en el p90, y ésta 0,046 y 0,107. En la referencia,
+     0,043 y 0,094. */
+  position:absolute; inset:0;
   background:#9C9CA4;
   -webkit-mask-image:url("ane-dome.png"); mask-image:url("ane-dome.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
@@ -652,7 +662,7 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    por el mismo dibujo de líneas, así que sólo se enciende donde hay
    línea, y se apaga según el casco se materializa de verdad. */
 .scan{
-  position:absolute; inset:-3.8354% 0 auto 0; height:103.8354%;
+  position:absolute; inset:0;
   pointer-events:none;
   background:linear-gradient(180deg,transparent 0,rgba(96,96,104,.95) 44%,
              rgba(96,96,104,.22) 72%,transparent 100%);
@@ -995,7 +1005,8 @@ body.is-gone .hero__corner.intro{
    Es el mismo trato que ya tiene #contacto, y no toca el recorrido
    clavado, que sigue siendo cosa de la rama de 900. */
 @media (max-width:899px){
-  .dk{ min-height:100svh; display:grid; align-content:center; }
+  .dk{ min-height:100svh; display:grid; grid-template-columns:minmax(0,1fr);
+       align-content:center; }
 }
 /* El verde de la sección. En escritorio con JS se apaga: allí el verde
    lo pone el suelo fijo, que es el que sabe virar a papel. Si siguiera
@@ -4265,10 +4276,17 @@ glob.Globo=Globo;
          borde se dibuja con alfa, asi que la precision de mas SE VE
          —es justo lo que le quita los tirones— en vez de perderse al
          redondear. */
-      clip.style.setProperty("--ct", ((cy - ph / 2) * pinE / Z).toFixed(3) + "px");
-      clip.style.setProperty("--cr", ((vw - cx - pw / 2) * pinE / Z).toFixed(3) + "px");
-      clip.style.setProperty("--cb", ((vh - cy - ph / 2) * pinE / Z).toFixed(3) + "px");
-      clip.style.setProperty("--cl", ((cx - pw / 2) * pinE / Z).toFixed(3) + "px");
+      /* EL CIERRE. Arranca justo donde acaba el paso y dura 0,35 de pantalla.
+         `pinE` ya vale 1 aqui, asi que lo unico que se mueve es el tamanio
+         del rectangulo de destino: de medio panel a cero. */
+      var cP = Math.min(1, Math.max(0, (y - pinTop - pinRun) / (pinRun * 0.35)));
+      var cE = cP * cP * (3 - 2 * cP);
+      var hw = (pw / 2) * (1 - cE), hh = (ph / 2) * (1 - cE);
+
+      clip.style.setProperty("--ct", ((cy - hh) * pinE / Z).toFixed(3) + "px");
+      clip.style.setProperty("--cr", ((vw - cx - hw) * pinE / Z).toFixed(3) + "px");
+      clip.style.setProperty("--cb", ((vh - cy - hh) * pinE / Z).toFixed(3) + "px");
+      clip.style.setProperty("--cl", ((cx - hw) * pinE / Z).toFixed(3) + "px");
 
       hNight.style.opacity = pinE.toFixed(3);
       /* EL BLANCO VA POR DELANTE DEL VERDE, y es deliberado: si los dos suben
@@ -4292,7 +4310,7 @@ glob.Globo=Globo;
            El segundo tope sigue mirando la CAJA y no la cabeza, a
            proposito: es lo que impide que sus hombros toquen los cantos
            verticales del panel. Y ninguno de los dos la deja crecer. */
-        var sTo = Math.min(CAB_K * ph / cutH, 1.094 * pw / cutH, 1);
+        var sTo = Math.min(CAB_K * (2 * hh) / cutH, 1.094 * (2 * hw) / cutH, 1);
         var sNow = 1 + (sTo - 1) * pinE;
         /* El origen del escalado ES el centro de su cabeza, asi que ese
            punto no se mueve al encoger y solo queda llevarlo al centro del
