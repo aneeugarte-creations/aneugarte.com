@@ -7,7 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Fraunces:opsz,wght,SOFT,WONK@144,600,0,1&family=JetBrains+Mono:wght@400;500&family=Mona+Sans:wdth,wght@75..125,200..900&family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&display=swap">
-<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<script>try{var m=/[?&]barra=(\d{1,3})/.exec(location.search);if(m)document.documentElement.style.setProperty("--barra",m[1]+"px");}catch(e){}</script>
+<style>:root{--barra:112px;--usvh:calc(max(320px, 100svh - var(--barra))/100);--uvh:calc(max(320px, 100vh - var(--barra))/100)}
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
@@ -515,7 +517,7 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    la pantalla. La figura se amplía en la misma proporción para que lo
    visible sea al menos tan grande como antes — de hecho queda mayor. */
 .hero__cutwrap{
-  --cutH:min(110.5svh,124.3vw,1438px);      /* = lo de antes / 0,869 */
+  --cutH:min(calc(110.5 * var(--usvh)),124.3vw,1438px);      /* = lo de antes / 0,869 */
   position:absolute; z-index:2; left:50%;
   bottom:calc(var(--cutH) * -0.131);
   height:var(--cutH); aspect-ratio:928/1069;
@@ -792,7 +794,7 @@ body.is-gone .hero__corner.intro{
      caía sobre negro y no se leía. A esta altura hay 390 px y cabe de
      sobra, y ella no encoge ni un píxel. */
   .hero__corner{
-    position:absolute; bottom:clamp(26px,20svh,200px);
+    position:absolute; bottom:clamp(26px,calc(20 * var(--usvh)),200px);
     max-width:min(26ch,27vw);
   }
   .hero__corner--l{ left:var(--gutter); }
@@ -806,7 +808,7 @@ body.is-gone .hero__corner.intro{
      disimular y no hace falta inventar ningún degradado. */
   .hero{
     display:flex; flex-direction:column; justify-content:flex-start;
-    height:100svh; gap:20px; padding-block:clamp(78px,12svh,110px) 0;
+    height:100svh; gap:20px; padding-block:clamp(78px,calc(12 * var(--usvh)),110px) 0;
   }
   .hero__corner{ order:-1; flex:none; }
   /* sin pin el recorte estorba: display:contents lo disuelve y el
@@ -817,7 +819,7 @@ body.is-gone .hero__corner.intro{
      mismo tramo se recorta y se descuenta del hueco que deja */
   .hero__cutwrap{
     position:relative; bottom:auto; left:auto; translate:none;
-    flex:none; margin-inline:auto; margin-top:clamp(18px,3svh,38px);
+    flex:none; margin-inline:auto; margin-top:clamp(18px,calc(3 * var(--usvh)),38px);
   }
   .hero__corner{ text-align:center; }
 }
@@ -846,7 +848,7 @@ body.is-gone .hero__corner.intro{
 .dk{
   position:relative; z-index:3; overflow:hidden;
   color:var(--cream);
-  padding-block:clamp(58px,11vh,124px) clamp(72px,15vh,168px);
+  padding-block:clamp(58px,calc(11 * var(--uvh)),124px) clamp(72px,calc(15 * var(--uvh)),168px);
 }
 /* El verde de la sección. En escritorio con JS se apaga: allí el verde
    lo pone el suelo fijo, que es el que sabe virar a papel. Si siguiera
@@ -880,7 +882,7 @@ body.is-gone .hero__corner.intro{
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
           mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
 }
-.mq + .mq{ margin-top:clamp(2px,.6vh,8px); }
+.mq + .mq{ margin-top:clamp(2px,calc(.6 * var(--uvh)),8px); }
 .band__row{ display:flex; width:max-content; will-change:transform; }
 .band__seq{ display:flex; align-items:center; flex:none; }
 .band__w{
@@ -910,11 +912,11 @@ body.is-gone .hero__corner.intro{
 .dk__mqs{ position:relative; z-index:2; }
 .dk__in{
   position:relative; z-index:2; text-align:center;
-  margin-top:clamp(62px,15vh,180px); padding-inline:var(--gutter);
+  margin-top:clamp(62px,calc(15 * var(--uvh)),180px); padding-inline:var(--gutter);
 }
 /* sin la banda encima, el manifiesto no necesita ese hueco: lo que le
    separa del borde es ya el relleno de la sección */
-@media (min-width:900px){ .dk__in{ margin-top:clamp(16px,5vh,64px); } }
+@media (min-width:900px){ .dk__in{ margin-top:clamp(16px,calc(5 * var(--uvh)),64px); } }
 /* Aquí vivían una insignia redonda con las iniciales y el rótulo
    «Mensaje de Ane». Fuera las dos: en la referencia el bloque de impacto
    no lleva nada encima, y eran justo lo que obligaba a la frase a
@@ -943,7 +945,7 @@ body.is-gone .hero__corner.intro{
      a una pantalla exacta, así que el tope real es cuántas líneas caben.
      El término en vw sólo evita que en pantallas muy anchas y bajas la
      frase se salga por los lados. */
-  font-size:clamp(1.85rem,min(6.6vw,10.2svh),7.6rem);
+  font-size:clamp(1.85rem,min(6.6vw,calc(10.2 * var(--usvh))),7.6rem);
   /* Su interlínea y su prosa, tal cual: 90,6 % y -.0625rem. La prosa va en
      rem y no en em porque así la tiene ella — es un píxel fijo, no una
      proporción del cuerpo. */
@@ -987,7 +989,7 @@ body.is-gone .hero__corner.intro{
    todos sus píxeles.
 
    Eso es lo que hay aquí. El envoltorio mide 230svh y la sección se
-   queda pegada 130svh, que es el recorrido; dentro de él la frase se
+   queda pegada calc(130 * var(--usvh)), que es el recorrido; dentro de él la frase se
    apaga, el suelo vira de verde a papel y el perfil entra por abajo
    cuando la luz ya ha ganado, que es donde su tinta se lee.
    ------------------------------------------------------------- */
@@ -1056,7 +1058,7 @@ body.js.in-pass .topo{ opacity:0; }
   body.js .dk__in{
     margin-top:0;
     opacity:calc(1 - var(--mo,0));
-    transform:translate3d(0,calc(-4.5vh * var(--mo,0)),0) scale(calc(1 + .055 * var(--mo,0)));
+    transform:translate3d(0,calc(-calc(4.5 * var(--uvh)) * var(--mo,0)),0) scale(calc(1 + .055 * var(--mo,0)));
     will-change:transform,opacity;
   }
 }
@@ -1082,8 +1084,8 @@ body.in-pass .pill{
 /* ============================================================
    Secciones
    ============================================================ */
-.sec{ padding-block:clamp(70px,12vh,140px); }
-.sec--tight{ padding-block:clamp(56px,9vh,104px); }
+.sec{ padding-block:clamp(70px,calc(12 * var(--uvh)),140px); }
+.sec--tight{ padding-block:clamp(56px,calc(9 * var(--uvh)),104px); }
 
 /* Aquí vivía la cabecera de sección: número, título grande, un apunte a
    la derecha y una regla debajo, pegada al borde de arriba. Fuera entera,
@@ -1094,7 +1096,7 @@ body.in-pass .pill{
    <h3> de las tarjetas no quedan colgando sin nivel superior y quien
    navegue por encabezados sigue teniendo las cuatro secciones. */
 
-.body{ margin-top:clamp(28px,5vh,52px); display:grid; gap:clamp(24px,4vw,56px); grid-template-columns:1fr; }
+.body{ margin-top:clamp(28px,calc(5 * var(--uvh)),52px); display:grid; gap:clamp(24px,4vw,56px); grid-template-columns:1fr; }
 @media (min-width:880px){ .body--split{ grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); } }
 
 .prose p{ margin:0 0 1.05em; max-width:62ch; }
@@ -1109,7 +1111,7 @@ body.in-pass .pill{
    arranca a la misma altura que la cita grande de la derecha. */
 .cita{
   margin:0; max-width:56ch;
-  padding:clamp(20px,2.6vh,30px) 0;
+  padding:clamp(20px,calc(2.6 * var(--uvh)),30px) 0;
   border-top:1px solid var(--rule);
 }
 .cita:first-child{ border-top:0; padding-top:0; }
@@ -1174,9 +1176,9 @@ body.in-pass .pill{
 .mont{ position:relative; }
 .mont__pin{ position:relative; }
 .mont__rail{
-  display:grid; gap:clamp(38px,7vh,72px);
+  display:grid; gap:clamp(38px,calc(7 * var(--uvh)),72px);
   max-width:1360px; margin-inline:auto;
-  padding:clamp(46px,9vh,110px) var(--gutter);
+  padding:clamp(46px,calc(9 * var(--uvh)),110px) var(--gutter);
 }
 /* Cada pieza: el rótulo encima —como la referencia, que pone el lugar y
    el año sobre cada foto— y debajo la tarjeta. */
@@ -1245,7 +1247,7 @@ body.in-mont .pill{
     display:flex; align-items:flex-start;
     width:max-content; height:100%;
     max-width:none; margin:0; gap:0;
-    padding:6svh clamp(40px,6vw,120px) 6svh 56vw;
+    padding:calc(6 * var(--usvh)) clamp(40px,6vw,120px) calc(6 * var(--usvh)) 56vw;
     will-change:transform;
   }
   body.js .shot{
@@ -1420,7 +1422,7 @@ body.in-mont .pill{
    enlace sigue llevando al texto, porque ahí abajo el panel deja de ser
    panel y se convierte en una sección más. */
 .read{
-  width:min(1100px,92vw); max-height:92svh;
+  width:min(1100px,92vw); max-height:calc(92 * var(--usvh));
   margin:auto; padding:0; border:0; border-radius:2px;
   background:var(--ground); color:var(--ink);
   overflow:auto; overscroll-behavior:contain;
@@ -1447,7 +1449,7 @@ body.in-mont .pill{
      que habla el texto, así que tiene que estar delante todo el rato */
   .read__fig{ position:sticky; top:clamp(28px,4vw,56px); }
 }
-.read__head{ border-bottom:1px solid var(--rule); padding-bottom:clamp(14px,2vh,22px); }
+.read__head{ border-bottom:1px solid var(--rule); padding-bottom:clamp(14px,calc(2 * var(--uvh)),22px); }
 .read__kind{ margin:0 0 10px; }
 .read__t{
   margin:0; font-family:var(--display);
@@ -1643,7 +1645,7 @@ html.is-reading{ overflow:hidden; }
      lo demás es crema. Abiertas, la lista mide el doble y el filo tiene
      algo que comerse durante todo el recorrido. De paso la sección deja
      de parecer un bloque flotando en medio de una pantalla vacía. */
-  body.js .filo .dl__row{ padding-block:clamp(16px,4.4svh,50px); }
+  body.js .filo .dl__row{ padding-block:clamp(16px,calc(4.4 * var(--usvh)),50px); }
   /* EL BORDE DE LA HOJA. La primera versión no llevaba ninguno, porque
      los dos lados son el mismo crema y la idea era justamente que no se
      viera nada entrar en escena. Error: una transición que nadie ve no
@@ -1663,7 +1665,7 @@ html.is-reading{ overflow:hidden; }
      entre el borde y la primera tinta quedaba un cuarto de pantalla de
      crema muerto justo en el momento en que hay que mirar. */
   body.js #contacto{
-    padding-top:clamp(36px,6svh,64px);
+    padding-top:clamp(36px,calc(6 * var(--usvh)),64px);
     box-shadow:0 -26px 46px -26px rgba(20,20,22,.34);
   }
 }
@@ -1800,7 +1802,7 @@ body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0
 .mail::after{ content:""; display:block; height:3px; margin-top:10px; background:var(--accent); transform:scaleX(0); transform-origin:0 50%; transition:transform .55s var(--ease); }
 .mail:hover::after,.mail:focus-visible::after{ transform:scaleX(1); }
 
-.links{ list-style:none; margin:clamp(26px,4vh,46px) 0 0; padding:0; }
+.links{ list-style:none; margin:clamp(26px,calc(4 * var(--uvh)),46px) 0 0; padding:0; }
 .links li{ border-top:1px solid var(--rule); }
 .links li:last-child{ border-bottom:1px solid var(--rule); }
 .links a{ display:flex; align-items:baseline; gap:16px; padding-block:15px; text-decoration:none; transition:color .3s ease,padding .35s var(--ease); }
@@ -1821,7 +1823,7 @@ body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0
      claro de antes era un rectángulo encendido en mitad de la noche */
   margin:0; overflow:hidden; background:var(--night-2);
   aspect-ratio:1400/895;
-  width:min(100%, calc(clamp(190px,36svh,380px) * 1.564));
+  width:min(100%, calc(clamp(190px,calc(36 * var(--usvh)),380px) * 1.564));
 }
 .lk__fig img{ display:block; width:100%; height:100%; object-fit:cover; }
 .lk__row{
@@ -2081,7 +2083,7 @@ body.is-live .rise > i{ transform:none; }
            El --mw:100% deja el logotipo a su tamaño de siempre: la regla de
            la cara lo baja al 80 %, y eso se pidió para el de Keni, no para
            este. -->
-      <figure class="shot" style="--w:32svh;--ml:0;--top:6svh;--sat:0.90;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:calc(32 * var(--usvh));--ml:0;--top:calc(6 * var(--usvh));--sat:0.90;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>01</b> &middot; Denaliving</p>
         <a class="card card--flip card--fig card--link" style="--ar:4/3;--mw:100%"
            href="https://www.instagram.com/denaliving/"
@@ -2114,7 +2116,7 @@ body.is-live .rise > i{ transform:none; }
            sólo dice a qué se dedica la pieza. Fuera el número, el lugar, la
            métrica y el recuadro del año: no los pidió y eran lo que hacía
            que la tarjeta pareciese un formulario a medio rellenar. -->
-      <figure class="shot" style="--w:27svh;--ml:22svh;--top:24svh;--sat:0.70;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:calc(27 * var(--usvh));--ml:calc(22 * var(--usvh));--top:calc(24 * var(--usvh));--sat:0.70;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>02</b> &middot; Spain</p>
         <article class="card card--flip card--fig" tabindex="0">
           <div class="card__flip">
@@ -2140,7 +2142,7 @@ body.is-live .rise > i{ transform:none; }
            que el recorte se queda en nada; las piezas sin ficha llevan cada
            una la suya en --ar, porque lo que manda es la forma de lo que
            enseñan y no un formato común. -->
-      <figure class="shot" style="--w:46svh;--ml:12svh;--top:2svh;--sat:1.00;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:calc(46 * var(--usvh));--ml:calc(12 * var(--usvh));--top:calc(2 * var(--usvh));--sat:1.00;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>03</b> &middot; Spain</p>
         <article class="card card--flip card--fig" style="--ar:3/2" tabindex="0">
           <div class="card__flip">
@@ -2165,7 +2167,7 @@ body.is-live .rise > i{ transform:none; }
            (href="#ensayo-klee"), no un botón: con JS abre el panel de
            lectura y sin JS baja hasta el mismo texto, que ahí abajo se
            pinta como una sección. Proporción 7/10, la del cuadro. -->
-      <figure class="shot" style="--w:26svh;--ml:26svh;--top:20svh;--sat:1;--con:1;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:calc(26 * var(--usvh));--ml:calc(26 * var(--usvh));--top:calc(20 * var(--usvh));--sat:1;--con:1;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>04</b> &middot; Some essays</p>
         <a class="card card--flip card--fig card--link" style="--ar:7/10"
            href="#ensayo-klee" data-read="ensayo-klee">
@@ -2201,7 +2203,7 @@ body.is-live .rise > i{ transform:none; }
            archivo (2500×2838), así que no se recorta por ningún lado.
            Y el alt sí existe: quien no ve la página tiene que saber qué
            hay aquí, aunque en pantalla no haya una sola palabra. -->
-      <figure class="shot" style="--w:36svh;--ml:14svh;--top:8svh;--sat:0.92;--c:var(--jp);--cl:var(--jp-lt)">
+      <figure class="shot" style="--w:calc(36 * var(--usvh));--ml:calc(14 * var(--usvh));--top:calc(8 * var(--usvh));--sat:0.92;--c:var(--jp);--cl:var(--jp-lt)">
         <p class="shot__lbl mono"><b>05</b></p>
         <article class="card card--fig card--plain" style="--ar:2500/2838">
           <img class="card__img" src="art-05.webp" decoding="async" fetchpriority="low"
@@ -2213,7 +2215,7 @@ body.is-live .rise > i{ transform:none; }
            frase debajo. Proporción 3/2, la exacta de la fotografía. Y el
            código de color pasa de España a Japón, que es lo que tiñe el
            número del rótulo mientras el suelo cambia. -->
-      <figure class="shot" style="--w:40svh;--ml:24svh;--top:40svh;--sat:0.95;--c:var(--jp);--cl:var(--jp-lt)">
+      <figure class="shot" style="--w:calc(40 * var(--usvh));--ml:calc(24 * var(--usvh));--top:calc(40 * var(--usvh));--sat:0.95;--c:var(--jp);--cl:var(--jp-lt)">
         <p class="shot__lbl mono"><b>06</b> &middot; Tokyo, Japan</p>
         <article class="card card--flip card--fig" style="--ar:3/2" tabindex="0">
           <div class="card__flip">
@@ -2238,7 +2240,7 @@ body.is-live .rise > i{ transform:none; }
            exacta del archivo (2984×1720) para no recortarle nada: la
            fotografía se juega entre la pared de piedra y la ventana, y
            cualquier recorte se come uno de los dos. -->
-      <figure class="shot" style="--w:52svh;--ml:10svh;--top:4svh;--sat:1.00;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:calc(52 * var(--usvh));--ml:calc(10 * var(--usvh));--top:calc(4 * var(--usvh));--sat:1.00;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>07</b> &middot; Bizkaia, Spain</p>
         <article class="card card--flip card--fig" style="--ar:2984/1720" tabindex="0">
           <div class="card__flip">
@@ -2264,7 +2266,7 @@ body.is-live .rise > i{ transform:none; }
            —el archivo trae su propia transparencia, así que no hay ningún
            folio blanco recortado— y detrás el nombre y a qué se dedica.
            Cuadrada, que es la forma del logotipo. -->
-      <figure class="shot" style="--w:30svh;--ml:18svh;--top:26svh;--c:var(--us);--cl:var(--us-lt)">
+      <figure class="shot" style="--w:calc(30 * var(--usvh));--ml:calc(18 * var(--usvh));--top:calc(26 * var(--usvh));--c:var(--us);--cl:var(--us-lt)">
         <p class="shot__lbl mono"><b>08</b> &middot; USA &middot; Mexico</p>
         <article class="card card--flip card--fig" style="--ar:1/1;--mw:70%" tabindex="0">
           <div class="card__flip">
@@ -2284,7 +2286,7 @@ body.is-live .rise > i{ transform:none; }
         </article>
       </figure>
 
-      <div class="shot" style="--w:26svh;--ml:22svh;--top:30svh">
+      <div class="shot" style="--w:calc(26 * var(--usvh));--ml:calc(22 * var(--usvh));--top:calc(30 * var(--usvh))">
         <a class="mont__cta" href="#contacto">
           <b>Let&rsquo;s talk</b>
         </a>
