@@ -331,8 +331,18 @@ body.is-gone .load{ display:none; }
    Durante la portada se queda: ahí el fondo es nuestro y el contraste
    está garantizado. Lo que no tiene sitio es un rótulo de texto suelto
    flotando sobre contenido que no controla. */
+/* Y desde que la etiqueta de la otra esquina tampoco lleva caja, esto
+   vale igual para ella: medido a 390 px con el texto a pelo, el
+   contraste contra lo que le pasa por debajo cae a 1,00 y 1,06 en tres
+   de los cuarenta puntos del recorrido, o sea invisible. El párrafo de
+   arriba ya había descartado las otras dos salidas —y la segunda que
+   descartaba, «darle una pastilla detrás», es justamente la que se
+   acaba de quitar—. Las dos esquinas se apagan a la vez. En el teléfono
+   el escribirle vive en el bloque de contacto y en el botón del
+   manifiesto, que es donde de verdad se usa. */
 @media (max-width:620px), (max-height:659px){
-  body.js.sin-marca .wm{
+  body.js.sin-marca .wm,
+  body.js.sin-marca .pill{
     opacity:0; pointer-events:none;
     transform:translate3d(0,-7px,0);
     transition:opacity .35s ease,transform .35s var(--ease);
@@ -340,20 +350,34 @@ body.is-gone .load{ display:none; }
 }
 
 /* La contrapartida en la otra esquina: en un currículum lo útil
-   no es una tienda, es escribirle. */
+   no es una tienda, es escribirle.
+
+   SIN PASTILLA. Era una cápsula naranja, con un punto blanco dentro,
+   texto en versales apretadas y un salto al pasar el ratón: cinco cosas
+   —fondo, forma, punto, caja y rebote— para decir dos palabras. La
+   respuesta ya estaba escrita en la esquina de enfrente: el logotipo no
+   lleva caja, es texto y una regla que se traza debajo.
+
+   Así que esto es ese mismo ajuste, letra por letra —wdth 74, peso 600,
+   .145em de prosa, versales— y esa misma regla, trazada desde el lado
+   contrario porque está anclada al otro margen. Las dos esquinas dejan
+   de ser dos objetos distintos y pasan a ser un par. */
 .pill{
   position:fixed; z-index:56;
   top:calc(env(safe-area-inset-top,0px) + var(--gutter)); right:var(--gutter);
-  display:inline-flex; align-items:center; gap:9px;
-  padding:13px 20px; border-radius:999px; text-decoration:none;
-  background:var(--accent); color:var(--ground);
-  font-family:var(--display); font-variation-settings:"wdth" 88,"wght" 700;
-  font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; line-height:1;
-  transition:transform .4s var(--ease),filter .3s ease,background .5s ease,color .5s ease,
-             width .42s var(--ease);
+  display:block; text-decoration:none;
+  color:var(--ink);
+  font-family:var(--display); font-variation-settings:"wdth" 74,"wght" 600;
+  font-size:clamp(13px,1.05vw,15px); letter-spacing:.145em;
+  text-transform:uppercase; line-height:1.34;
+  transition:color .5s ease;
   white-space:nowrap;
 }
-.pill:hover,.pill:focus-visible{ transform:translateY(-2px); filter:brightness(1.07); }
+.pill::after{
+  content:""; display:block; height:2px; margin-top:7px; background:var(--accent);
+  transform:scaleX(0); transform-origin:100% 50%; transition:transform .4s var(--ease);
+}
+.pill:hover::after,.pill:focus-visible::after{ transform:scaleX(1); }
 .pill__t{ display:inline-block; transition:opacity .17s ease; }
 
 /* ── El mensaje ───────────────────────────────────────────────
@@ -364,7 +388,7 @@ body.is-gone .load{ display:none; }
    si no, desaparecería contra el fondo. */
 .chat{
   position:fixed; z-index:55;
-  top:calc(env(safe-area-inset-top,0px) + var(--gutter) + 50px); right:var(--gutter);
+  top:calc(env(safe-area-inset-top,0px) + var(--gutter) + 38px); right:var(--gutter);
   max-width:min(76vw,320px);
   display:grid; gap:5px;
   padding:11px 15px 12px; border-radius:16px 5px 16px 16px;
@@ -402,13 +426,22 @@ body.on-dark .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0,0
 }
 @keyframes cursorea{ 0%,50%{ opacity:1; } 50.01%,100%{ opacity:0; } }
 
-@media (max-width:620px){ .chat{ top:calc(env(safe-area-inset-top,0px) + var(--gutter) + 42px); } }
+@media (max-width:620px){ .chat{ top:calc(env(safe-area-inset-top,0px) + var(--gutter) + 32px); } }
 @media (prefers-reduced-motion:reduce){
   .chat__dots i,.chat__t::after{ animation:none !important; }
 }
-.pill__d{ width:7px; height:7px; border-radius:50%; background:var(--ground); flex:none; }
+/* EN EL TELÉFONO DEJA DE FLOTAR. Medido a 390 px: entre el 19 % y el
+   85 % de la primera pantalla su figura pasa por debajo de esta esquina,
+   y el texto sin caja cae ahí a 1,09 de contraste. Eso lo tapaba la
+   cápsula naranja, y ya no hay cápsula. Tampoco hay nada que salvar:
+   las dieciséis frases salen al pasar el ratón por encima, que en un
+   teléfono no ocurre, así que aquí la etiqueta sólo dice Hello. sobre la
+   portada. Pues que se vaya con ella: es lo mismo que hace el logotipo
+   de enfrente al apagarse, escrito de la forma que no necesita ni una
+   línea de guión. Por encima de 620 px sigue fija, que ahí el ratón
+   existe y el fondo es nuestro. */
 @media (max-width:620px){
-  .pill{ padding:10px 15px; font-size:.7rem; }
+  .pill{ position:absolute; font-size:12px; }
   .wm{ font-size:15px; }
 }
 
@@ -419,7 +452,8 @@ body.on-dark .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0,0
    ============================================================ */
 body.on-dark .wm{ color:var(--cream); }
 body.on-dark .wm::after{ background:var(--accent-lt); }
-body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
+body.on-dark .pill{ color:var(--cream); }
+body.on-dark .pill::after{ background:var(--accent-lt); }
 
 /* ============================================================
    PORTADA
@@ -1243,10 +1277,8 @@ body.in-pass .wm,
 body.in-pass .pill{ transition:none; }
 body.in-pass .wm{ color:color-mix(in oklab,var(--cream),var(--ink) calc(var(--t,0) * 100%)); }
 body.in-pass .wm::after{ background:color-mix(in oklab,var(--accent-lt),var(--accent) calc(var(--t,0) * 100%)); }
-body.in-pass .pill{
-  background:color-mix(in oklab,var(--accent-lt),var(--accent) calc(var(--t,0) * 100%));
-  color:color-mix(in oklab,var(--night),var(--ground) calc(var(--t,0) * 100%));
-}
+body.in-pass .pill{ color:color-mix(in oklab,var(--cream),var(--ink) calc(var(--t,0) * 100%)); }
+body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--accent) calc(var(--t,0) * 100%)); }
 
 /* ============================================================
    Secciones
@@ -1564,10 +1596,8 @@ body.in-mont .wm,
 body.in-mont .pill{ transition:none; }
 body.in-mont .wm{ color:color-mix(in oklab,var(--cream),var(--ink) calc(var(--t,0) * 100%)); }
 body.in-mont .wm::after{ background:color-mix(in oklab,var(--accent-lt),var(--accent) calc(var(--t,0) * 100%)); }
-body.in-mont .pill{
-  background:color-mix(in oklab,var(--accent-lt),var(--accent) calc(var(--t,0) * 100%));
-  color:color-mix(in oklab,var(--night),var(--ground) calc(var(--t,0) * 100%));
-}
+body.in-mont .pill{ color:color-mix(in oklab,var(--cream),var(--ink) calc(var(--t,0) * 100%)); }
+body.in-mont .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--accent) calc(var(--t,0) * 100%)); }
 /* La marca se aparta cuando una pieza del carril le pasa por debajo. El
    numero lo escribe el bucle: 1 con la foto a 56 px o mas, 0 cuando la
    toca. Sube 7 px al irse para que se lea como un movimiento y no como un
@@ -2224,7 +2254,8 @@ html.is-reading{ overflow:hidden; }
 
 body.in-cierre .wm{ color:var(--cream); }
 body.in-cierre .wm::after{ background:var(--accent-lt); }
-body.in-cierre .pill{ background:var(--accent-lt); color:var(--night); }
+body.in-cierre .pill{ color:var(--cream); }
+body.in-cierre .pill::after{ background:var(--accent-lt); }
 body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0,0,.26); }
 
 /* ============================================================
@@ -2388,7 +2419,7 @@ body.is-live .rise > i{ transform:none; }
 <a class="wm" href="#top" id="mark" aria-label="Ane Ugarte — back to top">
   <span class="wm__a">Ane</span><span class="wm__b">Ugarte</span>
 </a>
-<a class="pill" href="mailto:aneeugarte@gmail.com?subject=Hello%20Ane&amp;body=Hey%20Ane%2C%0D%0A%0D%0AI%20would%20like%20to%20"><span class="pill__d"></span><span class="pill__t" id="pillT">Hello.</span></a>
+<a class="pill" href="mailto:aneeugarte@gmail.com?subject=Hello%20Ane&amp;body=Hey%20Ane%2C%0D%0A%0D%0AI%20would%20like%20to%20"><span class="pill__t" id="pillT">Hello.</span></a>
 <div class="chat" id="chat" aria-hidden="true">
   <span class="chat__who">Ane</span>
   <span class="chat__b"><span class="chat__dots"><i></i><i></i><i></i></span><span class="chat__t" id="chatT"></span></span>
@@ -4858,21 +4889,11 @@ glob.Globo=Globo;
   var espera = 0;
   function di(txt){
     if (pillT.textContent === txt) return;
-    if (reduce) { pillT.textContent = txt; pill.style.width = ""; return; }
+    if (reduce) { pillT.textContent = txt; return; }
     pillT.style.opacity = "0";
     clearTimeout(espera);
     espera = setTimeout(function(){
-      var w0 = pill.getBoundingClientRect().width /
-               (parseFloat(getComputedStyle(document.documentElement).zoom) || 1);
-                                                     /* donde está ahora, en px de CSS:
-                                                        el rectángulo viene dibujado y
-                                                        style.width se escribe en CSS */
       pillT.textContent = txt;
-      pill.style.width = "";
-      var w1 = pill.offsetWidth;                     /* donde tiene que ir */
-      pill.style.width = w0 + "px";
-      void pill.offsetWidth;                         /* que el salto cuente */
-      pill.style.width = w1 + "px";
       pillT.style.opacity = "1";
     }, 170);
   }
@@ -4889,7 +4910,6 @@ glob.Globo=Globo;
     if (!fuera) calla();
   }
   window.addEventListener("scroll", mira, { passive:true });
-  window.addEventListener("resize", function(){ pill.style.width = ""; }, { passive:true });
   mira();
 
   /* ── el mensaje ──────────────────────────────────────────────
