@@ -963,7 +963,12 @@ body.is-gone .hero__corner.intro{
      mal cambio. */
   .hero__cutwrap{
     position:relative; bottom:auto; left:auto;
-    translate:calc(var(--cutH) * 0.03932) 0;
+    /* El descentre horizontal de su cabeza dentro del archivo. El
+       numero NO se escribe aqui: lo publica layoutPin() en --cabdx
+       desde CAB_CX, que es de donde salen tambien el transform-origin
+       y el dx del paso. El 0,03932 se queda de respaldo para cuando no
+       hay JS, y es exactamente (0,5 - 0,4547) * 928/1069. */
+    translate:calc(var(--cutH) * var(--cabdx,0.03932)) 0;
     flex:none; align-self:center; margin-inline:0;
     margin-top:clamp(18px,3svh,38px);
   }
@@ -4115,6 +4120,13 @@ glob.Globo=Globo;
   var pinOn = false, pinTop = 0, pinRun = 1, cutH = 0, cutW = 0;
   var cutTopRest = 0, cutLeftRest = 0;
   function layoutPin(){
+    /* EL DESCENTRE DE SU CABEZA, PUBLICADO AL CSS. Va antes de las
+       salidas de emergencia a proposito: quien lo usa es la rama
+       vertical de la portada, y ahi pinOn es falso y esta funcion se
+       va por la puerta de abajo. Sale de CAB_CX y no de un numero
+       suelto para que, el dia que se vuelva a medir el alfa del
+       retrato, no se quede una copia vieja torcida en el CSS. */
+    root.style.setProperty("--cabdx", ((0.5 - CAB_CX) * (928 / 1069)).toFixed(6));
     Z = parseFloat(getComputedStyle(root).zoom) || 1;
     if (!pin || !heroEl || !cutwrap || !clip || !hNight) { pinOn = false; return; }
     pinOn = wide.matches && !reduce;
