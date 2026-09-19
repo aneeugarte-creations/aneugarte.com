@@ -1380,16 +1380,6 @@ body.js .shot{ opacity:var(--fade,1); }
      (Lleva `.card` delante por especificidad: las reglas de la tarjeta
      viven más abajo en la hoja y a igualdad de peso ganarían ellas.) */
   .card .card__cap{ padding:10px; }
-  .card .card__go,.card .card__turn{ width:26px; font-size:.8rem; }
-  /* Y el logotipo deja de estar centrado en las caras de marca: con 95 px
-     de alto, un logotipo centrado y un disco en la esquina se tocan
-     aunque los dos quepan. Se sube 15 px y se tocan cero.
-     Va en `transform` y no en `margin`: el margen entraba en la reja y
-     estiraba la tarjeta de 97 a 121 px, o sea cambiaba la composición
-     entera para apartar un disco. */
-  .card .card__face--brand:has(.card__go,.card__turn) .card__mark{
-    transform:translateY(-15px);
-  }
 
   /* ----------------------------------------------------------------
      LA COMPOSICION DE LA TABLETA DE PIE — el tercer regimen.
@@ -1443,11 +1433,6 @@ body.js .shot{ opacity:var(--fade,1); }
     /* La pista vuelve a su tamanio: el encogido a 26 px se escribio para
        una tarjeta de 129x97 px, y aqui la menor mide 250. */
     .card .card__cap{ padding:clamp(20px,2.4vw,30px); }
-    .card .card__turn{ width:34px; font-size:1rem; }
-    .card .card__go{ width:34px; font-size:1.05rem; }
-    .card .card__face--brand:has(.card__go,.card__turn) .card__mark{
-      transform:none;
-    }
   }
 
   /* El rotulo va pegado al mismo margen que su pieza, como en la
@@ -1694,7 +1679,6 @@ body.js.in-mont .wm{
 }
 /* sin título en la portada, la pista de que se da la vuelta se queda
    sola en la caja y hay que mandarla a su esquina a mano */
-.card__cap--end{ justify-content:flex-end; }
 /* Una pieza que es SÓLO un cuadro y una frase no tiene contenido del que
    sacar altura: sin esto la tarjeta se quedaría en los ~116 px que ocupa
    la frase y el cuadro se vería por una rendija. La proporción es la que
@@ -1848,43 +1832,20 @@ html.is-reading{ overflow:hidden; }
   text-transform:uppercase; font-size:clamp(1.45rem,3.1vw,2.05rem);
   line-height:.98; letter-spacing:-.005em; text-wrap:balance;
 }
-/* la única pista de que la tarjeta se da la vuelta */
-.card__turn{
-  flex:none; display:grid; place-items:center;
-  width:34px; aspect-ratio:1; border-radius:50%;
-  border:1px solid var(--cream-2); color:var(--cream);
-  font-size:1rem; line-height:1;
-}
-/* La otra pista, la que dice que esto NO se da la vuelta sino que lleva a
-   otro sitio. Hacía falta porque en el móvil el sistema se partía en dos
-   sin avisar: con ratón giran las nueve piezas y es coherente, pero al
-   tocar giran siete y dos navegan — y las dos que navegan llevan la misma
-   clase, la misma estructura de dos caras y el mismo aspecto que las
-   otras siete. La 01 no tenía ninguna pista y la 04 enseñaba el ↻, que
-   promete un giro que no ocurre.
+/* AQUI VIVIAN LOS DISCOS DE LA ESQUINA: cinco con el circulo de girar,
+   uno con la flecha de salir y otro con el mas. "La gente tiene intuicion
+   y pondra el raton", asi que fuera los siete, con su contenedor y con
+   las reglas que les hacian sitio.
 
-   Es disco sólido y no aro como `.card__turn`, por la misma razón por la
-   que la píldora sobrevive donde el logotipo muere: su contraste lo pone
-   su propio fondo y no lo que tenga detrás. La 01 se apoya sobre papel
-   blanco, y ahí un aro crema sencillamente no existe.
+   Lo que se pierde no es la pista de giro —el raton la da— sino el aviso
+   de que DOS de las nueve piezas no giran sino que llevan a otro sitio,
+   la 01 a Instagram y la 05 al ensayo. Con raton se nota igual, porque el
+   puntero cambia a mano sobre un enlace; al tocar en un telefono no hay
+   puntero que cambie. Ahi esas dos quedan sin senal propia.
 
-   Y dos glifos distintos a propósito: ↗ sale del sitio, + abre aquí
-   dentro. Nunca el mismo para las dos cosas. La pista va en la cara de
-   DELANTE: la del dorso es código muerto en táctil, porque para leerla
-   habría que dar la vuelta a la tarjeta, que es justo lo que estas dos
-   no hacen. */
-.card__go{
-  flex:none; display:grid; place-items:center;
-  width:34px; aspect-ratio:1; border-radius:50%;
-  background:var(--accent); color:var(--ground);
-  font-family:var(--display); font-size:1.05rem; line-height:1;
-}
+   Devolverlos es este bloque, el `<div class="card__cap card__cap--end">`
+   de cada una de las siete y las dos reglas de `:has()` del movil. */
 
-/* Sin velo, la pista de la vuelta se queda sola sobre la fotografía, y hay
-   imágenes donde no se vería: el cuadro de Klee es naranja justo en esa
-   esquina. Se le pone un disco propio —del tamaño del botón y ni un píxel
-   más— en vez de devolver el degradado sobre la imagen entera. */
-.card__face--bare .card__turn{ background:rgba(20,20,22,.42); }
 /* Con el teclado basta enfocar la tarjeta. Va en :focus-visible y no en
    :focus-within porque al tocarla el navegador también le da el foco: con
    :focus-within la tarjeta se quedaría clavada del revés y el segundo
@@ -2495,9 +2456,6 @@ body.is-live .rise > i{ transform:none; }
             <div class="card__face card__face--front card__face--brand">
               <img class="card__mark" src="dena.webp" loading="lazy" width="382" height="68"
                    alt="Denaliving" decoding="async" fetchpriority="low">
-              <div class="card__cap card__cap--end">
-                <span class="card__go" aria-hidden="true">&#8599;</span>
-              </div>
             </div>
 
           </div>
@@ -2521,9 +2479,6 @@ body.is-live .rise > i{ transform:none; }
             <div class="card__face card__face--front" aria-hidden="true">
               <img class="card__img" src="art-navas.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
               <span class="card__veil"></span>
-              <div class="card__cap card__cap--end">
-                <span class="card__turn">&#8635;</span>
-              </div>
             </div>
 
           </div>
@@ -2547,9 +2502,6 @@ body.is-live .rise > i{ transform:none; }
             <div class="card__face card__face--front" aria-hidden="true">
               <img class="card__img" src="art-futbol.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
               <span class="card__veil"></span>
-              <div class="card__cap card__cap--end">
-                <span class="card__turn">&#8635;</span>
-              </div>
             </div>
 
           </div>
@@ -2582,9 +2534,6 @@ body.is-live .rise > i{ transform:none; }
 
             <div class="card__face card__face--front card__face--bare" aria-hidden="true">
               <img class="card__img" src="art-klee-p.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
-              <div class="card__cap card__cap--end">
-                <span class="card__go" aria-hidden="true">&#43;</span>
-              </div>
             </div>
 
           </div>
@@ -2620,9 +2569,6 @@ body.is-live .rise > i{ transform:none; }
 
             <div class="card__face card__face--front card__face--bare" aria-hidden="true">
               <img class="card__img" src="art-06.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
-              <div class="card__cap card__cap--end">
-                <span class="card__turn">&#8635;</span>
-              </div>
             </div>
 
           </div>
@@ -2646,9 +2592,6 @@ body.is-live .rise > i{ transform:none; }
             <div class="card__face card__face--front card__face--bare" aria-hidden="true">
               <img class="card__img" src="art-07.webp" loading="lazy" decoding="async" fetchpriority="low"
                    alt="Stone wall of a farmhouse with a wooden window looking out over a misty valley.">
-              <div class="card__cap card__cap--end">
-                <span class="card__turn">&#8635;</span>
-              </div>
             </div>
 
           </div>
@@ -2673,9 +2616,6 @@ body.is-live .rise > i{ transform:none; }
               <img class="card__img" src="art-08bg.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
               <img class="card__mark" src="keni.webp" loading="lazy" width="657" height="658"
                    alt="Keni Engineering" decoding="async" fetchpriority="low">
-              <div class="card__cap card__cap--end">
-                <span class="card__turn">&#8635;</span>
-              </div>
             </div>
 
           </div>
