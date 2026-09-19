@@ -11,6 +11,10 @@
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
+<title>Ane Ugarte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Fraunces:opsz,wght,SOFT,WONK@144,600,0,1&family=JetBrains+Mono:wght@400;500&family=Mona+Sans:wdth,wght@75..125,200..900&family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&display=swap">
 <!-- Lenis NO va aqui. Arriba del todo bloquea el parseo, y por tanto el
      primer pintado, con su propia latencia: medido, con 5 s de retraso en
      la CDN el primer pixel tarda 5.112 ms — y lo que se ve durante toda la
@@ -284,7 +288,7 @@ body.is-gone .load{ display:none; }
    Sustituye a la marca que antes sólo aparecía al bajar. */
 .wm{
   position:fixed; z-index:56;
-  top:calc(env(safe-area-inset-top,0px) + 18px); left:var(--gutter);
+  top:calc(env(safe-area-inset-top,0px) + var(--gutter) - 0.111em); left:var(--gutter);
   display:block; text-decoration:none; line-height:.84;
   font-family:var(--display); text-transform:uppercase; color:var(--ink);
   font-size:clamp(17px,1.4vw,21px);
@@ -312,7 +316,7 @@ body.is-gone .load{ display:none; }
    no es una tienda, es escribirle. */
 .pill{
   position:fixed; z-index:56;
-  top:calc(env(safe-area-inset-top,0px) + 18px); right:var(--gutter);
+  top:calc(env(safe-area-inset-top,0px) + var(--gutter)); right:var(--gutter);
   display:inline-flex; align-items:center; gap:9px;
   padding:13px 20px; border-radius:999px; text-decoration:none;
   background:var(--accent); color:var(--ground);
@@ -333,7 +337,7 @@ body.is-gone .load{ display:none; }
    si no, desaparecería contra el fondo. */
 .chat{
   position:fixed; z-index:55;
-  top:calc(env(safe-area-inset-top,0px) + 68px); right:var(--gutter);
+  top:calc(env(safe-area-inset-top,0px) + var(--gutter) + 50px); right:var(--gutter);
   max-width:min(76vw,320px);
   display:grid; gap:5px;
   padding:11px 15px 12px; border-radius:16px 5px 16px 16px;
@@ -371,7 +375,7 @@ body.on-dark .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0,0
 }
 @keyframes cursorea{ 0%,50%{ opacity:1; } 50.01%,100%{ opacity:0; } }
 
-@media (max-width:620px){ .chat{ top:calc(env(safe-area-inset-top,0px) + 60px); } }
+@media (max-width:620px){ .chat{ top:calc(env(safe-area-inset-top,0px) + var(--gutter) + 42px); } }
 @media (prefers-reduced-motion:reduce){
   .chat__dots i,.chat__t::after{ animation:none !important; }
 }
@@ -845,6 +849,7 @@ body.is-gone .hero__corner.intro{
   text-wrap:balance;
 }
 .hero__where{ margin:0 0 11px; }
+@media (min-width:860px){ .hero__where{ margin:11px 0 0; } }
 .hero__cue{ display:inline-flex; align-items:center; gap:8px; color:var(--ink-3); margin:0; }
 .hero__dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); flex:none; animation:blip 2.6s ease-in-out infinite; }
 @keyframes blip{ 0%,100%{ opacity:1 } 50%{ opacity:.25 } }
@@ -2699,6 +2704,24 @@ glob.Globo=Globo;
   var finePtr = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var wide    = window.matchMedia("(min-width: 900px)");
 
+  /* LA ESCALA A LA QUE SE DIBUJA LA PAGINA. Dentro del artifact vale 1
+     y todo lo que sigue es inerte; publicada en el dominio, el visor se
+     reproduce con zoom:0.75 en :root y entonces vale 0,75.
+     Hace falta porque las dos mitades del DOM no hablan la misma unidad:
+       · getBoundingClientRect, innerWidth/innerHeight, clientWidth y
+         scrollY devuelven px DIBUJADOS;
+       · offsetWidth/offsetLeft/offsetTop devuelven px de CSS;
+       · y todo lo que se escribe como "...px" es CSS y se dibuja a Z.
+     Asi que medir con un rectangulo y escribirlo multiplica por Z de
+     mas, y restar un innerWidth de un offsetWidth resta peras de
+     manzanas. Cada cuenta tiene que estar entera en UN espacio: donde
+     manda una medida se trabaja en dibujados y se divide al escribir;
+     donde manda una constante escrita a mano (la velocidad de las
+     bandas, los 64 px del montaje) el espacio es CSS y se divide la
+     medida. Las razones —escalas, progresos— no llevan Z: ya son
+     adimensionales. */
+  var Z = parseFloat(getComputedStyle(root).zoom) || 1;
+
   if (!reduce) body.classList.add("js");
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
@@ -3631,6 +3654,7 @@ glob.Globo=Globo;
      esa resta es el origen del recorrido. */
   var montOn = false, montTop = 0, montMax = 0, montIni = 0, montVW = 1, montVH = 1;
   function layoutMont(){
+    Z = parseFloat(getComputedStyle(root).zoom) || 1;
     montOn = wide.matches && !reduce && !!mont && !!mRail;
     if (!montOn) {
       if (mont) mont.style.height = "";
@@ -3643,14 +3667,14 @@ glob.Globo=Globo;
       if (wmEl) wmEl.style.removeProperty("--wmo");
       return;
     }
-    montMax = Math.max(0, mRail.offsetWidth - window.innerWidth);
-    mont.style.height = montMax + "px";
+    montMax = Math.max(0, mRail.offsetWidth * Z - window.innerWidth);
+    mont.style.height = (montMax / Z) + "px";
     mX.length = 0; mW.length = 0; mT.length = 0; mH.length = 0;
     for (var i = 0; i < mShots.length; i++) {
-      mX.push(mShots[i].offsetLeft);
-      mW.push(mShots[i].offsetWidth);
-      mT.push(mShots[i].offsetTop);
-      mH.push(mShots[i].offsetHeight);
+      mX.push(mShots[i].offsetLeft * Z);
+      mW.push(mShots[i].offsetWidth * Z);
+      mT.push(mShots[i].offsetTop * Z);
+      mH.push(mShots[i].offsetHeight * Z);
     }
     montTop = mont.getBoundingClientRect().top + (window.scrollY || 0);
     montIni = montTop - window.innerHeight;
@@ -3669,6 +3693,7 @@ glob.Globo=Globo;
      (leer geometría después de escribir estilos fuerza un relayout). */
   var pinOn = false, pinTop = 0, pinRun = 1, cutH = 0, cutTopRest = 0;
   function layoutPin(){
+    Z = parseFloat(getComputedStyle(root).zoom) || 1;
     if (!pin || !heroEl || !cutwrap || !clip || !hNight) { pinOn = false; return; }
     pinOn = wide.matches && !reduce;
     if (!pinOn) {
@@ -3683,7 +3708,7 @@ glob.Globo=Globo;
       return;
     }
     var vh = window.innerHeight;
-    pin.style.height = Math.round(vh * 2) + "px";
+    pin.style.height = (Math.round(vh * 2) / Z) + "px";
     pinTop = pin.getBoundingClientRect().top + (window.scrollY || 0);
     pinRun = Math.max(1, vh);
     cutH = cutwrap.getBoundingClientRect().height;
@@ -3727,7 +3752,10 @@ glob.Globo=Globo;
   /* el juego oculto mide cero, así que se mide el que esté a la vista */
   function anchoSeq(el){
     var c = el && el.firstElementChild;
-    return c ? c.getBoundingClientRect().width : 0;
+    /* el translate de las bandas se escribe en CSS, asi que el ancho de
+       la secuencia —que es el modulo del bucle— tiene que estar en CSS:
+       si no, la banda se enrolla antes de tiempo y pega un salto */
+    return c ? c.getBoundingClientRect().width / Z : 0;
   }
   function measureBands(){
     seqW1 = anchoSeq(band1h) || anchoSeq(band1);
@@ -3789,14 +3817,14 @@ glob.Globo=Globo;
       pinE = pinP * pinP * (3 - 2 * pinP);        /* suave al entrar y al salir */
 
       /* el rectángulo de destino, el equivalente a su marquee-gl-target */
-      var pw = Math.min(vw * 0.58, 880), ph = Math.min(vh * 0.46, 520);
+      var pw = Math.min(vw * 0.58, 880 * Z), ph = Math.min(vh * 0.46, 520 * Z);
       var cx = vw / 2, cy = vh * 0.48;
 
       clip.style.clipPath = "inset(" +
-        ((cy - ph / 2) * pinE).toFixed(1) + "px " +
-        ((vw - cx - pw / 2) * pinE).toFixed(1) + "px " +
-        ((vh - cy - ph / 2) * pinE).toFixed(1) + "px " +
-        ((cx - pw / 2) * pinE).toFixed(1) + "px)";
+        ((cy - ph / 2) * pinE / Z).toFixed(1) + "px " +
+        ((vw - cx - pw / 2) * pinE / Z).toFixed(1) + "px " +
+        ((vh - cy - ph / 2) * pinE / Z).toFixed(1) + "px " +
+        ((cx - pw / 2) * pinE / Z).toFixed(1) + "px)";
 
       hNight.style.opacity = pinE.toFixed(3);
       clip.style.setProperty("--wa", pinE.toFixed(3));
@@ -3810,7 +3838,7 @@ glob.Globo=Globo;
         /* el origen del escalado es su cara, así que sólo queda llevarla
            al centro del panel */
         var dy = (cy - (cutTopRest + cutH * 0.30)) * pinE;
-        face.style.transform = "translate3d(0," + dy.toFixed(1) + "px,0) scale(" + sNow.toFixed(4) + ")";
+        face.style.transform = "translate3d(0," + (dy / Z).toFixed(1) + "px,0) scale(" + sNow.toFixed(4) + ")";
       }
 
       /* la firma se escribe sola, cada trazo en su tramo del recorrido */
@@ -3921,7 +3949,7 @@ glob.Globo=Globo;
       tpT += dt;
       var ts = tpT * 0.001;
       var tpx = ts * 38 + Math.sin(ts * 0.2027) * 120 + Math.sin(ts * 0.0731) * 60;
-      var tpy = -y * 0.25 + ts * 16 + Math.sin(ts * 0.1187) * 84;
+      var tpy = -y * 0.25 / Z + ts * 16 + Math.sin(ts * 0.1187) * 84;
       var tpos = tpx.toFixed(1) + "px " + tpy.toFixed(1) + "px";
       if (topo)   topo.style.backgroundPosition = tpos;
       /* el mapa de dentro del panel y el del verde van al mismo paso que
@@ -4023,11 +4051,11 @@ glob.Globo=Globo;
       var kp = 1 - Math.exp(-hp / PAR_TAU);
       pmx += (mtx - pmx) * kp; pmy += (mty - pmy) * kp;
       var att = 1 - pinE;
-      cutwrap.style.setProperty("--px", (PAR_X * vh2 * pmx * att).toFixed(2) + "px");
-      cutwrap.style.setProperty("--py", (PAR_Y * vh2 * pmy * att).toFixed(2) + "px");
+      cutwrap.style.setProperty("--px", (PAR_X * vh2 * pmx * att / Z).toFixed(2) + "px");
+      cutwrap.style.setProperty("--py", (PAR_Y * vh2 * pmy * att / Z).toFixed(2) + "px");
       if (face) {
-        face.style.setProperty("--hx", (PAR_HX * vh2 * pmx * att).toFixed(2) + "px");
-        face.style.setProperty("--hy", (PAR_HY * vh2 * pmy * att).toFixed(2) + "px");
+        face.style.setProperty("--hx", (PAR_HX * vh2 * pmx * att / Z).toFixed(2) + "px");
+        face.style.setProperty("--hy", (PAR_HY * vh2 * pmy * att / Z).toFixed(2) + "px");
       }
     }
 
@@ -4048,7 +4076,7 @@ glob.Globo=Globo;
         var mp = (y - mIni) / Math.max(1, montMax);
         mp = mp < 0 ? 0 : mp > 1 ? 1 : mp;
         var mtx = -mp * montMax;
-        mRail.style.transform = "translate3d(" + mtx.toFixed(1) + "px,0,0)";
+        mRail.style.transform = "translate3d(" + (mtx / Z).toFixed(1) + "px,0,0)";
 
         /* cuánto lleva cruzada la pantalla cada pieza: 0 cuando su borde
            izquierdo toca el derecho de la ventana, 1 cuando su borde
@@ -4074,7 +4102,7 @@ glob.Globo=Globo;
                                Math.max(wmT - sb, st - wmB));
             /* se va cuando se tocan de verdad —no cuando se acercan— y
                tarda 30 px en irse del todo */
-            var oq = 1 + sep / 30; if (oq < 0) oq = 0; else if (oq > 1) oq = 1;
+            var oq = 1 + sep / (30 * Z); if (oq < 0) oq = 0; else if (oq > 1) oq = 1;
             if (oq < wmo) wmo = oq;
           }
           wmEl.style.setProperty("--wmo", wmo.toFixed(3));
@@ -4108,7 +4136,7 @@ glob.Globo=Globo;
     }
 
     if (!reduce) {
-      var boost = Math.max(-2.4, Math.min(2.4, vel * 0.05));
+      var boost = Math.max(-2.4, Math.min(2.4, vel / Z * 0.05));
       b1x += (0.035 + boost * 0.05) * dt;
       b2x += (0.030 + boost * 0.05) * dt;
       if (seqW1) mueveBanda(band1, band1h, -wrap(b1x, seqW1));
@@ -4169,8 +4197,8 @@ glob.Globo=Globo;
   if (mail && finePtr && !reduce) {
     mail.addEventListener("pointermove", function(e){
       var r = mail.getBoundingClientRect();
-      var dx = (e.clientX - (r.left + r.width / 2)) * 0.06;
-      var dy = (e.clientY - (r.top + r.height / 2)) * 0.18;
+      var dx = (e.clientX - (r.left + r.width / 2)) * 0.06 / Z;
+      var dy = (e.clientY - (r.top + r.height / 2)) * 0.18 / Z;
       mail.style.transform = "translate3d(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px,0)";
     });
     mail.addEventListener("pointerleave", function(){
@@ -4338,7 +4366,11 @@ glob.Globo=Globo;
     pillT.style.opacity = "0";
     clearTimeout(espera);
     espera = setTimeout(function(){
-      var w0 = pill.getBoundingClientRect().width;   /* donde está ahora */
+      var w0 = pill.getBoundingClientRect().width /
+               (parseFloat(getComputedStyle(document.documentElement).zoom) || 1);
+                                                     /* donde está ahora, en px de CSS:
+                                                        el rectángulo viene dibujado y
+                                                        style.width se escribe en CSS */
       pillT.textContent = txt;
       pill.style.width = "";
       var w1 = pill.offsetWidth;                     /* donde tiene que ir */
