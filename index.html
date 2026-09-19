@@ -778,17 +778,42 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    ANTES HABÍA DOS CAPAS: `.ghost` pintaba la cáscara alámbrica entera,
    siempre, y esto le pasaba una banda por encima.
 
-   Y NO ES LO QUE HACE LA REFERENCIA — conviene dejarlo escrito para que
-   nadie lo «arregle» creyendo que lo acerca al original. Medida en vivo:
-   allí el revelado del casco no va por reloj, va por SCROLL, y es
-   monótono —está entero arriba del todo y se va retirando según bajas,
-   hasta desaparecer sobre los 580 px: área con color 33.685 px a
-   scroll 120, 23.467 a 334 y 1.908 a 580—. Tampoco lo mueve el puntero:
-   con el ratón paseando de y=150 a y=450 por su cabeza, el centro de la
-   zona revelada no se mueve de y≈338. Y en el fotograma de scroll 334 su
-   alámbrico gris se ve A LA VEZ que la franja de color, o sea que allí
-   la malla no aparece sólo durante el barrido. Esto de aquí es lo que
-   ella pidió, que es otra cosa y es su página.
+   Y NO ES LO QUE HACE LA REFERENCIA. Va escrito aquí con su código
+   delante, para que nadie lo «arregle» creyendo que lo acerca al
+   original — y porque de esta misma nota hubo una versión que lo contaba
+   mal: decía que allí no hay ciclo. Sí lo hay.
+
+   ALLÍ SON DOS CAPAS Y CADA UNA OBEDECE A OTRA COSA. El casco de COLOR
+   se revela con el SCROLL, y es monótono: está entero arriba del todo y
+   se va retirando según bajas hasta desaparecer sobre los 580 px
+   —medido en vivo, área con color 33.685 px a scroll 120, 23.467 a 334
+   y 1.908 a 580—, y el puntero no lo mueve. La MALLA alámbrica va por
+   reloj y no se entera del scroll salvo para apagarse del todo al final.
+   Su material está en el paquete de su propia página y dice, literal:
+
+       float scanEffect = 0.1;
+       if (uIsWireframeAnimating) {
+         scanEffect = pow(fract(-vPosition.y * 10. - uTime), 4.) * 0.1;
+       }
+       gl_FragColor = vec4(vec3(0.0), scanEffect * uOpacity);
+
+   Tres cosas salen de ahí. Una: `uTime` son segundos de reloj, así que
+   el `fract` tiene periodo 1,000 s exacto. Dos: la línea es NEGRO a alfa
+   bajo —0,1 de techo—, no un gris pigmentado; el gris que se ve es su
+   fondo asomando por debajo. Y tres, la que decide: sin animación el
+   alfa es 0,1 constante, y con animación el `pow(...,4)` sólo RESTA,
+   porque su pico vuelve a 0,1 y no sube de ahí. Su escaneo no enciende
+   la malla: la apaga por tramos.
+
+   Por eso ALLÍ LA MALLA NUNCA SE VA DEL TODO. Su casco mide 0,0770685
+   de alto y el diente de sierra tiene periodo espacial 0,1, así que cabe
+   0,771 de banda: el canto tarda 0,771 s en cruzarlo y quedan 0,229 s
+   sin canto encima. Y aun en ese hueco el punto más fuerte de la malla
+   sigue al 34,7 % de su pico.
+
+   Lo de aquí es otra cosa y es la que ella pidió: «cuando se escanee
+   aparece y vuelve a irse cuando acaba». Entre barridos no queda nada.
+   La diferencia está medida y es deliberada.
 
    Medido en vivo sobre el dominio, 44 fotogramas en 10 s con el ratón
    lejos de su cara, y CONTRA SU PROPIO CERO —el mismo encuadre con las
@@ -819,9 +844,14 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    la capa que se ha ido y es lo único suyo que había que salvar—. Se
    traza sobre EL MISMO POLÍGONO que rellena ane-helm.png, el perfil de
    helmet.py, así que lo que la banda enciende es el alambre de la pieza
-   que luego se materializa al pasar el ratón: medido, el canto de una y
-   el de la otra no se separan más de 2,0 px del cuadro, y eso en el
-   fondo de la copa del mentón. Y va POR FUERA de su cara, no encima: es
+   que luego se materializa al pasar el ratón. Cuánto se parecen los dos
+   cantos, medido llevando los dos PNG al cuadro de 928x1069 y
+   comparándolos fila a fila: con el umbral de tinta en alfa>20 la
+   mediana es 1 px, el p90 son 2 px y el máximo 3 px. Aquí ponía «no se
+   separan más de 2,0 px» y eso no se sostiene con ningún umbral: los
+   2 px son el p90 y no el máximo, y aflojando a alfa>4 —o sea contando
+   el halo del antialias— el máximo se va a 13 px en la fila 780. El
+   sitio sí estaba bien: esa fila es el fondo de la copa del mentón. Y va POR FUERA de su cara, no encima: es
    una cáscara transparente alrededor de la cabeza, con el pelo dentro, y
    se amontona sola en el canto porque allí la superficie se gira.
 
@@ -844,11 +874,14 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    2,0 s de los 3,6 s que dura el barrido, prácticamente lo mismo que
    duraba el paso de la banda antes de tocar nada (2,3 s).
 
-   EL CICLO NO ESTÁ COPIADO DE NADIE, porque allí no hay ciclo que
-   copiar: lo suyo cuelga del scroll. Los 7,5 s dejan 2,0 s de escaneo y
-   5,5 s de nada, o sea la malla ausente más del doble de lo que está
-   puesta, que es la mitad del encargo —«vuelve a irse cuando acaba»—.
-   Cambiarlo es UN número. */
+   EL CICLO DE 7,5 s TAMPOCO ES EL SUYO, y aquí el número está encima de
+   la mesa: el de la referencia es 1,000 s, con 0,771 de barrido y 0,229
+   de hueco, o sea 77 % encendida y 23 % apagada. Éste deja 2,0 s de
+   escaneo y 5,5 s de nada: el reparto justo al revés. Tiene motivo —su
+   línea es negro al 0,1 de alfa y la nuestra gris macizo al 0,78, así
+   que a un barrido por segundo esto no se leería como un escaneo sino
+   como un parpadeo— y tiene pendiente: es UN número, y está a la espera
+   de que Ane diga si lo quiere más seguido. */
 .scan{
   position:absolute; inset:0;
   pointer-events:none;
@@ -1476,11 +1509,12 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    lado— el último se quedaba a 39,0 px del centro contra 38,65 de
    tolerancia y no se encendía NUNCA.
 
-   LO QUE CUESTA DE SCROLL: 694 px medidos = 0,77 pantallas a 1440,
-   contra los 558 px —0,62— de la maqueta anterior. Son 136 px más en
-   toda la página. Por debajo de una pantalla en los seis anchos
-   (0,77 / 0,75 / 0,69 / 0,49 / 0,48 / 0,40), sin pin nuevo, y el ~49 %
-   de scroll anclado no se mueve, que es la condición que importaba.
+   LO QUE CUESTA DE SCROLL. La banda crece —es lo que se paga por la
+   presencia— pero sigue por debajo de UNA PANTALLA en los seis anchos,
+   sin pin nuevo, y el ~49 % de scroll anclado no se mueve, que es la
+   condición que de verdad importaba. De paso se fue el margin-top de
+   .pf, 45 px que venían de la maqueta anterior: la sección ya trae su
+   propio relleno y aquí no separaba de nada.
 
    CON MOVIMIENTO REDUCIDO no hay ventana ni máscara ni viaje: la pila
    se lee entera y quieta. Cuelga de body.js, que la página sólo se pone
@@ -1489,9 +1523,14 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    con la ventana, 3 de los 7 renglones quedarían escondidos para
    siempre, y no se le esconde contenido a quien pide menos movimiento. */
 .pf{
-  margin-top:clamp(28px,5vh,52px);
   font-family:var(--impact); font-variation-settings:"wght" 800,"wdth" 110;
-  font-size:clamp(min(2.6rem,11.2vw),7.6vw,6.875rem);   /* 41,6 -> 110 px */
+  /* El suelo lleva min() porque en pantallas muy estrechas el tope no lo
+     pone el gusto sino la palabra más larga: medido, «PASSIONATELY» ocupa
+     7,81 px por cada px de cuerpo y son doce letras, o sea que NO parte.
+     A 390 px el .wrap deja 350 útiles → el cuerpo no puede pasar de 44,8.
+     El 10,4vw deja un 8 % de margen contra ese tope y sólo actúa por
+     debajo de 400 px de pantalla; de ahí para arriba manda el 2.6rem. */
+  font-size:clamp(min(2.6rem,10.4vw),7.6vw,6.875rem);   /* -> 110 px */
   line-height:.88; letter-spacing:-.02em;
   text-transform:uppercase; text-align:center; color:var(--ink);
 }
@@ -1509,12 +1548,32 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    movimiento que se percibe: los otros 674 px son deslizamiento. */
 .pf__r.is-hot{ color:var(--accent); }
 
+/* SEIS RENGLONES DE VENTANA, y el límite es duro por arriba: con SIETE la
+   ventana contendría la pila entera —ratio 1,00— y el viaje dejaría de
+   leerse, porque no faltaría nunca ningún renglón y lo único que pasaría
+   es que todo se desliza a la vez. 1,17 es el último ratio que conserva
+   «la lista sigue»; con 6 quedan 1,33 a 1440 y 1,29 a 390.
+
+   Y crecer NO cuesta movimiento: el recorrido va del primer renglón
+   centrado al último, o sea (n-1) pasos, y el alto de la ventana no
+   aparece en esa cuenta. Aquí hubo 4,5 renglones con el argumento de que
+   más ventana era menos viaje, y con este recorrido ese argumento es
+   falso. Lo que se compra con los 155 px son presencia: la ventana pasa
+   del 48 % al 64 % de la pantalla a 1440, que es lo que quita el «tercio
+   central rodeado de papel».
+
+   En estrecho van SIETE y no seis: el teléfono es mucho más alto que
+   ancho, así que la misma composición ocupa menos altura relativa —a 390
+   la ventana de 4,5 era el 19 % de la pantalla contra el 48 % a 1440—. Y
+   ahí la pila tiene 9 renglones en vez de 8, así que 7 todavía deja 1,29
+   de ratio. */
 body.js .pf__win{
-  height:3.96em;                               /* 4,5 renglones x .88 */
+  height:5.28em;                               /* 6 renglones x .88 */
   overflow:hidden;
   -webkit-mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);
           mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);
 }
+@media (max-width:699px){ body.js .pf__win{ height:6.16em; } }  /* 7 renglones */
 body.js .pf__col{ will-change:transform; }
 
 .pull{
