@@ -1230,6 +1230,14 @@ body.in-mont .pill{
   background:color-mix(in oklab,var(--accent-lt),var(--accent) calc(var(--t,0) * 100%));
   color:color-mix(in oklab,var(--night),var(--ground) calc(var(--t,0) * 100%));
 }
+/* La marca se aparta cuando una pieza del carril le pasa por debajo. El
+   numero lo escribe el bucle: 1 con la foto a 56 px o mas, 0 cuando la
+   toca. Sube 7 px al irse para que se lea como un movimiento y no como un
+   parpadeo, y las dos cosas son de compositor: ni un repintado. */
+body.js.in-mont .wm{
+  opacity:var(--wmo,1);
+  transform:translate3d(0,calc((1 - var(--wmo,1)) * -7px),0);
+}
 
 @media (min-width:900px){
   /* El carril nace calc(105 * var(--usvh)) POR ENCIMA del final del mensaje. El número no
@@ -2171,7 +2179,7 @@ body.is-live .rise > i{ transform:none; }
            que el recorte se queda en nada; las piezas sin ficha llevan cada
            una la suya en --ar, porque lo que manda es la forma de lo que
            enseñan y no un formato común. -->
-      <figure class="shot" style="--w:calc(58 * var(--usvh));--ml:calc(9 * var(--usvh));--top:calc(10 * var(--usvh));--sat:0.95;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:calc(58 * var(--usvh));--ml:calc(9 * var(--usvh));--top:max(96px,calc(10 * var(--usvh)));--sat:0.95;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>03</b> &middot; Spain</p>
         <article class="card card--flip card--fig" style="--ar:3/2" tabindex="0">
           <div class="card__flip">
@@ -2232,7 +2240,7 @@ body.is-live .rise > i{ transform:none; }
            archivo (2500×2838), así que no se recorta por ningún lado.
            Y el alt sí existe: quien no ve la página tiene que saber qué
            hay aquí, aunque en pantalla no haya una sola palabra. -->
-      <figure class="shot" style="--w:calc(32 * var(--usvh));--ml:calc(10 * var(--usvh));--top:calc(14 * var(--usvh));--sat:0.82;--c:var(--jp);--cl:var(--jp-lt)">
+      <figure class="shot" style="--w:calc(32 * var(--usvh));--ml:calc(10 * var(--usvh));--top:max(118px,calc(14 * var(--usvh)));--sat:0.82;--c:var(--jp);--cl:var(--jp-lt)">
         <p class="shot__lbl mono"><b>05</b></p>
         <article class="card card--fig card--plain" style="--ar:2500/2838">
           <img class="card__img" src="art-05.webp" loading="lazy" decoding="async" fetchpriority="low"
@@ -2269,7 +2277,7 @@ body.is-live .rise > i{ transform:none; }
            exacta del archivo (2984×1720) para no recortarle nada: la
            fotografía se juega entre la pared de piedra y la ventana, y
            cualquier recorte se come uno de los dos. -->
-      <figure class="shot" style="--w:calc(76 * var(--usvh));--ml:calc(7 * var(--usvh));--top:calc(11 * var(--usvh));--sat:1.00;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:calc(76 * var(--usvh));--ml:calc(7 * var(--usvh));--top:max(104px,calc(11 * var(--usvh)));--sat:1.00;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>07</b> &middot; Bizkaia, Spain</p>
         <article class="card card--flip card--fig" style="--ar:2984/1720" tabindex="0">
           <div class="card__flip">
@@ -2354,9 +2362,9 @@ body.is-live .rise > i{ transform:none; }
 
         <p>I kept asking myself questions until one day, while walking through the endless fields of Burgos, I decided to call my uncle Fran, a truly genuine artist.</p>
 
-        <p class="said">Without overthinking, I asked: &mdash;What is art? How would you define it?</p>
+        <p class="said">Without overthinking, I asked: &ldquo;What is art? How would you define it?&rdquo;</p>
 
-        <p>At first, I assumed he would give me the usual answer, but not only did he not do that, he also managed to silence all those voices in my head: &mdash;Art is love, he responded.</p>
+        <p>At first, I assumed he would give me the usual answer, but not only did he not do that, he also managed to silence all those voices in my head. &ldquo;Art is love,&rdquo; he responded.</p>
 
         <p>And then I understood everything. He didn&rsquo;t have to explain any further.</p>
 
@@ -3607,12 +3615,15 @@ glob.Globo=Globo;
      geometría de maquetación: el transform del carril no la falsea. */
   var mRail = document.getElementById("montRail");
   var mShots = document.querySelectorAll(".shot");
-  var mX = [], mW = [];
+  var mX = [], mW = [], mT = [], mH = [];
+  /* La caja del logotipo es fija, así que se mide con lo demás y no
+     cada fotograma. */
+  var wmEl = document.querySelector(".wm"), wmL = 0, wmT = 0, wmR = 0, wmB = 0;
   /* montIni y montVW son la ventana TAL Y COMO ERA cuando se midió el
      tramo. Leerlos del `window` en cada fotograma parece más fresco y es
      justo lo contrario: mezcla una ventana nueva con un montTop viejo, y
      esa resta es el origen del recorrido. */
-  var montOn = false, montTop = 0, montMax = 0, montIni = 0, montVW = 1;
+  var montOn = false, montTop = 0, montMax = 0, montIni = 0, montVW = 1, montVH = 1;
   function layoutMont(){
     montOn = wide.matches && !reduce && !!mont && !!mRail;
     if (!montOn) {
@@ -3623,18 +3634,26 @@ glob.Globo=Globo;
         mShots[q].style.removeProperty("--fade");
       }
       body.classList.remove("in-mont");
+      if (wmEl) wmEl.style.removeProperty("--wmo");
       return;
     }
     montMax = Math.max(0, mRail.offsetWidth - window.innerWidth);
     mont.style.height = montMax + "px";
-    mX.length = 0; mW.length = 0;
+    mX.length = 0; mW.length = 0; mT.length = 0; mH.length = 0;
     for (var i = 0; i < mShots.length; i++) {
       mX.push(mShots[i].offsetLeft);
       mW.push(mShots[i].offsetWidth);
+      mT.push(mShots[i].offsetTop);
+      mH.push(mShots[i].offsetHeight);
     }
     montTop = mont.getBoundingClientRect().top + (window.scrollY || 0);
     montIni = montTop - window.innerHeight;
     montVW  = Math.max(1, window.innerWidth);
+    montVH  = Math.max(1, window.innerHeight);
+    if (wmEl) {
+      var wr = wmEl.getBoundingClientRect();
+      wmL = wr.left; wmT = wr.top; wmR = wr.right; wmB = wr.bottom;
+    }
   }
 
   /* ── El paso: se mide una vez y no se vuelve a tocar hasta que
@@ -3735,6 +3754,8 @@ glob.Globo=Globo;
   var pmx = 0, pmy = 0, ptrOn = false;
 
   var lastY = 0, vel = 0, lastT = 0;
+  /* el reloj del mapa: segundos vividos con la pestana delante */
+  var tpT = 0;
 
   function frame(t){
     if (lenis) lenis.raf(t);
@@ -3883,9 +3904,19 @@ glob.Globo=Globo;
     }
 
     /* el mapa deriva a un cuarto de la velocidad del scroll: fijo del
-       todo parecía papel pintado, a la misma velocidad no se notaría */
+       todo parecía papel pintado, a la misma velocidad no se notaría.
+       Y además se mueve solo, con la página quieta: un arrastre de 38 px/s
+       y encima dos vaivenes de 31 y 86 segundos en horizontal y uno de 53
+       en vertical. Los periodos no son múltiplos entre sí, así que la suma
+       no se repite nunca y las líneas deambulan en lugar de desfilar —que
+       es lo que haría un arrastre solo, y con una baldosa de 980 px se
+       vería el bucle—. En punta son 71 px/s. */
     if (!reduce) {
-      var tpos = "0 " + (-y * 0.25).toFixed(1) + "px";
+      tpT += dt;
+      var ts = tpT * 0.001;
+      var tpx = ts * 38 + Math.sin(ts * 0.2027) * 120 + Math.sin(ts * 0.0731) * 60;
+      var tpy = -y * 0.25 + ts * 16 + Math.sin(ts * 0.1187) * 84;
+      var tpos = tpx.toFixed(1) + "px " + tpy.toFixed(1) + "px";
       if (topo)   topo.style.backgroundPosition = tpos;
       /* el mapa de dentro del panel y el del verde van al mismo paso que
          el global: al contraerse el recorte y al cambiar de color, las
@@ -4022,6 +4053,25 @@ glob.Globo=Globo;
           mShots[qk].style.setProperty("--ix", (64 * cp - 64).toFixed(1) + "px");
           var fd = cp / 0.07; fd = fd > 1 ? 1 : fd;
           mShots[qk].style.setProperty("--fade", (fd * fd * (3 - 2 * fd)).toFixed(3));
+        }
+
+        if (wmEl) {
+          var pinY = Math.min(Math.max(montTop - y, 0), montTop + montMax - montVH - y);
+          var wmo = 1;
+          for (var qw = 0; qw < mShots.length; qw++) {
+            var sl = mX[qw] + mtx, sr = sl + mW[qw];
+            var st = pinY + mT[qw], sb = st + mH[qw];
+            /* separación entre las dos cajas: positiva si no se tocan,
+               cero o negativa en cuanto se solapan, y entonces vale lo que
+               se han metido la una en la otra */
+            var sep = Math.max(Math.max(wmL - sr, sl - wmR),
+                               Math.max(wmT - sb, st - wmB));
+            /* se va cuando se tocan de verdad —no cuando se acercan— y
+               tarda 30 px en irse del todo */
+            var oq = 1 + sep / 30; if (oq < 0) oq = 0; else if (oq > 1) oq = 1;
+            if (oq < wmo) wmo = oq;
+          }
+          wmEl.style.setProperty("--wmo", wmo.toFixed(3));
         }
 
       }
