@@ -585,7 +585,7 @@ body.on-dark .pill{ background:var(--accent-lt); color:var(--night); }
    la pantalla. La figura se amplía en la misma proporción para que lo
    visible sea al menos tan grande como antes — de hecho queda mayor. */
 .hero__cutwrap{
-  --cutH:min(110.5svh,124.3vw,1438px);      /* = lo de antes / 0,869 */
+  --cutH:min(110.5svh,max(124.3vw,76svh),162vw,1438px);   /* = lo de antes / 0,869 */
   position:absolute; z-index:2; left:50%;
   bottom:calc(var(--cutH) * -0.131);
   height:var(--cutH); aspect-ratio:928/1069;
@@ -962,7 +962,8 @@ body.is-gone .hero__corner.intro{
      No se toca --cutH: encogerla un 7,4 % para salvar ese 1,45 % es
      mal cambio. */
   .hero__cutwrap{
-    position:relative; bottom:auto; left:auto; translate:none;
+    position:relative; bottom:auto; left:auto;
+    translate:calc(var(--cutH) * 0.03932) 0;
     flex:none; align-self:center; margin-inline:0;
     margin-top:clamp(18px,3svh,38px);
   }
@@ -2041,6 +2042,11 @@ html.is-reading{ overflow:hidden; }
    scroll —igual que la portada clavada—, y apagarla por esa preferencia
    dejaba sin la mitad del ritmo de la página a quien la tenga puesta.
    ============================================================ */
+@media (max-width:699px){
+  .sec{ padding-block:clamp(52px,7.6svh,84px); }
+  .body{ margin-top:clamp(20px,3.2svh,36px); }
+  .mont__rail{ padding-block:clamp(34px,5.6svh,64px); }
+}
 @media (min-width:700px){
   body.js .filo{
     --run:68svh;
@@ -4276,17 +4282,10 @@ glob.Globo=Globo;
          borde se dibuja con alfa, asi que la precision de mas SE VE
          —es justo lo que le quita los tirones— en vez de perderse al
          redondear. */
-      /* EL CIERRE. Arranca justo donde acaba el paso y dura 0,35 de pantalla.
-         `pinE` ya vale 1 aqui, asi que lo unico que se mueve es el tamanio
-         del rectangulo de destino: de medio panel a cero. */
-      var cP = Math.min(1, Math.max(0, (y - pinTop - pinRun) / (pinRun * 0.35)));
-      var cE = cP * cP * (3 - 2 * cP);
-      var hw = (pw / 2) * (1 - cE), hh = (ph / 2) * (1 - cE);
-
-      clip.style.setProperty("--ct", ((cy - hh) * pinE / Z).toFixed(3) + "px");
-      clip.style.setProperty("--cr", ((vw - cx - hw) * pinE / Z).toFixed(3) + "px");
-      clip.style.setProperty("--cb", ((vh - cy - hh) * pinE / Z).toFixed(3) + "px");
-      clip.style.setProperty("--cl", ((cx - hw) * pinE / Z).toFixed(3) + "px");
+      clip.style.setProperty("--ct", ((cy - ph / 2) * pinE / Z).toFixed(3) + "px");
+      clip.style.setProperty("--cr", ((vw - cx - pw / 2) * pinE / Z).toFixed(3) + "px");
+      clip.style.setProperty("--cb", ((vh - cy - ph / 2) * pinE / Z).toFixed(3) + "px");
+      clip.style.setProperty("--cl", ((cx - pw / 2) * pinE / Z).toFixed(3) + "px");
 
       hNight.style.opacity = pinE.toFixed(3);
       /* EL BLANCO VA POR DELANTE DEL VERDE, y es deliberado: si los dos suben
@@ -4310,7 +4309,7 @@ glob.Globo=Globo;
            El segundo tope sigue mirando la CAJA y no la cabeza, a
            proposito: es lo que impide que sus hombros toquen los cantos
            verticales del panel. Y ninguno de los dos la deja crecer. */
-        var sTo = Math.min(CAB_K * (2 * hh) / cutH, 1.094 * (2 * hw) / cutH, 1);
+        var sTo = Math.min(CAB_K * ph / cutH, 1.094 * pw / cutH, 1);
         var sNow = 1 + (sTo - 1) * pinE;
         /* El origen del escalado ES el centro de su cabeza, asi que ese
            punto no se mueve al encoger y solo queda llevarlo al centro del
