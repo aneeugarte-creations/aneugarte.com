@@ -1186,6 +1186,24 @@ body.in-pass .pill{
 .dl__row:last-child{ border-bottom:1px solid var(--rule); }
 .dl__k{ flex:none; width:8.5em; color:var(--ink-3); }
 .dl__v{ margin:0; }
+/* Un par clave/valor NO es una reticula de dos columnas, y por eso apilarlo no
+   incumple la norma de no apilarlas: esa norma sale de bloques HERMANOS de peso
+   comparable, que se leen en paralelo y cuya relacion ES la composicion. Aqui la
+   clave es un ROTULO, no una columna hermana; encima del dato no se pierde nada
+   porque no habia nada que perder. La referencia lo hace asi hasta en escritorio:
+   no tiene un solo par clave/valor en dos columnas —PAGES y FOLLOW ON van encima
+   de sus listas a 1440 igual que a 390—.
+   El corte en 600 es el mismo que el del tercer regimen de la seccion 02: la
+   pagina entera cambia de reparto en un unico sitio. */
+@media (max-width:599px){
+  .dl__row{ display:block; }
+  .dl__k{ width:auto; display:block; margin-bottom:5px; }
+}
+/* Medido, NO hace falta tope por arriba, aunque el criterio lo pedia: a 1024 px
+   el valor no sale largo sino corto —395 px y 39 caracteres— porque ahi ya manda
+   la reticula partida de `min-width:880px` y la lista cae en la columna estrecha.
+   Un `max-width:65ch` habria sido letra muerta: 65ch son 663 px en esta fuente,
+   o sea ~92 caracteres reales, y ningun valor de la lista llega a 640. */
 
 /* ============================================================
    02 · Lo que he montado — EL CARRIL
@@ -1280,7 +1298,7 @@ body.js .shot{ opacity:var(--fade,1); }
    04+05 = 79 % y 07+08 = 80 %, y el canal libre entre las dos
    nunca baja de 37 px.
    ---------------------------------------------------------------- */
-@media (max-width:899px), (max-height:659px){
+@media (max-width:899px), (max-height:659px), (max-aspect-ratio:999/1000){
   /* La condición es el complemento exacto de la del carril: esto vale
      siempre que el carril NO esté montado, y eso incluye la ventana
      ancha y baja del teléfono girado. */
@@ -1336,6 +1354,65 @@ body.js .shot{ opacity:var(--fade,1); }
      entera para apartar un disco. */
   .card .card__face--brand:has(.card__go,.card__turn) .card__mark{
     transform:translateY(-15px);
+  }
+
+  /* ----------------------------------------------------------------
+     LA COMPOSICION DE LA TABLETA DE PIE — el tercer regimen.
+
+     Medido en la referencia a 834x1194 y a 744x1133: CERO contactos y
+     CERO parejas compartiendo banda vertical. En tableta de pie abandona
+     los racimos y va a una pieza por fila, con la mayor al 94-100 % del
+     ancho y una ocupacion de mancha del 45-49 % (en movil, 29 %).
+
+     Por eso aqui NO rige la regla del 80 %. Esa regla gobierna el regimen
+     de racimos —mayor + suelo <= 80 %, que es de donde sale el 52 % de
+     arriba, no de ninguna parte—; donde no hay parejas no hay nada que
+     emparejar y la pieza puede irse al 92 % sin romper nada. Subir el
+     techo del movil habria sido el arreglo equivocado: rompe los racimos
+     a 744 igual que a 390, porque la regla es proporcional.
+
+     La forma se conserva bimodal, dos gigantes y siete medianas, con el
+     mismo orden roto: ratio 3,07:1 contra el 3,15 de la referencia.
+     ---------------------------------------------------------------- */
+  /* `max-aspect-ratio` no es decorativo: sin el, un telefono tumbado
+     —932x430, que entra aqui por la rama `max-height:659`— pedia piezas
+     de 92vw = 857 px en una pantalla de 430 de alto. Este regimen es de
+     pantalla DE PIE y ancha; el telefono girado se queda en racimos. */
+  @media (min-width:600px) and (max-aspect-ratio:999/1000){
+    /* Sin techo de 420 px: aqui el ancho ES la composicion. El 420 se
+       escribio para el telefono y a 1024 igualaba cuatro de las nueve
+       piezas en el mismo numero —la misma enfermedad que el suelo de
+       248 px del carril, vista del reves—. */
+    .shot{ width:var(--wm); max-width:none; }
+    /* El carril se queda con 4vw a cada lado y las piezas se miden en vw:
+       92 + 4 + 4 = 100 exactos, asi que la mayor llega de canto a canto
+       sin desbordar y la menor conserva un margen real contra el borde. */
+    .mont__rail{ padding-inline:4vw; }
+
+    .shot:nth-child(1){ --wm:35vw; margin-top:0;      }
+    .shot:nth-child(2){ --wm:30vw; margin-top:8.2vw;  }
+    .shot:nth-child(3){ --wm:88vw; margin-top:8.2vw;  }
+    .shot:nth-child(4){ --wm:39vw; margin-top:22.2vw; }
+    .shot:nth-child(5){ --wm:44vw; margin-top:8.2vw;  }
+    .shot:nth-child(6){ --wm:48vw; margin-top:15.9vw; }
+    .shot:nth-child(7){ --wm:92vw; margin-top:8.2vw;  }
+    .shot:nth-child(8){ --wm:30vw; margin-top:11vw;   }
+    .shot:nth-child(9){ --wm:35vw; margin-top:32.4vw; }
+
+    /* Los huecos son los de la referencia a 834 —68, 68, 185, 68, 133,
+       68, 92, 270— leidos en %vw: un hueco base de 8,2 % alternando con
+       separaciones de 2 a 4 veces esa base. Es el mismo compas binario de
+       las otras dos escalas, con otro valor de "contacto": en escritorio
+       el base es +88 px en X, en movil es 0 px en Y, aqui es +65 px en Y. */
+
+    /* La pista vuelve a su tamanio: el encogido a 26 px se escribio para
+       una tarjeta de 129x97 px, y aqui la menor mide 250. */
+    .card .card__cap{ padding:clamp(20px,2.4vw,30px); }
+    .card .card__turn{ width:34px; font-size:1rem; }
+    .card .card__go{ width:34px; font-size:1.05rem; }
+    .card .card__face--brand:has(.card__go,.card__turn) .card__mark{
+      transform:none;
+    }
   }
 
   /* El rotulo va pegado al mismo margen que su pieza, como en la
@@ -1412,7 +1489,7 @@ body.js.in-mont .wm{
    se puede desplazar por ningún medio, y la sección entera desaparece de
    la página. Con el JS encendido y el CSS apagado, `montMax` sale 0 y se
    escribe `height:0px` en una sección cuyo contenido mide 3.975 px. */
-@media (min-width:900px) and (min-height:660px){
+@media (min-width:900px) and (min-height:660px) and (min-aspect-ratio:1/1){
   /* El carril nace 105svh POR ENCIMA del final del mensaje. El número no
      es de estilo, es de relevo: el mensaje empieza a aclarar el suelo a
      los 0,20 de SU recorrido —234 px de 1170— y el carril tiene que estar
@@ -2938,7 +3015,7 @@ glob.Globo=Globo;
      `.shot` desborda el escenario y corta las piezas. La condición es
      gemela de la `@media` del carril y las dos tienen que moverse juntas
      (ver el comentario largo que hay allí). */
-  var railOk  = window.matchMedia("(min-width: 900px) and (min-height: 660px)");
+  var railOk  = window.matchMedia("(min-width: 900px) and (min-height: 660px) and (min-aspect-ratio: 1/1)");
 
   /* LA ESCALA A LA QUE SE DIBUJA LA PAGINA. Dentro del artifact vale 1
      y todo lo que sigue es inerte; publicada en el dominio, el visor se
@@ -3358,7 +3435,7 @@ glob.Globo=Globo;
      larga que la rendija que habia —184 milesimas del cuadro en vez de
      177— y con el puente entre las dos reducido a 25 px, que es como
      estan en su foto. */
-  var CAJAS = [[0.284,0.371,0.468,0.440], [0.494,0.371,0.677,0.440],
+  var CAJAS = [[0.267,0.371,0.450,0.440], [0.511,0.371,0.694,0.440],
                [0.369,0.573,0.580,0.646]];
   var TELA  = [0.13,0.22,0.82,0.83];
   var HONDO = [0.06, 0.26, 0.62, 1.00];       /* lo que se mueve cada plano */
