@@ -21,7 +21,6 @@
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head>
 <body>
-
 <title>Ane Ugarte</title>
 <!-- El favicon. Corazon naranja sobre verde oscuro; la nota larga y la
      geometria estan en el guion que lo genera. Solo llega al MOVIL: en
@@ -287,52 +286,28 @@ html:not(.lenis){ scroll-behavior:smooth; }
   letter-spacing:.02em; text-indent:.02em;   /* la prosa sobra por la derecha */
 }
 
-/* ── SE ESCRIBE ───────────────────────────────────────────────
-   "Que se escriba de letra en letra como apple cuando compras uno de sus
-   productos". El de Apple no se teclea —es un trazo de escritura a mano
-   que se dibuja—, pero letra a letra es lo que se ha pedido y ademas es
-   lo que la casa ya sabe hacer: el globo de la pildora escribe asi.
+/* ── YA ESCRITO ──────────────────────────────────
+   AQUI SE TECLEABA EL NOMBRE, letra a letra. Se va entero por orden
+   —«quiero que sea mas sencillo, ANE UGARTE en mayuscula ya escrito, sin
+   que se tenga que escribir»— y con el se va todo su aparato: un <span>
+   por letra, la clase que las encendia, el cursor en ::after y los 200 ms
+   de espera mas 30 + hasta 27 al azar de paso que vivian en el guion.
 
-   CADA LETRA VA EN SU <span>, Y EL <span> NACE INVISIBLE EN VEZ DE
-   VACIO. Eso es todo el truco: la caja mide desde el primer fotograma lo
-   que va a medir la frase entera, asi que la primera letra aparece ya en
-   su sitio definitivo y el centrado no baila mientras se teclea.
-   Reservar el ancho midiendolo en JS no valdria: la fuente llega
-   despues del primer pintado y el ancho cambia al intercambiarse
-   —medido con la cache fria: 152 px con el sustituto y 154 con Archivo a
-   393; 256 y 258 a 1440—.
+   LO QUE EL TECLEO OBLIGABA A MONTAR Y AHORA SOBRA. Las letras nacian
+   invisibles en vez de vacias para que la caja midiera desde el primer
+   fotograma lo que iba a medir la frase entera y el centrado no bailara
+   —reservar ese ancho en JS no valia: la fuente llega despues del primer
+   pintado—, y el cursor iba fuera del flujo porque en linea ocupaba sus
+   0,115 em y empujaba a las letras aun apagadas. Sin tecleo no hay nada
+   que reservar: el nombre esta completo desde el primer fotograma y la
+   unica anchura que existe es la definitiva.
 
-   ESOS DOS PIXELES SON EL RESIDUO DE ALGO QUE ERA TRECE. Con el
-   `font-weight` mal puesto el sustituto pintaba en negrita y la distancia
-   era de 13 px a 393; eligiendo el corte fino correcto —ver el
-   font-weight de .load__n b— baja a 2, o sea un pixel de desplazamiento
-   en una linea centrada. Se podria dejar en cero arrancando el tecleo con
-   `document.fonts`, y NO se hace: la fuente tarda unos 400 ms en cache
-   fria, y esperarla empujaria el final del tecleo de 740 ms a 940 y
-   dejaria el reposo por debajo del suelo de 420 ms que esta pantalla
-   tiene medido. Un pixel durante la primera visita cuesta menos que eso.
-   En la segunda, con la fuente en cache, no ocurre nada de esto.
-
-   EL CURSOR existe mientras se escribe Y SE VA CON LA ULTIMA LETRA.
-   Sin el, las letras aparecen de la nada y el gesto se lee como un fallo
-   de pintado: el cursor es lo que convierte la aparicion en escritura.
-   Y parpadeando durante el reposo seria movimiento en una pantalla cuyo
-   valor es estar quieta, ademas de retener el ojo al final de la linea
-   anunciando mas texto que no va a llegar. El globo lo conserva porque
-   alli la conversacion sigue abierta; aqui la frase esta dicha.
-   Y va FUERA DEL FLUJO, en absoluto: en linea ocupaba sus 0,115 em y
-   empujaba a las letras que aun no se han encendido, asi que la caja
-   volvia a crecer y a moverse justo lo que este bloque evita —medido a
-   1440, el ancho iba de 321 a 330 y el borde izquierdo bailaba 6 px
-   mientras se escribia—. */
-.load__n b span{ visibility:hidden; position:relative; }
-.load__n b span.ya{ visibility:visible; }
-.load__n b span.cur::after{
-  content:""; position:absolute; left:100%; top:.09em;
-  width:.055em; height:.82em; margin-left:.06em;
-  background:currentColor;
-}
-.load__n b.fin span.cur::after{ content:none; }
+   Y EN VERSALES EN EL HTML, no con text-transform: la cortina va
+   aria-hidden, no hay lector que lea otra cosa, y asi el marcado dice lo
+   que se pinta. Medido con Archivo en wght 250: 200,9 px de los 393 del
+   telefono y 388,4 de los 1.920 interiores del escritorio, o sea que el
+   white-space:nowrap de .load__n no corre peligro por ningun lado. El
+   letter-spacing se queda en los .02em que ya habia. */
 /* Aquí vivía el rótulo de abajo, el equivalente de su "LOAD NORRIS". Fuera:
    la pantalla dice su nombre y ya está. Dos textos en una pantalla que dura
    un segundo son uno de más. */
@@ -2887,7 +2862,7 @@ body.is-live .rise > i{ transform:none; }
 
 <div class="load" id="load" aria-hidden="true">
   <div class="load__in">
-    <p class="load__n"><b>Ane Ugarte</b></p>
+    <p class="load__n"><b>ANE UGARTE</b></p>
     <span class="load__track"><b class="load__fill" id="loadFill"></b></span>
     <span class="load__c num" id="loadC">000</span>
   </div>
@@ -4600,100 +4575,29 @@ body.is-live .rise > i{ transform:none; }
   var loadC = document.getElementById("loadC"), loadFill = document.getElementById("loadFill");
   var opened = false;
 
-  /* ── EL NOMBRE, LETRA A LETRA ────────────────────────────
-     Ver la nota larga de .load__n b span en la hoja de estilos: las
-     letras ya estan en el HTML —asi el nombre existe sin JS— y lo unico
-     que hace esto es encenderlas de una en una.
+  /* ── EL NOMBRE YA ESTA ESCRITO ────────────────────
+     Aqui vivia el tecleo: un <span> por letra y un temporizador que las
+     encendia de una en una —200 ms de espera y un paso de 30 + hasta 27
+     al azar, unos 680 ms medidos hasta la ultima letra—. Se quita por
+     orden suya, y con el se van `acaba()` y la llamada que open() le
+     hacia para rematar la frase si la pestania habia estado al fondo.
 
-     AQUI SE ESCRIBIA «hey, welcome», con el nombre pequenio debajo. Hoy
-     lo que se teclea ES el nombre y no hay nada mas en la pantalla, asi
-     que las cuentas de abajo se rehicieron con DIEZ caracteres en vez de
-     doce. El mecanismo no cambio ni una linea: lo unico que sabe este
-     bloque es cuantos <span> hay dentro del <b>.
+     No queda JS de esta pantalla: el nombre esta en el HTML, en versales,
+     y lo pinta la hoja de estilos. La cortina ya no tiene ninguna pieza
+     movil propia —solo su desvanecido—, asi que la rama de
+     `prefers-reduced-motion` y la normal ven por fin lo mismo; antes no
+     pasaba, porque con `reduce` el nombre aparecia entero y sin el se
+     tecleaba.
 
-     LAS DOS CIFRAS SALEN DEL REPOSO, no del gusto. La cortina esta
-     entera en pantalla hasta que `open()` pone `is-done` —medido en el
-     navegador, 1.234 ms a 1440 y 1.281 a 393— y de ahi se desvanece en
-     340 ms, asi que el nombre tiene que estar escrito y QUIETO bastante
-     antes de esos 1.234. El reposo minimo es 420 ms: dos palabras son
-     una fijacion de unos 250 ms, y como el ojo las ha ido leyendo
-     mientras se formaban basta esa fijacion mas el retroceso. Medido con
-     el nombre: 567 ms a 1440 y 583 a 393, o sea holgado.
-
-     ESPERA 200 ms antes de la primera letra: el campo verde tiene que
-     llegar a leerse como campo antes de que aparezca nada encima. Es la
-     mitad de los 430 del globo, porque alli los tres puntos rellenan la
-     espera y aqui no hay puntos.
-
-     PASO 30 + hasta 27 al azar, media 43,5 ms. AQUI ESTUVO 17 + 27, que
-     es exactamente la cadencia del globo de la pildora, y la razon para
-     copiarla era buena: la misma mano escribiendo en la misma pagina, y
-     dos cadencias distintas serian dos personas. Se rompe a proposito y
-     por orden —"un pelin mas despacio, como apple"—, y lo que la deja
-     romperse es el TAMANIO: el globo es un mensaje en mono a .74rem en
-     una esquina y esto son 30-58 px que llenan la pantalla. Una letra
-     ocho veces mayor tarda mas en leerse, asi que a la misma cadencia se
-     lee mas deprisa de lo que se puede seguir.
-     Diez caracteres a 43,5 ms salen en 435 ms tipicos y 509 en el peor
-     reparto realista —la desviacion de la suma es 24,6 ms, o sea 3
-     sigma—. Con la espera esta entero entre los 635 y los 709 ms, y el
-     navegador suma ~90 ms de redondeo de temporizador: medido, 678 a
-     1440 y 783 a 393.
-
-     MAS DESPACIO QUE ESTO NO CABE sin alargar la cortina, y la cortina
-     la paga cada visita. El saludo de Apple tarda dos o tres segundos,
-     pero es UN TRAZO manuscrito de cinco letras y no diez tecleadas:
-     para acercarse de verdad habria que subir los 1.150 ms del bucle de
-     carga, y eso ya no es un ajuste sino otra decision.
-
-     Y el azar no es adorno: a paso exacto suena a contador, y un
-     contador no firma. Aqui hubo ademas una nota sobre la pausa que NO
-     se hacia en la coma de «hey, welcome»; sin coma, sobra. Lo que
-     decia sigue valiendo por si algun dia vuelve a haber puntuacion:
-     los 120 ms de prosodia se comerian un cuarto del reposo, y el
-     reposo es lo que hace que esta pantalla se lea como corta. */
-  var SAL_ESPERA = 200, SAL_PASO = 30, SAL_AZAR = 27;
-  var loadN = load ? load.querySelector(".load__n") : null;
-  var loadB = loadN ? loadN.querySelector("b") : null;
-  var letras = [], iLetra = 0, tLetra = 0;
-
-  function acaba(){
-    clearTimeout(tLetra);
-    if (!letras.length) return;
-    for (var q = 0; q < letras.length; q++) {
-      letras[q].classList.add("ya");
-      letras[q].classList.remove("cur");
-    }
-    letras[letras.length - 1].classList.add("cur");
-    iLetra = letras.length;
-    loadB.classList.add("fin");   /* y con ella se va el cursor */
-  }
-
-  if (loadB && !reduce) {
-    (function(){
-      var txt = loadB.textContent, q;
-      loadB.textContent = "";
-      for (q = 0; q < txt.length; q++) {
-        var sp = document.createElement("span");
-        sp.textContent = txt.charAt(q);
-        loadB.appendChild(sp);
-        letras.push(sp);
-      }
-      tLetra = setTimeout(function paso(){
-        if (iLetra >= letras.length) { acaba(); return; }
-        if (iLetra) letras[iLetra - 1].classList.remove("cur");
-        letras[iLetra].classList.add("ya");
-        letras[iLetra].classList.add("cur");
-        iLetra++;
-        tLetra = setTimeout(paso, SAL_PASO + Math.random() * SAL_AZAR);
-      }, SAL_ESPERA);
-    })();
-  }
+     Y LAS CUENTAS DEL REPOSO DEJAN DE MANDAR. El bucle de carga sigue en
+     1.150 ms porque lo paga cada visita y no es lo que se ha pedido
+     cambiar; lo que se acaba es la atadura entre ese numero y el final
+     del tecleo —el nombre tenia que estar escrito y quieto 420 ms antes
+     de que la cortina se fuera—. Hoy lo esta desde el primer fotograma. */
 
   function open(){
     if (opened) return;
     opened = true;
-    acaba();                      /* si la pestana estaba al fondo, la frase va a medias */
     if (loadC) loadC.textContent = "100";
     if (loadFill) loadFill.style.transform = "scaleX(1)";
     body.classList.add("is-done");
