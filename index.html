@@ -788,7 +788,18 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    el resto del casco. Con una sola raya clara, como antes, sobre la
    bandera de Japón o sobre la cruz blanca del País Vasco no se veía nada
    y las banderas se leían pegadas por encima de la máscara en vez de por
-   debajo. Con las dos, la raya se lee sobre cualquier color. */
+   debajo. Con las dos, la raya se lee sobre cualquier color.
+
+   Y EL DIBUJO ES OTRO. Hasta ahora la superficie iba triangulada al azar
+   —una malla de Delaunay sobre 542 puntos sembrados con ruido, 1.505
+   aristas que no describían nada— y de cerca se leía como eso, ruido de
+   polígonos. Ahora es la MISMA construcción que la cáscara fantasma:
+   44 meridianos y 31 paralelos sobre un elipsoide proyectado en
+   perspectiva, con la cámara a la altura de sus ojos. Las dos son el
+   mismo objeto, una por fuera de su cara y otra sobre la chapa, y por
+   eso tienen que hablar el mismo idioma. El archivo se hornea además a
+   1,25 veces el cuadro y no a 0,75: con la línea fina, 696x801 era menos
+   de la mitad de los píxeles que tiene en pantalla y salía empastada. */
 .cowl__lines,.cowl__lines2{
   position:absolute; inset:0; z-index:2; pointer-events:none;
   -webkit-mask-image:url("ane-helmlines.png"); mask-image:url("ane-helmlines.png");
@@ -4234,7 +4245,18 @@ glob.Globo=Globo;
         ((cx - pw / 2) * pinE / Z).toFixed(1) + "px)";
 
       hNight.style.opacity = pinE.toFixed(3);
-      clip.style.setProperty("--wa", pinE.toFixed(3));
+      /* EL BLANCO VA POR DELANTE DEL VERDE, y es deliberado: si los dos suben
+         al mismo paso, a mitad de camino hay medio verde con medio blanco
+         encima y la mezcla es barro —1,76:1 sobre su cara—. El exponente
+         0,35 es lo que sube el contraste del peor fotograma a 2,44:1 sin
+         adelantar el canto del panel mas de un 8 % del recorrido. No se
+         sustituye por `min(1, pinE/k)`, que da el mismo contraste pero
+         satura: al saturar congela el interior del panel durante media
+         transicion y apaga la marquesina que se lee a traves de el.
+         (La reja del mapa de `#clip` va en `calc(.12 * var(--wa))`, asi que
+         se acelera con el blanco y los dos mapas siguen sumando 0,12 en todo
+         el recorrido: no hay que tocarla.) */
+      clip.style.setProperty("--wa", Math.pow(pinE, 0.35).toFixed(3));
 
       if (face && cutH) {
         /* La cabeza llena el 88 % del alto del panel. CAB_K vale 1,3307 y
