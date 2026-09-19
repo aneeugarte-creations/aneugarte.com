@@ -860,9 +860,29 @@ body.is-gone .hero__corner.intro{
   .hero__cliptopo{ display:none; }
   /* en flujo no hay borde de pantalla que se lo trague, así que el
      mismo tramo se recorta y se descuenta del hueco que deja */
+  /* CENTRADA DE VERDAD, no con `margin-inline:auto`. Su caja es mas
+     ancha que el hueco —el alto manda y la proporcion hace el resto—
+     y un margen automatico NO centra lo que desborda: se resuelve a
+     cero y todo el sobrante sale por un solo lado. Medido a 744 px de
+     ancho: la caja iba de x=37 a x=840, o sea 0 por la izquierda y
+     -96 por la derecha, y ahi es donde se veia una linea recta
+     vertical en el canto del jersey. Con left+translate el desborde
+     se reparte: -29,5 y -29,5, y la tinta que se pierde baja del
+     3,39 % al 1,45 %, que ademas cae en el jersey, que es lo que ya
+     se va por debajo del borde a proposito.
+     Se centra con `align-self`, que es lo unico que centra lo que
+     desborda sin cambiarle el tamano. Las otras dos salidas se
+     probaron y las dos fallan: quitar el margen automatico a secas la
+     deja ESTIRARSE al ancho de la columna —medido a 744, de 802,8 a
+     669,6 px, o sea recortandola por los dos lados, que es peor que el
+     defecto—; y `left:50%` con `translate:-50%` la centraria dos veces
+     el dia que la caja quepa entera.
+     No se toca --cutH: encogerla un 7,4 % para salvar ese 1,45 % es
+     mal cambio. */
   .hero__cutwrap{
     position:relative; bottom:auto; left:auto; translate:none;
-    flex:none; margin-inline:auto; margin-top:clamp(18px,3svh,38px);
+    flex:none; align-self:center; margin-inline:0;
+    margin-top:clamp(18px,3svh,38px);
   }
   .hero__corner{ text-align:center; }
 }
@@ -893,6 +913,17 @@ body.is-gone .hero__corner.intro{
   position:relative; z-index:3; overflow:hidden;
   color:var(--cream);
   padding-block:clamp(58px,11vh,124px) clamp(72px,15vh,168px);
+}
+/* EL VOLANTAZO TONAL TIENE QUE LLENAR LA PANTALLA. Por encima de 900
+   el verde lo pone el suelo fijo y dura dos pantallas y pico; por
+   debajo, .dk era un bloque normal con su relleno y nada mas, o sea
+   una FRANJA: medido, 0,75 pantallas a 744 y a 820, 0,79 a 834. Por
+   debajo del manifiesto volvia a asomar papel y el cambio de mundo
+   se leia como un recorte en vez de como un volantazo.
+   Es el mismo trato que ya tiene #contacto, y no toca el recorrido
+   clavado, que sigue siendo cosa de la rama de 900. */
+@media (max-width:899px){
+  .dk{ min-height:100svh; display:grid; align-content:center; }
 }
 /* El verde de la sección. En escritorio con JS se apaga: allí el verde
    lo pone el suelo fijo, que es el que sabe virar a papel. Si siguiera
@@ -1493,7 +1524,7 @@ body.js.in-mont .wm{
    se puede desplazar por ningún medio, y la sección entera desaparece de
    la página. Con el JS encendido y el CSS apagado, `montMax` sale 0 y se
    escribe `height:0px` en una sección cuyo contenido mide 3.975 px. */
-@media (min-width:900px) and (min-height:660px) and (min-aspect-ratio:1/1){
+@media (min-width:900px) and (min-height:630px) and (min-aspect-ratio:1/1){
   /* El carril nace 105svh POR ENCIMA del final del mensaje. El número no
      es de estilo, es de relevo: el mensaje empieza a aclarar el suelo a
      los 0,20 de SU recorrido —234 px de 1170— y el carril tiene que estar
@@ -3020,7 +3051,7 @@ glob.Globo=Globo;
      `.shot` desborda el escenario y corta las piezas. La condición es
      gemela de la `@media` del carril y las dos tienen que moverse juntas
      (ver el comentario largo que hay allí). */
-  var railOk  = window.matchMedia("(min-width: 900px) and (min-height: 660px) and (min-aspect-ratio: 1/1)");
+  var railOk  = window.matchMedia("(min-width: 900px) and (min-height: 630px) and (min-aspect-ratio: 1/1)");
 
   /* LA ESCALA A LA QUE SE DIBUJA LA PAGINA. Dentro del artifact vale 1
      y todo lo que sigue es inerte; publicada en el dominio, el visor se
