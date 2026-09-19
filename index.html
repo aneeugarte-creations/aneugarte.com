@@ -697,18 +697,39 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
      deja ver lo que tiene detrás. Ahora detrás sólo está el fondo
      topográfico, así que su base se disuelve en alfa —horneado en el
      archivo— y las curvas de nivel se ven a través de ella. */
+}
 
-  /* EL COLOR SE VA CON EL TAMAÑO, como en la referencia: cuando la cabeza
-     termina de entrar en el panel ya no tiene color. No es un tiempo
-     nuevo — cuelga del MISMO recorrido que la encoge y que cierra el
-     recorte, así que por construcción no se pueden desincronizar.
+/* LA SOMBRA VERDE, que entra con el tamaño.
 
-     Va sólo sobre la fotografía y no sobre `.hero__cut`, que es su caja:
-     ahí dentro vive también el casco, y el casco es la pieza de color de
-     esta página. Con la foto en gris, lo único que queda con color en el
-     panel son la firma y el casco — que es exactamente lo que la
-     referencia hace con su lima. */
-  filter:saturate(var(--bn,1));
+   AQUÍ HUBO UN `filter:saturate()` que le quitaba el color a la foto
+   hasta dejarla en blanco y negro, y estaba MAL MEDIDO. Medido después
+   sobre landonorris.com en vivo, en el fotograma del panel clavado: su
+   cara no está desaturada. Croma 32 en la mejilla, 40 en la barbilla y
+   39 en el labio, con el rojo entre 32 y 40 puntos por encima del azul
+   — eso es piel cálida a todo color. Lo gris de aquella captura es el
+   FONDO de su fotografía, no su fotografía.
+
+   Y ese fondo, rgb(161,162,158), no es un gris neutro: es su propio
+   verde rgb(40,44,32) aclarado hacia el blanco. La proporción sale
+   IDÉNTICA en los tres canales —0,563, 0,559 y 0,565—, así que no es
+   una casualidad del muestreo: está construido así. De ahí el 0,438 de
+   abajo, que es lo que queda de verde: 1 − 0,562.
+
+   Va enmascarada por el propio retrato y no como un rectángulo: la foto
+   está recortada en alfa y lo que hay alrededor es el papel del panel,
+   así que un rectángulo verde pintaría el panel entero y no una sombra
+   sobre ella. Con la máscara, el verde cae exactamente sobre su tinta y
+   respeta el desvanecido de sus hombros.
+
+   Y va DEBAJO del casco —está antes en el HTML— por lo mismo que antes:
+   el casco es la pieza de color de esta página y no se tiñe. */
+.face__som{
+  position:absolute; inset:0; pointer-events:none;
+  background:var(--night);
+  -webkit-mask-image:url("ane-cut.webp"); mask-image:url("ane-cut.webp");
+  -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  opacity:calc(var(--som,0) * .438);
 }
 
 /* El antifaz. Es la silueta de su cabeza con dos lentes recortadas, así
@@ -2549,6 +2570,7 @@ body.is-live .rise > i{ transform:none; }
       <figure class="hero__cut" id="face" data-cursor="Open me">
         <img class="face__img" src="ane-cut.webp" width="928" height="1069"
              alt="Cut-out portrait of Ane Ugarte." fetchpriority="high">
+        <div class="face__som" aria-hidden="true"></div>
         <div class="ghost" aria-hidden="true"></div>
         <div class="scan" aria-hidden="true"></div>
 
@@ -3464,7 +3486,7 @@ body.is-live .rise > i{ transform:none; }
       clip.style.removeProperty("--wa");
       hNight.style.opacity = "";
       hNight.style.backgroundColor = "";
-      if (face) face.style.removeProperty("--bn");
+      if (face) face.style.removeProperty("--som");
       if (nightTp) nightTp.style.opacity = "";
       if (face) face.style.transform = "";
       for (var q = 0; q < corners.length; q++) corners[q].style.removeProperty("--cop");
@@ -3670,14 +3692,13 @@ body.is-live .rise > i{ transform:none; }
          el recorrido: no hay que tocarla.) */
       clip.style.setProperty("--wa", Math.pow(pinE, 0.35).toFixed(3));
 
-      /* El color de la foto, que se va con el tamaño. SIN CURVA PROPIA:
-         es `1 - pinE` a pelo, el mismo recorrido que encoge la foto y
-         cierra el recorte, sin exponente. Se probó adelantarlo con uno y
-         no hay nada que corregir: el recorte termina exactamente en
-         `pinE` = 1, no antes, así que un adelanto sería un número sin
-         motivo — y en esta página los números sin motivo son los que
-         acaban contradiciendo a su propio comentario. */
-      if (face) face.style.setProperty("--bn", (1 - pinE).toFixed(3));
+      /* La sombra verde, que entra con el tamaño. SIN CURVA PROPIA: es
+         `pinE` a pelo, el mismo recorrido que encoge la foto y cierra el
+         recorte, sin exponente. Se probó adelantarlo con uno y no hay
+         nada que corregir: el recorte termina exactamente en `pinE` = 1,
+         no antes, así que un adelanto sería un número sin motivo. La
+         fuerza —el 0,438— vive en el CSS, con la medida que la explica. */
+      if (face) face.style.setProperty("--som", pinE.toFixed(3));
 
       if (face && cutH) {
         /* La cabeza llena el 88 % del alto del panel. CAB_K vale 1,3307 y
