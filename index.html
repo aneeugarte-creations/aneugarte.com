@@ -429,6 +429,8 @@ body.on-dark .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0,0
 @media (max-width:620px){ .chat{ top:calc(env(safe-area-inset-top,0px) + var(--gutter) + 32px); } }
 @media (prefers-reduced-motion:reduce){
   .chat__dots i,.chat__t::after{ animation:none !important; }
+  /* ni entra deslizandose ni encogido: solo se enciende */
+  .chat{ transform:none !important; transition:opacity .12s linear !important; }
 }
 /* EN EL TELÉFONO DEJA DE FLOTAR. Medido a 390 px: entre el 19 % y el
    85 % de la primera pantalla su figura pasa por debajo de esta esquina,
@@ -745,90 +747,28 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
 }
-/* El cristal. La cáscara ya no va calada: los visores son macizos y
-   encima va este vidrio, así que con el casco puesto no se le ven los
-   ojos. En reposo el casco no está (opacidad cero) y su cara se ve
-   entera; el cristal aparece con él.
+/* AQUÍ VIVÍAN LOS TRES HUECOS Y LA TIERRA, y se han ido los cuatro a la
+   vez porque eran una sola idea: «va a quedar mucho más sutil si quitamos
+   la tierra y dejamos lo verde sin boca ni ojos».
 
-   No es negro plano —eso sería un agujero— sino un negro con una luz
-   que entra por arriba a la izquierda, en el mismo sentido que el resto
-   del casco: es lo único que distingue un cristal de un hueco. */
-.cowl__glass{
-  position:absolute; inset:0;
-  background:#0A0D0B;
-  -webkit-mask-image:url("ane-glass.png"); mask-image:url("ane-glass.png");
-  -webkit-mask-size:100% 100%; mask-size:100% 100%;
-  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-}
-/* AQUÍ VIVÍA EL BRILLO DEL VIDRIO, y era EL rayo azul. Un reflejo en
-   #C7D3CC al 40 % calculado en el eje de cada visor: medido sobre su
-   máscara, cubría el 34 % del ojo izquierdo y el 28 % del derecho —con
-   picos de 0,65 de alfa— y el 0 % de la boca. Esa es exactamente la
-   diferencia que se veía entre los ojos y la boca, y por eso pedirle a
-   los ojos «que sean como la boca» era pedir que se fuera esto.
+   Lo que se ha ido: .cowl__glass (el cristal negro de las dos lentes),
+   .cowl__cosmos (el cielo estrellado que se veía por los tres huecos),
+   .cowl__dark (el canto hundido del cristal) y .cowl__globo (la esfera,
+   con sus 99 kB de geometría de Natural Earth y su clase Globo). Con
+   ellas se fue .cowl__skin, que existía sólo para recortarlas.
 
-   Estaba para que la lente se leyera como cristal y no como un boquete.
-   Ya no hace falta: el cielo del interior le da fondo, y el canto
-   hundido (ane-darkrim.png) más el filete la siguen dejando encastrada
-   en la placa — que es lo mismo que sostiene a la boca, que nunca tuvo
-   brillo. El archivo ane-gleam.png se queda publicado: devolverlo es
-   este bloque y su <div>. */
-/* EL UNIVERSO DE DENTRO. Por los visores y por la boca ya no se ve un
-   negro plano —eso se leía como tres agujeros recortados en la placa—
-   sino cielo. Es lo que le da FONDO a la máscara: deja de ser una chapa
-   maciza y pasa a tener algo detrás.
+   NO se han borrado los archivos: ane-glass.png, ane-void.png,
+   ane-darkrim.png, ane-dark.png y ane-gleam.png siguen publicados y
+   siguen generándose. Son el calco de sus referencias —la lente está
+   medida sobre dos fotos de la máscara de Spider-Man— y recuperarlas
+   tiene que costar una línea, no volver a medir nada. El interruptor
+   está en helmet.py: HUECOS.
 
-   Va justo encima del cristal y DEBAJO del brillo, así que el reflejo
-   del vidrio sigue pasando por delante de las estrellas, que es lo único
-   que distingue un cristal de un boquete. Y debajo también de la sombra
-   horneada del casco: medido, eso apaga el cielo un 6 % en los ojos y un
-   21 % en la boca, y está bien que así sea — la boca cae en la sombra
-   del mentón y sus estrellas tienen que notarlo. */
-.cowl__cosmos{
-  position:absolute; inset:0; width:100%; height:100%;
-  -webkit-mask-image:url("ane-void.png"); mask-image:url("ane-void.png");
-  -webkit-mask-size:100% 100%; mask-size:100% 100%;
-  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  /* enciende un poco después que la placa: primero aparece el visor
-     negro y luego se le enciende el cielo dentro */
-  opacity:clamp(0,calc((var(--rev,0) - .12) * 3.4),1);
-}
-
-/* Lo hundido: el canto del cristal. Ese canto
-   monta a los dos lados del borde —un poco por dentro del vidrio y un
-   poco por fuera— y es lo que hace que el cristal se lea ENCASTRADO en
-   la placa y no pegado encima. */
-.cowl__dark{
-  position:absolute; inset:0; background:#0A0C09;
-  /* La boca se ha ido de esta capa a ane-darkrim.png: aquí ya sólo queda
-     el canto del cristal. La boca no puede seguir pintándose de negro
-     plano encima, porque es por donde ahora se ve el cielo. */
-  -webkit-mask-image:url("ane-darkrim.png"); mask-image:url("ane-darkrim.png");
-  -webkit-mask-size:100% 100%; mask-size:100% 100%;
-  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-}
-/* El filete: hoy SÓLO el canto de la placa, y a 0,5 px.
-
-   Cercaba también cada ojo y la boca, y con la placa verde ese cerco
-   había pasado a pintarse claro para devolverle contraste al reborde
-   negro —de 2,0-3,0 a 8,15, medido sobre la página con el casco abierto
-   y no sobre la hoja de estilos—. Ella lo vio y lo dijo en una línea:
-   demasiado contraste. Así que el cerco se va.
-
-   Lo que eso cuesta, escrito para que no se vuelva a descubrir dentro
-   de seis meses: el reborde negro que pidió «más gordo y negro» se
-   queda otra vez en 2,0-3,0 contra lo que de verdad lo rodea, que es el
-   globo y no la placa. Y contra esta placa NO se puede arreglar con más
-   negro: el tope absoluto, con negro puro, es 2,69. Para que el negro
-   diera los 7,67 de antes la placa tendría que estar en luminancia
-   0,3601, y el oro viejo estaba en 0,3600 — o sea que aquel 7,67 no era
-   un umbral de legibilidad, era el resultado de aquel oro.
-
-   El canto que queda va a 0,5 px y no a 2,4: a 2,4 era un reborde, no
-   un canto. Es la junta entre la placa y la carcasa, y hace falta
-   porque el escalón de tono entre las dos ya no existe: están a 2,36 y
-   el mínimo con el que se diseñaron era 2,6, imposible con la placa en
-   0,084. Las dos piezas se separan por la junta, no por el color. */
+   Lo que SÍ hubo que rehornear son los tres dibujos que esquivaban los
+   huecos —la malla y las costuras (ane-helmlines.png), las facetas de la
+   luz (ane-lit / ane-shade) y el alámbrico del fantasma (ane-dome.png)—:
+   si no, la chapa se quedaba con tres calvas lisas por donde no cruza
+   ninguna línea y los huecos se seguían viendo, en negativo. */
 .cowl__rim{
   position:absolute; inset:0;
   background:linear-gradient(158deg,#F4F1E4,#D8D3C0 58%,#A8A492);
@@ -866,15 +806,6 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
   -webkit-mask-position:0.22% 0.26%; mask-position:0.22% 0.26%;
 }
 
-/* La piel del casco: todo lo pintado vive aquí dentro, recortado por la
-   forma del casco. Es lo que permite que una bandera grande se salga por
-   el canto sin flotar fuera. Encima de esta capa van las aberturas. */
-.cowl__skin{
-  position:absolute; inset:0;
-  -webkit-mask-image:url("ane-helm.png"); mask-image:url("ane-helm.png");
-  -webkit-mask-size:100% 100%; mask-size:100% 100%;
-  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-}
 /* Una sola luz para todo el casco: oro, latón, cristal y banderas reciben
    el mismo foco por arriba a la izquierda y la misma sombra en el canto.
    Va horneada, no en degradado de CSS: un degradado sobre el cuadro entero
@@ -892,48 +823,6 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
 .cowl__shade{
   background:#150D02; opacity:.52;
   -webkit-mask-image:url("ane-shade.png"); mask-image:url("ane-shade.png");
-}
-
-/* --- la librea: EL MUNDO -------------------------------------
-   Catorce banderas eran catorce calcas; esto es un solo objeto. Va dentro
-   de .cowl__skin, o sea recortado por la forma del casco y POR DEBAJO de
-   los ojos, la boca, el filete y las rayas — igual que estaban las
-   banderas. Y por debajo también de .cowl__lit y .cowl__shade, así que la
-   esfera recibe exactamente la misma luz que el oro que la rodea: por eso
-   se lee incrustada en la placa y no pegada encima de ella.
-
-   El dibujo entero va en el lienzo: costa, países y sus trece salen de
-   geometría real (Natural Earth a 50 m, simplificada sobre la esfera hasta
-   6,7 km) y se proyectan en ortográfica, que es exactamente cómo se ve una
-   bola desde lejos. No es un mapa plano con una sombra redonda encima.
-
-   Y CADA PAÍS VA DEL COLOR DE CÓMO ESTÁ. No de lo que ha cambiado: un
-   cambio se lee como una historia, con su antes y su después, y esto no es
-   una historia — es cuánto por encima de su propio normal está cada país
-   AHORA MISMO. El normal es el de la propia fuente, la media de 1991-2020,
-   y la foto son los últimos cinco años cerrados, 2021-2025. Del mismo tono
-   que tenía la tierra al rojo oscuro. Islandia abre en -0,04 °C y
-   Tayikistán cierra en 1,48; España está en 0,85.
-
-   Cinco años y no uno por una cifra medida: el salto típico de un país de
-   un año al siguiente es 0,32 °C. Eso es el tiempo que hizo, no el clima
-   que hay, y con un solo año el mapa pinta ruido. Con cinco, ese ruido se
-   divide por más de dos y lo que queda es el estado.
-
-   Los datos son ERA5 de Copernicus, sólo tierra, ponderados por latitud,
-   vía Our World in Data.
-
-   Se queda CORTO a propósito y por dos sitios. Uno: el normal de 1991-2020
-   ya estaba cerca de un grado por encima de la era preindustrial, así que
-   a lo pintado hay que sumarle eso. Dos: los países de muy poca tierra se
-   quedan fuera —el propio Copernicus avisa de que a 0,25° su método no
-   funciona bien ahí—, y son justamente las islas del Pacífico, que si no
-   saldrían entre las más frías del mapa.
-
-   No lleva leyenda, ni rótulo, ni pie. Quien se pare lo verá. */
-.cowl__globo{
-  position:absolute; inset:0; width:100%; height:100%;
-  opacity:clamp(0,calc((var(--rev,0) - .06) * 2.6),.94);
 }
 
 /* Las esquinas. En pantalla ancha flotan sobre ella; en vertical
@@ -1004,7 +893,8 @@ body.is-gone .hero__corner.intro{
        hay JS, y es exactamente (0,5 - 0,4547) * 928/1069. */
     translate:calc(var(--cutH) * var(--cabdx,0.03932)) 0;
     flex:none; align-self:center; margin-inline:0;
-    margin-top:clamp(18px,3svh,38px);
+    margin-top:auto;                                 /* al fondo */
+    margin-bottom:calc(-1 * max(24px,2.5svh));       /* y un poco mas */
   }
   .hero__corner{ text-align:center; }
 }
@@ -2292,10 +2182,21 @@ body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0
   /* el hueco que se ve mientras el cuadro carga: sobre el verde, el gris
      claro de antes era un rectángulo encendido en mitad de la noche */
   margin:0; overflow:hidden; background:var(--night-2);
+  position:relative;
   aspect-ratio:1400/895;
   width:min(100%, calc(clamp(190px,36svh,560px) * 1.564));
 }
-.lk__fig img{ display:block; width:100%; height:100%; object-fit:cover; }
+/* El cuadro a 24 px, desenfocado. Va en un `::before` y no en el fondo del
+   elemento porque hace falta el `filter`, y un filtro en el elemento
+   desenfocaria tambien la imagen de verdad cuando llegue. El `scale(1.08)`
+   es para que el desenfoque no deje los bordes transparentes. */
+.lk__fig::before{
+  content:""; position:absolute; inset:0; z-index:0;
+  background:url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD/4QBMRXhpZgAATU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAGKADAAQAAAABAAAADwAAAAD/7QA4UGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAAAA4QklNBCUAAAAAABDUHYzZjwCyBOmACZjs+EJ+/8AAEQgADwAYAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/bAEMABAQEBAQECAQECAsICAgLDwsLCwsPEg8PDw8PEhYSEhISEhIWFhYWFhYWFhsbGxsbGx8fHx8fIyMjIyMjIyMjI//bAEMBBQYGCQgJDwgIDyQZFBkkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJP/dAAQAAv/aAAwDAQACEQMRAD8A818I+JNFvTi+VCwTcCo5U4yBgjvXtPhvX9ItrhY/s0RVv4pMKee3SvlfQ20+Mm5uFWF0j4aMHAP0/rXVXmrWy6HJLNO0kiElA4J3E45yOQRjivJlV5XypaG8cPK11I+i/F2uaHfWslpbQIwA5MYHp9K8i2aZ/wA+7f8AfK15slxf65Zm50liJuFePJXjHUE8dvrVD+yfF39xv+/i/wDxVRd9WkRJTuf/2Q==") center/cover no-repeat;
+  filter:blur(14px); transform:scale(1.08);
+}
+.lk__fig img{ display:block; width:100%; height:100%; object-fit:cover;
+  position:relative; z-index:1; }
 .lk__row{
   display:flex; align-items:baseline; gap:16px; padding-block:15px;
   transition:padding .35s var(--ease);
@@ -2420,9 +2321,10 @@ body.is-live .rise > i{ transform:none; }
   <span class="wm__a">Ane</span><span class="wm__b">Ugarte</span>
 </a>
 <a class="pill" href="mailto:aneeugarte@gmail.com?subject=Hello%20Ane&amp;body=Hey%20Ane%2C%0D%0A%0D%0AI%20would%20like%20to%20"><span class="pill__t" id="pillT">Hello.</span></a>
-<div class="chat" id="chat" aria-hidden="true">
-  <span class="chat__who">Ane</span>
-  <span class="chat__b"><span class="chat__dots"><i></i><i></i><i></i></span><span class="chat__t" id="chatT"></span></span>
+<div class="chat" id="chat">
+  <span class="chat__who" aria-hidden="true">Ane</span>
+  <span class="chat__b" aria-hidden="true"><span class="chat__dots"><i></i><i></i><i></i></span><span class="chat__t" id="chatT"></span></span>
+  <span class="sr" id="chatSr" role="status"></span>
 </div>
 
 <main id="top">
@@ -2464,24 +2366,6 @@ body.is-live .rise > i{ transform:none; }
         <div class="cowl" aria-hidden="true">
           <div class="cowl__fill"></div>
           <div class="cowl__plate"></div>
-          <!-- EL MUNDO. Ocupaba esto un mosaico de catorce banderas; ahora
-               hay una esfera de verdad. La cúpula del casco ya era media
-               bola, así que el globo no está pegado encima: está metido
-               dentro, y recibe la misma luz horneada que el metal.
-
-               El lienzo va DENTRO de .cowl__skin, no en su lugar: esa capa
-               es la que lo recorta con la forma del casco. Quitándola, su
-               cierre quedaba suelto y cerraba .cowl antes de tiempo: los
-               ojos, la boca y el filete se salían del casco y se veían con
-               él a opacidad cero. -->
-          <div class="cowl__skin">
-            <canvas class="cowl__globo" id="globo"></canvas>
-          </div>
-
-          <div class="cowl__glass"></div>
-          <canvas class="cowl__cosmos" id="cosmos"></canvas>
-
-          <div class="cowl__dark"></div>
           <div class="cowl__rim"></div>
           <div class="cowl__lit"></div>
           <div class="cowl__shade"></div>
@@ -2913,212 +2797,6 @@ body.is-live .rise > i{ transform:none; }
 
 </main>
 
-<!-- La geometría del mundo: Natural Earth a 50 m, simplificada sobre la
-     ESFERA (no en lat/lon, que aplana los polos y dentella el trópico)
-     hasta 6,7 km, y codificada en deltas de base 64. El mundo entero en
-     81 KB: 16.153 puntos de costa, 478 anillos de frontera y sus trece
-     países. Todos los anillos vienen recorridos con su relleno a la
-     izquierda; de eso depende el recorte del hemisferio. -->
-<script>
-var MUNDO={q:45.5111,
- costa:"gBggQ/tBnBH1BTNNTCHPIBKPcISQUHuBGAUhBTAKoBqB;wXo3M/hBbMBuBLcNMEMNEZVRlDHIRhBALWXbRCbNxBKfFdKzBf/DpB3CbRrBHnCiBVoBjCQxBsB/BgBTAFSlBKHQjCsBFOsB4BGUB6BiBOOHOUFUmBoBFKPCPYHARTGLFLPCFUbBUkB/BjBRCZUdHtBWhCKTcXJfaPHRMNJYPkBBSNDjBIHRAJPNKRH3BANUFJRDALNBARVMATTBHRNHBPKNlBZLjBdlBePJHYPTBAZPSRGDZNarBKlBZIVJGFJK4BhC+BxBaLDANTRNMNNFQLCELHjBLJFMNDEWHCDTjBVGTMFBJbKRNGNOAALhBQLTLADXKTKOEDFVPBAPiBJrBCXMPLLSLBCRLHkBlBDRVIDrBzBiDXfpBfJlBSxBtBhBtBrCdZhEnBpBEfXzBJnCf/BG9BhBxBpBjCdfvBTLA0BBIJFdjCKZDtBXnBFzBoChEAlBLJHGLcLJBaXWDJSjBYTBPJHNCTsBDNLEuCpDMhC+B/CUhE6BlDBpEdnBhBMCjCyBPoBhBwBPgDJyBKmCuByBKmBkBsEO8BFIJ6BKmBJcGgBeiB0BwBMqD2B+DEqF2ByEGgBK2BTsBbyBGqBVoBB0BdARLAGVMPcDQLKZefU3BTIHHSFcZOGQJFewB4BqCkBSoBgBiBAWStBLJGhBnB1BHjChBALdqCKkB4CkB1BCXd1BeBmCYAVJIRDkCnCMbFzB2B7B6BPkBZQBMKiCJkDnBmD4BXGsBWWRTVRAWNeYSBGLNNkBLOTUCWZGcLDJO6BG8CkCkBIuDGqBWC+BW8CgB4BWUGuBiBqBJCOIAgBOEiB6BgBMBIeWIkBUWQgBIwCW+BG2BYoBD4BnB+CDyCIePOHkBXURkBbUbqB9BgBbcPgDHCDPpBkBLLEVNOLDVuCXqBtBwBEKOALS7CuBdkBZBjCmBHOEabYI6BRiCPEbqBCgBR2BCwB5BoBPYtBTRKT4BEaRqCZeGgB;Uk7PtxBHGhBFdNVdGT6BPgCQFoBbY;YizOx5BNGMbkCpCsE3CcJSEBW1DqCpBuBjCsBVE;6BqrLuCFOgBeAgBLMOiBjBfT/BSZHVQdBvBiBpBiBRpB8BHyBKOyCVRMHSfQEOkBUAsBpBPFVRLHRNC;oB6kG1rENIIOFUTRCtCaQ4CPMQXFTOkBIUHQWVMlCRLIWGFMjBL;Oo0FylHsDEwCQ5BY/BRnELmCN;O8kF8jHoBSuCElCK/DCWd6BD;SpoC4pGjBKpCN5CClBlBiEGkBJqCSBa;UsmOraJDBNSZsCPQGRaXOjBATO;kB2tKgYmDqCgBuBAOmBOQYcQNoBCiBDCRhBHrBjDnDVHvBvBLXAHIG;au8KihBpBYJBQTNtDqCkBEOccEWXHEIJGdC;gBo+K6ZQSNeAYmB0CFMVGZJNhBClBhBLFLOdcPMXMC;esiLogBZOOzBUEGHE/BWLDeOPMKJeNOCmBHQfD;eokL0jB1CECNMXyBjBFZcdiBAKHNQHiBBgBGWTMFS;Wq3KqmBZEFJcVY7BeZOIMeAuBdatBE;Y07N/SLchBUhBwBfQCrBoBhBCTMRiBLSGEK;ckzNvNOkBJW5CuCpCiBjBcALFDcHuDjCkBxBGtBORII;SiqMxXWUUiBTcrBFTJlBrC6BBWM;mBixLjIXGbNPKpCBbhBCXUekBZgBU2BTEMeA4CxBGcboBPMjBCVK;S8oL5InCABdsBfkBCaMCOTcNG;qBo9KvYUaBQLGHJOBFHvBdfQvBJrCehCPFZINUImBDsBLcCIKUHoDa;as1K1aFINH3BATLINyBJ8BpBQDYGMQDIlC0B;yBqwK1XJShBBGRmBVXLPCTalBEdNDrBaHoBI+BQSOEPkBCHIIEWBGGTgBRJJMhBD;U4rKvYIabMfVCbTDiBLgBEFGKS;UsoKlXZITLpBCMRoBRIZSWiBSXY;e0tJ3ELQRDARLUJFHVVT6BLU7B+BVFQSenBKdoC;UqgC4mFjCLCTcJRTiBagBA2BUfOfC;au9By/G7DJgEzBhCpBgFKLb2GuBhFUeQpBI9BBXgBnBC;Q6wF+lHzBG1FHGhB4BEoCF8CSIU;Q+mEgmHlHVgDDQLuEe6CLVQ7CE;YgvEmmH9CJNbrDCxDTgBLyCGNNwDGPSoIehEW;UgvE6kG/CehBBvBTMrBqBDiCKqBYMHEO;Q+rF+mG/DwBvBNoBlByBBMNqCAAU;MgpG+vG4CG9BgB1CNEd4BG;K0nI2iHmDUpHKOR2DL;MwiK0zG1DORRhBA0DX2Bc;KkxMwyGCWtCAUd4BI;kB8jCilDLMFNHCCXuCJYFIN8DIOavBRFWXDjCKhBFVMGKbF;a0iC6uDNGjBPiBDkBfkBFQXeNEObINoB1BOJO;YgiDolDrCV9BEFTzBHCLMTyBPgCmBgBAJcuBc;Uo2BwkFPIfHlBZBXQRLNmCqBJcYM;gB4jB2+EAafEfNDXRYbTdBcvBgBAUlBQEEiBeIRQgBe;Moem+ElCHMfoBLgBINsB;U+ImxDGQbFvBdMHSGIPaFkBkBdI;U92K5xGnHIVPiCJThB0BF0DGCQgCQZU;cpnLtwG1CBElB6BEKL+DhBoDFPmBrBIjBHnCCDI0BE/CkB;Mn8F3jH+BKHSlBM5EKqExB;exkFl2FCWnBJPRcCKNXFIFWGEHUKkBFGYVMhBH;Q1zFr3FFOVEnClBwBNyCYnBAKK;UzxG9oG/BGRTfSXPpDJDRqGO8BSNI;Mp1GpmG9BNLP4CLkBWxBU;oB/2IxsGvBOvDZhBUtFNPHaJmFHiFZ4GBDMuBEBe9DNuCejCEpBdVc1BVIS;YvzG9vGCQ9CKhBFqBP3BARHSP4DZUObQcQ;UrhG9/FVKwBUXKaeNI1BV/B1BcbsCa;O58P0rGlDDAxB2BFsFW3BajCM;oBrnF5xEXTERtBVHTYPEMaCLOyBHDOyCcPEOGPMXBBNVIIOlBG;YxpD55EXI5BBkBDBJkCPqCvBaKvBuBdBDOlBE;a7xGp7DEScUfgBcKFOKMHatBKPhDPhBYJeA;avrFryEZKeZdHeD/BZYLeEKOeC4BsBHMxCJ;kB5zG5rEHkBfCDTXRMJjBHQNDLPCBPsBFIeWKNbKZQAMuC;OzvGr/DUYnBQVbGLOHWI;Q5vF0rEKEJO/CmBzDWfFkE7BwDL;oB5tF2iE4BeOqBFYpBRxB5BDnBQN4BCsCgBDUfCFMnBfYAXTdDCQQKVD;c1nPg1FZGHTSLmCI+CbOPcU2BEGItCGjCchCHlBE;Ux4O4rFdAhBN1BBaR6CVGIuBGNkBjBG;W/wOs8EdG9BLjBbGPgBAaQ2BCUKaFjBc;e37Gw0B3BGpBPELWDaZkBDOLIQQDIMeJeENWxCc;Sj8Fu0B7CGJLINBTwDBgBYBOtBE;0B9yNwkFGGdGDPXFhBMQxBnBgBxBTetBOGRKMEUBFJcBVTkBQJKgDaXOyBDQKXMGMrBA;axxNgmFlBGGNRClBRqBJeQaBEKOHMOdIJD;Ux0L69EBWVUhBJTlBGVeWCLUFUY;yB97LogFERTPiBGMJPLXA8BRGRNFeZOIIPsBVIuBVAEKVOTAKKgBJnBmBrBSJUhBC;Ur7LkiFrBGLDuBzBeEPeaRIEDYhBG;Y9/LkjFpBQhBVAXgBUYTLRoBLHPabGuBf6B;Uh/LulFXQoBtCLZKN4BcjB+BsBjBlBuBnBC;gBhiM2lFhBDDJPMVX8BvBUBKW6BPDWfEgBECSjBKXLJY;S1tLy2EFQjBQNZadOIGpBOUDmB;ep5L+5EjBEDdWdmBNbDkBJiBKcsCrBJDffBiBcLMfC;e32Lq3EnCFkBLJFIN2C3BIMRAGMPANOMMtBQeEJY;oBv1FmkEZcKajBlBWDCPgBBMPmBFWOHHQJLDsBJAWuBULG3CFxBMLH;UnuGy0DWQfN1CHbLNR6DSoCa3BNAG;4BkwNnMdKI9BfHlBrBhCFJSIWFGLnBLFrBFzCKHRmCnBaCYRqCCmCgBagBgBASKGINaiBYEqBZMRH;gBiqL9XdKdNrCB3BPZbzClBXVJfKJJPYH0BS4CwCkDgBoCuB;0Cy8M/zDdKFbKlBsB3BAPIESTFLXYa/BkBfeBTFGPuBEcJUeHMWFGoBOVKQWHNHEJIHOEI0CQaMVL8DVGHHXCNNpBANPJIlBF9CkBVB;YyyI0mHhCS5BA/GjBJJ8BC9EnBiGfsKYXYsCW5Dc;mB61IgkH5GLZGtF1BoDHoCfwBEYJuHR+CEsBMvCe6BCiBqBlCW/BC1CZiBYfM;iB0kJuhHQG5BKNP7BI/F7D2BAmDUwEByFO0BQPc9BG7BYtCHvBTqBmB;4BsuM23GnDiB/BH5BNMRnBBCjBdBoDvB8CL0Bc2BL8EOsBP8BOzCmBKc4BCRhBoBTsCH6DsB3EgB7CArDYtBPNdlCS;Uu0MmyGjDBrBbzCLKHwCK0CNqFFJepDe;YyhNs2GfSbhBkGjB2DBgDQQSZDnBKnECPQzED;qE8sPrjDbkBGKdBsBzBFPYbWSTV+BrCIGXmBMTgBJAhBRKanBcAMNRLLMehCLHRvCRPxBPHPQRiDnBOPIPHdvB7BKDKKCRaAOR8BkBuCgDYsBNMMeoBOYDMLGwBaOYwCvBMhCnBpDgBdyCJATYFHO5BNAHSzBOGyBjBuBQAVyBRFBQ5BSBIPH;2FusPt1DLoBZQCMUCbAhBVblCpBXP7BZVBRDQVbFGLDIHNENFIFNClBhB7BVCNLG1BP3BpBGPLGbPAPFMTLGLTDAHSFJBCJZKGJPDBHYCRJUFvBLALWIHNaGRV6BDQKcTeASV4CBgBGiC4BgBGFSmB6BLMOAI6B2CiBLSWNSMIDFFyBDCSXGLQNBSKJI2BaiDwDRIGIHMcedLYUbCRXOerCf;wDumLwaLSlBWEjCbCFNXILjBdCTfjBRGkBPQVIjBXLZ9BRbjCEVQBqBqCQDGPMAKOINULIkBQCcNWXTlBI1BMNiChBIASSCbKNciBFsBTUc2BMGiB9CAyBWOOWBmBLOCiBHaTKOgBJePE;kEu4K+0BrBJVtCGXLhCGxBRFdaFFc/DQFQdOCAkBgBTBNbbCjBUIWRYDOSYI2BlBWdGURsBKC0BpBOjBcLeAFTQLIqBfICOXiBYGAMtBUBTPHPoBbMnBPINFFbILONmBGOZ0BSgBAYyBYiB0CJGXsBEkBMYFMJCJNRBjCc;0J07LhC3BcdGjBJbVxBNFbRXaE6BPKnBYV8BB4COLPKBAHNFDNtBQrBfrBKXJEFeJmBdKXJNUhBYCOQMsBMEEYMELRBTafQCMN4BCPBDLwBhBoCF6BZ8BLmCvBCVYELLQDHJMjBoBtBXHWReDlBFedVzBIJcaOTyBIQQJXmD9CkDGmBPiCiBASXabMdBNQJAMCQNkDMHScBAIKBZsBsBZaIIKgBFKPgDZ2BtCeJBRILkC9B0FZYTcHeMRUSBSIrBErBQJUWKjCSFqB3BBLgBROLoBtC6BbyBAIQK+BCAkBjBehBG1DuBC0BnBoBVE3BwBjBCzBiB1CU7D0BnBCLQrCIrFuClCfEPJH9BNLdlCjCnBANMDcNDFmBNFBVXwBH2BOgBPgBEONKtBC;6FojL6CgBuBHOPEhBbFN3BhBtCITJlBQrCGRQbGTFXjBRALKhBvBHRERLLKlCLQRTRtBAvBTxBbVI9BMLqBCOvBBrBVnCSZOHWKsBANoBMwBDwBGiBPmCkBaUCQJAlBNfiCzBLrBKRoBFIa2BMAGODBeNBnBqBOmBJcTObuBRITaaBUSkBM6B8BsBJGWFKRIfHGH3BAbPjBIlBtBrBBNeZOPeDgBQqBOQWImBH2FEYNsBB+BOqBwB;6CuxJhRdITRjCSTRHfLANdJMJFBJgCB0BRJPELsCJ0CbWBaMyBDkCP0BXyCNqDJ0BM6DrBRgBC4BfQzBJrBGTKAYLGJcpBCxBWfBTWLCjBvB/EOfuB7BGZU;kEuyI8OfGjBapBCFdatB2C1CwBVmB3BSJKtByCrB0BpEuBb6BvCyBjDEb+BzCyBnBmBxB0DzCoCrCGCDiBoBTaQkBXMqCDuCIeHUSuBpB4BPKnBAbTAOSgBdYNoC7BOXcGKJKCOgBWJWdUnBTfFqBSGGLQxBQhB4BVQbGlB0BTBGZhBWnC6ChEyCFe/BoC/CC;mIosKiTCWHEtC9DNFLGPROTNTjBFBMzBhBlBHHd1ChDlElBFhBVAGVVzBSNvCcrBEVYVHbnBFXMCPJFfEnBcdJpBWRHRkBJadGVHfOLO3CcGMJSKFHKHmBMYBGGMNEtBmBWeHOISMGWcbaGIXiBQOHKMATKBGIQnCyD0BcsBJMQIAgBSECIBURGKIAYNAsBqBBYQP6BqBHoBG0BUsBUOFUaTgBFoBQrD+CYaXoBNIGELEEMXMAWbSkBAGKKJOGZoBSUeJwBMCMhBeGOmBBqBMKKAO7BWVShBHDGSILQrBNMKEgBFOdQFYHCTbLDCI;yC4gG84GoDeEMpBUrCIhJ5BnELhFEVT9BC9DVrCPnBdlCAXVxBITF+BPxCdyBLnCF/BpBvCRwBlBgCKiENwBG2BaVQqBFAWuCUHauBBSSoBFGMkCOTKiDcoS0C;8Bs9EwwGvBIrERKXnCLeLVdlBR7BFHlBoBPmEEAPkCTrBDZRuDREG+CFkCLDQmCLsBMrDiBnDsCI4BeUkBEciBjDK;sCi2M46ElBLiBhBPpBTBPIbNCxBRvBGvBsBvBL1BG/CZpCejCTlBGpBR9BWvBuBmCgCLOvBOeJkBXE7B2CCewBmD4BKeF8B1BxC0EtB8DNoBQwClBsCGgBTY;sCk5Mw9D1CyB1CsCZJFVQ9BhBrCBfVJjCMEfzBhBBbYfJfILcIaaeFOGrCsBOYWAYToBSoBE+D1BSoBwBqBWIiCC4BSaSrBHVqBYyB7BjBvCS;qG4xM21DbMLXAJoBGLbPEPJLiBZAFffVIfXdWFIVXhCnBnCrBXzB3BpCXXRTILYoBeAIrBNLPBpB3B3BCfRNTJfCNUrDVhDAtEjDfBJLCZsCIkBTQsBeFsBEsCUaSsBEcLiBBbbCZepBWFUGmB4BuBOEKfWYiBIABbIIeDTRsBI6BFkBsBMESJJDEfWUOoBWASLGIHQQWYFXbAhBwBYIemBUZuBOuBYiBD+COSgBGIgBKUWMIcAiBRuBfmBC+BTB;wBm+LuhDlBIfJBThBHXQZlB3BfiBIKLHTGNUBFLOAQIcuBgBOeFURSiBgBSHmBZC;8Ck1Ly/CTaVEVHJRvBRAJTCDJmBjBbUOfFNaSaFBONADYKGcfDPOBXlBRLAbMPBNNDGJiBJBiBIQMBHLIbHVkBWBQYDeiDgBmBNUEMhBCQevBA;Ym4KqgCkB0BwBkFdaxBVzC9DDxBWxBYROjBKBO+B;gBu7J84BVMFNlBIxCPHJIB3BnBElCqCdyBWkBaQyBSYQKJe;sBwjH+bGPiBPdKAhBNbLtCDWDJM5DW9BQLqBDyCoBWsBAkBnBuCFaLGvBuCpBoBXC;sE+sErjBfgBXfNDMfJnBxBnBTKHFFLKNTlBSbREZhBBaJDXhBCZHBHUpBZLRGTVSpBHJPVDLIbTnBDDrBnB/BEvCSpBAdUfDtB3BxDZPTzBBpBqBnDFlCiB/BcTqBJkBVcC8Be0BGoBiBiByCgBiEmE2LKoBD8BOcQMGyBLQD0BWGKfSNa0BX8BF+BT4CjB6B;K4uEy/DNKIMLNSH;QtkO/iHxCsBnGwBjDGvCXHd4JrB+EA;ShoGziH2BEsBmBgHoCVK/JzBxCVVnB8DJ;yBzgElgHAM8DOEWnCYpGWtGXnDxBtB9BkBRxF7BPG1BJdG1CpBQZwMG0BOkQoBTS+BKMc3B+BPInEA;gB9pFxkHmBOhBevCMjDZsBVnBHrMBjBOjBFkHpBmDOsBV+FJkCUIiB;mDnnG5kGhBkBjENXNkBdC3B2BNoCEiCVhCEtCbYLgDHAVtBQpCDvBN5CGZJoCNzDCAX/BSTVpBIrBJAT6DbqBOVQuCF2BawBR6CHTJtCLsBLwCMeF7BLpFGdN+BTmFA6DM4CgCToD1CkDZYhBCCK;mD3kG51EdQnBdnBGWPXHFPYTqCEEJjCVFPQT2CbXNFMhBMtBBhBeWCNgBJRTDAVyBlBjBEHQZLhCCHPgERSEYFcKWNkBDuCI8ETqDOIWrBAhCS9CwBtBgBNYdEGSQBlBqBLEhBH;gE5oH8hCXCnDTnCZbbCZxBREFeKANsBQMUuBE8BsBwCBMPfJUP0BJIOOPyBEYXuCZ6BCOPIhBiBZwCJMV3BxBuEMuCJOMCJ4CYAMfIhBYrCGBIMCFGIILMnDUCGXSNJJMUCfUHCIHLA/C0B1BEzBmBCGvBEZOtBDJK1BA;4Bu7BokHpDWCXzBKOTxBIvCF2CH1BJqBP8FBlDNqBHiCJ4FCCPgDD6EUuEuBfW7CCrEQrDPJaxBFPfhCS7BA;wD4vBqjHxBMlBdwBjC/EsCxBpB/BWnCBwDOHO/DDAJzBKzBJdIFZqBjBiBOuBAWhB3CEiF/B4CCwBOGccHiBMEb8DSdNyBLvDDlEdhBIVFkBXiIMKH/FJTPdGhBHiBX0G7BwI6F6EMvCWKKnBEZHtDSZgBhCTQmB3BMnBB;kBsbq0DAMjBW7BlBfGBXafFhBMHL5BWXcCIauBHOuCFYOUPkB;c+a45DJUDbtBJVVMXHPMABNOFFJiBTiBkCH+B;kBqsB2sDGGNChBN3DNtBSjBNNObhBSTwBJkCjBWCgBb4BJQgBRmBsBkC;gB/1E+mGzBYhDKnBPuBRpBALTQJyCFQHvBD4BNkEWUKNS9BM;qC5pLiwEhCUbDJLaReEBGaBBPlBEEdkBEKJKIMXSGkBTiBDjBHCR2BABNcFRHgBNyBIMSbpBsDhBgBFYIHYHHtB6BrCc7BoC7Ee;sC1sGk4BzCSvBLCL+BTJhBqBnBnBRvESHV0BfOOUE6BHqCIgBVITSLkB6BkBGOLiCUsBAgBBWReeBMbU1CUCIiBGtBCTiBVBjCY3BBPNTA;sBltET3BKjBNN5BIPMBNBBJWxBoBGYFUGISYHGSMJUMBOYeS2BhCOvBF;gI7IumFGMRArDLzBEAZdBFPWRnBALROLTPWLbdMFjBLsBPqBUlB/BBVKATrBQGO2BeUNdoBaDJWJZFBPURrBvBMTKFKOaHYIcFkBQwBAnBPHbkBfcCR5BcRbMDPdIrCRlBf0BKMhBVX3CdCRYJuBKcHNHgBC2BRuCgB/BxB/CA/B7BjCjBCHuBBkBYwBIwBNYkBkBI4CJCMuBCQGFG4BLkDC8BOoBWAS5CIsBKAKNEoBIEOgBOOgBHa1BStBCXPVKcWHQxBiBhBCkBCiBLbmBKI1BkBxBSlBuCtBenBMpBHhCOmBF+BUROnBDiCSqC0CZU5DAhCLYWPEEKoCgBIS;iEtU08EUQfMfjBKOJM3BJHXjBR6BDrBbGHpBELHlBKvBJUJDVeCAFdHSJjBFCLaBFDgBJ2BBhBJPZnBViCESMSFrCNZLMNzBDDFsBBpBVCHkCIvBZ4BIdR+CKqBOFOgBFkDmBGH0BILIoB2BdgDkCaFaSFJQbBQQlBkBpCDVJ;gFt/PkkGREAlL6BqBlBiBIaiBBQUaReUTjBRCwBvB0CAoBK4CLWpBqBTqCHsCfmBQEVcEGSOLgBCHKlBIKQZCuCUFQhBEgBCGQxBUwCPqCAdcmCPMWiBMeAEMpBCFMZDII1D2BtDMsBJ7BEFNIUtBIvCFqBLIPTNoBPZTBWbLJSlBIGiCNIfFCcrGyBGGhCWoBRXFBO3BMDKUHfQzCS;2FlsBs8FpBaXCZHGVfHdIjBVfQjBCOlB/BoBvBJJbhCeVvBfGdhBvBqBaCBa9CkBtBAPH6BFpBFsBLCNPDDOhBDlBSNFOHdAWNbByBJdFpBKUVjBGTH0BJ8CQgDL7BXqBFYGJNxCAvDPSLqBIyCBgBXuBIfJJR2BGhCfbDRIEVuDCaIuBRWGHLcLsELgCMMQsDOoCc0CMoBQIYgBBQYYERcQQxBKbFIUnBBMYlBIwBY1CN;IjqN7xBCEJCIF;IlgG/+ECGbAaF;I5mGujBLODFQH;KhvGu1BrBQSPYHCI;IsvBq6DSJeCvBI;K4vBi7DEIhBECJcB;I3FisERCBHUG;IhqFg9DGGjBFeA;InzFqzBAGJDKB;Kj6FwzBMCFERDMB;In4F0yBJHcERE;K/7GknCGEDEVFUB;KnyPl8BRESNIMHB;InmF9zEHBKFBI;IgyD4tBHDKDBI;I+oDmoCfcAHgBT;Iy/K7EFUDRKB;I8yNw4GHIVFeB;Ky/F4lGLEPHUDII;K4sJ7dBGLFKFEG;IuyO70GUWpBJWL;I80OjgGNaDVSD;O88On+GNM5BRjCKAP0DCYK;Uo7O97GHMrBAKRjBLuBd8BSmDBsCOtGS;IkjPrxGJaXTiBF;Mo/I56FWSfKdDXVgCB;Kk0Ht+FBQpBECLqBH;IsnIl7FHKXDgBF;Im2H99FBIZDcD;I2yHv9FRKCLQC;I4iGztGgBGHMXR;K6yI57FbN6BBBObC;I6sG9oGRiBNTgBN;IyuOh9FbUANcF;Im9Ir8FCKRFQD;Im5Ih9FIEfEYH;KkmJj6FXWfGkBdUC;Ij9Mr3GvBSbBsCP;K/gN96GgBIrCEANsBC;Ix4L3zGPGZHqBC;I1mNh7G/BIGF6BB;I3oNl6GgBL8BG7CG;M50Lj0GIOnCIjBHeLmCB;Mh0K5yG+BWfIzBBJZgBB;MhsK9yG2BWVE5CTOJsBE;KpqLn0GOSxCISTyBF;M5sOtsHiBIlCM/DGmCX+CB;IprNr6GEI9BD6BD;InhN74GXOpBCiCP;KxhN/5GrBIGJcDKG;KtoOhoH1FY/DAKLsJL;I5rNh8G3BOrBFkDH;I71NzjH9EYiCR8CF;IvoNr7G5BWzCJuEL;K3Q1oGHMpBBaPYG;M0I5oGUOPGrBNKHeC;IrIxqGpBOILiBB;K2D5nGCUhBFUZMM;OlHppGtBKxBD0BNUbgCgBnBE;K8MvoGGSdELPkBF;KiqE99FUGpBBAFWC;OkuBjnGgBa7BAbJGLsBJGG;OssCloGNYjBEdLEPqBFiBG;Ov4C/iHzBQLT+DNqCIpDYdN;KvgDzhHxEW9CLIHoHB;MpJzoGwBCFUrBDRNUD;Qz6BlyGHYlBbzCPwCBgBdeBL2B;I5tB3uGVUJPgBD;IxjBptGhBQBLkBD;KhiEjsFTBAHmCJxBU;I55EruFEQNJKF;Kp/F/hHSQ3CEvBR2DB;K98EjuFuBIhCGIPMC;O99E1zFtCFHP6BK+BDAMhBE;I9+E30FKMnBBeJ;I5iF13FgBWxBLSJ;S9kFjwF/BHbRoBDIKaBEIuBEfK;IrwFpmGSgB5BUoBzB;Ij0Fv4FKMfPWE;KpxFn3FaajBMdrBoBG;I9oFzxFAIXAYH;Kt/EtzFnBKLFYLcI;QtsF9xFPIfJIJ+BGOLiBMlCG;KljFv1FbAeFWEXC;K3sFjpGWGFMjBBUP;InsFjqGFMXAeL;IjsFjzFRGIJKE;KvsF11FIQNCXPeB;SpjIlwGkBSAcPMfAhBFcZNZgBA;IrpJjwGlBUHPuBD;KpuI1uG4BENO5BLQF;I9rG7nGOPSOfC;K3sGnmGfSvBGIToCD;IjyG1wGSYpBPYH;Kp7Fp7FUcRCfbeB;Kt9Fp8FCMRDFRWK;Kx/F3gGKQtBFEJgBA;Iz/Fn+FFONNUA;K9/PjwBOODGLHCL;I5/P9uBAGFJGE;IggQnwBAQJPKA;ItgHyXCQHBGN;Ks4NosEAeRXAHSC;I2oFonHTInBB8BF;I66E8kHxBMFJ4BB;I+tFomHcO9DJiDD;Ko4EikHeI7CMtBPsDD;KsiFykH/CBTVsDBIa;I6pFujHNO5BLoCB;Ih9Fj9EFGJFQA;O52G1qEgBMT4BPHHrBCPKA;Ml2GlwEQQbEAXKDCI;QxzGx2EdOoBbkBAcToBDvBahCM;kBnmGl8ERCHXeHWRWDRQQMcFCTwBDaLViBdKUKFInBFnCK;Oz1G9qELGfHITNJYEac;K/qFlyEEIRCCJMA;Q+4E+jBVITRmBRkBEkBQdKlBB;I23EglCIOTJMD;MinFw5BUcFOVdALIA;S6/EysCIEFEnBFALpBNAF8BKUU;Is5E4kCHIRHaA;Su3DyvBLaHNMPYJAMJKAJFC;SmyD0sBDONEALMHLCCFoBDXK;M+vE0pCBgBJAAXKPCI;I25D4nBBIFDID;MqpEo0CGONSJPKPIA;Ik+PvzBDODHIF;Kk/O3vBVSFDEPYC;I2+OtuBLWTNgBH;Mk/O7xBPBJNiBHEKLO;I09O9rBIOdNWA;Uq6OlqBLSHLK5BKTgBEIMJuBXTFe;Iw+OttBEIJmBGtB;Om8O5tBNUJRSFKjBiBIlBgB;K07O3sBCIJCBFKD;S4mOnYHKGIlBcdKhBcXGsBtB0CrB;O+/N7UZQNY1BY8B9BeJEI;M04KqRJAPLmBHKMVI;Im+LiiDPEGHKE;Iz1GhoEQKZAKJ;ItxGv/DHaJJSP;Mj0GlqEdkCZLBParBgBE;Kz3Fz7ERJKHsCQjCC;I/vFtvDTIQLEE;KxtFpzELDSJGOLA;iBtvGj4ELIDJfIjBLwBPKXMBEQYBPTIDqBKSSZUjBCDI;Q5+F78ENQ/CAUVcDYIOJYM;S9pGh8ElBCAHSEkCZQGLShBFRK;Ir/Fz+EJQPLaD;Oh0G7xEPGlBFLfWWmBAGK;Mv1GhvEUIDInBKLdkBE;O50G7yEZNWrBQAOcVMDS;I9xG18DdDQDOI;QhrG15E3BORPYVqBGeNMYhBI;I7yG1zEdSMPSB;Y3xGn+DEKbMHVlBHCJLF2B/BQAMOZ4BYS;OrzG9hEAuBRJPhBAHUAOG;InxGqhEIWrBXkBC;IzxG2hEMKZLOC;IrtFshEEIPBMF;MjwFwmEwBgBvBTHPWCNC;Iv3FmoENBBJQM;I79Fk/DDKJPOG;I9hGk+DJKJNUE;O6jKlUWKJKjDBNPmBNgCM;I5uP/0BAGJFKA;I1uN/vBDMBJGB;Sx/NoFCMJEGFFJNGgBPGAPK;KtrMxbNHKFWKRE;Q3oNpyBDQXDEPWAQLAMNE;KtuMrZCKPCCLMA;ItuM5aAIFBGF;MlqPpmBnBDWZcAEKNU;InlOmLFFMFFM;K1nP9nBNOnBCMLqBD;IzlP5oBOIVDID;K/iPn2BBKLJEFKG;K8+LgVEeLPCPGC;Ky+MirBIMJFDHGC;K27M2lBSeFETRIP;I27P/1BNEhBPwBM;K28OxoBHKHDCJOE;Ku8OxnBGIHKHHKJ;OkiPx3BNSHADLMNIBGK;K2hP71BRcLABVgBF;O89O98BBIPFOVOCCQLC;Om8Ol8BJmBVCMHNJEHeN;Iy8OrgCHIAHIA;My4OzeCGLEVLKFWI;I4oOxhB1BcqBdMC;UopOzXNFKPDFKf2B5BR6BTQEQVc;SgsOxdlBSALQDGRiBRqBFXiBjBG;KwrOrbPYEdMHAO;K6kO9ZEIJEHHOD;IynOxZDHaFVO;W4gOtXJCFUHCZZIFYGCPWPGKLY;K4hO1YAMRBCPQG;I2/N5YAcPNQN;K29NxWMUXMDLQT;Mi/NhXCQPGFNIHMA;Io7NlUHMFLOA;KqiOsTBMNAELMA;IqzPlnDNSDLSF;K2uPn0DEONHBJME;Iq6O7hETDSBCG;Wj1Pt8DjBCZHcDHPMHQIPWKCCHSK;ImhPp1ENAKHEI;M64OrwEESPCRXgBDBI;So+OplEPQPACTZfiCSAIREIG;I+lM7sBHQFJOF;IwkMtsBCIHAGH;Ik5LjgBAeJFKX;I+nN15BFMDLKA;IigN7zBPBSTBW;K20MteFKFDELIG;Is0M7cBKDHGB;M6sMjvBSEHKdDLZgBQ;I2sM1wBKCHKBL;U8kMnnBFMTRAXHHyBFGITMOaPB;IwjMpnBBOHNKA;IykMrgBQiBXjBIC;K6jM/gBMMRJHHOG;QizLnhBNgBNLERJBDH0BDNM;SyzLrgBXQOlBoBbuBgBGMXYVNjBD;IkkLvpBDMFLKA;IuiL5rBHMANIC;IsoKj7BAKLPMG;I+hKjqCVwBCVUZ;KkjNt7DFKPNSFEK;IsjN/6DHODFMH;K67MnzDAIFFEHCG;Ks5MjyDUQLiBPdIT;K8lNzyDZJiBHGGNM;MglNhxDVLehBUIBQZW;I0lNnzDJAGFEG;YsnM1lDAMXC9BNJLUNqBEUHWQoBERMdB;I69MjtDPEBFSC;Iq9MvtDPBUDDG;I40NhuCJEAbKY;Iu0N1tCAaFJGP;QuzNnpCY+BHgBJHIRRRFfKR;K+tN5iCJDSVAWHE;I6tKsXFIAJGC;MgtKuWAQFBDNGHEI;Kk1K6dIINGFPMC;I+0K6gBLJKDCO;M01K0iBTMMZcAHSLD;Ku1KqhBASPEIXIC;K88K6dEYNLARKG;O++K8ae+BcYCwCdnCdtBAvB;IggLkgBBLIBFO;QsiL6bAWVMPBfbKRSBqBQ;IgjLgaNICHMA;K8/KoaTDMHIEAI;Ii2K+OHIfXoBQ;Mq7KqSQSTKTHKVOC;KymL4bKEHYHTGH;KwlLmcBwBLLDPST;K46KwmBFRQLKYTG;Mq7KkjBEcNFFXITIW;I88KgjBDSPDUN;I2+KykBdYmBlBHO;O8/K+iBpBcH7Bca0BpBAUdc;M2hL4mBGWPURlBMLQI;Ik7K2qBRCIhBKgB;I66K41BCKLNKE;I84Ko2BBKBLEC;I25Ki3BNAOHAI;I+6K+5BGKHBCH;I26Kk7BDGDNII;KilNxQCUXKALWR;K0iNtPEQHGLLQJ;Is/MtNDQJJOF;MqiNxFlBBJV+BEUOhBG;K83NtPIUHSJJKb;KoyN9IBKJFKLCI;I0wNrILGIJEE;IgqNtEPSDJUH;M+rNxHBSRGXHSPaA;M4tNvcbcQhBaJGWTF;K0rN/aBUJGHNUL;OmsNxaHBGPFHoBDHWXI;I6tN5YCcLJKR;MkyNvZJDSNYDBMdK;IotNheLDKBCG;I62NpgBVCIHOG;K40NzgBfOQVkBBTK;Iu4MjYAIXCYJ;QihM7BYTKGQhBWBUKrBiBvBG;KshMvEAHkCT8BI/DU;K8/LlDEIPEELIA;IirM7XHUVLeH;M6yL5E3BPMJiBFQGFa;K00L3DCkBfDKZUF;Ks0LlCnBFFHmBGII;KyzLvBGGHELFOD;ei0LAnBFLNYDGJMIGNMCXYGGYVcDGIDMrBO;QstL6FQQGYHKZLJNIXOA;K+pLtBEUNABVMC;IkqLnCJQDNOB;Y8qLdJFLGBPOLAPOEOJKGZSIOJM;KwsL3EtBeVVON2BG;Uo/LnQPaTZLAMJDRLDaXYEC0B;Q2+LpSlBWGXHBAfKFKEUmB;Mk6L5QQeCYRhBHbII;I45LzQPWEbMG;IkuLhKLCEFIE;I2tLlKJGFLQG;M8sLtKEOFAdPEHcK;as+K9MJOTTH1BPZGPOAOYUGRSGkBOFBY;S88K/ODMOSFedNCbJVaFIK;Kk7KtPAYLIHPUP;Ky+K1LBKXBKRQK;IymL/GLsBFJShB;MwmLhF5BFEHuBCiBIZE;OwjL7EzBEHRILyCMLORA;aw+KpDbBJVINYaCdISKHMGEKJKRNBU;I06KlBRJUCBI;O4oLwLIWNYDRIHJRMB;IulL4JRcEXOD;K62K9RDwBDjBGZCO;Iu3LvUFKPBWH;Io0L1XcSNENV;Qy1L3WaiBCgBIGHItBzBBbUA;MqxLzWBMRCBJKLMI;IguLtUDKHFMD;KyrLhXAHSFKIbG;KuqL1VGIJCBLGC;U2oL5VRIjBLVEPbWIoBFKOUGAG;IslLjXLNGBGQ;Ki/KpdEQLLAFIC;M49K/eqBWDQvBZBLMA;I26KjeKOZJQD;OsiLjXRLBLID+BKHOpBE;KwhL1XDMbXUFMS;QwgLvXNGhBHIDXReDWYME;K4+K3XCIJCRNaE;K6zK7YIUJIFbIA;I8oK9YFIFDMD;KmoK5TOGZEBHOB;I0gKvQBGJFMA;MuvKyLDMTEDJKLSG;I2uKqJCMLCKN;ImrK7JJFGJEQ;M6qK/KB4BNHJfIhBSS;I+1JzENGCJME;Ki4JrDEOZEAZWI;I41JoIAIJJKC;Ok0JwKGaLWXVWPLHUB;IquJgJHEIJAG;I6sJkIIKNIGR;OqhJ+FFEVJIZUEGOFO;KsjJ6CAWPQCdOH;KyjJkErBOGJmBNAK;KilJkCBKtBWBVyBJ;KulJwCNSZIBJqBP;I6lJyBJODNOA;ImmJgDDIFFKB;KomJ8BEGJODJKJ;K8nJsDHJMHIQLC;OwpJuDTBJPQEMTIUFO;IwoJsCLIGJGC;MiqJPVSHTqBLIETK;KmpJdTLKRUSJM;IinJfPMHLYA;U6zJvIGOFMhBQPDJfGZWMSNOW;IiwJxICGPCOH;IsrJ7SCKNHMB;Uo1ImEJGJJPAerBSJIVMBKkBpBuB;ImjJxPAKXEYN;O09IhJEQXUAROVKHDM;Ig9I5HRUCZQG;Kg8I1GNaJECVWH;Qi6IhFKEAKd+BXBHVWjBeP;Mi4IvBIYTYKTLbOA;I80I8FDMPCUN;MsyI2GDOvBiBPDIP8Bb;I68J8GDgBBdGB;MmtKsUMGAMRJALGE;Ii7CujEtBOGJoBD;QmhCqnFAQXIRJjBBgBHMPiBM;IsiCymFAITCUJ;I8lDu5FZDWPEU;M0yCugHvBG5BJiEAeG1BB;KsuE4jHYKnBEdFuBH;IoyEsjHrBOrCJ4DD;Iw8C8jHmDKjGJ+CA;SukF+nHhCAzCV/BCYL6FBISgCEjCM;O07E4mH7BV4BLuDL8EMlDW/EM;M4mFwmHzBIrCJiDV6BGbS;Ii1FkoHEIvEBsEF;K6lFuoHgDEHIlDBOJ;Iq1BukHpBEJF0BC;KggB0/G9BayBnB6CVtCkB;I22B0zGDKdAiBJ;Km3E0qGhBOxBFoCfMY;Ks0GqvGcQlCEBLsBH;K68G0tGiCS3BOvCdmCB;KkiH8uGEShBQvBVuCL;I0tH2yGjBIdFiCB;Kw2Ho1GjBH8BDMOjBB;O4pHw2GBKTJTEFPeBSO;KyyIg5GnDAFF6CJUQ;I8xIk7GWQxDR8CC;I0+Hy7GKMrBHiBD;I84GyiHkBN2CA5DO;K0jH+lHYKhDCJN0CC;IukI6mH1EC4DJeI;IqyJo+GzDAiDHSI;IouJu+GiBMzBFSF;I+/J+5GtBAyBPDQ;Ki2K8vGZIdDOHqBE;K2iMw2GUSpBWVpBsBC;IooNi6GYK7CLkCC;KuoMsrGNIjCF6BHYG;MqhP+lGOa7CMrBJsBTuCH;QuxO2mF6CaDepCRDTZTEFOI;Mg6Og8EjBeCMtBAwC3BAO;K88NiwEISJCTLWH;Mw7NivEQsBlBhBrBLSVwBY;I46NywEBIPASH;KswNslEaWzBZIFSK;M4pN6hEwC0BVA7BhBRVUE;Y2mN8gEWGFOpBVXBLKDN5BhBfnBmC0BYC+Bc;IssN8nFGMRHMD;OsoM28EhBKdjBUGYRsBiBXE;ImmM48EpBNgBBKQ;IqhNu8DQIXBIF;Q8/My+DjC3BITEQeY2BaEGfE;MyhL4lCAGTNGHICGO;KsgLilCEINEHHSD;I6kLsmCNMBLQA;W6sL6rCIOHGNRRCEJTNFdMEGakBU;I+uL8uCHQBPKA;MowLowCWUBIvBXULII;MyzLi2CCMNIJHGLQA;Iw0Lu2CKoBRhBIF;KguLo9CCPSEDKPC;MgyL27CMKDSNBDZKA;I8yLo8CGITFOB;Ks7LgnDHMHDEJMC;QwpMyrDWWLCEWVVGJHLKB;I4sM23DGOJBEL;I+xMqgEJMDHOD;I2sM4iDHGCHGC;K6/LwhDGYdVOHKG;KkvLu9CKOFMJPGJ;IqwLw+CIMRPKE;ImxLggDFKDJKA;K4vLihDEOJEDPKB;IgwL2hDGgBPdKB;Ik5LihDDEHHME;Io4LygDFFWCPE;I6wK4lCJHMBBK;ImwK2lCHEBHKE;KmuLgjDFSPLOLIG;MosLgjDLKHDELQBAI;MqnLw+CyBKCQxBDPNOH;IinL4hDKQTHKH;K8nLqrDJICRIBAM;K06Ky5CjBYXEeVeF;K87Ko1CBIbIELaD;K60KuoCCMJEBTKE;Kg6Jg8BJHUDCMLA;IiyJs8BLEFPSM;I6xJw7BEKNLKC;IuwJg7BEGJGGL;IgoJydTBQfEiB;I8jJmhBHDGDCI;IsjJkiBNOCPMC;K4nJ6DNKPLQDOG;IuoJ4HBOFJID;Ko9IiPGKJGDRIC;Kg8IsSRDINQIFK;I08IobLBCLKO;K+3IwWCQJIBjBKM;OirIuTEMJYLDDPQXGI;K0qI+UDEHHEFIK;IiqI+WDOBRGE;I+nIgaBKDHGB;MknIgeGOFSNNCRMA;I2nIsgBFMDLKA;IyoIoiBDDIHDM;Y4nI6gBMyCMKJkBSaBcRPLpCGdJBNdSd;Iq4ImfBMDJGB;Is3IkfLFQLDS;Io4I8hBIENMGP;Kq4IuhBPEGVIBCU;I+2IojBLDGFGK;K+3I6jBJIAfOODK;K03IolBDKAJENAO;Iy1IouBDWFRKD;I2tIgtBCKJJIA;K4sIstBKYRTCNGK;IwqIk1BESVASR;K+pIy4BHGCFILBM;MyqI03BFFKNOAEIVM;IylIm9BDUDRIB;IojIi/BFgBBlBIG;IukI2/BJUDLOH;OmiI6+BKkBZkBHDQtBPXYC;ItZwpG2CSAM1Cd;Wx6Ni2BoCwBjBqB5BaFJGNTXOhBCbSJIE;Kl/Ns8BFJmBFOKtBG;Sj9Ny7BPIBLSHIRaEMKZSTB;KznOk+BMOPHAJEE;Q7gOi9BNWbLOXMGaJBSHA;MplOs+BCaVARPQLWC;Kj+Ni7BDMPCINMA;Ko/P0zEJMLDGHQA;I04PyzEYUlBROB;IkuP+0EGMhBHcD;KyrP62EdHoBPuBI3BQ;MrrP+rFPONJoBNmBDvBO;I/jP2iFEEXDUA;IhoOs9EPAQFAG;OhpOq9EDKJHEPcEFQLF;IztOg8ECMPDOH;K3mO68EBOZNDRgBS;I3lO88EDGDNII;M33O65EOCRKRDEJSC;I92Og6EOGLIBN;O39O43EMOpBAHTbFjBjBmDwB;gB95Oq5EDKhBFFLgBHFHRGLP5BTYB8BQuBUREeUNGVJ;KxqP20EOGNENJOA;K1tPq0EnBBQFqCCxBG;Q7wPg0E0BKGULGXJMJ5CP4BA;It1PqzELEGJGG;Mp2PyzEEGNEXhBuBMLM;I73PkzECSxBTwBC;M95P+yEUQvBGSLHHSB;K2xGj3EKCzBMSRYE;IilGxrEIQRAKP;IuzEjkEHMHFQF;I2rDvlEFIRFYB;OmvCmmDWMOiBdHRPATMB;IqtC8kDEgBNTKL;IovCgoDAIFDGD;I8sCkpDLMCNKC;I2sCuoDkBOLCXP;K2oCkpDBWPLKLIC;K8nCupDDIJJIDGG;IwoCwnDHIBJKC;KqsCyrDVHYHSGTK;IiqC4qDcOXDDJ;IorCioDHEHHQE;KolC8qDEKJHAFGE;K6lCyoDPBDHSECG;KinCsrDBOXGYZCG;I6nC+qDVIOLIE;OoqC2sDGedEOTJLKFKE;UkrC8vDVEdPWJSKPJiBJCIIBPa;I0jCovDPIGJKC;ImmCsuDRQGRMC;MsoC4xDjBACLQEKHIQ;KwmCwzDBMLGJNYD;I8pCmyDDIXHcA;I5tBufEOPHMF;KxuBi4BCOLNEJGK;M7wBw9CDJSHSBMKrBK;IltBwfDKDLIC;MtuB4wCSSlCVWdWMIW;M/mBoyCWIAWfVDLOE;QroBkwCYIGsBLDVrBXJQDMK;KzjBkVCOJGdFmBN;M5rBiwCZALNKTYEEe;MznCmwBSODIbHCNMA;I5mC6vBDKNHSB;K7wB2vCIINKFHMJ;IntB0gBFMDLKA;IvtB6hBNAKLEM;I7yBkvCZFQJKQ;KlhCmuBDRWACMTG;KjlCoqBBQPDGNMC;M3yBixCKUFMLAFHOX;MvkCqvBbBGJIISBDG;IjhCsvBDQDLID;K9hCirBGMHEDLGD;M1iC2qBbeBXGJSDGI;Iw+DriBVHYPBY;Ky8D/iBNGCJSBFG;KwgE9kBEWLIBVKH;K07D7hBFuBHCHhBWN;I+wD1WSebZKD;MswDxRRqBLpBcZIGFU;OgkFn6BMYLUVRHVGFYC;O2+E18BESPWfAFNMTmBF;KwpE/lBBOLDCLMC;KiuEhwBISPVBNKS;IlQvtBBIFHIA;MsxD9NPBDnBKHKSAgB;Kg+ErNHOFFOPAI;Q8Y2KPZJBCPUDWkBBMPA;M+SKIMFOTPGNME;IkVuEBMFHID;K4UyMEGJEHLOC;Iv9D5hCLGJJWE;IlqEjrCEWLJIL;K9pE/uCIiBLPBVGE;I3gE9jCDONPSC;IigB8iDBGLNOI;Kmf+/CEIXGBNWA;IxMk6EAUhBdiBK;KvO49EFSNEBTWB;OtQogFCOfOPDOJPRwBE;OtRi/EdJBJSGBNWIFU;I/Q4+EWcdTIH;S3DmsFDGTJSNZDiBLAZW0BXI;IlCgtFNACLMM;M9L23EJIXBSXaMJG;InHwoFMGPBED;IpIinFCILAKH;K1I+nFXIBNyBFXM;KtU4wFVAEFYBFI;M7SgxFvBGoBfJQQBCM;InSixFLKANME;YzRgmFDOvBTEJfACPSHTJIF0BaLGgBY;SvRyjFNQpBVoBVaAINaUpBEBS;IvUikFbFeHBO;KzUuiFBYLACVMB;Ipcs5EDIXBcF;I+3BmrFJGBJME;Q84B2rFPCCNNEKRWCUQXI;Is8B8zFCHQERE;KgvBkgFuBgD3BlCBXMB;K+qBw8EEMhBOHRmBH;SgnB26ELIIIdMNhBQFMIUFAK;I2jBs8EXINNmBG;IgkBk+EFIDLKE;OqgBk8EbEBNmBNcGBKhBI;I0ck8EZQCNYB;Iye47ESkBdbMH;Iuf8iFEGTFQA;K0X67EeKXCIONZ;IrDyiEROQVCI;K/CmwEXIVJcHSK;I8N+2EAKPLQC;Iyd+5DXLaBBO;IkYkvDJEELGI;KmMqxDFShBCCHmBL;IyEguDPIBHSA;MkE2uDQMFGbLAJSE;Ix4CiwDLKBJOA;K/sC+tDFMVBGHWB;ItxCytDFKNBUH;IhwCstDjBGIJcE;M9oC0rDRGKLyBAAGpBA;IupBgmDTKINME;IkqB+/DVWJLgBJ;ImqBq/DLIBFOB;ImpBi/DNuBBZQT;O06BmtDDITZKEGLWBNc;Mu7ByrDRKHFSRQEHK;I66B6tDCWNXMC;Mk5BmwDVUIKZAWbSB;IgjC8rDFGFFMA;IyhC+mDHSDPMB;KoLmzEXDYFKCJI;MjxE6lGgBclBGVPMTQC;IppDs6FBSRJUH;In4EiqGFYhBPoBH;Kv8EivGPE7CJ6BPyBW;I/yEypGlBKBJoBA;KzjE8sFGQzBRkBHKK;K1mLssEJCBHQBDI;Ij8K6mEHIDLME;In9KuqETBKDKG;Oz8KgpELGOIHGJNgBbPW;IjhL8sEZSTEuBV;KnoLktEHURAAJaJ;IhkLwuEKMVQMb;IzwKs9CVQKNMB;It1KwgDDKPBUH;I/0K+gDGJYGdE;KzwK++CTIKNOADG;Ij4F87CEIPJMC;IxoG21DJITJeC;IzqGg2DAQJRKC;IhnGs1DFMPJWB;K72GokDEwBDrBNFOC;Ir0IuqCT+CBhBW7B;IvxHq0CQIjBHUA;I59Hy1CEINJKC;KjlI+zCEGJGLBSJ;S78GglCfDWpBSBAkBDIFHHEKI;I98Gu+BEKZCWL;I99Gs/BLOJAWN;K1/GkgCIHYAFIZA;W17G2pCGeMIBSrBiBjBAmBDaZBlBNLQJ;IzyG0gCXKEJUA;I1zGukCJEBLMI;Q3vGo8BBMPNZCNHAJuBAMS;MhzGm/BiBeBSJBERZb;U/5GwoCFGFLkBJURFZHBMNEsBtBgB;In3G2iCdUDFiBN;M70GkhCrBmCSjBHJWHMP;Kl2G6kClBuBcnBHJSE;Iv9G++BLQDJQF;Uj9GomCVkBTIDvBRBGHUDKTcQAW;Q5qHs9BNcZGHNKRTAUNmBM;Qn/GgsCJIDNNFRKWRsCSzBC;KzkHwnCKUHFTdSQ;I5kIk1BOIZHMA;ItnHi3BDHcEXE;Ip3H45BQaRHCR;KltFqnBBYPTMNGK;Q/sFopBJYZIGRMDDNSBEG;SxtF6cByBMOPAzBJQJBfjBRwCG;I/hGyiBPOMXEK;I3wF0vBDGDJIE;KnpFmlBGITMERKB;Oz1F2fPLPIRJsBHKKDM;KxvFmiBKSJBFPGA;IluFmtBBKDJGA;KxvFuwBHMHFEHMC;KpuFsrBAaPIIjBIC;KtuFmuBOCbWDXSA;MlvFwtBEaRGBZIJIE;I/tFulBCSJFIL;I3vG6/BLDmBFZK;IxjGqiBjBcOTWH;I3tGk+BAHSERE;I3pO0mFUUlBLSH;KnzNwiFXGHNGDaM;I3xNsmFIMVHOD;Iv6N4+EBKNHQB;I/3NwgFUQXJEF;Iz2N4gFIIRBKF;KtgN+rFbDILwBMbE;I58M0rFAGNFOA;MnkNkqFiCwBNC1BlBJJMB;IhlN8qFDIRJWC;I/jN+rFVNKJMY;I3kNgtFPIBHSA;O95Lk8ETefI6B1BIBISVA;Qj9L2hFNITHajBJhBWESwBVS;Il7Lg+EnBDIVgBa;Kx1L28EVQBVgBJHQ;Kx5L6gFQEZUJVUB;Q53L0/EEMbWbZELgBNOCCQ;K15LggFOOZELJYH;I3uLs1EbaIRUH;It0L+6EQONABN;MtyLw5ETMVRKESJOM;MrxLo3EKGRStBSFH8BhB;I7rLuyEJUJFUN;IjtLi1EKiBPHGZ;ItvLi3EFUHPOD;IvrM+lGBGTFWA;KvtFoZMGDMNLGF;M9jHtIUWPGLHDVMC;StzEhEyBkBMiBJKZJLRATXhBKC;ItgHyDAKHFID;K/sFgaIGHALJME;Ix+DrICULbKI;IluDnlBMKFKFT;K1uDpmBAGJDEFGE;I1/D3DHEDHME;MvtEYvBBFRmBFUWDE;KhvEwFDSNAETOC;OhwELBGPCNFDJKJaS;KzsEJGKLIdPkBB;QtvEMIMDeFXNLBNQDCM;K1uEkBKWTJCPIE;M9gIlCMKFQXHBJUH;Ir+HxCMUbRQB;KjoH8ULaFBDNWJ;KhkIpBBSRBENQB;KlhI5DEEJGDFKD;YzjICHKVLQBGXWXhBbGLcBUGKSrBmC;IzhIdTQFJaF;K52JltCEENCDJOE;K9uJw9BLGCLIBCI;Iv6JknCLGKNCI;O7hK0yCDYPCDONIIXeX;IznK6vCDcLXQD;I39JslCNONAcN;I/7JgqCHCDRMQ;Mj/JwyCHWNDHfWHIW;K3+J6lCLcCoBLtBWV;I+6OvgEHFMFDM;I29KiVJCBJMI;I6lL6THUBJKJ;KuiL2gBHSNBKPMA;IkjLghBJKELGC;I0/K/OFACHEI;Iy3KnUNKAJOA;M69KpYQGNEJHEHEG;IsuK5XKUPBGR;KmnGm9FEQzBGORiBD;IqrOgkGCiClBTkBtB;IynL6nDHKCLGC;I84K8vCDMFNKC;K6gKu9BIOHCFHGH;IugKy9BAGLHMC;IokKm/BEKRHOB;2Tp2HgqGuEerDyBnBwC8ByB+CiBLK1DE3DLpE3B5B9BUVhBVQnBmCTuDFiCR/BFxEK8BzB2CVkEUGdyBJgBIuENiCEuCPiCK6BR5BiB6FT6BICYxBOgBSmChBuBCSjBiCFTNeFWKaBZFEJqCXbP1BBBbqFeVHSDLH4BZaCLOaBAdQFiBGgDhDzBVVb9DzBwC9B1BC9CT5BCoBZHPhBkBnEUDX5BPPXkBjBgDJ4COEMqCFYIZWWEUReDGPOO6BAPP4CzBcGJPqBAoBLTNhBB6BfkBGNLcHyBN6BCsBf2BP8GfMc/EqCGGpBIlCwBmBCiCbLeuD9BCSWVSBAKmDrBFcuBAjBeLuBwBvBOCDmBOCPSTCKKrBAlBYiBCMMnBGWK7BYZNAMlBMDPNYtBYUInBUhBHGSbKDSvBMaE6BZsBBOI9BoB6BNFYUDII0CrBmBGPRsCGyBW1CxBsC5BaYFTQJYEaPWcCiBbEWEDOaRuBBaSVQ6BCxBSBQ2BHkBGxBYUEiBLQMlCgBXLzBEjCL8BmBxBMVJvCIgCAFOUGnCYhBDIWrBNCRJahBDFOtBVWqBlBHDPFKRFJYaMrDGXQlDOkEHEa1BK3BF6BM6EFAMvBO9BA1BMjCFwDWqCBNa9Ba/BhBXEWUzDN6EoBLMjEU9CXpBnBOiBNEZNPCoDiBIYNExBLhBGzBRdAgCYoBAYWjBQzDOhBLIXvBcrBPkBgB9BJtBnBaqBtBEyCMKM/BK7ChBuCuBLUtBM7FOhCX4CZrDQNXaTnBQCUdMXHVMZJUNZCjCZcwB3BL2CqBlDuCvBKjFNDP5BE9CfsDb5COjBTcbiCDTFyBX9CQ1BV0BZ6BFJ1BZKxBA1CL;kL1lGksHpBKlDDMP9CSrCB3BPmCP/Ea1HAuEjBnBHxEiBnHAgETtGIORxDGoBJlCLuIxB1IkBJPtGiB7ETwEVvEGjBH/CMlKjBgBLmEG1BTwFOwCD7FRqBFjCHeL2GE0GSrEVzHHqDX+BBsEiBiHK1GT1CXgBHmFDoGW7BRwEEqDO2CgByGclFrBoFHpEF3EXrIR0F5BwCBfFtDI3FwBrHIRDIlBoDP6E3BnCGDL0FH+BGpER9EMjFLjC1B6BD8CSbV6BCoCmBJZ+BFjBCzCXWhBqEBiDmBAJ7CnB9CDrCIpDmBzDHgBfuCVvEHjDZMfqCDEgBKhByCBAUMN+BFUS4DXwCEEeeV2ECZYqCVkCBQZ0DMwDYcQbU9BHvBchCDxCM5BFZIkCEfQiDRqFC6BQGmBiGG+BevDQsEEkBS/EY1EF9BMyHE0DHOSlDA1DagEJiGIJY/CEMGyFPgDGqCelECiFMnBaqDNsNgDxCGrIRiFQaMmGMiIoBUYhDIlCHjBiBvCDpBMdJ/IL6FY3II;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;MzlHi2EDQhBY/BARN4DZ;MtxG6gGUAHUtDGMV2CD;Kv9Gy0F7BF2BbkBMdW;QnpHizF9DDvBpBUZ+BEoBSyBeCU;QniHwxFjBAdZAboBTuBoBEUXO;MtpJu7GCS9CkBpBAsCxB6BD;MzvIo9G/BHUT+GAWYnGE;O/4IwjHhBO5BAdJGLmDPOY;Mv/H67GBUpDOCdmCJkBG;QhqIu1GhBkB3CShDP5BlB8FjB2CCEiB;Ur4J2/G/CIzFXhBPkDI4BJgBKkCH0CCde;KxwKg3G+BwB/EtB0BHuBG;OvrJuvG+BiBCahCQ1DFbT0ExB;yCt8IqyGTDUJ3CAoBdpBOvBL4BRwBIyBNvBERFmBZXGHRnCDzCgBtBb4CpBwBA4BN8DlC0BHqBMLmBOR2BB4CSRsBiBWNOvBHvBmBlCHoDoBfK4BQNOtBGnENrCS;4BxxH05FbWAadMVHzBzDMlB9BVTb+DKiBzBkCQ6DsCWCCL0BJIT4DVkCcvBe/CHUShBoBpDcZQ1BIlBWlBR;Sn3GqiGzCDvBdPXgBlBqDC0BQMiC1BM;aniHwxGvCKnBDIhB2BJgBlBuBFoEO2EFJWzCmBhDQxDB;mC71Iw5G7CURTzCQ7CJuCTnBFwCHzBDWRtEuBfCdJ0BJdLoBVqBDrDG5BXSH2JQrEZ0BNdFWPgGCIOiBFTaWIcHFYrBIaIH4B;4BlmJ0hHxFALHBRoCANTkCQDTqCD5BHoBJ5DCORqCHwDKKLsEDoChBmDCKUhCYQWrCW9BBIO9BMtCRtCoB;6DrlI4mHnDUrDB0CT5EDvBTwEZ3CC9COTP2BPrCF6CPoDGhBNhGIQTuCX6DIzDT0BT6CKQJmDOqEHxDHtEf2CNpBBgBLgEF5CHuBN+ENaCdMgBCoCPvBoBwDlBGkB2BHQEFqBmBb8BawFc3BefLdO3CDecVO/BEWatCEeb7BEhBgB/DIxDwB;iElsI46GtEOzCHiBPrBFwDNjBHmCTmGI0CtBT1BsC1BmBBYQHJmBH6CFiBSWEIJeOKfuHCgBIcHII6BHwCGCeoChBoCF4EKHemBFwBIXI/BCuCULS5BEDMlFShDF/BG7BP9DLCL1DUZLRKpBFnBMZRhCKiBWhGmB2FDMMhGOuCCjCS5EFxBPce/CM;YzxIs/GrDW1CAanBkDPhCF+BZiFOYKjBOmBQzDM;Ul6Jm+G7HTGhBoCNmGOEWhCGkDMOKrCE;4B1oKi8G3CQvBFSLrGD/GtC3CHhBTcCER6BG+BDiBSoBfuBCiBODe0BRUiByCaJjBmCJUWgDQbSoBEtBSmCU;6Dh0Jq4GN+BlCGjDlBsCVhBR0CVAN/FAtBatBASKrCYlDAhBWpCEzBDVP+CHhECpBVeH8DClFLfJiCF2DI1CPrDDbTkDFkCRcOkBN0BKFSgBDOSyBBjBNORuHSzBVpDDlEX6BXoDByIqB+BQgBJ8BE8BFiDO0ByBJc/CIVfbUnCHaSzBE;kB/oI+yGjFJPPoBR9BIVFCpC2BvC4CCsBkBTWnBIgGA+EiDXM5CG1BD1CQ;oBl1IkmGfSjBDOftBKIVpBNvBDDPWHgBGSLiBEuCbiDFmDgBrBIxBoBzCeTB;sF3lKwuGqBgBViBdEvFbjFvBOXhCZDTkBJsCArBPcH2GOYD7BBIH5GfCN8BXyEDsGKgGhB5CHxFItHX+B3ByCNwFHGfsBfuKSkDW0CGoCoBaDKRwDJFNwBFUGkEJ+CSPoBjBC9BXGYlBQuCJCQmBMwBNOOOLgBDFoBtBCJMdC/CiBBNtBK1CoBMwB9CuD/CkBpBIPHzCOKLbFyB5CiBXtBXhBIzBsCxDoB5BCoBfjEhBTG4BgBnEavBDZb1CD;0Bx0K6yGQKxFehJRyC1B7C5BURjBHAVtC3ByBA0Db0CzB6DgBaFsCKoBgC+BKyBiBgKkCFQ1F4B9CCzBTHQvBH;I7sIu3GBYfFiBR;I5hH4zEKOhBHYF;avgHigFDObQXlBIgBFTpBlBoBUTbYGceCdWkB;I3iH0jFBIJLME;IvjH8/EkBYrBPIH;KpzIuvGSOXKVRcF;I90Ig0GFIdJkBC;Mv3IkyGuBMDKzETqBHgCG;IxgIulGZDOJMO;IrhI8kGPOJFaH;K/0GuiGJaZELNwBP;I1gHgiGEOTHQF;Kj6Gq0FCKpBQVH+BR;Kr4F+xFHLoBAAKfC;IpyF4+FYMnBLQA;KhiGsrFkBSXMXXMF;KhoG+xFJQlCMoBXoBD;Kt4FyuFQULG5BA2BZ;IlhG6lGAMbFcF;O9hHwmG5CChBJqCRFMsBAMO;K99GqmGxBHXNoCMCK;ItsHy8FGHMERE;OphH6jGoBKyBgBJIxCdPLSH;K/6G2kGeUvBGRNkBL;K/4FgwFLGFFeLLM;Mn3HunGjBBMF6BBFKbA;SjuHk7FFQ3BQahBcCCJoBDKIrBG;Mp2H2gGQoBZMXTGXcH;K7wHw6FFajBOEVmBR;W3iJo4GtBazELKLoBAPJ0CBXNiCC2BOTI;K9/I65G4CO/BA7BLkBB;O7nJ65GFItBFWX+CCYI3CM;MnhJg9G+BEPIzDEIN+BB;Mn/H05GEWnBIlBJkBRmBB;KpxI62GZM3BLGLsCM;IjvI+zGRMdFwBF;M5jKm9GUG/BW7BNgCRoBE;I/iKq6GdO1CJ0DD;MloJu1GsBORQtBGxBZmCJ;kG39EyyEREDHdI7BVfbBNVPMFXJrBpCMTTGRNCLSDJLKJlBKbrBREGKdRsCD1CvBDVUPmCOuEN0CWBTVHyBDSS2BA/BtBnBLBHOFsBEoBsBkBOBNcqBSJMbdxBQDmBcAtBYGUFqByCLUPTPHDECUakBlBLjBdPMUUVAcIDKsBSKUjDVmBYXGKIbB2BgBDSfKfBLHDStCnBKmBJLBKhCBUUXF6BiBlBCVFBQ5BtBIkB0C+CCMTCBMoBGMM;I/9EowEIINBGF;Il7EitEbBIFUI;K75EwtEPDBJcGJI;IhgFolEHYBZKC;Mh9I2jGAMfIBVSDQG;It8IqkGNKDLSC;Kp9IwoGCKfGCJcF;O1vI8lGfEBXIUGTcCHS;I3/IslGOGbKOP;K1hJijGKQZGZLqBJ;IrpJyiGFOnBAuBN;K9yJ4/FLYJVSJEI;ItzJy+FMLOMZA;IvtFs/ENIDFSB;KzvF2jFVCAFgBHJM;I3kG+nFLKDRQI;Ki/B4rFHHaLEMVI;Ig9BmsFTIGLOE;Ik+BirFFGHHOC;Ml3F2rFVORBKJaHEG;I8mL6iDHQFDOL;MmuG/UDOAPHMGNGE;I9sMtZEEJCGF;I2mC84FKGhBBYD;Im1CymGJIFLQE;IkO4tFJKFJQA;IiXm0FDMXFcF;KkYk1FcCBKrBLSA;Io4B4nGANUATO;K2iCupGjENiBNqBC4Ba;Kk7BsnGAMZBDLeC;K4oCsqGXJYFyBCxBO;KmjC2oGFG3BPUNqBY;IqkC4oGVQFRcC;MunBmiGzBJFNoCQKGXC;U6xB+lGZJMHfBRbYDmBQqBAEcrBI;S42BqnGJQpBpBdBTR8BCyBWYSfE;a6sBgjGakCxBXHlBnDhBAFiBC6BQQFwBIyBWVUvBb;MorBkkGPE3BdqCDQORQ;I+fw4FRKZJsBA;IuOyrFJMCVIK;IiiB26FPEBFSC;K7gH+3GEU9BVeFcI;I7rG+7GWG/CEqCJ;Mz/DwpHDkBnEStCBuBbsFX;Ih1B6oHrCYKRiCF;OjyBijHOStBCpDRsBL4BAmBK;Ih2B69GAqBbHchB;I70Bq4GZ8BTZuBhB;KlzBw2GtCHQd0DE1BiB;8al1C2tHjWF9CL2BhBnGgB1CV5EO7GVjCECRyNJtBFtKG4DhBtB1BhP+B3CAGH+DpB5DBhGoBvB9BLuBvCSrNfwH5BxHwBpCEjCH1BhClEILd9BQnCFnH3BUb+CD0EG3BH9CrCnHL3BPxHVpCLfZsEjBqDElBNsDTiCM0CH8COmBNJV/EKrCRrFBZLwBT0CQCXuEH7DV4DdoEHdWwBH2BKuBJgDQqBH0BM+FR0HpBYRbNyGpCpBJARvBH8CAkBhBXRgBPcGOLjBbkBHUIeLRb7BLaHdFEJkCQpBVZzBYJ6BFiCIFSyBSnBqBYEDRiBhBQCZT4EIlDTJZ0EDgBLjCCuBNFX8BPRFvFkB7DGhBJwBZ6CJmCXyFDnCnCyBEWHnCDNjBoBINL7BN5CQnBHfdsDF6CSVbdF7DO1B7BgEa0BHoCGRJ0BP7FUlDdHZoBRgDD7BFhBPTTIZuBGmF+BlGrCaFHjBoBASLsCY6BGvBFzCjBaPezC8BwBELuBQVkBoBlBkBFKXfWdANLjBApBfOJmDUFJWA1DRIhBiDpC2BUtBbBXmCVFTsBKcDxBPIbWFMVsBHER4BAnBLCH4DE6CkBXnBIN+BP4BUTTjBFAPmCRiBYPfgBAFHUBWEZQ4BJSMHe/BUwCFeWiBsCVKsBMTcQmBnCM+CCYWvBWeNoBAgBqBYAWSHmBjBBxBQoCF2BYpBmBbDLWsCFcKiBS1BUyFObaiBJkBiBlBKwCFtBdNfwBCgBUkBHOUMPkCcTc+BR6CmB+C4C6CgBNqB6DhBiBEJMkBDqBK4BB8HkBmCS4BaHIwCQAO0BALOqCECKkCMAK9DApFUnENfTVEGI4CWDK9GB8CYGSjBI4ED4CWHazDGCIuDF4Df2BzB6BR6BAYmBEjBuCGT2CxBDJPFMwBgBlBCLOlGwBnBHqBUNevEVXE4Fe0BxBgFhBYqC9FsBzCBfJxFTRI8CKhCQuDP0DYjCeuCVwBO0ChBwCJoFUMgB/EMReiBYAdqCLsBCkBOwCAIY/BmBlBAnBdLoB/BJxBO2BJqDc2CLC0B1BqB9DEjBchCMmBI0BJ+BSwCEkENYOHetCDpDWTQuBGgCLBO7DSvBTfC2B2CkGuBhB0B/BEHUiCY8DHwEGyBQrCOuGSEU6DI6EiB7CUjFMrFB3DjB7EMpBM9JvCsFsCJqB/EFjBTpCHtCczHE7EJdKcKsSQsEcnIW5BarFJtIE7FJEI0RQ5Lc;IooCuqDGENCIF;ImsP8CDPIMDE;IvwM5yBOQNFAJ;I7iPkhFMJOGZE;I4lC0pDDGDFIA;Is0L0qDAGJDKB;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;K48PupGoDQAyB3DnBQZ;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;4FkwEwlEuBQ4CZgBQmBDYZJRGZf3BmBVhFClBnByBhBhBDbMpBANT0BTsB/BAbcBaZgCJLvCiB9BBuBOYSM0BCgB1B4BpBBRhBDGLtBDXQpBARUT5BGfWZDUsBHAVMJhBGHfQGiBLQVD9CMjDZCWINAvEbhDKzBalBiB1CSTaJ4CQaOJSeKiCoBWoBDPUlBIbU5BsCnBc7BiCXiBQsCPdNyB1BkB6BiCQcFOQHGIqBGeSWDDQyBUKUwBIoCe;IjgH1/CHGJHSC;I7oB1WGEHECH",
- paises:[["#F0D498","2B53E//ClB5BlDxBlCOzBJzCoB/BAzBiCIyBaaJ4CScK+CYkBkBHiBQoC9BEZkBUoBnB2BRqCzBQfqBdjBnBArBOH;+DlsBs8F2COvBXmBHLXoBCHTuCDCrB3DhCzKxCrEMTYVFtBSnEJDWuBDiCgB1BFqBctBHfY7DFRMiGQKOhCA8BY/CM7CPzBK4BCTWoCDxBKcCVOeAAO8CXtBaqBG5BGQIuBA+CjBCZZBwBpBeiBgBFWwBiCdKcwBKgCnBNmBkCRkBW+BAUeiCb"],["#F0CF8E","mC6xJ6pBPzBY9BF7CLP5CbBXjBGNJCfcXAVlBS/BFRjBlBJzBWZJMgBPWhBTDyBhB4BCgBXWPuCUEsB+BwBOwDC0DtBHmBwBUoBV0BiB;kC8nCzyByC9E8CzBKhBkBBBzBgBrB8CVCTcPnDtBpBtB7BhBX7BnBhBrBLpB3ClDDpDqBZPZ7BxChC1CAJmBOwBfmCpBgBA+H6CACuKsGeiBpB6BoB+CU;wPo3M/hBFfadiB7ESJuBUqC/BOlEsBtBShCH5BcXEnBkClBaCejB8CtBMRRJmC5CWtCaJIiBqBjBMOQ/C6C7B4B9BiCpDDvDoB9CE3BXnBzBjHb5B7BpBvB9BrBhE1BrCX5EpBVxEN7CjC5BFWJFbVaTBNUjBMIavBVVOmBWVSrBVYFlD3BjDoB9CC9CqB1B8BFwCjCoCcDAWjDVe2BlBuCjB3CpCJMeiBAIkCoB2BFiBMKRuBAVxBpCpCjBvB3BGddEtBgBcA7ByD3BgBGoBzBexCYxBFhDwBxFPpF1B9DD5EhChCxC7DFjCQrENlBjBpFhC/CKpEiCBkCiBLeoBCqE5BmDTiE9BgDLiCtCqDMDEOUrBYGjByCYVCZMKMbUEAmBnCiEG0BYoBFoCekCMBAzB0B8B0FqDgCF8DqBgBYqBDiEoBsCmDuBiBRyBKmBiCgC0BhDEsBWHESjBmBKaYPQMkCNhBKWoBNJJUEYYUiBPTaSOcJPkBkBWEUEXOEGLMKEwBSROOOLgBkByBZiC9BJ3BQEHWmBasBJOZEaiBXAaUCrBoBqBqCmBaHeqBcAUWLASmBcOTqCIOJcQDsB1BQXQOKSLQIgBZYKUbwDfeIaTyCiBTjBcCGTQBAYSUoBZfxBHnBNIhBNC5BxBrCGNsC7BmBJGR0CfyBrBkCPWnBoChBoCaqB4CgBgENyDMuCcSVkBSiBIHSmDoBSYhDcL;KuzNnpCDyBUsBIfX9B;M6sMjvBfPMaeEIJRD;S8kMnnBQCNZULFHxBGIgBUSGL;KizLnhBOLzBEYoBOf;OyzLrgB6BSYXzBrBnBcNmBYP;MsnM1lDwBJ9BTxCSoCaYN;I+tN5iCIZRWKE;IigN7zBCVRUQC;I+lM7sBNGGKIP;IwjMpnBJAIOCN;IkkLvpBJAGMEL;IsoKj7BLFMQAJ;+By8M/zD0DhBwBBOQqBAuBUWFM7DLWPZHzCVEKSVIJPNWFnBVGLpBpCGFQUGdCjBgBZgCYXGMZQrBoCDiCeJ;Is5MjyDIyBMhBTP;KglNhxDaVRXdiBWM;IkjNt7DVDQOGJ;I8lNzyDIRhBIaK"],["#EFCA84","0Du2CvsBxCDzBbNvBrChBxC/CVHzCIlDoB7DLvDgDJeFoJ2FCAgGkBXAZ0CUGlB8BXqCHekBmB5BsCb2BrCyBKURC2DZHBPlBG9BoCY8CDwCRoBqBoBCcqFaYjBmBFWVkCXsBVITSAqBzCjBfKXNXC9BYVrBZF1BZhBelBSAtI3CO7B;gBrnF5xEmBFHNWHCOYCSVxCbENxBIMNdNXQIUuBWUmB;WvrFryEyCKIL3BrBlCTXMgCadEeIdaaJ;S86C5pCOvCJCDtB9BGrBsBCgBwB8B4BR;cwjH+bYBqBnB8BzCuBnDVvCxCnB5BQV+BL6DILasEeJnBgB;mCu+C7nBRAdmBaiBG2BsBaXWB+BOYJYkBgB9BoDyCXKQwBvBI/CgBtBdDXxBSrD+BvB8B7CJ/CtBZLdMvBNBDa9B2BNgBa2BDgCNQ/BNnByB;kP8hG8jC0BKEgB+CN+BWUPeOjB0DhBEPSE2B5BWAUyCgDkBbiDYqBoC0BYsByCmBQIekC2BHoCoCqB7BUBYbAfmBOePUYUfMIOROQYeKiEXwCWuDkCWAavC6BbVZGtBgBdG9BZLTWbHezBC3BgBGkBjB8BTETqCjB3BnBdxCiF3CsCREN0BLoCKwBRGVuBZqBGOToGTOePmBOqCoBOWHFrBOTNLkBhB4BJ2BSkBLyDIIoBrBYCS0CMgCkCuBKuC0BmCX8BkBcRTdcMOZbfoCDWNCTpBjBUrBhBUvBFhD9BCxBzBhCMXzBpDpCQEzCRJBnCVVPMNNd8EbAb/BRUJHNqBSwBuBIgB+BWGlBUxEA3BMN0CbRfkBPNpBcGRfrBuC3BrBHnBxBgCfN3BOlBSFMpERIJPJyBDpBbINJGuBXUUVRbtCbVXKxBTjBhBZLEBP5BRHSVLFNYC9BtB7BpC/EtDHvBtBVrBCb1BdMfPV5BYvENUHJYV5B5FOJAvCvBFhB/BGTkBNnBIxBPTRLtBxBbpBUtB2BTyBHsBUjBJkB5BiElCuDzBwFlB0BL2BNEdkCpBmGMkBDMLPDICUQBRILsBUsCXgCKIJAsBaxBFOaPACSYG5BEIRVXUZVhB5ClBvBIpEkEIOUNyCacwBpCdnBI1BeTkBgBaxBXFY;KirIuTFHPYQUGjB;KknIgeLABSOOAf;M4nI6gBReYgBGoDSQd1F;qBxvBkjBoDMiBSmEAChBVLUNAZ1CThBzBASPJViBkBSnBMoBWvCRCOjBKISrBK;I5tBufLGQIDN;IntB0gBJAEMGL;IvtB6hBDLJMOA;6B7qHobhBLAjBULb1BOXjB2BREQZbGLMKmB1CwBLgBdSTOiBnBVVtBeTiBQqBVOea+BVyBEoBVYQc3BmChC;oNpoGl0BuBMGuBeSSnBUHMzCuBpBVbOVRJAdYTFXgBjBerE+BAQPd9CxCfbfQfTdQhCPdatBvBPdlCrBrBhBzCQrCbTjBzCBXehBJLepCFbYHB1CRFtB1COpC7BpBLdCzCelCzBjBL7BPDC/BVnBSzDhBVB/BkBVNJUzBNpB8BPHRpCBiCnBjBfKhBVTQrBpCvDUfdzBlBTHZdALZoBnDqCEFtCoBlB2FDqEfnCOhBXrDbR7CbHvCWVasBKOVyB+B9CdZdtBUesBuDOrDGlBvBvBUwBgBpBRlBEXyBoBLOOmBHqBUUXLNQKEsBXSlBK0BdzCV9BgBYGAgBvCSZiBmBCEcsCzBOoBddTUCKUB7BeaUiBBhBSEQqBAXQOmBZrBNKEoCeMpBAJsBsDNdsBtBbnBYMMkBBfOeYNkBRJtBOCUxBPKVXUmCyBLayCKSiBF7BhBNoBEUgBJjCY8BNmBsBMeJvBUEMiCuBCQ1BYYwBHceaHiBSOLYgBLHkBbIuBkBTPlBQZXjBAd8BaoDYQQ0BlBsFEOkBAsEgKF0BaoBX4FkB6CRiCewByB8FFyBYwBL2BQiDReYkBW8DFiFX8D;wBljG31EBnGnJWIQ8CKsBTxBmBesBAtBiBVmBGsBVUO1CaPUqCsB5CEJacOVQoBFwBeWPyBC;M5+F78EXLhCGTWgDAOP;S7xGp7D1BKgBkEuBJIZDZbJgBfflB;a5zG5rELtCZaOcdnBrBGWaPOkBILKcmBgBBIjB;K52G1qED8BQIU3BfL;KxzGx2EyDlBnDYnBceN;Kj0GlqEfDZsBccejC;StvGj4EiCd7BbIYnBLJYvBQkBMwBF;K50G7yEadNblBsBaO;anmGl8EwDDNReJWhBpCQBUbGCbVEzBaIYSB;QhrG15EiBHLXdOpBFXWSQ4BN;Q3xGn+DXRa3BbN1BgCwBYIWYV;KzvGr/DjBAQoBoBPTX;Kl2GlwELDAYcDPP;Iz1G9qExBfGesBC;Iz1GhoEJKaAPJ;Ih0G7xEhCfMgB2BA;Kv1GhvEjBDMeoBJPP;IrzG9hEhBCiBsBAtB;K9pGh8E0BDMRlDQmBG;Ir/Fz+EZEQMKP;8Pn+FwDwBpB+BUSbiBmByCoBSkB0BUEY7BIPiDzBgC4BNOR+BAsBdOmB8EuBiBiBBeuBAONNxBoBNOnBbfLxCe1CoCvBgBGQccFyCuBqDNEQTUQYWJkCQsCpBiBUqCPcWcmCwCmDWTuBxFYbsBNGtBtC1CvBb/BzD9BRiCBgD6BSpCaXkDadzCmBkCuBmBWJMMJeekBgCBBMQAkFhCMfYWadMGKbTTIJWSERRRL5BsBkCMBHdqCoBsFxBqEGoEtC2DtD2BP+CBcnBoB9ENlD5BlDZNPjBlD5CLbDMdtCxBjCXJReNNIJd9BEpBKAL3BStDd3DEvBtBxBL3DpD3EDjC/BbZZDfzCBRWFX9BJUIPIlCLGTlCdLRtBAxCnBlDnCGLZXROFPXGeTXVHnBSzCV7D1CnCpDtFlDtCBaiBGmBaKiBqBmBBYMACQpBJZeOdLjBFINnBpBXTtBGZvB3ChC3BNIAsBkBoBpBePgBpC0B1BSnBoBjBTDanC+BhBPjBI8EmFUBDQyC8B6CoBOwCd8B3BAiBsEhBUzBRTGjByE5BYrBR/CWO+CdsCcSZUmBgCUsCdgCzBaFwBMmBnFCFoCdiBcAV2DzBc/BDdiB7BOZe7DWzBqBjBiCAsErDR5FtD3BO/DDKuE/BvB1CBRsBrCKWmB9CiEEQWGDmB4BoBHgBgB6C+C4BwCOQQqCL2B8IV+BnBiBCgCyCINkBxBAA8B4EABYYTyBgBYjBEvBSE;eltETyDHnBhDTLLKFRXIbX/BAVyBQMTSO6BkBO4BJ;I3gE9jCRBOQEN;KvtEYPZlBGGSwBC;KhvEwFNBDUOAER;KhwELZRJKSQSH;KzsEJjBCeQMHFJ;MtvEMBLPECOUkBDpB;I1uEkBJMUKJV;KtzEhEamCaKBrBxBjB"],["#EFC479","IgoJydDhBPgBUC;8FkzJm9BzBTVfrBGGXPf1BpBf3CwC7CBVJEmEhESAoC1CsBpEMzDJOJHE/BZ3B7E1CXYFXdGONbAeRRVpBgBoBzBRHxBoBgB1B9BbhBpBfDMODuCWgB7BqBmBKSkBgCGmBRAWbYBgBOKkBFCY6CcMQG8CX+BcmDrByBWWxBsBRBNqB9DkECWxD8BOgByBDekBxBmBUUrBapBVxBSViBImBLKNLvBiCgBgBuBZgBcOPMScVUYUJcMSckBS0BlB2CLVZKvBgChBkBGUN;IiyJs8BRLGQMD;Iz1F2fFVrBIyBO;0F1qFqYObtC/BIdaFBLnCbCrBXZiClCEXzC3BpDXNlBrBe9BANS3BO0B/BQhD8BHAR3BZRjBpChBxBrBHa5BT1BsBdqDjBkBVAyB4BfqBR6BCmCgByChBKvEN/BqC1BOzDFpBsBGmCjBsCXMbFgB4Be+CiCsC6BS5BZiBzCvBrCmBjCqBIQyBnBqCCoB+DyBaDASjBDHYaaiB/BqCDmBXY7BsFMkBhBiCR+DoBxBM8GK9CTUVDTQMWlBWSefBSQGoCvBnBlChBAcPuBQoCD;QxtF6cvCFkBSCgBPK0BKQAJ/B;Q4jLhbJcSOVKYaiFgBeJpGjD;I6gLxamBOPVVI;I+3IwWJLCkBIX;qF68I65BSGSTLlBKRgCAIzBVxBIZP3BSD2CiCyBjBkBSWkB8BHuC9CArCsCnCPnDjBZZSvEJ7BjCTDQtCYVQhCfsBDH/BwB1CCGmCfO1BTBrDrCnFA1BIpB2BCO/BadY9CZyBJPYlB2BdsBA4B3BVlBbInBXLMGqBnCoBLVnBoBHsBVC7BwCLIRNLUwBsGuCmDtByDC+B1C0DAUgBOE+BccVBT8BhCqCHsBVWiBGGwCSayCCOemBEDU+BD;KswDxRBZbaMqBSpB;IsxD9NJxBFwBQC;+C09C3a3CgB1BoBjBGjCqE9BiCG2BXqCGqByBMuCkDBUfOKmBaIEQF2BZuB6JEuK5FBnByEtDlB7DGX+B/BXrBOtBLlBejCIpCkCpB7BpB3DrBzBKRZfLjBO9BNjBYdN3BCfuBDsCVuBdWJP3CY;I+wD1WJEcaRd;4Bh6EoPZfAvBIlBiBrBlBlDXLbYjCPVKPXUTDPjCQrBqCJwBfAhB4BOwC0BQIOJMgB8BiDbGYmEDcJJnB;gEwzCj/BwFTgC5FArDFdtBUTHjBzBBfsBrBsBFSAEuByCD3BhF1CjC7DxFnInG5BT5BCNZ5BEPRlDQpDBjCfzDHtBdhCQRYXBHaVBDVB4B1ByCsBeJkC/E+I2B0BcVIlB8BPgDFiBiBoBKAuKqBfgBlCJzC4CB2CiCqBqCeCuBbuCTgCKqB4CsBMoBiBY8B8BiBqBuBoDuB;W4xCz1CgBQc8BlC+BxCf9B9Be/BiBZcBesBgBE;yC9iBkqBY1BD1BWbWBSpCxCNlCOBO7BElEAhBRnDLDQeIdCKwBqCACOwBIMO0CdmBQ1DmBjBV/CAReOMPDhB6BhBMkBOaiB4BwDqBDqCS8BHoBnBgBBctB0CpC;wCh8G0YJNavBflBTMLpBvBsCaeiBXdiBLJPKBNHazBgBlBBXhB/BhBqBhC7BXVEN6BTZTIVmB1CSRXNYc2BTMOyBmBPcrBaCJQwBfwDmByBkBoEhBiCzB;IjoH8UVKEOSX;iCwiClyB8DMwBZ9CT1BnBlBqBrGdBtK5CAArSnBJhBhB/CG7BQHmBbW1BzBlDwDhBgDL2DdsCD+E7CsE5C2F9B0CDkCqCEyBW0CnBuMA0BjBiFTwHiB;uB68IqSMWoCnBFpBMLoBYWLcqBQDqCnCgBhCA/EiBfoBrDZWCPtBJLS7F6DAiBzBiChB2FTqB;yDuuK8LrBOxDAXjBLxCdLGhBjBZEXbvB3BBZR9BepBA7BxBhCE1BR1C6CGQWX8DfROUwCSFQoBiEkBwC+CIe6BvBSgBJeaQItBSBPwBmBSLcQSaAyC+DAhBgBgBuBrBArBLJsBOMPNNiBIyCnBJXvCJFNgBpBvBLdKJP;Kg8IsSGJPHHOSE;ImtKsUFISKLR;gBjvB0mBgDAkBW2DlBlBPzCeLNvBHBNzCHFYOMYR6CSzCLTW;OmlBlN3BnBE3BZFRkCmC0BaR;yCmkC9eA/F1FBGnJKdwD/CvHhBhFUzBkBtMAzCoBxBVpCDCgEYewB8FoB+B4BsBWwDrC2FgBiBCcxBgEvBwCwCUoJDYXahD2BtCgFMSsCgBOgCGCfqDDM9DHlCqBnCDtCyEKMM"],["#EDB96D","4Bg5C3/BvFUbQBU7CWfsBC0BjBCJiB7C0BxC+EiCP+CCyCgDsCiBOwBqCgB8BAEfqCBgClB8CZE1EbzBc/CtB7BF5BnDlD;Uq6OlqBGdYUKtBHLfDJUJ6BIMMR;Om8O5tBmBfhBHJkBRGKSOT;Ik/O3vBXBDQcN;I2+OtuBfIUOMV;Ik/O7xBIXhBIaQ;I09O9rBVAeOHN;IkiPx3BNHHaWR;I2hP71BfGCWeb;Mj8Fu0BuBDdlBvDCEuB8CF;8Cu4K+0BkCbmBOJnCiBxBhBzCxBXR3BazBIzBoBVBUoBQcLQnBQICUuBTXRWvBgBHHpBPMGU5BMNkBzBqBJBSrBFTrCkClBZtBWTHBkBeqBfUAjBNBfkBbgEkBTSGAsEWuCsBK;U2tKgYEaqFgFIsBWgBMpCrBnBlBNf7BlDpC;Uu8KihBeBGNYIDVfpBpCjBOuDPU0BV;Wo+K6ZzBmBNeoBYBmBOiBaKcRlBzCO1BPR;asiLogBgBEIPBlBYrBLJNQEdVMDgCZEN0BaN;UokL0jBadD1BWxBrBIbeGa9B8BBO2CD;Sq3KqmBuBDeZAtBZlBdaX8BbWgBG;2CumLwaQDKdNfUJIZM1CjBjBAxBhB+CLFb1BUTGrBbhBLqBZRtCwBH2BUmBxBmBPBHjBbaVNVUpBpCPCDWckC+BSwByBmBXFjBkBSUgBeBMkBYHGOcBDkCyBnB;M++K8aAwB8B2DBvCbXd9B;K04KqRWHJLlBIaM;Kk1K6dLBGQOFHH;M01K0iBMEIRbALaUL;Iu1KqhBPWQDAR;K88K6dJFASOMDX;MsiL6bpBPbUwBeWLAV;Ii2K+OnBPgBYIH;Iq7KqSXUoBBPR;IymL4bCcIXJD;IwlLmcRUQcCvB;K46KwmBUFJXPMGS;Kq7KkjBHVHUUeDb;I88KgjBTOQEER;O8/K+iBebATzBqBbZI8BqBb;M2hL4mBPHLMSmBQTFV;Ik7K2qBJfHiBSB;IuiL2gBVQOCIR;I+0K6gBBNJEMK;I8/KoaHLLIUE;KinFw5BHMWeGNTb;8Bg3EsvBjD2GwI6C8B2FnBgCAeY0CwBKTQC6BUIGTcWkC7C2EpB8BtCkBNBZ5DjFXCDObfLxBI9B5CXnBjCxCNlBpC5CB5Cf;KkgF+oCNEFiBccHhC;I4UyMNBIMGJ;yE2mBgnBqB5BM9BmBVD3BvC7BlBrCFrBZLR9BdN3B3DINpB1BbFHajBcRPXKjD5CtBxDbOEf5BBJMVJTQITVJNeIfTBFMBLZDAMHN1BiBT2BSUfGWGdE9BgC1CGUQhBR5BBG0HaCYgCaUAgBQIF6BTeQgBBmCkBmBKuBYSiDUqCR6B7BwCe0CnBwCHmBkBoBM0CCgDXmBgBiCY;2Eg5C3/BoDmDG6BuB8BbgDc0BD2E7Ca/BmBrCEP6CuI4CoBxBiCOShCbjCOf+B1BBVSDJyBSmBkBIOqD7B8C9BwBRsDYyB2CCeOkBX+BOkBNgBMSa0BJ4DsB8BqBMRR9BQ1DNfMAItEMMGbZjClCrCELjCvBvE3BzBlBvBlCxBTxCrCbKElCadarCEjCOYGPE7BRrCQBb3BvG/ChBtBYXKQFlCnCCPgDG4D/B6F;8C+sErjBkB5ByBxGZzBbuBVFQjCFxBdnBFjDnGpSnBhBrElBpD0BhBgCGmCpBoDW+CaQ4ByDEuBlBoDDwCoBgCEsB6EsBWRFUMSqBaQRBaYiBKECZaiBSDRcUmBDacDyBoBKoBLgBmBkBgBf;IwpE/lBNKMECN;W4xCz1CfDdrBbChBadgC+B+ByCgBmC9Bb7BfP;Ko1ImEqBtBJjBjCuCkBE;Oi6IhFdQVkBIWYCe9BJN;Q4rKvYDXhCIUEBcgBWcLHZ;MsoKlXYXzBnBHazBkB4CC;c0tJ3EenCoBJRdGP9BWT8B5BMeqBKGMTASSEMP;Ss+K9MCXNGFjBSRvBdSgDUUKN;M88K/OHJZGIyBeOD7B;Ok0JwKTCMIVQYWMVFZ;O6zJvINVROVLE6ByBLAZ;MihM7BwBFsBhBpBHPiBhBO;IshMvEgET7BHjCc;Qi0LAsBNBTbEXWSd7BS0BU;MstL6FNAHYkBaChBPP;KwsL3E1BFNOWWuBd;KwmLhFaDhBHxBG6BG;MwjL7EeNxCLHMIS0BD;My1L3WTACcuB0BBtBZhB;K2oL5VdZ9BBQcsCA;MsiLjXqBDIN9BJFQSM;K00L3DTGJagBEBjB;kDuyI8OgDBgCnCGdiExCoC5CiBVFaUCmBzByBViB3ByBPGVpBRoCaeTKVfVChBYb8BNOnCeXRtBcUoBA6BhCRtBE/DLpCjBYZPnBUBjBzI6H9B0C1BgE5BwCtBczBqExCsBJuB3BiCvBW1C2CZuBGeqBBkCf;co9KvY/EdrBM5BDHOGaiCQsCdwBKgBPwBeAUOVTZ;Ss1K1amCzBHXnBB7BqBxBKHOUMsCA;kBqwK1XiBEKLSKOlB5BLDQvCdhCAEsBeOmBDkBbYMlBWFSiBCKR;4DojL6CpBvB9BNjCQ7GEjBXPpBEf4BpCsBCmBuBkBHuDgBYRFVrBK5B7B3BdZC2C9CKbNlBoBpBOCCdjCNHZnBGJSMsBhC0BOmCjBIjBZQlCNhEOnBvCBRaY0DNwBpBBLMH+BcWUyBAwBSuBSUMPJmCyBgDeJsBqBuBVyDViDCgDsCYRftB;6BuxJhRaT8BFgBtBgFNkBwBgBXgBC8CXW5BUJgDEgBPB3BSf5DsBzBLpDKpG2BhDF/EmBGczDUCKUF2BwCkCRUSeH;wE63J4FClBuCjC2BSiCD8ByBqBA+BdaS4BCcwBDYkBaFiBeMWqDQOwDBsBNJHcjBhCFcRAVYLDLsB3BXZsD9CnBP5BaGTnB5BC7C5BpBPQCXrBpBQNLRWPDRRDAfNDIPbrBxDzBPoCPFAU5BTHYZFbcXhBrBAlBVP8BjCPDQ5BFbkDC2BPYxBSMQXWMmBbeMoDyBwB;qBqrLuCOBgB0BqBQArBnBhB6BtBxCWJNIxBqB7BhBShBqBFkDRaUgCkBgBNhBMrBfdGN;cixLjIqCXcnBFb3CyBdADL1BUfTjBaTdBYciBuEA;Q8oL5IiBhBBNZLjBBrBgBCeoCA;WqjLtZWJRNKbJNvBrBnCNG+BeaaF2BqB;Qo/LnQBzBXDZYQWLKgBaQZ;K2+LpSTlBTCC6BmBV;OiqMxXVL5BCmBsCgCQUbpB1B;iEgxMtHAzKJjBKNApG3C0CKYPPxBHNUfXS8BdemBGzBWYInBuBDuBPEMMXDBWlCwB1DmBnCGvBiBUOzCKZgBOmBbfLrBNPdANmCnCuBYKsBJsBgBuBPUuBzELXWJoBzCMY0BmDuBiDhBuBBa3BNfI1BYvBCWOGY9BgBNWCiBgBwBiC+BOGY+BgB0FtCsDX;IirM7XdIWMIT;KqhJ+FAbTDHacG;KsjJ6CNIBeQPAV;IyjJkEAJrBYsBN;IilJkCxBKCWwBf;IulJwCpBQCKoBZ;I6lJyBNAEOKN;K8nJsDMBHPLIIK;KwpJuDBhBLUPDeS;KiqJPMNpBMIUWR;KmpJdKLTRJSUM;IinJfXAIMQL;Ki4JrDVHAaaDDN;O6jKlU/BLlBOOQkDCKJVJ;K+pLtBLBCWOADT;Q8qLdCZaRJFbGNcCQWA;I45LzQLFDcQV;I8sLtKfBeQCN;K4oLwLLCGsBOXHV;IulL4JNEDYSb;Io0L1XOWODbR;IqxLzWLHHWUN;IyrLhXcFJHRO;K6yL5EGZPFtBQ4BQ;I09IhJTkBYTDP;Ig9I5HPFBaST;Ig8I1GVIBWYd;Mi4IvBNAMcJUUXHX;IsyI2GjCsBQE0BvB;Ik7KtPTQIQMf;Uw+KpDCTSOGTVCHRBeXZCkBcC;ImoK5TLKaDNF;K6qK/KRRHiBYoBC3B;K49K/eJMwBaEPpBV;KwhL1XLRTGcYEL;KwgLvXhBbdEQWwBC;I4+K3XZDSOIJ;I6sJkIFSOHHJ;IsrJ7SLCOIBJ;Iy/K7EJCESGT;Ky+K1LPJJSYCCJ;I6zK7YBcKHHT;K0uK8LWCELRFHQ;IsuK5XFSQCJT;IyzLvBNEMGCJ;IkqLnCNCEOKP;I2tLlKPFGMKF;I26KjePEaKJN;yC3sF6O7BiCYaBsBoCcCMZGHeuCgCNcqCrBiCjCRzCiBsBcHoC/BLjCKNJPxBLPlCkBhCgBAKvBsBpCUJrCC/BnBbGPbbFlBQlBgBd2CMyCcgBNoBnBOOyBNO1BB;UizOx5B6CvBqBtB2DpCCVtBGrE4CjCqCLcOF;K89O98BKRNBNWSB;Mm8Ol8BdOKSLIWBKlB;oD3W+cuBYsBZGSWAEcWHOOOvByBWqBRMbeTcFwBY0BBmBpBKGDnBWrCZZpBzDY1CSJBnBfEDOLTnCQlCPhBGUFtCLzE7BIoEfMHYhCYcsBP0BWAUwBVQCSyBDBUVOQaJgBVGBsBOS;4CyCoftDQdVnGIGvEpBqBzBCvBXbGdULclBQC6BWeDoBuCuBDgBYKJeQSSImBTWIEkBcBgB2BsBFMa4D4BwCNFlBavBmC3BTAAb0BlBuBIOPNRepBJRbXxBCvBpB;KwnK+NOxBVWBcKA;OmnK+NZPKdRf1ByB2CoBCL"],["#EBAB5F","8Bg3EsvBlCfJ5B1BdtG/B9B1B9BAtDzBlDL3BvBnCPlCGV0BEmBfyDZaOKA+CgBeE8BOM0BPwDKwENmBdaQiC+CwCoBsImBkD1G;M+4E+jBkCHnCTlBSUSWH;oByCofL1B0BjBE5BUbF7FW/B1BRnBiBTkBKuBLQQmCbqBO6BZGMqCpBoBCkB4CL;Oo2BwkFXLKblCpBB4BmBawBA;IgvBkgFJa4BmCtB/C;2EsgB+nFYJE8BoCwBPwCkBGQahCiBCqF4BmBqDASQFanBKsCiCGsC2CQFQ6C0BZiB8BqBwBS2BLkB2B4ERO8BuBCyIhDRtByB5BZzBoBnB/CF/BKLXtCXQRnBbiBfjC1BjG/BnBhBXIFhBnBAWZPxBXEFNKtCgCJ6C7BCP5CjB6BDzE9BlCAgCNXFL7DvBrCtDFzBdDnBtCDnBGIerByBeBNQUQpBapDkEJ6BWE;mE+gD+aREC8BlC0BGmErBACR7BBYZI3BzD3DjBDlCyBjBTLZrBPLZnCCPYvDJtC0ChCLxB/DhBT3BOK8CnCkDGmBdWViDvBMmByBLqBoBiBNiByB4BAiBQQuCCAkM8CAA2FsRAcSERuPAGlBepBLLGtCY1DoDrCflB/BXLXlBAHjCrBpDIvCjBnEpBLxBpCP3CPJRMTTXrD;0Bk2D5ExBqCAyKgD2DkCOqC0B6DG2I4I2CkEAkFsDa+BoBqBNT9DOKSNpBFJxC3ClEpChFhD3EtF3F7EjDvClClEvEpBhC;Iy4OzefBWMKJ;KwrOrbANLIDeQX;I6kO9ZNEIIGL;IynOxZWNZGEI;M4gOtXGhBXgBfAaaYX;K4hO1YPFBQSCAL;I2/N5YPOQOAb;I29NxWLgBYLLT;Ii/NhXTIGOOV;Io7NlUNAGMIL;OsmOraUNkBAqBnB7CKRaMS;M4mOnYzCsBrBuB4CrBmBbCR;K+/N7UhBC7B+B2BXoBnB;KopOzX4B1D1B6BP2BOG;MgsOxdkBFYhBrCYViBmBR;uF/mGhMHHfQjBBPPvCN9C3Bf5CIf3BnBElBVFDP+ChEVlBsCJSrB2CCgCwBJtEgDGyCtEZhBJpCUrBtB3BSnBVlBStBiBRnCtCKbdRFtBtBLzC8BRkBjKsFrCmCnBmCOsBzC4DFkBlBiBnD0HvDoFnDgCBSWCEUpB2CKoByCuCOrBbNMRLTgBMuBNcpBaDgBkBeqDSFasBsDmBmD+CO4BOBAgBhBqBkBI4BdiB1B0BZQnBcLEpBSJiCAqBWiBPmBMwCpB5BlDkBDiBlB;WkzNvNHHNSFuBjByBpEsCGQuD9B6CtCKVNjB;oBkwNnMSIaLDpBhBXIhBxBJZflCfpCB3D4BISgEDYuBItBiCGmBsBgBIH+BeJ;+CgxM9ZAqGJOKkBA0KMA6GpC0BhBkBB2D7CBzBmF7BWVEfxCPWxB0ChCqB1C4BCGpBkCRVJKT4CTjBFSTdLzBczFajC+BFedK1BuCpEwBhBRrBaarBlBDIRjDLbMyCZYZARhChBlBQxDE;IilNxQVeYJBT;Is/MtNNGKKEP;IgqNtETIEKQR;M4tNvcUGFVZKPiBcb;I0rN/aTMIOMZ;I6tN5YJSMKBb;I0iNtPPKMMEV;MqiNxFiBFTN9BDKWmBC;K+rNxHrBQYISFCR;KmsNxaYHIVnBEIa;MkyNvZeJCLXEROKE;K40NzgBUJjBCPWgBN;Q07N/SVPhBMNmBnBiBBsBgBPwC/C;iD2mBgnBhCXlBf/CYzCBnBLlBjBvCIzCoBpCf/B+BpCSrCLtBZJtBjBlBDrCnCgCnBPCddmBOOJWxBFxBkBBeUA1BgBpBoCGqBiCCgBaoGIiBkBcsCEoH0EgB2E+D4MwHqEdiCzBmCkBSlEoCrDVnBXvIjDpDzC9DO7B;8BxsH0qBVNUrBhB9CExCFcPTIrBNNQTTfUhBFLpBAPSxBD9BWNLvFoFIOSLmBMYYBoBkBCaYcPwC2CeP8DgB;2DwiJ2/BwBhCOMMJHlBWhByBRqBWsBZTTyBlBdjBxBENfyD7BBV+DjEOpBSCyBrBVVsBxBT9B3BXbYZHVLIlBpCYFOcWOiDrCoCAsCtC+C7BIVjBjBRxBkB1ChCXIkBgEH0B/BAJSMmBRUTLCKKgBiBMFMOYoBeKhByBAZgDUWkBJ;qCugD7CEsDwBuCeUQwBFgCpB+BBsBXQRkB2D0DGLmBBCvBWfyCDqDlCgERgBkB0CmBiBbkCCzCpDCvKyBpCXXhBFAVVZlBLJzBjC9DPD/D8CPQCoBzK6F;oBlsGi4BMxBNPGVXNWVAbbS3DCtBTzBgBWYiETmBMnBuBKiB9BUGSoBGkDT;2DndkYnBNUgBVmBEUtB8BvDH1BnCXDLiBXKAkBjCcdgCZJiB+B2CUAaTOWMBiB8BDCN8BL8CGJTQPiBQWZmBcwBRkBWDSgBFWhCmBbXfeBGtBaRPbCrBWFKfPZWNCTvBGDTWPPtBpBKVlBTFfUKaN6BXStBF;2BF0fBnBqBjBLpCaFN5BclBNnEUjBoBhBVZ9BDtG5ClDecGGYVaVkDoBmDaaVsCBsDNgBImBoGHeWWD;+C6lBkGHxC4CKYpBJZhBXHxB4BhBH3DjB1BXgBXXrBIjBsBNJAjBrCBFrBkBrBDfhBOhBjB9D+DcBnBQdqBSCTGVuBabQGREESXChBgCWHgBeGgCoBbSOpBITYcCDqBgFDA4DyFN;UggQ/tBnBpBAJiBUAThCCtBXRSIQgEoB;Qk7PtxBcXGnB/BP5BQFUWeoCO;8B8nDyoBHwCsBqDIkCmBAMYgCYgBmBoBxCYpDsBpCGgBgBpB4CjBsB5B2BjBOhBgCtBlBdbItE2E9BgB1CCPO1BRxBmBb/BbcVPtBB;KmyD0sBYJnBEBYSR;0C8oDy+BtPADSbRrRAAuUZ8CYsBJ8BYaiGVmFxBoDoBQSwBKfNoBEIMoBLgBGYRXOJReRKSkBTgDGwBSiCnF/B7E3CoC9BgERdwBhD8B7BmBxDwDlG2BxBVADNSrCqD1C;Qi9CikD6DRfAlCjBrBOLUBMmBI;8C5oH8hC4FXyBrB2BDgDzBMGgBTTBKLOKWXoDTMLLXsCFiCrB3CXBKNLtCKtEL4ByBLWvCKhBaVyB5BBtCaXYxBDNQHNzBKTQgBKLQvCC7BrBtBDLTpCLuBYBaccoCagES;I98Gu+BVMaBDJ;O5qHs9BlBLTOUABgBaFOb;gD2fjLiBkBiBNEgBjBsBGsBsCCAkBOKkBrBsBHYYYfkB2BI4D3BiBIyBiBYKaXqB3CJIyC2DEcPsCJeVCoBkBiCM+BsCQiCReKMbzBzDbpHvC9B7B1CF1DZpBpD1CZEFwB5BNDXVJ5BkBlCzBvCkD;qG7qG4hB5BRhCrCd9Cf3BcGYLkBrCFlCqBrB0DG2BNgCpCwEOiBJfxCBlCS5BgBpBxB3BWAkBjBe9CALRDDwBXkBxBfXUCX3EAA7ByBAOjBxCHB/BoBhBW9BzB1IhBmBjBE6BmDvCqBlBLhBQpBVhCARKDqBbMPoBzBaxBmC5CarBgBTRxCOboB3BUhC0BWUUFB0BoCiBiCsDPBBQHJDaJBWuBXqCaWTkBKkBvB8BMqBULgBmBZwBIM2B/BL6B8BmBWiBkBIIkCPDYqB4BuBuBLPLKHYyBqCBgD2BMcmBUqBHKZPP;sDqYwNoBqDoCuCiBUeHMO4B1B6B8BHOqB8COckBUM4BaMGsBmBsCae2BaE8BlBWL+BkBD4BrDGrDuB7B/DBXZoDnDoBpCnChEdXQPItDiBhBBd8C/CGrDrEsBzIKTAAL7DAPMK0Cf0BQEDURAFLlBOHqBXMHNBU;kH68I65B9BEETlBDNdxCBRZFvChBFWVIrBiCpCU7BWCbbD9BfNAT2CzDB9BuBxDtClDR3BJ6BmB+CVCFiEhBqCHXR2CKARSVqDOyBfDP0BfcH9BdTVYMdzBXhBnBDiBNZVADgBVXE2BXlBTFiBuExB8EJjBnBsBeLQSjBeKMpBOLRDuBZNGSNOCXfmBR0BOOYPBgCKOaLQWFsBc4BFiCqCP0BqDLY0BiCByBiD+BwBGiBTTsBqBeBaacuBhBS1BgBCIvCP3BITrC3BVpBDZQXNd0DUNTQhC8BTdrCiCHczBkBAwBYFXvBrBGLhBLJjB;Is3IkfERPMMG;Io4I8hBFQOLHD;Iq4IuhBJRFWQD;I+3I6jBJXAgBKH;IwqIk1BRSWADR;IyqI03BSTNADU;mE3lG5xBJcoCuChBSRuBWmBRoBuB4BTsBKqCaiBxCuE4CP6FuDsDSArEkBhC0BpB8DVad8BNehBgCE0BbW1DbAehBGnCoFBLlBGvB0BZe/BTrClB/BaTVPHexCwBzCA/EftBzCAtBhBpDRWhDDlBnCX2BpDMpBcLbfJrB3BtBFPGdsEfkBGYXUAeSKNWWetBoBL0CTIRoB;oB0E2ROGVgCG8FTcD6BzBgBCgB6BkCyBBkBmBAiBoBQoC/BJZgBnCnCrEZBFzHhDN;mDq9H6+BLkDRGNmBO4B/BgBoByBsBItC4Be+BmBbQOgBjBcSOzC4BLyEAoBXXBf9BtBHRnBOxBKISTcgCcAkB3GnBEMzBXkBRqDjByBvBbZoBF0BDPZEeRNvBQhBjBxBNGOYbBGelB9BHuBJxBXMDU;IojIi/BHFCmBGf;MmiI6+BXBQYHyBajBJjB;O78GglCJHSDAjBRCVqBgBE;S17G2pCPKOMCmBZalBEkBAsBhBP3B;O3vGo8BLRtBAOSaBQOCL;Mj9GomCAVbPdYQ6BqBrB;On/GgsC0BBrCRVSSJSUKH;IzyG0gCTADKYJ;IhzGm/BgBwBCRhBd;O/5GwoCuBfDrBLOOc3BcMG;K70GkhChBYIKRkBsBlC;Kl2G6kCRDIKboBmBtB;0J7jF71CXjBJ9CRbC9CXNLxBOvBLJWhBmD9BN9BWXeDItBvCvD5BfpIzBvDSEnBWLfpCOrBNTtDXxDmBRFG1D0BdeELQoBIQzBlBRpBiBrBNDHgCT1C1BA/BjBjBCdxBElCb7BnCKjBiCxBmCHYXFZlBRmBJ1E7ChB3ClBPlBgBARbFyBN3BddvBQCOrBlBJsBH0B5BtEcxFCrBoBGuCpCDlB0D2C8Be0BTgBqCwDPsBWUJiBkBgBhCoBqCCIS7BQOqBT0BOKjBWCgCiBWR0DWoBBgCQEM8B0BkBdmCB0CMe8BqBNqCuB2CSGC2CXIGcdqCKMdiBCYkB0CcUPsCiB0CsBsBemCwBQZuBQeP8BUkBLqBqD2Be+CPQsB4BgBKMcqBbqDLY1BmBoCiDE0C/CwC/BoDfuGvDGRxB5BrBnDkGVaWoBJamB4BgBSiD4BAe7BNvC5CnBxC7BEPTC7ElF;YnjG/7ECoGiBnBPCFReDuCjCiDrBgDLbV9CLhGS;Iz3Fz7EkCBrCPIS"],["#E89D51","Kx5L6gFTCKWaTPD;K15LggFXIMKaDNN;S1nPg1FoDEsEpB1BDbTrDsBlCHJgBaF;Mx4O4rFkBFOjBzBNzDoB2DQ;iB9yNwkFsBASXhCFYN/CZZZWUpBOHTduByBUoBfPyBiBLcWYL;4P7xLg/EA1BxBvBXCRgBcQZmClCTdbHQ8BqB5BU5B6B5BKRqByBFlBYeEvBBbUOoBdZzBU1B4CapDpCOLmBSIbMHZlCYFN8ClBxBRtF0CxDgBYoBUfaUnBQ5CZ5CQAUXN/GElCeUexBZ7BIUQxCISkBhEVRIYW1BNTXYRfJ+BApBtB3CKRdLOtD9BpCDLSsCiBlBJjBMuB2CyCa8DL3Ca4BejGvB1C/BrBCgBZxBNMNzBDvBtBmCRBRtCpBELlCNhE5BPfjF1BLJaJxDjBLPJSzEpBDMWEdGxBrBbHVSDVpBGTTGawEmCsBMcDKVIMmBFVSUc+D0BYHgBuBqBUkBBNyBmBMdWyBcOkBdV9CXdUIOgBBfKjBJLzBhCuBVHnBU7ChBlCBmBOGcdEOoB1BgCqBkBhClBKZjDP3EiCyBgBsBJFPiBQYPeOtBKeENG9DDYQlBQZPZoBbAgBOXKqBGJUwBiBoBCDmBmBMBQmDP6CsBsDEeWToBtBQ6BeXQ5BJ/CnBjBYGTzBOxDLpDMnC0BmCMvFiB6EsBmCANQ4DasCBjBfeLgFDsBWmBJHOnCG5BkBSOmCrB2CHmBM5BO/BFNmBlFI1BuBxHkCmBGQqB0GO2F2DRPiDOwCaWdGUmBE9BKkBOgFGkEyBwCZjBZqCY4Cb8EIyBnB0HGuEZkHT0FKqGpBAza+CJwCOHXwEtCObuCWYqBsCQyBtBsEvCwElF8EpBGT;O/wOs8EkBbZGjEbFQkBc8CG;Il7Lg+EfZHWoBE;Kx1L28EIPfKCWWP;K53L0/EPRfOYmBYhB;Ox0L69ETXVSdVO8BiBKYpB;Qr7LkiFiBFEXhBOQddDtB0B4BB;K95Lk8EWAPP5B2B0BlB;KtgN+rFcDvBLHMcE;InzNwiFfHIOYF;IhpOq9ESJbDKO;K3mO68EfRESaOCN;I3pO0mFRImBMTT;I73PkzEvBByBUBR;IkuP+0EbEiBIFL;U9/LkjFgB5BFtBRsBnBMMSXUfTiBuBqBP;Qh/LulFoBBmBtBrBkBkB9B3BblB2DYP;ehiM2lFKXYMkBJBRfDgBDEV5BQJVTC7BwBWYQLmBO;c97LogFiBB+CrCfKJJ8BXHtB/C4BIY7BSoBMLKhBFQiB;Oj9L2hFWRRvBVDKiBZkBiBA;SxxNgmFoBDLNNI7BXpBK4BQFOmBF;K39O43ElDvBoC+BqBALN;S95Oq5EkBEdTSDhEhBmCkBSFTcmBD;K1tPq0EyBFpCBPGoBC;K7wPg0E3BAyDeFTzBJ;Kp2PyzEMLtBLYiBKJ;I95P+yEbWwBFTP;KyrP62E4BPtBHnBQeI;Qx6Ni2BZGP+BUYAY6BZkBpBnCvB;Kl/Ns8BuBFNJlBGGK;Mj9Ny7BuBPlBNZaCMQH;M7gOi9BKRlBENYcMOV;IplOs+BlBKoBQBZ;6Uv0GggEiJASaqBB0B6BaqCmCkCcVgCMmBXA7DiBLDbgBJMf/CnBjBMHXZIGUjBvBrBNBKNTXGRNzBtCURlBZcJcrBmBIJWQjBhCNDQpBTCYVELlB/DH/CvBCsBCddhBaLH3BBQ/B3CNDES3BeIcgBStBfyBtDxCzDaoCRCAkBRHTOAQWCbIQMPGSQJKiBcREfdNEQxCXQepB7BiBVDSsBTZBX8CnBTT3BsBuChCTPZWmBfFNVU3BK2BNQZsBCqBjDjBsCKvBdOALjBLPUAZ8BCBZWaILBRjBZtCQwBXXZbQKLuBDCLtCVJMCTxBzBBUDXrCPfrBDODX7BdAL/BNQHJNTQKVnBdXvBLxBY7CiC3DGzBN4BFPLamC7FdvDhCRDQSDlB0BfOVuBMSTNCmBXHlB6BceVMBXPMQgD9C+C3BMFN1CTfoBGOPJ9BUeCLI1CNUUZThCJUGTkBLdlCE9BVxBSRHHLWJoBMHNSJUMETfRgClBhBTFU/BeKRPTNQhBNxBOOCJYXBhBahBZzCU5BDBWDZvCbWQVACSZDOdjBlB3CpBUM3BIUXfBFVdDINfNMPNddMaTGlCatBVJxCWrCgBd2BFuBpFoG3CKxCtCnD0BvB8CpEsDhFAAnBhIA3KqDKU7GPdkC3BoBdCHY5BIpBc/CQAwBvDuDGwBzBgBJgBEWiBbVwBoCEtCILbrBOISnCiCLuCvB2BakDpB6DkBwCOmHmCDtCKSkBVSaIbAzBiEkCTsDBMXrBrBUCLGuBoBD5BPFFKRReBgBYK6BZOKMXQOSXe8UA8VAwOAsNA+HAAiBUBe3ByCTiCI0BdmBCsBV2BOmETiDc+J/DcnBmBIQpBiBECb+CpBmBhFlB1C1BrBKbgBNsKmDKKVyBoBOuFC8B8BkEgC;OnuGy0D4BInCZ5DRqBe2DWVP;I9hGk+DTDKOKJ;IhnGs1DVCQKGL;K72GokDNBOGEsBDvB;Kz8KgpEQVfcSIBN;iFxH6yExCRrCetBJfWkDoBE2BzBJmBgBsCSeHEQcLbSQ+BZFlBoByBkBzCPtCGJNTQqB6BJ8BlBXUejBTP3BTB2B+DpBTrBQkBMAsCMSoBAVSkBSIcqFGNdnCfLjB8FMaRpC1ChCRoBESN9BTlBGiCNqBI2CpBmBtCoD1BStBlCK0CjBIPbVWJYQiCDqBfpBhCtCjB6CHARjDjB7EK5BZ3CKjBHXjBvBOzCftBCiEoDgDAsBmB;I9L23EPRRYiBF;M3DmsFYHVzBAahBMgBW;K1I+nFYLxBGCOYH;IvO49EVCCUUV;KtQogFvBDCcwBJBN;KtRi/EGTVHNSeK;MzRgmFnC3BHoBgBAsBeEN;OvRyjFCRqBDZTpCkBqBWOP;IvUikFCNdIcG;e1R85EnBDfgBbXZAxBc0C6BkDMmBjBPPcCKPRGGZ3BP;2BugD7C5ICnBHnBjBJMVDMmEWiC2DwDFUpBSK+CUWkCGgBZuCiBsBLsBqBSjBYPCrBqB9BGlCPpBdTvBtCDrD;oBndkYhBhCtCtC3CsBAiBhBGlB4BiBSZFBYOEVQYE2BoCqDK0B9BDTWlBTfoBO;IzjBkVlBOeGIT;8BtlFr5BerCLjD+CPsBSSPkBDWhBSzDUF0BSiBTtBjH3CvCnBKZVjGWsBoDyB6BFStGwDnDgBxEqEiBqDAuBuB0CgFgB0CAyCvBCf;yFs6GulDaxBpBhB5CV3DYrBdKjBeDXXQTNdgBlBcACX8BTnCpBInCjC1BAXtBVrBxCzBXpBnChDXjBctCxCDhB6BVD1BQRiBDkBzDdNTQ9BV9CODfnBDPP3BSdqCpBIAiBjBiBPJeD5ELJL3BUrBDFNvFBagD2BegCIOuBxBIA6CtCc/C4D0EpB0EAiGqBM2CqBqB6BBaINQ0BagCNmBaDuBY2BmCYhBiCqDEHsB8B6BR8BVSgDgCkFIyBUyBFkChBCxBWTkBEUT;sC06HovCLhCQlBLdhCBZSbLxCQNUpBFtBaFWvBSnCJzBMDOrCSjF8CuB+CgBYYLsBgBkBFQX0CnBoBnBwBEKb0BfiBCDXyBDehBMUaRYQqBX4CC;8E65H6rEiBcsDO8BsByGmCaPcIOPoDDiBvBkED2DVwCyBjBkCgDiD+ChBmGjBQlC8ChBoCD2Dc6DNuBd+BDGZ6BdgGP+FiBoEkCmDhBmDCMHvCvEXLIVaRuCS2BTmBeiCAuDrCOrBvBFrBOjDVbGJTlCFhBxBtBZlDF5C7B3EetB/BwB7BzCf3BzB/CfpHLhF/BrBGAUnCLtEmB7BiBvOQhD4DCW5BGrD2BvHYTegBuBL0CtC0C3CMhDyBN2B;uJltKy8C8GQJT4KpDiIAAoBiFAqErDwB7CoDzByCuC4CJqFnGGtBe1B+E1BWKvBvER/EKvBoBxBHZCchBoB0B1DiCtCQvBqBzB6BFiCvB4FuBqBEGRiBFYQNY+BqBY2BMgDsF0BuDLGKRAYGcREXzCpEYLTNOFf9CT0BjCtCdABNlFAAzBlBA6CtCBd1DApBnCMRPvBzCyCtDsCiBX7BQEOPFJMLLWF7EzBxDe7C0BzCQ3DyBxC+BrEiBpBuB9CsBxB8BPmBkBSVUacCiBnBuBN6BnDyDrC2BWJCMnBKdqBUAhCqBVDMWbLPMDccUNarBORiBlBOTeGc1BK/CgDvC0EDyBnFgCc/EgF7EM3BmBZqBtCOHHaUPaxC4BzCCvBaVKWsCtCFdvBXfgChE2CdkBG6Bb6B7BiBLgBnBT9D8CDKiCEWRRWUuBxC0ChCkBjBgD1BmCCatB+B;Ip3H45BBSSIPZ;I7hK0yClBwBiBXEX;IznK6vCPEMYEb;Mj/JwyCHVVIIgBOEIV;I3+J6lCVWMuBKjC;kB3gB0TuCuCiBiC4BAclCJZgBTUGekBY1BbzBiCXIXgBLHnExEgCnD+CvDqC;6CxU28EzC5ByBbaAcYgBfsBAPJe7CnB1BMH5BAjDlBfGGNpBN9CJeS3BHwBajCHoBenBI0BELOaMsCOlDJ6C6BpDSBMkBGRKeIdEPgBsEEmBkB5BEsBqB4BKAZgBkBgBLXN;oD2kCm7FnBoBa0BxB6BSuBxIiD4CWqCxB0CHwBOiDRqCkBmC0C8DOyDjBSRhBpBxBJiBHbdSb4DtBzCnC+CpDjBHJ7B0ClCvBpBsEtCnF5DrF7CxDLCUpCf3HpBQUZQpBPMgBnDUO6CtB+CqB0BmCKAS0DyB4CkCiCGG4B9BSDQrBD;kDqkD0PxBqDpCuCxCoBasB8BAOOQwFagBSLQKQ4CyBqCoBImBsEuBCWQcbcgCyBlB6BSMN2CB+BfuE1E1BlCA/BmDCXlBSjB6BpCuBhBwI7C8CA1I3I5DFjCvBpCRNNjCBhBczClBfjB/DSpDmCxCEVgBBwBlBCFM;K8Y2KSLVjBTEYsB;QogBmGArDhEBvBQmBoCAiBQL8DA;2Cj2GJfBiBpBAfNCN3BlD9CrDlBZrBRGdpDfjBZEbqBtBOfLMULScONsBiBUU2BJuBHrBFSZf5BoBOeLuCgBUIYQBRWoBwBA+BoDiBEW+BrBsBLcnByCNUS6CxB;K9jHtILBEWcCTV;K9gIlCRSYIGPLJ;Ir+HxCPCcSLT;KhkIpBPCDOSCCR;SzjICsBlCdXhBOiBcbwBPCWMIJ;IzhIdZGGKUP;sBjsGqzBAcVWYOFWOQLyBUQ4BC6CVUhBuBBjBN2CTgBZfjB1BUtDTNMjBFjB5BdkB;Ug7D2gBdrBlDBAgC8BsCWNmBeY3BtCtBiCH;Y4jB2+EfdSPdHTlBvC2C6BWSXEYgBOgBDAZ;wB2b+7E/CIFuBrBQE8CuBJUWcBEcnCfRIQU6CSwBmB8BOdlD6BPPRlBDNfXBbdNpBaT;Koem+EOrBnCELgBmCI;KqgBk8EkBRhCICOcD;I2jBs8ElBFOOYH;I+qBw8ElBIISeZ;+CmkCu3BA1KtCBPPAhBxB3BOhBnBhBMpBlBxBwBLWhDeVFlBfGhCfHf5DpD9DPFJUPxB3BzCFtClBVc1BfpBAGYnBmCnDoDYagECtB8BFsDT8BjBwBjBEpB6BN8B0C+DkDqDYwIWoBnCsDRmE6CoB4WnL;Y+2C5GLrBgBJAZrC9CxBLdoFeTcCOGGkB6BF;Sz9H2yBCOeAgBuBiBXTvE1BjCdAGwF"],["#E48C46","O+ImxDeHjBjB/BYwBecGFP;ImMqxDnBUiBBGR;IkE2uDRGcMJR;yDjFw7DkBPBR+Df+BAGO6BNKXgFAErBpD7B/CTbVQJbJzChDMpBkBbhCnBVhCvCRxB7BlGBnCZpBjBlBOfoBQaPHpBqBxBJHgBwB8BhBYgB4BxB2B0BMFiBUQJ8BgCyBdMFYrELJe1BTOgBJiBTFKUbQESoE2B6BTuDI4DT4HA;KtuB4wCdhBVemCWRR;M/mBoyCNDEMgBWAVVH;KroBkwCbF6B6BFrBXH;M5rBiwCDdXDJUMOaA;I7yBkvCJPPKaG;I3yBixCHgBSLJT;gBk0C9DWEKL2BkBarBClCxCAFjBNFbBbUPHFWaWAiBoBoB;Q6xEgmClBGHiCW0BYQaVGtCfnB;I7wBw9CsBJdHNS;4B9Yq3DuBSKdsEMGXeN/BvBK7BTPGhBzBLyB1Bf3BiBXrBpBExBnBPpDCSmBF8CSBvBCDSqBmBfddAoC4FHsD;I/sC+tDbKWCGL;gL26BskGtBBN7B3ESjB1B1BMvBR7BpBahB5CzBGP1CPFrCrChCoBJGZRPpDA3BlBBpFiChBPZjBFQvCnCvBD7BpCYV0BlBjCdFZOILlErC/BJvCGGQ1BKxBgBIauBNYMrBKuBqB9CjBTEOmB0CQrBEkBiBkBQAVqBgBrCP7C/BGqBsBCxBeuBWvBDJkBgFKYR0BYNUPX9BKRNhDBZOBQeElBkBkFAjEGLUmCY8BBnBAUU2DFJKuBK1DFsCkBwBBuBVpBesBQXOSK0BBCLwBQeVkCGDQ6BQNUnDtBnBYsF4CBU8BSgBFmBWtBNZIyC+BVMyDSzCFImBkCObKqBU4DG5CIwBa6BTbmBnBJDOqCMbMgCOafJoB8DK9CKwE4BOe2BNVQiDcDhB+BuBT1B6BQJkBoCIyBP3BkB4DO+BjB2D8CmDLhCjCkEoCItBkBK4B0BoCJrBZiBBHlB6B4B+FpB7BZlECqCNIVsDEAV9BIvD3BQ8BxDkB1DNzBXX7BpCjBhDSvBNzCIpCyB3CV;IiXm0FbGYGEL;I2iCupG3BZrCMkEO;I4oCsqGyBNxBBAQ;ImjC2oGpBXTO+BK;IorBkkGCdpCEoCa;O42BqnGgBDXRxBV7BB8C+BKP;I+fw4FrBAaKSJ;M6xB+lGsBHDbvCPFgBuBU;S6sBgjGwBcWTxBV7ENoDiBImByBYZjC;Wu9By/GgChBoDFdPiFT1GtBMc/EJiCqB/D0B8DK;oBu7BokH+DRiCmBKZsDQoHRgBVtEtB5ET/CEBQ5HIpBImDO7FCMa1CIiEBkBiBqDV;qC4vBqjHgDJPlBiCUafuDRiCEmCf5ELvI5F1H0CqIkBhILjBYuJgBTa7DRDchBLbIFbnEPhFgC4CDViBvCNpBkBGamEHgEOnDboETyBqBgFrCvBkCmBeyBL;+DusPt1DsCgBNdSYcBXTeMbdCTSHhDvD1BZKHRJyBTBRxBEBKRLVOMR1ChBpBxEhEjC3CCRWdAbUpCFSWZFIOVHAMwBMTGSKVGKOaJJaUEFMUMGLcgBMFFQ4BqBiCKBO8BWsBmBmBIWcEPsBkDqBYcmC+BWVNaPMnB;Ko+OplEKRhCRY0BgBP;IqzPlnDRGEMOR;oD8sPrjDQI8BZCPSGWxBPAkBtBFxBqCfHiCeXexCqDfiCoBwBLXvCZNFvBjBQnBNLdOLXrBtC/C7BjBNSZABSTFwB8BAuB/DqCsCwBe4CdiCMLSMnBOZoBSJAiBrBeQrB9BsCUWVRXcGQrB0BeCWtB;I64OrwEdDSYMT;Oj1Pt8DdDQVPHDYbE+BG;qBiRswEfIOclCc7BJzCSsCFdewBuBa4BkDoB2CGkBNP5BdJcXXfnCJWfdnBMX;IgMmyEbPzBOwCC;I8N+2EPBQMAJ;IoLmzEAJXGYE;I/hGyiBDJLYQN;wC9iBkqBzCqCRoBpBI7BuB7ELb9BImCmB0DPmDbgBUOLDUmC7BuCPZASIeoLANoEyBoB2BSAmHwJAA2DgLvGhFA4C/XYZNnCtKAPQHRxDDVXzBsBVTPvBPNPG;4ErgBqjBAwBXmBPDVcE2BX2BQFQOQwBWU0BrBWYyDEISQPuKAOoCXa3CgYiFA+QjLCZ2BrB8DrBMnBLbWJuCODnHbrChBjBnGHfZhCFvCO3D3BLZrBGf1BbCDjBVHlBUhBZKdXJEftCtBEnBVdB5B9BPFsBNNVIDbVAFRrBatBXXcFuBdCYgBlBcViCfGERjBVvBSlBbVahBPPQKU;6Cibg2CiBOekBJ+BQUwDiCAmCmCd8CGsFvBwB3CgGrB2D9B2BWkBqBPuCKa+C+BmDMyCZSlB4EXSZbdK7BXrBa7CAja7CAAtB3WoL9ErCjC0BpEepBqCxDYXkCxBiCEYkBcLgCOqBJ+DrB2CSK;S37Gw0ByCbOV7BGfXxBQzBqBqBQ4BF;kCxsH0qB1DfvBKRjBxBrBbQZXlBBEnBfdZANiBdECsBfKdLvCyBSSCqB0C8BwBQoCNyBCiBWuBJuBIgCPsBhBbGAJePYANMsBhB;S+a45DI9BhBjChBUVmCWWuBKEcKT;6E2VsnE7BL5CxDoCSYrBVPiBfvBdgBVHrBkCPNjB9D/B/CiBfFnCStC7BOrBpDFdW1CWLN9BA/DgBESjBQcOmBmDPBQuCwBvBVqBjBYOCJ0B5BSZaLgBqBGlCIIOhBOpEShBUgBMVMeAvBOWQ2DUwBb4DKpB+C2BAKZ6CH0BMZGESiDaeYI6BuCSWdeC2BrBsBDAZiBAYSGhB6BZiCAuBf+DPtBpCAzB;K2+E18BlBGFiBgBAMnB;K/sFopBVDNkBaHKX;KtuFmuBRAEYcVNB;KlvFwtBPGCaSFDZ;oBr7E0GoBsBQ6Bf4BJmCyB2C8Cf4BrBBPIIQLEhBQaQzB9BvCfpCdRjCQhBTrBS;Yl+HgpBwCxBeMmBNHxBfLtBKQHvEyByBuBDOUC;I60KuoCJDCUIP;Ig6Jg8BKLTEKI;I84K8vCJBGOEL;iXkzJm9BTOjBF/BiBJwBWa1CMzBmBjBRRbbLTKTXbWLRRQbbtBafflBIRTUnBA7BrBEPyBpBZpBCVyBjCKgBqC7BUPiCOUzDTOePkBa4BsC4BA8EfBR2BnBgBfZhCWbDcgBNabLUebS7BjBlCYtCzBtBJ1B9B9BTfCCQhBOXJlDelBVzBjCNUGsBRG5CXrBCvBYRPZSLTdiBxBEEYhBBzBgBJcvBDnBoBzCoBPY5BCbblBiBrBODU7BUjBkBfHB6Bd0BcIUVaMF+BfeFuBWa9BgBVsC3CGvBehBFXWF2BlEsBkCWTUFqCzBWpBDR4BiBqCuCaAOiCOKd6BE2B+BuDE6BsBoEsBH6BiBSLQkBKnB2CM4B3BQmFqBWR2BBIabQiCwE0ERMNgCWSyDuCUkByBwCGO1BiDxBmBCsCfiClDBvBftBUdwHXsD1B6BFBViD3DwOP8BhBuElBoCMATsBFiFgC0HO2Ce4B0B0CgBvB8BuBgC4Ed6C8BmDGuBaiByBmCGKUcFkDWsBNwBGNsBtDsChCAlBd1BUtCRZSHWYMwCwEuDd+D0BJeyCsD+BuBHqB3BO2C0BwHYsDlBsCHgC9B6C3FYLDjBoBVgCCiBToBC+BtBiBBkBpDqECyBe0DeiBLIvB1BlBb/C9BjCFhBPJhDcvCrBalERpB5BPIRZgBdKRxBjBDjBhBvCDYhBNT/DejCpCjDpB3BvBhEdtDhCrBLDQ0BSMaxBBAQ6C2ClBsBJLxBE/B7BhDrBlBzB9BJnBMVfOvBqDZOdLhBeRqBCuBwBsBOyChB+CFdzBlBMlDdIPPDHZVFROITtC9BXpBkDzB4BxDBhBsBTuBvBFRxDkBrBP+BGmDzCEN5CvB/BNcGMP6BQqCnBzBhBiBMILDfTKXJWPTbOfrBCPZTBL1BvBjCRFFWTFapBlBXdGSPaEA1BnBEKTbBFXZJCRzBAVNUV1BjBHVHKhBFnB/B5CTZIfRROJVvBAtB0BPPUdAhBjBLFMLbhBLTSFVfKfZzBDpBbNMXjBiBlBPTpBGIIbqBY0BhBSBNjBJDQdCZaCXvBL;au7J84BKdhBhBPxBjBZxBVpCeDmC4B0ByCQmBHGOWL;qBgMmyEqCGoCdPZ2BVMZ5BjBEhBxCWFiBXRhBAAarBE1BsBXFVOFUgCY+BLcQ"],["#DF7B3B","oBkgF+oCI7BbVFUTHB5BUPvBJd3DpHc3CoDCYafkCOyDFuBSgBwB4DyDGhBOD;I23EglCLEUKHN;mBgvBokEvCZAfhBLGXxBCTQRPnCEaIhBiBMSVGeYsCJgBSgDGMSoBhB;Mu3DyvBQBALXKDeMZ;wD8zEi2BrIlBvCnBhC9CZPlBevEOvDJtBSTND7BfdtBgDxBqBvBoCpBiD9C6BpB2BZyCIgC1BmDxBsBhBKhBwBBqBzF6HxBCe2DmDN+B8BgCMQegBQ9C6CoG6BuDP8EtCuHrF6HTWnBmCAgBpC6DhDLCShBPRwB7CiBtBsBBJTYF6C5DwHVoB/B7B1FvI5C;ImmM48EJPfCqBO;Iw2Ho1GYL7BEkBI;qDt/PkkG0CRqCrBYGnBS8BbsGxBBbuBBFhCwBZcMCVaUnBQMepBMwCGuBHHTGO8BDrBKuDLuD9BqCJvCtBlCQeb5EQyBTlBRoBTtCT+BjBtBKhBVDWlBPrCgBpCI/B+B3CM7DJvBwBmBiBdTZSPThBCe7B5BpBSiL;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;M+mEgmHyDT5CMtEdvDQmHW;SgvEmmHiEVnL1BOOxDGyDUsDBOc+CK;8B4gG84GnSzC3E/BnBGRRtBCIZtCTAVpBGWP1BZxHBvBmBwE8BoCGxBMyCe9BQmCBYWmCA0DuB8FUWUiFDoEMiJ6B2DbrDpB;sBs9EwwGkDJ9C5BH3BoDrCsDhBrBLlCMEPlFMtDSmCWjCkBlEDnBQImBiDYHqBoCMJYsESwBH;SyyI0mH6DbzBtBrKXhGgB+EoBxBIgHkB8DR;a61IgkHBjB2CamEXhBpB5BBwCdpEP1JYnCgBnDIuF2B0HG;U0kJuhHpBlB+DcqE5BzBP9OfgG8D8BHOQqBP;oBsuM23GmCR8BuBgL3B5DrBrCIV2B3BBJb0ClB7BNrBQ7EN1BMzBb7CMnDwByDoCgCIoDhB;UyhNs2G0EEQPqGHPR/CP1DCjGkBciBgBR;K48PupGPa4DoBAxBnDP;2Bi2M46E0BjEB3DgEvI7B2B1CDxBjE8B1CYDKjBNdNwB/BMtBlCVwBgBuEdkCaqCG2ErBwBFwBQiDcOkBFQqBhBiBmBM;M58P0rG8DlBrFV1BGAyBmDE;I8lDu5FDTVQaE;Iw2EgrGKjBlCc8BI;IqrOgkGjBuBmBUBhC;IooNi6GjCB8CMXJ;I+/J+5GEPxBQuBA;IyyIg5GTP5CKuDG;I8xIk7G7CByDSVP;Is0GqvGpBUmCDbP;ImnGm9FvBW0BFDP;IoyEsjH3DEsCKsBN;I6pFujHnCC6BMON;I4mFwmHdXhDWgEC;MgvE6kG5BdrDFLsBwBUiEb;Ko0FylHlCOoGe6BX7FT;I8kF8jHvCiBmGL1DV;K6wF+lHjDlB/DCFiBqHC;I+tFomHhDE+DKbN;Io4EikHrDEuBQ+BT;KsiFykHHZrDCUWgDC;MukF+nHkCLnCV5FCXM2GU;M07E4mHmIhB7ELtDM3BM8BW;I0nI2iHjEeqHJlDT;KkxMwyG3BHTeuCABV;Ou0MmyGqDdKd9HUvCJ2DwBkDC;I2iMw2GrBBWqBWnB;OsoM28EYDrBhBXSTFekBiBJ;MqhP+lGtCIrBUsBK8CLNZ;MuxO2mFRBeoBqCSEd5CZ;Kg6Og8EANvC4BuBAiBpB;Is4NosERGSYAd;I88NiwEVIUMCT;Mw7NivEvBXRWsBMmBiBPrB;IswNslEZD0BaZV;K4pN6hETDSWyCiBvCzB;Q2mN8gE1CdlCzB+C4CkBHqBWGNVF;M8/My+DcJ1BZhBnBHUkC4B;KwiK0zG1BbzDY0BS2DN;K0jH+lHzCBKOiDBXJ;MgpG+vG3BFDe2CO+Bf3CF;K68G0tGlCCwCe4BNhCR;IkiH8uGtCMwBWehB;I4pHw2GvBLGQqBD;O+rF+mGATpCA9BQnBmBwBOgEvB;Y07Bo9EhBbcFaCEe6DRYRFtB/IIiBsByBGoBa;cy/CkjEUKwCVmC7BmDIRdzCC9D7BlBATMKwB/CcqDyBFO;Wq9Bm4D+BKyBdUZFjB7DrBrCEXgBG2BWUmCQ;oB4gC06EGuBXS5DSPqC2BWwDIyDLiCM+EjCLbeF7CnBTtBSPZM/BdtDDPa3BO;oB0rCq+E9EkChCL5FM9CdCkC8BkCqCOkDjCkCaF4BoCS6DvBgDDeXRjBWBa5B1BjB5CL;IqpEo0CRQKQIf;Y6pEmxClCAVoBxCK4ByCsBKgBJOlBPEVTeDkBpC;e+lDi/CErBdxBfOVhBAfWFdhB0BKvB1F7B8EYe2BuEcBmBgB;QklDk8CJxCvBLEWWOVIK4BsBF;qBrmIspBQwBLSqBoC2DACe5CuCmBAA0BmFAFvF6BLASiBT1C/BAlBlBTENxBtB1DYtCyB;I06BmtDOblBKYS;Ku7ByrDIJPDRSaD;I66B6tDLBOYBV;Ik5BmwDnBeaAOd;O0iC6uDgCbmB9BtBmBpDqBkBQOF;IwmCwzDXEKOOR;I2oCkpDRKQMCV;IqsCyrDUJpBCWI;KoqC2sDTCDgBeDFd;QkrC8vDQZJFhBKQKRJVK0BM;KsoC4xDHPZEBMkBA;ImvCmmDLWwBYjBtB;a8jCilDcGQV+DAGVwBSNZ7DHfUtCKBYOMML;sE8qC22DcdbNTrB5CW7DXKdsBX3BQUfvBaWZXCHUlBSCQZHDpBkCtCPFAOVEOXtBPgE1BItBHHnBgBrBLoBnBdLnBUoBjDnBgBTflB0BRZNMNUKczBsBacmBM+CfeQlCa1CJLQNNlBwBgBCAMjBChC8BYBEcgBMiBuBFU4BCmBY4BAQS0DSqBCiCb+BGSIDcWC;kEibmnE1CWNPtCCGyBuBqC9DQjBcMehBcWgBrB0BeoBVgBoCKYgBbYcIQgBC+BqCEIVUOQTKsB2BB0BbtCmBBaXKcKXoBuDLBboDHHjBsBDqDwBqDbMbkBLOvBZbsBfA/BkBzBVnBnBUENhErBjBBXRRK2BvCoD7BHTVEJT3BXW3BnCWpDd3BOXXRUpBC;IgnB26EvBFOiBiBb;IuoBu5EZFJWkBP;K0X67EOaHNYBdJ;c6tC0jFxCCpDuB3CPSsBjCAZsC4FoBmEP+CCMJ/B1BexClBf;OqgC4mFgCP1CThBZSUdekCM;KmhCqnFhBLrBY2BMYX;4By1B6sEhD3B3BDPVlBSrBDhDWZjBtBBpEsC1BwCSJYSkBCiEsBHMoBRYS+ClBgBCNRmBdgBMJSsCJHR2CVYhB;gGw3CpXpFZBbpBnBU1BAtCXpCKd2BvBmBFCQaIB1DTSnBN/BwCvCehB4BdjBpCI7BYFmBzCTAajBYLLzDDZLA0CpBoCImCL+DpDEBgB/BFfNRrC/EL1BuCZiDXY3JGrBNbWaGD4BiBecMaTWKEY6BOGvBaD2DmDUiCAuC8B2CwC+BcqH0B0DF4CuB6B4BUwC7BoFdqB2ByBFyCekCBqBgB2DXaOaHoClCwBOuBJWUUBuDlDP7CyBb3D5DVhCLlEhBdFrBZViB3BBlCS3BFpBYpCF1B+BhCyBpD;oD2kC0YOhByBNgBdGhBkDnCOzB4BfY1BdIVN1DYpBfjCCxCdxBGpB1BnFediBhCanBTrBxBCvCLObL9BSvCPlBxDL6BzC0CFqBfcN+BE2BPUcSkCwDqBA2BgBWbuCmB0CGyB4BTWkEUaQgEsEqBOgBFoCjDJ7C4BN;iB0kI+uCBRsBXHnBxDHjBM1BRhCQZciCwCuBWiBFAN8BJYKiBNBP"],["#D9682F","sD0gDgMrBpBrBMtChBfaVLjBKdZzDoDdVtBKvBN/B4BfkC3BgBN0BjDoCFiBfexBOLmBgBQYyCmByB8BIGViC9BwDKQXoCBMasBQMakBUmCxBkBE0D4DH4BXa8BCBSsBAFlEmCzBB7BSDCnCNV7BAZvByCjBqCtCyBpD1DzD;6BmoLurDqBuB2CCee4C7DGtDQAfvC/BHFTlBOdFAVbKFhBNIGU/BnBZgBeONALeqBiCXqCdIeUiBPKKfsC;ImuLgjDVGQMGR;IosLgjDPFDMUF;IinL4hDJIUIJP;I8nLqrDHJBSKH;MqnLw+CNIQOyBEBPxBJ;qBkgCyrEnB9BhBDZU1CBxBjBdIrCTFThDCxBUTgBYqBsBA4C6B0BHaSgBjB0BS6CEsDhB;8CkjCyyEuB7BBdhE5COvBpDkBzDBbTbCbkBrBRjBsB1CWISrCKKRfLlBeSOLGXD9CmBPNSkBjB0BAgCrBgBacNwBeHBSfK0FgBiBYqEa+BNdEOTkBPkLEyBVoBlDCbhClBqBXDtB;qCktL8tDdd1CBpBtBXKVLfWlBXhBSUOtBEiBoBsBMhBKQiCzBUNLVsByEqC0CwCYX4CLOUXiBwCEkBiBkBEOuBUC4B9BpBJrBrBDtCrDhC1CdRtB6C7B;KwpMyrDHYWWIXVV;I6/LwhDXCeWFX;IyzLi2CVMYABL;IgyL27CFaOCHb;IguLo9CULRDBQ;I8yLo8CNCUGFH;0Bk5Mw9DwCR8BkBXxBWpBsBIZRvEbhCxC9D2BvCVtBUNXsCrBrBA1BhBToD0BiBDgBkCLWKkBsDJ0CaK2CrC2CxB;4Bk1Ly/CwBAPdiBBKfflBdhDXECPjBVI+BTNChBnBUQSLsBqByBJSbgBFdQNZGZRHuBcTlBkBoD+BqBd;iBm+LuhDaBIlBxBzBxBYfNrB1BbOHuBhBH4BgBamBYPiBICUgBKmBH;sE4xM21DUCB9BgBlBSvCvB7CtBXE9ClBvCatBlBTHdvBXAiBYcXGNtBnBMjB7BGkBRKvBvBlDBUSlBDFcXhBcftBNlB3BTFVGdqBBacc9BOxEpBpCCPrBjBUrCHImBgBCuEkDiDAsDWOT0BISOBgB4B4BO6BsBOnBlBgBfiDqBgDwCoBoCYiCHWVG2B0DaAMhBgBGMcnBFAKMYcL;IsgLilCREIIKL;I6kLsmCPACMOL;O6sL6rCjBTRdW2BSBOSAT;IowLowCbEwBYTb;qEgU0iEkCA6BwB4B3BY8BWRkBGOLAiBgBDCcwBHYS0CKUjB4DPdXWFLRiBhB7BOzCdFRcXZXOrBqD7BqBvCwBnB4Bd8CBXjB6FtCwBxBLZrBqB1CQjB/B2BhBGhBzBRFjBrBpBlBI0ByCvBgDjCWPoBlBFKMlBGboB5BApBU5CsCtBICO5BmBd6ChEsBlCxBtBJOkBjCQIsBfWuBcfiBWQ;Iyd+5DCNZCYM;aqsB2sDrBjCSlBPf3BKfcpEsBRUciBONkBOuBRiFU;Ysbq0DQjBV5DtBIHZbBVYM6BdiDgBF8BmBkBhB;gCw4DypDmBY6DFOdqBQ4BnD0CVZNOrB5BxBJ3B4BxBKpByDvBqB5BNnCeBAtBwBtB3DG9B1ClFKvHsF7EuCtDQMKVGXiDoGgDiBuDFkCiDiC;sB++B2pEkCpBvCnBrCtDxBN5CCrDjB5BC7EiDiBMBkBWMXO8BCGc4BV4CCGUsCUeHyBkB0EL;wBy7D+0D9BqBZL3CIYoBZ+BpEmCKMoEdsDD+CnBEP+BSYLIMsCXFZoCbVVsBhBLRxDgBnBT/DJ;qTl1C2tH6Lb3RX2TQ6BZoIVrEbnTZeJwMGuCbuDcgFGKpBrFrC+JwCmGX4DkBsFCgIfzIpBDTtGRsCNxBPrIChCXqDrCjGtB1B1CwCS8DRCNtDGUPqDVuCEIdXNjEOtEV5CCmDnB+DD2BpBBzB1CMpDb1BKyBNgCKMnBuCegClBHXzDN1DKAehBXSdgFLLfnFTjFsBvBNtCWkCdzDXtDQiCP7CJ4JY+FrBXpC/EiBzByB3FdoFSOdpBToBI4H/BvBfGL8BUU1CtCFDkBXlB5BAvDmC3DgBtDGyDNIZ3CV3EEeZ7CX+GCzCfQLgBUoEOoJdvEZMNzBAlGxC7HjBlEDXP5DiBOpB5Cf9C3C5ClB9BSUbjCbLQNTjBIfTvBB8B+BvCGmBJjBhBhBKcZxFN2BThBRnDDyC3B1BXnCG2CNIlBtC7BlCOwBVXV9CBoCLEhCrBLWJ/BhDvCGgCTIdRL3BKaPVDtBKQgBhBXlCS4BqB3BT9BQQ2B5CjB3DDmBU3BAxC2BHcyBQnCFGUlCWwB0B1BThDqCHiB2DSPKlDTNK8CsB+BVJYjBGnBmBWjBtBPDM7BvB3BkDkEqBlEd5BMIkBZGmGsCzGjCMuB+CW/CEnBSIamDe8FTzBQSK7DC/DZ2B8B6EHWc5CRrDGoCmB6CP8BOOMnBHOkBoCEnCEoCoCxFE/EiBvBaiBK8DFwFjBxC8BkCBzFQKamDU3EHaUtByBQtBrBjBhCHxCQkCqCjCPAY8BMSc1CMkBcpCWL0B7CA6CkBxGqCEgBxN8B9FTzEIeVnEI3De8DWtEIBYzCPvBUyIgBgFJbkBxHRrDUmBOpDDrEkBqDmByQyB2E0CxHBTcoH4BoCG+BPMemEH2BiCuEEyHvBvH6BsNgB8C/BwB+BiGnB6DC9DqByCIiP9BuB2B3DiB8LAxNKBSgJS6EN2CWoGf1BiB+CMkWG;Y/1E+mGsCd3Ef3BOgBMhDQMUqBAtBSoBQiDJ0BX;IjxE6lGFiBmBFfb;In4EiqGnBIiBQGX;Iv8EivGxBV5BQsDG;Iz/DwpH5G0B2GPEjB;QpoC4pGCZpCRlFEmBmB6CBqCOkBJ;KjyBijH9CJrBMqDSgBT;KlzBw2G2BhBzDDPeuCI;KzjE8sFJJjBI0BSFP;Ow/D6wDSKOR4BBe9B5BM7B8B;gCgrEqtDXB3BoBcQRUUOdanElCB6BxCmBcGIStBcMcvBUMIRMaOyDfMSrBiBWWeHyBvBsBHwC2BoC5CyCvBpCHPrCvBtBClB"],["#CC5527","I8pCmyDbAYIEH;iFi2Dk2D4CHcMuC5BCpCkCLmBdVKRffDmB9CVnBgBNCbUPvBZNe5DGlBXNQ/BRnCA7DlBpDUjCVnCOBzBXFTdVIHkBiBeLY7Bd/BW7C5BvCNtEoC1BER1BlCJpBOXkBpEAoCc3CDYQpBuBOczCcMiBWbqBKhBYWQdkBUYnCHIwByBmB6CHOSIN+CCTOQIwCMhCQEa+FJgD4B6Ca8EEadmCDgBlBiBIyElB+CQuCNwD0B;e2vCs3DQlBuCdHTjEB1DxCEWwBc9BBFM2B8BbiB0CeaPsBE;mC4gBs+CAlCvDhCPTK9BdjBhBNpBoFhCqBTuBhBUV0BCWiC8BOqBP4DgBmBmDkBMREKeDUpB6BeGR5B/BKZmBVKjBhDrDYdmBDAPWKWhBcF;Kmf+/CVACOYFDH;qBibmnEBpB4CPBdfEEhBRMjBFVSf7BvB4B5BvBhCBZuBdCpBZQqByCwCgEKKQ2CV;gC48Bw/DiCZmBQUJTJSXdnB4B1BvBfDvBtCFSmBfI1BuBpBnBnD8BaOVeeGnBcUwBfAGYeIjBQJwBiCW2BDyBhBCZgCbLd;gCowCohEyBR6BQcNNlBtBHEURFbpDnEmBxErBpHOKWvBgBUQTKlBPhCaMe/BcBavBgBwCQwCwDoD2BkEPcR0DYMUmBG8D1DMrE;2DpG8jDmBfMjEUvBkBbPhBzEBNVjCNFrBOV1DrBrBvB9CLNVtBEpExCLxE3BBlBV1CQ3BNEVhBvBfJhBpDxBfdtBzBZd9DvBnCtGHGsB0B+B0BuDPLGQ8CwCsBsEsCsB6BqDqEsB2C+B6BkCUwBViBGgCqB8BIsBkC+ByEiC4CmF8BKCZ4BlByDCmBQMX4BB;a02B67DoD9BZHLVZKhBpBGZxC6BCsBkBgBQFHWYA;e2rCopE2CUwEtBArBoC/BQhBnDEBjBpBxBXFLOOuCNwBjDsDhBI;MqmDwiDmBCOvB/C7ChBBuCsE;0C6pGuyDkCHkE8B3CUtBwBZlBtDmBgD4BfQwBoBuCBwDfG2B6BWqDjB0EMiGRkD7BhF/BdftDD1B9B5BDJehCNANtCZXzBpDHdPPOXFbc9BRZStDFBkBSAEQoBKyBXoBa;IyqGwxDRWAVSA;iB6lDk9C0BfqBFyFgDYhDWFdV1FtB+C5CfPPdlCN9B7B/CQsBiFMqEUI;4B2vCs3DrBDZQ5BLtBVCdRH9BFlCctETImB7B0BQMFkBwBgBrBeHsBaUeNJVqHNyEsBoElBLfdAV5BjBZwBtB;yCs6Cm0E/BBbPT5BhBUpCJXYfRxBQrBLzBYpFSxCFlCfEuBpBYiCsBlBqDsCDoDkBaLRQUuB8CoBdGMc6CMqBgByDPSZkCQ+BZJnC8CjCFTgCJYZzBdhCKNPuBzC;kCkbumEBYWEmBZYY4BNqDeoCVR+B0BSKUWDIUUN8BAakBsFZY/BFb7BBYNVLChBtBf/CFfR7FYbmBzCJXR5BSTLxBUDS;cg3Bk3DFaoBsBqCrBDxCyB5BhBtBfLHdxCkCOALYW4CVW"],["#BF401F","sF2sD+lE7BBjCf3CHnCvBQgBhBXIpBVWvCWjBNTMhCJ5BSQOpBMqCHUOxBCZ0BMzBfCCKjCT1B/B1BLIpBbO5BPxBSaIoBwBCkBqDBxBwBDcjBUAsBvEuBxHjClBU5DOXNjCqBmB8BcANyB+D0CnBkDeDkBaiEE6DP0BXsBMyBPgBSYXqCKiBTEmBkBiBoDAcY2DC8BxBXJIlBuCFWNa9BwBEuBRoCS6BrBSMmFrBCdlBVePhBVebRjBvCBvBVNvB;oEo/Ey1D+CFF2BeYwBGUcoBRbemBOmCpB6BJDVYNJlBgBPgDGkBR2BlD0DpCoFzC6CVF5BlCUTdhCJbnCtBdvCPFjBjCXdYhCQL+CnCB9CwC9COzCcNWlFN9B1BlCJDyEPWxBGIgBiBFLgBrBIETb6BU6BSTqBAYPuBEFMiBECS3BqBZ2BrCNLlCf0B0BiBgDSiChB2B9ByBE;0BkmDmmDWHUeYGC0BoCNkCWqDT8DmBoCAgCSOPhDhCGjChBtD5L/FpBGzBgBQ6CkBKHIcaRoBlBBR2CMgB;I4uEy/DRIMOGV;gK6pGm4DjFrCzBxBAVZCfyBvDBTqCrBCI6CZLxCuCpBP/GF3CyC/GqDpHxBAtKxBD1B+BhCiB/CRzBhBK6C/BKZabCAcrBgCzBYOQoDHxBiBmBoBiFBlBWgB4BF8BzBOfP3CalF1BJP7BWBQkBCnC0CvCETsBjBQgBkCTUIe4BgCsCxBmBGL+B0E+ByBoByBVwCUgBTkCAqCnBmBtBIsB+CnBqCoBwBEmBPkBSwBBqDzBwBgBiBPwBCoBQOqBpE4B4CkBTeYc+CCvCagBWzBIYkB+BFoHoB4BDkBa0HgBEQmCWuDTyBMqB/BHjByCAQKYhBQS4BPsBIlBfKXoBQuBLiD4BgEgBflB8DlCiGhHkCuBkBHDTcBIT8CAwCY0BTkBxB8BPWnB2CJyBWJPgCrBtBDXtBnCNX3D/BVLOrCChCUnCzEcPHZ1BCVSlFpB4BPL3BoB1CjBJMPdLAxBZUrBGbchGSzELpDkB5BVF1B9EmBtBHbrB;kC0mBwhEoCDSQUPyBBFYiBMDciCiBmEjC0BDwBQKvBkBRXARdZU9ES3BZtBQFlB0B5B4C9BctB9BqBxCMpC6BaKrBeLsBbUVCnBrBZ+B;IkqB+/DfKKMWV;Iu0Bi5D9DqBkCJ6Bf;ap5L+5EsBNhBbgBCEgBsBKbrChBJjBKcE7BsBEekBD;S32Lq3EKXdDuBPLLqBZHL3D4CoCG;4B5pLiwE8Ed8BnCsCb+BpC3BBrDiBcqBLRxBHfOSIbGCO1BABSkBIlCYRFLY3BBDemBDCQ1BHZSmBQiCT;8d7xLg/EFU7EqBvEmFrEwCxBuBrCPXpBtCVNcvEuCIYvCN9CKA0amFLuFxB2FZ9BaiBEdIUSwDQESwBPZV+JwC6CGERhJnC1BhBUJJKiCALW0CgBiCCIVuCuBwDWXNcFqDwBrBOQO+E9CiCR4CqCoBpBTdqCCuBmB2CA6NxCiFEmExBpDXbVcFwHN8GcqBV2BDQZWQ4BdANtBByD9BtByB2BFnC2COS+DQ8BkBtCV7CBJN5CKmBeiGc6EtC8CEoDhBgGI2DJuBITYsDpBWW5CGpBoByDMmBVyBGZXkCSjBjC2CrB5CE6BnBXc6BCOcjBsBQaiCE2DyBjBiBTTvBCuBePS6BILPUWhCBhBS3DO1BkB8BgB7BYKmBiBQuBFOOpBGoDmB6CVoCrBDjBiE9BlCEPJwBFxChB4CNgCMVL+CFpCPkCjBa5B0C8CgDfmBzBxBDEf2ClCqCcyCwDoCG7BiDoINLRwBVsCFzBb0BDKPzDTyD1CPnBvF9BlD2B1BFiBCwBVgBrBlCA3CiBjDDkClBnElCvBAhF2B3EAoEN4CnBwFNhD7C/BRjBMINzCQSPdCCZ7BJlIyBMXaDJKwDVbN4BOwCXYhBjCXxCCmBT3BDTRWR9BScN9BXYP1BZtC5CRhE+BfDlBSoB2CAkC/DfjBsFeyFlBmEpCuFrBgBRNXcSoDCqEVQVRzBanBNnC+B1BTRgBBwCxBOXlBXkCOmCvBjBoBkBoBoBnBQcXYyBsB7BgEKgBhC8BwF4BsD0CTkE5E+CoC6CiBHN2CZKSO1BC8BiCtBaJqBmCasEXELoBMgCR2CgB8CfHZyBAAV2BCTPmBZqDHaRsBQP3C5CD0CJGzBeDPnBXIhBRiBFiDUePCzB9BX4BOkBoBDfcYIlB4DqCgBhBDkB8BWbOUYoBHjBiBkBAU0BeFZXsBGGdQIcdRLwBPxBLgCABRmBR9Bd2CM7BpBmCOwBVAbvBL0BFFP8BTDdlDKkCXRJuBFZLgBBHTmDRObnBlBuCWeLjBf0BiBsBfqCCyBZtDvBtDTbVXGcPVT6EiCgCKhBKyCDahBjBPSNuCc4BlBE/BtBJ0BFXFcXzD9BrEPtE9C1EN5CS3KHpBTlB5BzCN9D5C5DWwDfzC3CxBd7E1BtBpBrCTePhEzB/DnDtFBnBNWxBJJrKlDfOJc2BsBmB2ClBiF9CqBBchBDPqBlBHboB9JgEhDblEU1BNrBWlBBzBehCHxCUd4BTCAhB9HArNAvOA7VA1VBNagBMjBDIefZtBSEOQNWIbGGkBpBhBtBWXmBQoBRflBBDOJPpBCfIyBM3BDAkBxBR5BaaqBiCI5BAdTRSGuBgBQiCbrBkBWcrCpBbtBXiBmBiBdPUyBbHpCgCeQFL6CZjCYHSUKlBB3BzBlCqBcmBmBIpBDfWwC+CVKXtBCsC;Kr4J2/GedzKB2GoBgDH;Sl6Jm+GsCDxDViCFDVlGNnCOFiB8HU;mB1oKi8GlCTiBnBzDlBlCKKkBlD7BzBSdrBtBBnBgBhBR3DBCkB4CIgHuCsGEeS4CP;yCh0Jq4G0BDZRoCIcTWgBgDHpBtChDN3EMvK5BnDC5BYwHc0BWtHRWgBxBCnBfzBJjBObNnFYcUiGU3FBmGW5EGqBWiEB9CIqCUqCDiBVmDA2E7BgGA9DsCkDmBmCFO9B;yD3lKwuG2CEacwBEoEZjBlBkEiBnBgB6BByDnB2CzCuBYzCyDSSuENgDjB+CtDLvB2CnBuBJCO2FxBGnBrDQnBbtCKgBnBiDWQnB9CR3EEvBGGOvDKjBWnCnB3FbtKRxBgChIW9B4BuHYsIA/FiB9KF9BmBuIqBtHJbIsBQvDKmCuBNYkFwBuGYWhBpBf;iBx0K6yGwBIIP0BU+CB8FnCvNvDnB/BlDD5DfzC0BlFc6FiFxC2BiJSyFdPJ;mI1lGksH4IH5FX+JW6DHkBhBoFATXjUvC+KMrN/CpDOoBZhFLmEBpCd/CFxFQ+ChBhKC2DZmDANRlLE0LdjBRrEDwDP9BdhGF/B1BpFBhDSgBPjCDoHJwBb+BIAjBjHjBPatEYaX1EBdWDdvCD3DYTRpCUATxCCJiBDfpCELgBkDawEItD2B0DI2FtB+CE8CoBhDbpECViB4DW9BGKanClB5BBcW7CR5BEkC2BkFM+ELqESxHCEMoCFhIoCHmB+HD4FvBuDHjHiCuRwBnFImFsBxMpCvED8BSnGVlFE2BgB2GUhHJpGfpDY0HIsEWpNVDa8FS/HJ2BUlEFfMmKkB0IJvEW8EUuGhBKQ2IjBtIyBeWyDFNSuGH/DUoHAyEhBlDsB2HAgFZNgBqFPLQwEF;MzvIo9GoGDVX9GATUgCI;QhqIu1GDhB1CB7FkB6BmBiDQ4CRiBjB;6Bt8IqyGsCR2FION3BPgBJnDnBmCIwBlBwBIONPhC3CR1BCNSMlBpBLvLmEuBc0CfoDQlBaiCC5EYwBMqBNnBe4CAAO;qBxxH05FmBSgHpCiBnBTRgDIwBdjCb3DWHUrCU5DrCjCPhB0B9DJUc+BWoB6EWIeLcvB;oB71Iw5GC5DpHJrBkBsEa1JPoBgBsDFnDwB+BIuEtBVS0BEvCIoBGtCU8CK0CPSU8CT;mBlmJ0hHuCnBuCSgGtBoBhClDBnCiB1EQvDJpCINS6DBnBK6BIpCEEUjCP3BmB+FI;4CrlI4mH0I3C8BDdcuCDiBnC4CEeNgBM4BdrH1BlBcGpBlCEFjBvDmBwBnBnCQbP9EOtBO6CI/DGrCcgIoBpEIvGNzBU0DU5DHtCYPUiGHiBOnDF5CQsCGhBgB2FPvEawBU6EEzCU0GR;0ClsI46GgDLbdyBQ6EGkCRtCBiGNLL1FEiGlBhBViCJaS0HXBM6FcoKRqChBtCT4CJ1CBId/GDnCiBBdvCFrLBJgB9CZ5CGdS9BNrE6ElGHlCUkBIvDOsBGhBQ0CIuEN;MzxIs/G0DLBd5FX5D4CiGV;W/oI+yG+Hd9EhD/FA8BdrBjB3CB3B6E0CBXiBkFK;Wl1IkmGmGrClDf5IsBEQ6CSHWuBJNgBkBEgBR;e5tF2iEWERZeEoB0BmBNETrCf3BBPOEoByB6BqBSHhC3Bd;sE9+FwgEVAFmBhBMA8DlBY/BLbWlCjCZpCzB5BpBCRZhJAoDmBkB2BgDyByEsB+C0CwD8B4H6B+BF0BZGJbEYNJXxClB7BQnCNuCLWT4BQaL3B3BsBDcrC4BFLNgBN2CRoCUQToBHJRmBHtG5BbEATjBQHNRGCTtDpC5BaHeemBTF2EsCcbESiCOnEByBsBdKLbjDlBNSlBd9BI;uE39EyyEzBRUZzC9CHjB6BuBCP8BE5BhBYGTTiCCCJKMJlBuCoBERsBKgBJER1BfcCJHYFlBXkDWJTjCjBWATTQLqCqBb3BkBYMTpBxCrBAAuB1BXeyBdmBbpBCOjBNnBrBrBDLOoD6B1BARRxBEWICUzCVtEOlCNTQEW2CwBrCEeSMNcsBmBJTmBSOUFLUwC4D8CyB0BD;yNp2HgqG2CMsCJK2BtDgB2BW+CP7D+BkBU6CNrDc+CgB6BDEQkFO2E3C1CpB4BMbvB+CYGYsCPmBjBLsBsDP3CaiCY8FN6BftCtB8CiBgCJ7CXuBDZpBuBoB+BKjBfsBQwBbakB4Ed/DtByCSiDCHXnDhB4BINhBqBoB+CYwEf5EnB0DOCXgCiB+BZOZpCCvDV4FFwBZ5EG5BLuDDDZjEI+DdsDFPjBiCUVpBuBWyBjBqBgBHViBEoCXNT/BAwCHWKyBL7BlB4DIYMmCfPL1BIyBX5CC0BhB5BBWPZRtBCZSNzChCWGUZXrC6B2CyB9DbQSlBFzCsBbDGX5BO+BnBNH/DYwBLatBiBIoBTTH8BvBEQmBXaO8BXVJoBFtBNmBXsBAadXpBvBwBwBrCtBAGblDsBRHVWBRtD+BMdhCclBBmCvBkG3CLb7GgBhDwBrDMbIOMjBF5BgB2BQxCMKQbF3C0BQQ5BANN3BmBThBpCG7CZ/CKjBkBQY6BQEYoETiBjBfqBuGQvC+BoGmD/CiDxBAAenBN3BaQUpFdCcyCSpCYWQtCBUOhCGRkBtBBlCiBfRyBNBX5BH5FU6BhB5BShCJtCQvHCxBKFejET1CW7B0ByGD1HsBB0C6B+BqE4BuHItE9CoBvCsDxBtEd;M5vF0rEvDMjE8B0EPgDlBAR;Yv1FmkEiFDtBTAVrBKEWVNlBGjCmBkBmBJZab;MnpHizFzBxBlDVTawBqB+DE;OniHwxFUhBtBnBnBUAceakBA;Qn3GqiG2BLLhCzBPpDBP+BwBe0CE;OniHwxG0GN+C7BrKB1CwBHiB4DF;IzlHi2E3DayCOmBnB;WvgHigFVjBBebdXFUcnBTwB6BHfYmBgBd;Kv/H67GpDEBeqDNCT;ItpJu7G5BErCyBmE1B;K/4IwjHNXrDc4CKiBN;MvrJuvGzEyBcU2DGiCP/B7B;Q3iJo4GhBVhCBYOzCChBW0EMuBZ;M7nJ65G4CLXH9CBVY0BB;IxwKg3GhDCgFuB9BvB;I5jKm9GnDO8BOsBb;ItyLw5EpBFWSUL;IrxLo3E1BqBuBRIX;O1tLy2EJ5BFqBNHZeOaqBf;IjwFwmEAMwBUvBf;I79Fk/DNFKQEJ;InxGqhEjBBsBYHV;I75EwtEKHbFSO;Ir4F+xFgBLnBAIM;IhiGsrFMeYLjBR;IhoG+xFvCcmCLKP;It4FyuF1Ba6BADZ;I3kG+nFPHESMJ;IzvF2jFKLfIWE;IlhG6lGbGcGAL;I7gH+3G5BB+BWDT;I5hH4zEXGiBIJN;KtxG6gG1CELWuDFLT;Kv9Gy0FeVjBL1Bc8BG;I90Ig0GjBBeKGH;Iv3IkyGpDC0EUpBV;I/0GuiGvBQMOkBd;Ij6Gq0F9BSWIoBZ;I9hHwmGxBZpCS8DI;IphH6jGBUyCevCxB;K/6G2kGjBMSOwBFdT;In3HunGiBJ5BCYI;KjuHk7FiBNlCMZiB+Bf;Ip2H2gGhBgBYUKzB;InhJg9GlCQ0DDtBL;In/H05GpCUmBKkBd;IpxI62GrCLyBYaL;I/iKq6GzDE2CKeN;KloJu1GlCKyBagCVrBN;Ih9I2jGhBBCWgBT;O1vI8lGIRbBFUHTCYgBD;I1hJijGpBKaMQV;IrpJyiGtBOoBAGN;ItzJy+FaANLLM;+DsYipDflBQ3DNpBhC7BBVWzBiBTUtBiCpBqBnFRJuB7CI3DNpBM/BpBrB0BpCYjCyDXqBpC3MvH1E9DlHtBTQOWLoB7DsB1BsBBa9b0RAgEqE0CwBDOW+CMsBwB2DsBNWGsBkCOOW0ECQiBjBcTwBLkElBgByBGyD+BiBBgBe2CgB6DIsDa6CAwBVsDoBoBPcEBMgCV8BI;sEo9FoqDqDLiBXsCiBkBTSoB+BCEgB8BwBiBNChBcBNlCWnB6CeiCoBeDFPgCQwBRtBFOLrBRhEAhDnBffWRS7B7B5BIrBpDDiBhClCXX1BEtBlBZ/BOzBZOPZH5BCpBpBL1ChGpBzEAzEqB4CgDNqBrCKAmCXqCgBoBjBMBqBOSWCNSgBeQmCiCPeXiBIiBQGkBwCQuBecoCiCKUemCT"],["#AD3019","gE6pGm4DaH9C7BsDhBamBuBvB4CTjE7BjBO5BHZSiBefc9BjBfKHzB7BBgBFtBzBzCCPdiCXArBYb1B5CvDQG6B5CWnF0CzDqC1BmDjBS/CFfQKmBXOEW5BKlCqBlBNcdnBSTbvBFdXG1B9CGAuKqHyBgHpD4CxCgHGqBQyCtCaMH5CsBBUpCwDCgBxBaBAW0ByBkFsC;IyqGwxDRAAWSV;M6/EysCTT7BJqBUAMmBB;6Fs5EoqDmCK+B2BmFOOV0Cb+CN+CvCsCFK/CR7BfdORVBNRCpBkBLfnBYpCAlCsCJOpB3C/CgD3DuCbA3CyBNNpB/BH1BdX9CPJxCgBJL7DK7EiBZ8Cbe3BA7D5B/CU7C4BTavCWbYlB2CRGBazBmCvBNvBcSMTCHhBhBNvBuBAuBdCOoCpB6BxDwBJqB3ByBK4B6ByBNsBaOzCWbqBpBwDhBSWoBlB+CgBESgByClC+BLkBEiEmCeZTNSTbP4BnBYCUlC+CX6C7BiDJwEcHHaBDwB;mBq/D+wDpBe5BIG2BZkBuEQSLLHwBTTT2BpBjBRyClBC5BhBDhBgCZHnBaXF"],["#982214","uD4gG4pD2B+CXYEqBlCaGWaOkCHuB0BfG8BCI0BgBJ+BkBgBdhBd0BRnBVxBYnBJDPRACjBuDGaR+BScbYGQNeQiDGQrCqBEyBRItCUTVNvBS3BRBSdEhCnB5CdVoBOmCbCBiBhBO7BvBDf9BBRnBjBUrChBbU;kBi3B2/DVvBqBddFWhBxBFIVPGlBhBAlBtCiBbuB3C+BzB6BIoBsBR4Ba+GjB"]],
- suyos:"Kx5L6gFQEZUJVUB;K15LggFOOZELJYH;IhlN8qFDIRJWC;W1nPg1FZGKfmCIsDrBcU2BEGItCGjCcnDD;Ox4O4rF1DPaR6CV0BONkBjBG;mB9yNwkFXMbVhBMQxBnBgBxBTetBIUqBNVTkBQJKgDaXOyBDQKRYrBA;6S7xLg/EFU7EqBvEmFrEwCJanBUrCPXpBtCVNcvEuCIY1BAZN9CKA0apGqBzFJ5BOpFGtEazHFQK5BGHYjCE3CL3CcpCXNIyBSvCQAKjExB/EFjBN+BJlBDFTVevCZhDNSQ1F1DpDNpDAPpBlBFyHjC2BtBmFHLbaJgCG6BNlBL1CIlCsBRN6BjBoCFINlBKrBV/EEdMMgBYArCC3DZOPlCA5ErB+BVyDLlCLoCzBqDLyDM0BNFUkBXgDoB6BKYPFPzBNuBPUnBdVvCJbG5CrBpBBMKdKpBBCPlBLAZSINTnBBvBhBKTpBFYJfDAJcAanBaQAJmBFXPmDFYKOFdDuBJdNXQhBPGQrBKxBfcDyC1BqBHkDQJaiCmBpBjB2B/BNnBeDFblBNmCC8CiBoBTWIiCtBM0BkBKgBJfCHNeT+CYeWNjBxBbEPaFlBLHhBWPjBCpBTftBXI9DzBTbWRlBGHLTMKKbErBLtD/BhBFFZUUqBFEWWRcIyBsBeFVDELwCQkCaKRMQyDkBZKMKkF2BQgBiE6BmCODMuCqBCSlCSwBuB0BELOyBOfasBB2CgC4Ce6BByBU3Bd4CZ7DMxCZDpBpBrBkBLmBKrChBMRqCEeekBASUSDIQMNSeMHsCBqBuBNIvBHgBKXSUY2BOXVSHiEWXLYPRHyCHTP8BHyBaTdiCPENsDI0DLYOAT6CP6CaoBPTBFRTgBXnByDf4C1B2CdyBSxBgBpBGGOmCXIaMPQERHMlBqCNlB2CMU2B3C0BTeaNnBcTwBCdDmBXxBGSpB6BJ6B5B6BTZDhBlBIPQBOemCUalCbPSfYByBwBA2B;Q/wOs8EdG9BLjBbGPkEcaFjBc;Il7Lg+EnBDIVgBa;Kx1L28EVQBVgBJHQ;K53L0/EXiBXlBgBNQS;Ox0L69EXqBhBJN7BeWWRUY;Qr7LkiF3BCuBzBeEPeiBNDYhBG;M95Lk8ETefI6B1BQQVA;KtgN+rFbDILwBMbE;InkNkqFiCwBjCjBCL;InzNwiFXGHNgBI;I3xNsmFIMVHOD;Iv6N4+EBKNHQB;Iz2N4gFIIRBKF;OhpOq9EDKJHEPcEFQLF;IztOg8ECMPDOH;K3mO68EBOZNDRgBS;M33O65EOCRKRDEJSC;I92Og6EOGLIBN;I3pO0mFUUlBLSH;MrrP+rFPONJoBNmBDvBO;KxqP20EOGNENJOA;I73PkzECSxBTwBC;Y9/LkjFpBQhBVAXgBUYTLRoBLHPabGuBf6B;Sh/LulFXQoBtCBnB4BcjB+BsBjBlBuBnBC;ehiM2lFlBNPMVX8BvBUBKW6BPDWfEgBECSjBKXLJY;gB97LogFPhBiBGMJnBL8BRHXgD3BIuB7BYKKgBJnBmBrBSJUhBC;Qj9L2hFNITHajBJhBWESwBVS;WxxNgmFlBGGN3BPqBJeQaBEKOHMOnBE;O39O43EMOpBAHTbFjBjBmDwB;a95Oq5EDKhBFFLaPRGLP5BT0COuBUREeUjBD;K1tPq0EnBBQFqCCxBG;K7wPg0E0BKGUxDd4BA;Kp2PyzEJKXhBuBMLM;I95P+yEUQvBGcV;Qx6Ni2BoCwBjBqB5BaAXTXQ9BaF;Kl/Ns8BFJmBFOKtBG;Qj9Ny7BPIBLSHIRmBOZSTB;M7gOi9BNWbLOXmBDJS;MplOs+BCaVARPQLWC;Kj+Ni7BDMPCINMA;0Xv0GggEpBJ5C1B7B7BtFBnBNWxBJJrKlDfOJc2BsBmB2ClBiF9CqBKQLMhBDPqBlBHboB9JgEhDblEU1BNrBWlBBHOrBQhCHxCUd4BTCAhB9HArNAvOA7VA7UAYdCNPDYPJLaNPTGlBfXdCSSGJQGHeMctBnBMFTBsBsBLYrDCjCU0BhEcAZHWRFVHQDduCJlCENlHjBvCqB5DZjDwB1BMtCoChCHRGGmBTMcuCHnCDWvBhBcDVKf0BfFvBwDtDAvBQJwCFqBb6BHIXeB4BnBejC8GQJT4KpDiIAAoBiFAqErDwB7CoDzBgBUOmBkBU4CJiC9BgBjCoClCGtBe1BsCfyCVWKZuBFmCREHQeLOeLQgBOHOeEGWIHYKTYSLmBETL4CqBkBmBNeaEBRWAVPwCcEaCV6BE0CTiBaiBZYCKXNByBNiBOOPQUJSgCdGTUEOQ/BmBgBSDUTLRKIOnBLVKIMSIyBR+BWmCDMeUjBTFiCKaUALTH2COMHdB+BTQKFNcVER2CUGOYEgBP+C9CP/CQLCYWLbdmB5BYIBlBUOLRWtBgBNmBzBREEPiCSWuBIiCDoBhC0EAMMPAVGQO3BF0BhC4DX8CGkBOGHIUQEgBoBeJWUPKOPIgCOAM8BeEYENgBsBoBSkBBEYCTQeiBWBUKLuCWBMtBEJMcPYavBYaHQIILcDkBaCSHMVZCa7BBAaQTkBMAMeNJwBkBrCpBkDrBBPa1BO4BJWTGOlBgBaVUQtCiC4BrBMAIUlCqBVBCYUaRrBWE8BhBdqBYPNgCMGNMODgBeSDLHMDhBPKJRPQFPLcHVBAPUNSIAjBSBdxBEVyC0DxBuDuBgBfRHb4BdDROEgC4CCPI4BZMeiBBeBrBgDwBgEIMmBKJMGBXqBUEPiCOPkBLAWVlBHbsBbKmBaTS0BuCSOYFOUCJsBOkBwBFTaHIYaBKJUS6BISOLgBfKEchBMA8DlBY/BLbWlCjCZpCzB5BpBCRZhJA;QnuGy0DWQfN1CHpBd6DSoCa3BH;I9hGk+DJKJNUE;IxoG21DJITJeC;IhnGs1DFMPJWB;K72GokDEwBDrBNFOC;IzkHwnCCOTdSQ;IjlI+zCFMLBSJ;Ir0IuqCT+CBhBW7B;It1KwgDDKPBUH;I/0K+gDGJYGdE;KzwK++CTIKNOADG;Oz8KgpELGOIHGJNgBbPW;IvxHq0CQIjBHUA;Ij8K6mEHIDLME;IyEguDPIBHSA;S+ImxDGQbFvBdMHSGiBVkBkBdI;KmMqxDFShBCCHmBL;KkE2uDKSbLAJSE;4EjFw7DxDDxBOzCJ3DUtDH5BUzBRHPrCTDRcPJTUGAhBKAPPCP2BUKdkCCYOwBDGXeL/BxBK7BTPMNFTzBLyB1Bf3BWXMAvB7BIfyBKqBpBQIPZgBnBmBNYKSasBGcUwEAeKYHyB8BeOyBEWiCiCoBjBcLqB0CiDcKPKcWgDUqD8BDsBxBH9BCXMXFJY5BOFN9BAxDmBLFCSjBQ;MtuB4wCSSlCVWdWMIW;M/mBoyCWIAWfVDLOE;OroBkwCYIGsBLDVrBXJcG;M5rBiwCZALNKTYEEe;K7wB2vCIINKFHMJ;I7yBkvCZFQJKQ;K3yBixCKURMFHOX;wBkgCyrErDiBlBLzBIbTXCfkBZRzBI3C5BrBAXpBUfyBTiDBGUsCUeHiBOQW2CCaTiBEoB+B;sBgvBokEViBRALR/CFfRrCKdXWFLRiBhBZHoCDSQUPyBBFYiBMAgB2BOIQSD;K7wBw9CDJSHeIrBK;sC9Yq3DJPMFG1CN5BxBnCH1BeAgBepBlBERmBGKHRCG7CRlBmBIkCJoBQDyBsBqBLAVYgB4BxB2B0BMGULOUQJ8BgCwBdOFYvBEXNjCBJetBR;Ix4CiwDLKBJOA;I/sC+tDFMVBcJ;ItxCytDFKNBUH;IhwCstDjBGIJcE;K9oC0rDRGKLyBApBG;2LltKy8CaxBULBZ2BlCkB/CiCjByCzCTtBSVVShCDEJoBbIR4BXWVeGKOMf8BhBc5BF5BejBiE1CgB/BwBYGerCuCJVZWBwB3B0CZyCTQIZNIpBuClBaL4BTIJaZKXqBvCmCV8CIsBNYoCjBSKeXwBNExBwCzEgD/C2BJFbUdmBNShBYCUPOZHETXEbQLcMLVWEiCpBTAepBoBJBLVKsC1BoDxDO5BoBtBBhBZbQFGNjBRQlByB7B+CrBqBtBkCXoCJyC9B4DxB0CPWVmCd0BF+BX8E0BVGMMKLQGDN8BPhBYuDrC0CxCQwBLSqBoC2DACe5CuCmBAA0BmFACOeAaqBWEUgBAbUXgB+CNDAKUOXMWUCiBuByBOiBDYbSXFSAFJtDM7DbvBXL/CTTDhB9BpBIAGXXPhBGFSpBDnBR9BDxCXhCwB5BGpB0BPwBhCuCzB2DiBnBBbIanByBJwBSgFwBwEVJ9E2Bd2BFuBnCmCfkChC+B3CKjBTNlBfTnD0BvB8CpEsDhFAAnBhIA3KqDKU7GP;Ip3H45BQaRHCR;I9uJw9BLGCLKG;Iv6JknCLGKNCI;K7hK0yCDYhBYIXeX;IznK6vCDcLXQD;Mj/JwyCHWNDHfWHIW;K3+J6lCLcCoBLtBWV;Is7LgnDPIEJMC;OwpMyrDWWLCEWVVBVKB;K6/LwhDGYdVOHKG;IyzLi2CCMXAWL;Iw0Lu2CKoBRhBIF;KgyL27CIcNBDZKA;I4vLihDEOJEGR;IgwL2hDGgBPdKB;IguLo9CCPSETM;I8yLo8CGITFOB;ImxLggDFKDJKA;Io4LygDFFWCPE;gCk5Mw9D1CyB1CsCZJKzCjBrDVJjCMEfzBhBBbYfBrBcIaasBArCsBOYWAYToBSoBE+D1BSoBwBqBwEcaSrBHVqBYyB7BjBvCS;+Bk1Ly/CTaVEnD9BmBjBbUItBaSaFBONAGecfDPOBpBxBMrBPRoBTBiBUOH9BkBWBQYDeiDgBmBJgBhBCQevBA;qBm+LuhDlBIfJBThBHXQZlB3BfiBIItBUBFLOAsB2BgBOeFURSiBgBSHmBZC;mF4xM21DbMLXAJoBGLbPEPJLiBZAFffVIfXdWFIVXhCnBnCrBXzB3BhDpBTILYoBmBrBNN5B3B3BCfRNzBHNUrDVhDAtEjDfBHlBsCIkBTQsBqCBmDmBsBE+BNbbCZepBWFUGmB4BuBOEKfWYiBGbIIeDTRmDCwBwBSJFjBWUOoBWASLBYQWYFXbAhBwBYIemBUZuBmBwCD+COSgBGwB8CRwCfmBC+BTB;IyhL4lCTHGHOQ;KsgLilCEINEHHSD;I6kLsmCNMBLQA;Q6sL6rCAUNRRCV1BMEGakBU;KowLowCUcvBXULII;8EgU0iEVPgBhBtBbgBVHrBmBReCNjBuBKmCyBiErBe5C6BlBBNuBH6CrCqBT6BAcnBmBFJLmBGQnBkCVwB/CBPbNVzBmBHsBqBGkB0BSFiB1BiBkBgCYEUNqBFUdYLMavByB5FuCYkB7CC3BevBoBpBwCpD8BNsBaYbYGS0CemBAIPOChBiBMSVGeY3DQTkBzCJXRvBIBbfEAhBNMjBFVSX7BzBmBDS5BvBjCA;Iyd+5DXLaBBO;aqsB2sDhFTtBSjBNNObhBSTqErBgBb4BJQgBRmBsBkC;gBsbq0DjBiB7BlBfGBXafFhBMHL5BWXcCIauBHImDOUPkB;IkYkvDJEELGI;4B++B2pEfFdU1CBPVhBNdIrCTFT3CB3BWFb7BBYNVLCjBhBLSAWhBoCtBsBR6BBsDkB6CByBOsCuDwCoBjCqB;gFibmnEqBBSTYY4BNoDUCKqBFePV4B4BYKUWDIUnD8BZeKOlBkBSJYSkBCiEsBDOoBTWoBjB0BMWLqBrBgBacNwBjBMLcZBlBYpBGpDvBrBEIkBZFtCOOKLStDMYnBbJYJCZuClBzBc1BCJrBPUTNHWpCDNZMjBPfbHcJANZRCNnCJWfFbXLsBzBVfiBbLdkBbgCA+BPtBpCFxBuCBOQ2CV;KgnB26EhBcNhBwBDAK;IuoBu5EjBQKVaG;K0X67EeKXCIONZ;W+a45DJUDbtBJVVEnBYTFJiBTiBkCH+B;kG2VsnEA0BuBqC9BQ/BAtBgBhCA5BaFiBXRhBAAarBE1BsBdBVetCRH5BdXhDZDRaFzBL5CIJa1BAqB9CvBEHJnBGXJvBc1DTVPwBNdAWLfLiBTqERCJgBDHNmCHZEPJQJDVaZ6BRKzBNBkBXWpBvBwBPtCKIGFPLV5CbNkBPDROGyDlB+BAMO2CVeVqDGNsBSa8BiBoCRgBGgBTgCNqBM0C0BOkBdBlBSIsBfWoBQIOhBgBWQXWAWdCVVTCsBkCyBiBDMiBBaO;yC0mBwhEElBWXoBsBWBcTMrBsBdfBGHqC5ByCL+BpBbuB3C+BRkBhBWGmBUCaRUUkBGyCRsCAaTSeYAjBSJwBvBPzBElEkCHP5BREbhBLGXxBCTQRPnCE;I4vBi7DEIhBEeL;IkqB+/DVWJLgBJ;Ku0Bi5D5BgBjCKmE1BHM;sCkbumEERyBTUM6BRYS0CKclB8FXgBSgDGuBgBBiBWMXO8BCGcXiBAepCEhDWZjB7BATOHTVEJTzBRS9BdQpBGBJnDT3BOXXlBaVDCX"};
-</script>
-
-<script>
-/* ════════════════════════════════════════════════════════════════════
-   EL MUNDO — una esfera de verdad, no un mapa plano con sombra encima.
-
-   Cada punto de la costa es un VECTOR UNITARIO, decodificado una sola vez
-   al arrancar. Por fotograma no se calcula ni un seno: sólo el giro (nueve
-   multiplicaciones por punto) y la proyección ortográfica, que es
-   exactamente cómo se ve una bola desde lejos.
-
-   Lo que separa un globo bueno de uno roto es EL RECORTE DEL HEMISFERIO.
-   Un anillo que cruza el borde —Eurasia, la Antártida— se va por detrás y
-   vuelve a entrar; si se cierra con una recta, el relleno cruza el disco
-   de lado a lado y aparece un tajo. Hay que cerrarlo por el BORDE y por el
-   lado bueno: se mira por dónde pasó el tramo oculto (su punto medio) y el
-   arco va por ahí. La regla del "arco corto" basta para una isla, pero
-   Eurasia abarca 205° de longitud y se cerraría al revés.
-
-   Y el relleno y el trazo NO se recortan igual: la costa rellena se cierra
-   por el borde del disco, pero la costa DIBUJADA no, o el contorno de la
-   bola quedaría repasado como si fuese una línea de costa más.
-   ════════════════════════════════════════════════════════════════════ */
-(function(glob){
-"use strict";
-var B64="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-var IDX=new Int8Array(128); for(var z=0;z<64;z++) IDX[B64.charCodeAt(z)]=z;
-var TAU=Math.PI*2, RAD=Math.PI/180;
-
-function abre(s,q){
-  var trozos=s.split(";"), out=[], str="", i=0, k, n, j, x, y, a, b, cl, arr;
-  function lee(){
-    var v=0, sh=0, ch;
-    do { ch=IDX[str.charCodeAt(i++)]; v|=(ch&31)<<sh; sh+=5; } while(ch&32);
-    return (v&1) ? -((v+1)>>1) : (v>>1);
-  }
-  for(k=0;k<trozos.length;k++){
-    str=trozos[k]; i=0;
-    n=lee(); if(n<3) continue;
-    arr=new Float32Array(n*3); x=0; y=0;
-    for(j=0;j<n;j++){
-      x+=lee(); y+=lee();
-      a=x/q*RAD; b=y/q*RAD; cl=Math.cos(b);
-      arr[j*3]=cl*Math.cos(a); arr[j*3+1]=cl*Math.sin(a); arr[j*3+2]=Math.sin(b);
-    }
-    out.push(arr);
-  }
-  return out;
-}
-
-function Globo(d){
-  this.costa=abre(d.costa,d.q); this.suyos=abre(d.suyos,d.q);
-  /* Los paises ya no son una capa de fronteras sino CATORCE capas de
-     relleno, una por escalon de temperatura. El trazo de las fronteras
-     sale de esta misma geometria: un solo juego de anillos que se rellena
-     y se repasa, en vez de dos con tolerancias distintas. */
-  this.paises=[]; for(var p=0;p<d.paises.length;p++) this.paises.push([d.paises[p][0], abre(d.paises[p][1],d.q)]);
-  var t=0,i; for(i=0;i<this.costa.length;i++) t+=this.costa[i].length/3;
-  this.puntos=t;
-  var N=4096;
-  this.sx=new Float64Array(N); this.sy=new Float64Array(N); this.sz=new Float64Array(N);
-  /* los trozos visibles de un anillo, y su encadenado: reservados una
-     vez y reutilizados, para no pedir memoria en cada fotograma */
-  this.cad=new Float64Array(64*8); this.usa=new Uint8Array(64); this.sig=new Int32Array(64);
-}
-function ang(a){ a%=TAU; return a<0?a+TAU:a; }
-
-Globo.prototype.proy=function(r,B){
-  var n=r.length/3, i, a, b, c;
-  if(n>this.sx.length){ this.sx=new Float64Array(n); this.sy=new Float64Array(n); this.sz=new Float64Array(n); }
-  var sx=this.sx, sy=this.sy, sz=this.sz;
-  var r0=B[0],r1=B[1],r2=B[2],u0=B[3],u1=B[4],u2=B[5],f0=B[6],f1=B[7],f2=B[8];
-  for(i=0;i<n;i++){
-    a=r[i*3]; b=r[i*3+1]; c=r[i*3+2];
-    sx[i]=a*r0+b*r1+c*r2; sy[i]=a*u0+b*u1+c*u2; sz[i]=a*f0+b*f1+c*f2;
-  }
-  return n;
-};
-
-/* TRAZO: sólo los tramos de delante, cada uno como una polilínea suelta */
-Globo.prototype.traza=function(c,n,cx,cy,R){
-  var sx=this.sx, sy=this.sy, sz=this.sz, i, j, t, ux, uy, m, abierto=false;
-  for(i=0;i<n;i++){
-    j=(i+1)%n;
-    if(sz[i]>0){
-      if(!abierto){ c.moveTo(cx+R*sx[i], cy-R*sy[i]); abierto=true; }
-      if(sz[j]>0) c.lineTo(cx+R*sx[j], cy-R*sy[j]);
-      else{
-        t=sz[i]/(sz[i]-sz[j]);
-        ux=sx[i]+(sx[j]-sx[i])*t; uy=sy[i]+(sy[j]-sy[i])*t;
-        m=Math.sqrt(ux*ux+uy*uy)||1;
-        c.lineTo(cx+R*ux/m, cy-R*uy/m); abierto=false;
-      }
-    } else if(sz[j]>0){
-      t=sz[i]/(sz[i]-sz[j]);
-      ux=sx[i]+(sx[j]-sx[i])*t; uy=sy[i]+(sy[j]-sy[i])*t;
-      m=Math.sqrt(ux*ux+uy*uy)||1;
-      c.moveTo(cx+R*ux/m, cy-R*uy/m); abierto=true;
-    }
-  }
-};
-
-/* RELLENO — la parte que tiene miga.
-   Un anillo cortado por el borde puede dejar VARIOS trozos visibles: desde
-   México, Eurasia asoma a la vez por el borde de la izquierda (Iberia) y
-   por el de la derecha (Siberia). Cada trozo se cierra contra SU pedazo de
-   borde, y para saber con cuál hay que emparejar cada salida con la
-   siguiente entrada EN ORDEN ANGULAR ALREDEDOR DEL BORDE — no en el orden
-   en que vienen en el anillo. Encadenándolos en orden de anillo, el arco
-   viajaba de un borde al otro cruzando medio disco y el relleno se comía
-   el mundo entero. (Era eso, no el sentido de giro.)
-   Y el arco siempre va en sentido antihorario: todos los anillos vienen
-   recorridos con su relleno a la izquierda, así que seguir por el borde
-   dejando el disco también a la izquierda es una sola dirección fija. */
-Globo.prototype.rellena=function(c,n,cx,cy,R){
-  var sx=this.sx, sy=this.sy, sz=this.sz, i, j, k, vis=0;
-  for(i=0;i<n;i++) if(sz[i]>0) vis++;
-  if(!vis) return;
-  if(vis===n){
-    c.moveTo(cx+R*sx[0], cy-R*sy[0]);
-    for(i=1;i<n;i++) c.lineTo(cx+R*sx[i], cy-R*sy[i]);
-    c.closePath(); return;
-  }
-  var ini=-1;
-  for(i=0;i<n;i++) if(sz[i]<=0 && sz[(i+1)%n]>0){ ini=i; break; }
-  if(ini<0) return;
-
-  var C=this.cad, U=this.usa, nc=0, t, ux, uy, m;
-  for(k=0;k<n;k++){
-    i=(ini+k)%n; j=(i+1)%n;
-    if(sz[i]<=0 && sz[j]<=0) continue;
-    if(sz[i]<=0){                                     /* entra: abre trozo */
-      if((nc+1)*8>C.length){ C=this.cad=new Float64Array(C.length*2); U=this.usa=new Uint8Array(U.length*2); }
-      t=sz[i]/(sz[i]-sz[j]);
-      ux=sx[i]+(sx[j]-sx[i])*t; uy=sy[i]+(sy[j]-sy[i])*t;
-      m=Math.sqrt(ux*ux+uy*uy)||1; ux/=m; uy/=m;
-      C[nc*8]=Math.atan2(uy,ux); C[nc*8+1]=ux; C[nc*8+2]=uy; C[nc*8+6]=k+1;
-    } else if(sz[j]<=0){                              /* sale: lo cierra */
-      t=sz[i]/(sz[i]-sz[j]);
-      ux=sx[i]+(sx[j]-sx[i])*t; uy=sy[i]+(sy[j]-sy[i])*t;
-      m=Math.sqrt(ux*ux+uy*uy)||1; ux/=m; uy/=m;
-      C[nc*8+3]=Math.atan2(uy,ux); C[nc*8+4]=ux; C[nc*8+5]=uy; C[nc*8+7]=k;
-      nc++;
-    }
-  }
-  if(!nc) return;
-
-  /* a cada salida, la entrada que le toca yendo por el borde en antihorario */
-  var sig=this.sig; if(nc>sig.length){ sig=this.sig=new Int32Array(nc*2); }
-  var q, mejor, d, dm;
-  for(i=0;i<nc;i++){
-    mejor=0; dm=1e9;
-    for(q=0;q<nc;q++){ d=ang(C[q*8]-C[i*8+3]); if(d<dm){ dm=d; mejor=q; } }
-    sig[i]=mejor;
-  }
-  for(i=0;i<nc;i++) U[i]=0;
-
-  var giro, pasos, p, th, desde, a0, cur;
-  for(i=0;i<nc;i++){
-    if(U[i]) continue;
-    c.moveTo(cx+R*C[i*8+1], cy-R*C[i*8+2]);
-    cur=i;
-    for(;;){
-      U[cur]=1;
-      for(k=C[cur*8+6];k<=C[cur*8+7];k++){ j=(ini+k)%n; c.lineTo(cx+R*sx[j], cy-R*sy[j]); }
-      c.lineTo(cx+R*C[cur*8+4], cy-R*C[cur*8+5]);
-      a0=sig[cur]; desde=C[cur*8+3];
-      giro=ang(C[a0*8]-desde);
-      pasos=Math.max(1,Math.ceil(giro/0.05));
-      for(p=1;p<=pasos;p++){ th=desde+giro*p/pasos; c.lineTo(cx+R*Math.cos(th), cy-R*Math.sin(th)); }
-      if(a0===i || U[a0]) break;
-      cur=a0;
-    }
-    c.closePath();
-  }
-};
-
-Globo.prototype.capa=function(c,rings,cx,cy,R,B,relleno){
-  var i,n;
-  c.beginPath();
-  for(i=0;i<rings.length;i++){
-    n=this.proy(rings[i],B);
-    if(relleno) this.rellena(c,n,cx,cy,R); else this.traza(c,n,cx,cy,R);
-  }
-  if(relleno) c.fill("nonzero"); else c.stroke();
-};
-
-/* la base de la cámara: mira al punto (lon,lat) de la esfera */
-Globo.prototype.base=function(lon,lat){
-  var a=lon*RAD,b=lat*RAD,ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b);
-  return [-sa,ca,0, -sb*ca,-sb*sa,cb, cb*ca,cb*sa,sb];
-};
-glob.Globo=Globo;
-})(window);
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
 
@@ -3413,573 +3091,6 @@ glob.Globo=Globo;
   ];
   function tramo(v,a,b){ return Math.min(1, Math.max(0, (v - a) / (b - a))); }
 
-  /* ════════════════════════════════════════════════════════
-     EL MUNDO
-     Una esfera de verdad dentro de la máscara: proyección ortográfica
-     de geometría real, con su terminador y su canto. La luz le entra
-     por arriba a la izquierda, la MISMA dirección con la que está
-     horneada la luz del casco — si no coincidieran, la bola se leería
-     como una pegatina redonda y no como una pieza incrustada.
-     ════════════════════════════════════════════════════════ */
-  var gcv  = document.getElementById("globo");
-  var gctx = gcv && gcv.getContext ? gcv.getContext("2d") : null;
-  var mundo = (gctx && window.Globo && window.MUNDO) ? new window.Globo(window.MUNDO) : null;
-  var gW=0, gH=0, gGiro=0, gAnt=-999, gLat2=0;
-  var LON0=-3.70, LAT0=40.4;          /* empieza en casa: España */
-  /* La retícula se construye una vez, como anillos cerrados: seis círculos
-     máximos por los meridianos y cinco paralelos. Cerrados a propósito, que
-     así los recorta el mismo código que las costas. */
-  var RETICULA=(function(){
-    var out=[], k, i, n=180, a, b, ca, arr;
-    for(k=0;k<6;k++){                                  /* meridianos */
-      a=k*30*Math.PI/180; arr=new Float32Array(n*3);
-      for(i=0;i<n;i++){ b=i/n*Math.PI*2;
-        arr[i*3]=Math.cos(b)*Math.cos(a); arr[i*3+1]=Math.cos(b)*Math.sin(a); arr[i*3+2]=Math.sin(b); }
-      out.push(arr);
-    }
-    for(k=-2;k<=2;k++){                                /* paralelos */
-      b=k*30*Math.PI/180; ca=Math.cos(b); arr=new Float32Array(n*3);
-      for(i=0;i<n;i++){ a=i/n*Math.PI*2;
-        arr[i*3]=ca*Math.cos(a); arr[i*3+1]=ca*Math.sin(a); arr[i*3+2]=Math.sin(b); }
-      out.push(arr);
-    }
-    return out;
-  })();
-
-  function tamGlobo(){
-    /* Se mide SÓLO en la maquetación, nunca en el bucle: leer geometría
-       después de escribir estilos fuerza un recálculo. Y se mide el
-       envoltorio, no la figura, porque a la figura le escribe el paso su
-       propia escala y devolvería el tamaño a medio viaje. */
-    if(!mundo || !cutwrap) return;
-    var b=cutwrap.getBoundingClientRect();
-    if(!b.width) return;
-    var d=Math.min(window.devicePixelRatio||1, 2);
-    var w=Math.min(Math.round(b.width*d), 1024);
-    if(w<40) return;
-    var h=Math.round(w*1069/928);
-    if(w!==gW||h!==gH){ gW=gcv.width=w; gH=gcv.height=h; gAnt=-999; }
-  }
-
-  function pintaGlobo(lon,lat){
-    var c=gctx, w=gW, h=gH, TAU=6.283185307;
-    /* el eje del casco está en el 44,9 %, no en el 50: medido sobre el
-       propio archivo de la máscara */
-    var cx=w*0.449, cy=h*0.370, R=w*0.305, g, k2;
-    var B=mundo.base(lon,lat);
-    c.clearRect(0,0,w,h);
-    c.save();
-    c.beginPath(); c.arc(cx,cy,R,0,TAU); c.clip();
-
-    g=c.createRadialGradient(cx-R*0.44, cy-R*0.58, R*0.04, cx, cy, R*1.28);
-    g.addColorStop(0,"#3B2D13"); g.addColorStop(0.52,"#1D1509"); g.addColorStop(1,"#0C0803");
-    c.fillStyle=g; c.fillRect(cx-R,cy-R,R*2,R*2);
-
-    c.strokeStyle="rgba(232,204,139,.13)"; c.lineWidth=Math.max(.4,R*0.0016);
-    mundo.capa(c,RETICULA,cx,cy,R,B,false);
-
-    /* El suelo: la tierra entera del color que tenia. Lo que queda de este
-       color al final son los paises sin dato — islas demasiado pequenas
-       para la rejilla de ERA5, y la Antartida. */
-    c.fillStyle="#F0D79D";                       mundo.capa(c,mundo.costa ,cx,cy,R,B,true);
-
-    /* Y encima, cada pais del color de COMO ESTA: cuanto por encima de su
-       propio normal, ahora. No es un cambio entre dos epocas, es un estado.
-       No hay leyenda a proposito. */
-    for(k2=0;k2<mundo.paises.length;k2++){
-      c.fillStyle=mundo.paises[k2][0];           mundo.capa(c,mundo.paises[k2][1],cx,cy,R,B,true);
-    }
-    c.strokeStyle="rgba(26,18,7,.34)"; c.lineWidth=Math.max(.45,R*0.0020);
-    for(k2=0;k2<mundo.paises.length;k2++)        mundo.capa(c,mundo.paises[k2][1],cx,cy,R,B,false);
-
-    /* Los suyos ya no pueden ir de color: el color lo ocupa ahora la
-       temperatura. Van de CONTORNO, que es otro canal — asi las dos cosas
-       se leen a la vez y ninguna pisa a la otra. */
-    c.strokeStyle="rgba(255,247,226,.88)"; c.lineWidth=Math.max(.9,R*0.0046);
-                                                 mundo.capa(c,mundo.suyos ,cx,cy,R,B,false);
-    c.strokeStyle="rgba(26,18,7,.70)"; c.lineWidth=Math.max(.55,R*0.0028);
-                                                 mundo.capa(c,mundo.costa ,cx,cy,R,B,false);
-
-    /* el bulto: brillo donde da la luz, y el canto que se va a sombra.
-       Sin esto el dibujo es correcto pero plano — un mapa redondo. */
-    g=c.createRadialGradient(cx-R*0.40, cy-R*0.52, R*0.06, cx, cy, R*1.00);
-    g.addColorStop(0,"rgba(255,248,226,.22)"); g.addColorStop(0.36,"rgba(255,248,226,0)");
-    g.addColorStop(0.66,"rgba(14,9,3,.20)");   g.addColorStop(0.88,"rgba(14,9,3,.56)");
-    g.addColorStop(1,"rgba(10,6,2,.82)");
-    c.fillStyle=g; c.fillRect(cx-R,cy-R,R*2,R*2);
-    c.restore();
-
-    c.lineWidth=Math.max(1,R*0.013);
-    c.strokeStyle="rgba(74,52,18,.72)";
-    c.beginPath(); c.arc(cx,cy,R-c.lineWidth*0.5,0,TAU); c.stroke();
-  }
-
-  /* ════════════════════════════════════════════════════════
-     EL UNIVERSO DE DENTRO
-     Por los visores y por la boca ya no se ve negro: se ve cielo. Pero un
-     cielo pintado en una sola lámina, por bonito que sea, se lee como una
-     CALCA: se mueve en bloque y el ojo lo lee como algo pegado detrás del
-     agujero, a un centímetro.
-
-     La profundidad no la da el dibujo, la da el DESACUERDO entre planos.
-     Así que el cielo son cuatro láminas a cuatro distancias, y cada una
-     se desplaza lo suyo: el fondo con las nebulosas casi no se mueve
-     (0,08), las estrellas medias un poco (0,30), las cercanas bastante
-     (0,66) y el polvo de delante va a tope (1,00). Al mover el ratón, lo
-     cercano CRUZA por delante de lo lejano, y eso —y sólo eso— es lo que
-     hace que el agujero tenga fondo.
-
-     Lo refuerzan otras dos cosas, las dos baratas: el plano lejano va
-     desenfocado y el de delante mucho más (lo que no está a foco se lee
-     como que está a otra distancia), y cada hueco se oscurece por el
-     borde, que es lo que hace que parezca un tronera y no una pegatina.
-
-     Y los tres huecos miran al MISMO cielo continuo: muévete y las
-     mismas estrellas cruzan de un visor al otro como si detrás de la
-     chapa hubiese un solo espacio. Que lo hay.
-
-     Coste: los tres huecos juntos son el 4,4 % del cuadro, así que sólo
-     se copian esos tres rectángulos y no el lienzo entero.
-     ════════════════════════════════════════════════════════ */
-  var ccv  = document.getElementById("cosmos");
-  var cctx = ccv && ccv.getContext ? ccv.getContext("2d") : null;
-  var cW=0, cH=0, capas=null, cDer=0, cTit=0, cAcum=0, cVivo=false, titil=[];
-  /* La fugaz: una cada vez, y sólo para quien sostiene la máscara. */
-  var cMet=null, cAbierto=0, cDesde=0, cProx=0, cDx=0, cDy=0;
-  var ctx0=0, cty0=0, ctw=0, cth=0, cPan=0;
-  /* los tres huecos y la baldosa que los cubre, en fracción del cuadro;
-     medidos sobre ane-glass.png y ane-dark.png, no puestos a ojo */
-  /* Las tres aberturas del casco, medidas sobre ane-void.png —que es
-     justo por donde asoma el cosmos— y no puestas a mano. Las dos de
-     arriba son ahora la lente clasica calcada de su segunda referencia:
-     larga y fina (largo entre grueso, 3,29), punta afilada hacia la
-     nariz, casquete redondo hacia la sien y 16 grados de caida. Mas
-     larga que la rendija que habia —184 milesimas del cuadro en vez de
-     177— y con el puente entre las dos reducido a 25 px, que es como
-     estan en su foto. */
-  var CAJAS = [[0.267,0.371,0.450,0.440], [0.511,0.371,0.694,0.440],
-               [0.369,0.573,0.580,0.646]];
-  var TELA  = [0.13,0.22,0.82,0.83];
-  var HONDO = [0.06, 0.26, 0.62, 1.00];       /* lo que se mueve cada plano */
-
-  /* Azar reproducible: con Math.random, al girar el móvil o al cambiar de
-     tamaño saldría otro cielo distinto y se notaría el relevo. */
-  var csem = 20250919;
-  function caz(){ csem = (csem * 1664525 + 1013904223) & 0x7fffffff; return csem / 0x7fffffff; }
-  function cnorm(){ return caz() + caz() + caz() - 1.5; }   /* casi normal */
-  function lienzo(w, h){ var o = document.createElement("canvas"); o.width = w; o.height = h; return o; }
-
-  function horneaCielo(w, h, esc){
-    csem = 20250919; titil.length = 0;
-    var out = [], o, c, g2, i, x, y, r, t, u, col;
-    var ca = Math.cos(-0.62), sa = Math.sin(-0.62), M = Math.max(w, h);
-
-    /* una estrella no es un punto duro: es núcleo y halo */
-    function astro(c2, x, y, br, calido, k){
-      var cl = calido ? "255,222,182" : "212,227,255";
-      var rr = Math.max(0.34, (0.22 + br * 1.30) * esc * k);
-      var gg = c2.createRadialGradient(x, y, 0, x, y, rr * 3.0);
-      gg.addColorStop(0,    "rgba(" + cl + "," + (0.46 + br * 0.54).toFixed(3) + ")");
-      gg.addColorStop(0.30, "rgba(" + cl + "," + (0.24 * br).toFixed(3) + ")");
-      gg.addColorStop(1,    "rgba(" + cl + ",0)");
-      c2.fillStyle = gg;
-      c2.beginPath(); c2.arc(x, y, rr * 3.0, 0, 6.283185); c2.fill();
-    }
-
-    /* ── DÓNDE SE JUNTA LA LUZ ──────────────────────────────────
-       El fulgor no sale de cada estrella por su cuenta: sale de donde la
-       luz SE JUNTA. Y dónde se junta no lo decido yo, lo mide el propio
-       campo — se desenfoca el plano (con eso la luz de estrellas vecinas
-       se funde en una sola mancha), se reduce a una rejilla de 60 columnas
-       y se ordenan las celdas por brillo. Las cumbres son las que se
-       ganan un rayo, con la fuerza que marque su propia luz.
-
-       Ese desenfoque NO se pinta, sólo se mide. Probé a sumarlo encima en
-       "screen", que era lo obvio, y es un error: el halo desenfocado de
-       trescientas estrellas se funde en una sábana continua y encharcaba
-       de azul el 60 % de la lámina. El volcado del plano no dejaba lugar
-       a dudas. Lo que se pinta son los fulgores y nada más.
-
-       La separación mínima de tres celdas evita que los cuarenta caigan
-       todos dentro del mismo racimo. */
-    function cumbres(cap, n, sep, radio){
-      var G = 60, gh = Math.max(4, Math.round(G * h / w));
-      var bl = lienzo(w, h), bc = bl.getContext("2d");
-      bc.filter = "blur(" + (radio * esc).toFixed(1) + "px)";
-      bc.drawImage(cap, 0, 0); bc.filter = "none";
-      var mi = lienzo(G, gh), m2 = mi.getContext("2d");
-      m2.drawImage(bl, 0, 0, G, gh);
-      var d2 = m2.getImageData(0, 0, G, gh).data, lista = [], q, j, lum, vale;
-      for (q = 0; q < G * gh; q++){
-        lum = (d2[q*4] + d2[q*4+1] + d2[q*4+2]) / 3 * (d2[q*4+3] / 255);
-        if (lum > 0.5) lista.push([lum, q % G, Math.floor(q / G)]);
-      }
-      lista.sort(function(a, b){ return b[0] - a[0]; });
-      var ok = [];
-      for (q = 0; q < lista.length && ok.length < n; q++){
-        vale = true;
-        for (j = 0; j < ok.length; j++)
-          if (Math.abs(ok[j][1] - lista[q][1]) < sep && Math.abs(ok[j][2] - lista[q][2]) < sep){ vale = false; break; }
-        if (vale) ok.push(lista[q]);
-      }
-      var cima = ok.length ? ok[0][0] : 1;
-      return ok.map(function(z){ return [(z[1]+0.5)/G*w, (z[2]+0.5)/gh*h, z[0]/cima]; });
-    }
-
-    /* El fulgor: un corazón y dos lóbulos, uno tendido y otro alzado. Los
-       tres son ELIPSES DE DEGRADADO, no rectángulos con un degradado
-       dentro — un rectángulo tiene canto, y el canto es lo que se lee como
-       una barra de luz.
-
-       Dos medidas importan y las dos se equivocaron primero. El LARGO: a
-       46 el lóbulo medía 104 px dentro de un visor de 158, o sea dos
-       tercios, y como el centro caía fuera casi siempre, lo que se veía
-       era una raya sin origen. A 17 mide 39, una quinta parte, y se queda
-       dentro con su corazón. Y la PROPORCIÓN: 46 por 2,4 son diecinueve a
-       uno, que a lo ancho no es un desvanecido sino un alambre. Ahora es
-       seis a uno.
-
-       El corazón va más fuerte que los lóbulos a propósito: el rayo tiene
-       que salir DE algo. Sin él es una raya suelta; con él es luz que se
-       desborda. Y el tamaño crece con la luz medida del racimo, así que
-       no hay dos iguales ni hace falta inventarles variación. */
-    function fulgor(c2, x, y, f){
-      var LOB = [[6.5, 6.5, 0.40], [17, 3.0, 0.30], [2.8, 8.5, 0.20]], q2, a2, gf;
-      /* Suelo a la fuerza. Medida en crudo, casi ningún racimo llega a 1
-         —sólo el más brillante de todos— así que casi todos los rayos
-         salían al 30 % y no se veía ninguno. Con el suelo, el racimo más
-         flojo sale a 0,45 y el más fuerte a 1: hay jerarquía, que era lo
-         que se quería, pero todos existen. */
-      f = 0.45 + 0.55 * f;
-      var tam = 0.62 + 0.58 * f;
-      c2.save(); c2.translate(x, y); c2.globalCompositeOperation = "screen";
-      for (q2 = 0; q2 < LOB.length; q2++){
-        a2 = LOB[q2][2] * f;
-        c2.save(); c2.scale(LOB[q2][0] * esc * tam, LOB[q2][1] * esc * tam);
-        gf = c2.createRadialGradient(0, 0, 0, 0, 0, 1);
-        gf.addColorStop(0,    "rgba(190,214,255," + a2.toFixed(4) + ")");
-        gf.addColorStop(0.40, "rgba(142,180,255," + (a2 * 0.34).toFixed(4) + ")");
-        gf.addColorStop(1,    "rgba(120,160,255,0)");
-        c2.fillStyle = gf; c2.fillRect(-1, -1, 2, 2);
-        c2.restore();
-      }
-      c2.restore();
-    }
-
-    /* ── PLANO 0 · EL FONDO. Nebulosas, la banda de la galaxia y polvo
-       finísimo, todo desenfocado un punto. Lo lejano nunca está tan
-       definido como lo cercano, y ese desenfoque hace la mitad del
-       trabajo. Es el único plano opaco: los otros tres son transparentes
-       y se apilan encima. */
-    o = lienzo(w, h); c = o.getContext("2d");
-    g2 = c.createLinearGradient(0, 0, w * 0.4, h);
-    g2.addColorStop(0, "#0C0A1E"); g2.addColorStop(0.55, "#070612"); g2.addColorStop(1, "#040309");
-    c.fillStyle = g2; c.fillRect(0, 0, w, h);
-    c.globalCompositeOperation = "screen";
-    /* Siete nubes PEQUEÑAS en vez de tres enormes. Por una rendija que
-       es el 2,7 % de la lámina, una nube de medio lienzo se ve como un
-       tinte plano y el visor se lee como un cristal de color. Achicadas,
-       lo que entra por el hueco tiene estructura. */
-    var NUBES = [[0.22,0.20,0.20,"122,84,198",0.20], [0.62,0.30,0.17,"78,96,204",0.16],
-                 [0.80,0.62,0.19,"36,130,150",0.17], [0.38,0.54,0.15,"96,70,170",0.15],
-                 [0.14,0.72,0.16,"48,116,150",0.14], [0.56,0.86,0.18,"170,84,50",0.13],
-                 [0.88,0.14,0.13,"150,72,126",0.13]];
-    for (i = 0; i < NUBES.length; i++){
-      var n = NUBES[i];
-      g2 = c.createRadialGradient(n[0]*w, n[1]*h, 0, n[0]*w, n[1]*h, n[2]*M);
-      g2.addColorStop(0,    "rgba(" + n[3] + "," + n[4] + ")");
-      g2.addColorStop(0.45, "rgba(" + n[3] + "," + (n[4]*0.34).toFixed(3) + ")");
-      g2.addColorStop(1,    "rgba(" + n[3] + ",0)");
-      c.fillStyle = g2; c.fillRect(0, 0, w, h);
-    }
-    c.save();
-    c.translate(w*0.5, h*0.5); c.rotate(-0.62); c.scale(1, 0.14);
-    g2 = c.createRadialGradient(0,0,0, 0,0, M*0.64);
-    g2.addColorStop(0,   "rgba(190,200,240,.26)");
-    g2.addColorStop(0.5, "rgba(150,162,212,.11)");
-    g2.addColorStop(1,   "rgba(124,136,194,0)");
-    c.fillStyle = g2; c.fillRect(-w, -h, w*2, h*2);
-    c.restore();
-    /* el polvo se pinta aparte y se pega desenfocado de una sola pasada:
-       filtrar 760 arcos uno a uno costaría cien veces más */
-    var pol = lienzo(w, h), pc = pol.getContext("2d");
-    for (i = 0; i < 1700; i++){
-      t = (caz()*2-1) * M * 0.80; u = cnorm() * h * 0.20;
-      x = w*0.5 + t*ca - u*sa; y = h*0.5 + t*sa + u*ca;
-      if (x < 0 || x > w || y < 0 || y > h) continue;
-      astro(pc, x, y, Math.pow(caz(), 3.4) * 0.5, caz() < 0.16, 0.8);
-    }
-    c.globalCompositeOperation = "source-over";
-    c.filter = "blur(" + (0.9 * esc).toFixed(2) + "px)";
-    c.drawImage(pol, 0, 0); c.filter = "none";
-    out.push(o);
-
-    /* ── PLANO 1 · ESTRELLAS MEDIAS. Muchas y pequeñas, un pelín suaves. */
-    o = lienzo(w, h); c = o.getContext("2d");
-    var med = lienzo(w, h), mc = med.getContext("2d");
-    for (i = 0; i < 1150; i++){
-      if (caz() < 0.55){ t = (caz()*2-1) * M * 0.80; u = cnorm() * h * 0.26;
-        x = w*0.5 + t*ca - u*sa; y = h*0.5 + t*sa + u*ca; }
-      else { x = caz()*w; y = caz()*h; }
-      if (x < 0 || x > w || y < 0 || y > h) continue;
-      astro(mc, x, y, Math.pow(caz(), 2.4) * 0.72, caz() < 0.20, 0.92);
-    }
-    c.filter = "blur(" + (0.35 * esc).toFixed(2) + "px)";
-    c.drawImage(med, 0, 0); c.filter = "none";
-    /* cada plano se enciende con SU propia luz y en SU propio plano: si el
-       resplandor de las medias viviera en el plano de las cercanas, al
-       moverse el ratón se despegaría de las estrellas que lo producen */
-    out.push(o);
-
-    /* ── PLANO 2 · ESTRELLAS CERCANAS. Pocas, grandes y NÍTIDAS.
-
-       Aquí había quince con destello en cruz y había que quitarlas. El
-       problema no era el destello, era la RENDIJA: el visor mide 40 px de
-       alto y la púa de una cruz medía hasta 64, así que cuando el núcleo
-       caía fuera del hueco no se veía una estrella brillante sino una
-       barra de luz cruzando el visor de lado a lado. Un rayo, no un
-       astro. En la boca, que es más grande, el mismo destello se leía
-       bien — de ahí que sólo chirriara en los ojos.
-
-       En su lugar, veinte estrellas GORDAS: mismo papel (que el campo no
-       sea grano de película uniforme) y nada que pueda salirse del hueco,
-       porque un halo redondo recortado por el borde sigue siendo un
-       halo. */
-    o = lienzo(w, h); c = o.getContext("2d");
-    for (i = 0; i < 280; i++){
-      x = caz()*w; y = caz()*h;
-      astro(c, x, y, 0.30 + Math.pow(caz(), 1.7) * 0.70, caz() < 0.24, 1.95);
-    }
-    for (i = 0; i < 20; i++){
-      x = (0.05 + caz()*0.90) * w; y = (0.06 + caz()*0.88) * h;
-      astro(c, x, y, 1, caz() < 0.30, 2.5 + caz() * 0.9);
-    }
-    /* Ciento diez y no veintiséis. Cada hueco sólo ve el 2,7 % de la
-       lámina: con 26 le tocaban 0,7 rayos, o sea que la mitad de las
-       veces un visor no tenía ninguno y la otra mitad tenía medio,
-       cortado por el borde. Con 110 le tocan tres, que es lo que hace
-       falta para que se lea como un rasgo del cielo y no como un
-       accidente. No es que haya más luz: es que hay jerarquía — la
-       fuerza de cada uno la sigue marcando su propia medida, así que
-       los flojos apenas se insinúan. */
-    var picos = cumbres(o, 110, 3, 13);
-    /* ── LOS OJOS, SIN RAYOS ────────────────────────────────────
-       Por los visores tiene que verse lo mismo que por la boca: cielo y
-       nada más. No vale apagar el fulgor "dentro del visor", porque la
-       lámina SE DESLIZA por detrás de los huecos —hasta 0,115 del ancho
-       por el paralaje— y un rayo no pertenece a ningún hueco: el que hoy
-       cae en un ojo mañana cae fuera. Lo que sí es fijo es la FRANJA de
-       lámina que un ojo puede llegar a asomar, y esa se calla entera.
-
-       Sale de las mismas constantes que la pintan —la caja del hueco,
-       menos el origen de la baldosa, más y menos TODO el desplazamiento
-       de este plano, y el largo del propio lóbulo de margen—, así que si
-       mañana se mueve un hueco la franja se mueve con él y no hay dos
-       números que mantener de acuerdo.
-
-       La boca cae muy por debajo: entre las dos franjas quedan seis
-       centésimas del alto de holgura, así que conserva los suyos. */
-    var mudo = [], q3, q4, vale;
-    for (q3 = 0; q3 < 2; q3++)                 /* CAJAS[0] y CAJAS[1] = los ojos */
-      mudo.push([CAJAS[q3][1]*cH - cty0 - cPan*HONDO[2] - 12*esc,
-                 CAJAS[q3][3]*cH - cty0 + cPan*HONDO[2] + 12*esc]);
-    /* la fuerza va con la luz medida: así sólo los racimos de verdad se
-       ganan un rayo y el resto apenas se insinúa */
-    for (i = 0; i < picos.length; i++){
-      vale = true;
-      for (q4 = 0; q4 < mudo.length; q4++)
-        if (picos[i][1] > mudo[q4][0] && picos[i][1] < mudo[q4][1]){ vale = false; break; }
-      if (vale) fulgor(c, picos[i][0], picos[i][1], Math.pow(picos[i][2], 1.0));
-    }
-    out.push(o);
-
-    /* ── PLANO 3 · EL POLVO DE DELANTE. Seis motas enormes y desenfocadas
-       del todo, casi transparentes. Nadie las mira, y ése es el truco: lo
-       que está tan cerca que no enfoca dice "aquí hay espacio" mejor que
-       cualquier estrella. */
-    o = lienzo(w, h); c = o.getContext("2d");
-    for (i = 0; i < 14; i++){
-      x = caz()*w; y = caz()*h; r = (22 + caz()*40) * esc;
-      col = caz() < 0.4 ? "255,226,196" : "196,214,255";
-      g2 = c.createRadialGradient(x, y, 0, x, y, r);
-      g2.addColorStop(0,    "rgba(" + col + ",.030)");
-      g2.addColorStop(0.72, "rgba(" + col + ",.052)");
-      g2.addColorStop(0.93, "rgba(" + col + ",.022)");
-      g2.addColorStop(1,    "rgba(" + col + ",0)");
-      c.fillStyle = g2; c.beginPath(); c.arc(x, y, r, 0, 6.283185); c.fill();
-    }
-    out.push(o);
-
-    /* Las que titilan van sueltas, en el plano de las cercanas: son 22 y
-       las pinta el bucle. Es lo único que se mueve cuando nadie toca el
-       ratón, y con eso basta para que el cielo no parezca una foto. Son
-       60 y no 22 porque por cada hueco sólo asoma el 2,7 % de la lámina:
-       con 22 no caía ninguna dentro de un visor la mitad del tiempo. */
-    for (i = 0; i < 60; i++){
-      titil.push([caz()*w, caz()*h, (0.9 + caz()*1.5) * esc,
-                  0.5 + caz()*1.4, caz()*6.283185, caz() < 0.22]);
-    }
-    return out;
-  }
-
-  function tamCielo(){
-    if (!cctx || !cutwrap) return;
-    var b = cutwrap.getBoundingClientRect();
-    if (!b.width) return;
-    var d = Math.min(window.devicePixelRatio || 1, 2);
-    var w = Math.min(Math.round(b.width * d), 1024);
-    if (w < 40) return;
-    var h = Math.round(w * 1069 / 928);
-    if (w === cW && h === cH) return;
-    cW = ccv.width = w; cH = ccv.height = h;
-    /* La baldosa no cubre el cuadro entero: sólo los tres huecos más el
-       margen que necesita el desplazamiento. Es un tercio del área, y por
-       cuatro planos eso son 6 MB en vez de 26. */
-    ctx0 = Math.floor(TELA[0]*cW); cty0 = Math.floor(TELA[1]*cH);
-    ctw  = Math.ceil(TELA[2]*cW) - ctx0; cth = Math.ceil(TELA[3]*cH) - cty0;
-    cPan = 0.115 * cW;            /* < el margen de 0,141 que deja la baldosa */
-    capas = horneaCielo(ctw, cth, cW / 760);
-    cVivo = false;
-  }
-
-  /* ── LA FUGAZ ────────────────────────────────────────────────
-     Una fugaz de verdad cruza un trozo de cielo minúsculo, y cada hueco
-     sólo asoma el 2,7 % de la lámina: tirada al azar no pasaría por un
-     visor ni una vez en veinte minutos. Así que el hueco se ELIGE —los
-     dos ojos y la boca, con la misma probabilidad— y la carrera se traza
-     para que lo cruce por el medio. Por dónde exactamente, con qué
-     inclinación, a qué velocidad y cuánto dura sí son al azar, así que
-     no hace dos veces lo mismo.
-
-     Va en el plano de las estrellas cercanas, o sea que la arrastra el
-     mismo paralaje que a ellas: si mueves el puntero mientras cae, se
-     corre CON el cielo y no por su cuenta. */
-  var CRUCE = 0.38;                  /* en qué punto de su vida cruza el hueco */
-  function lanzaFugaz(){
-    var b = CAJAS[(Math.random() * CAJAS.length) | 0];
-    var x0 = b[0]*cW, y0 = b[1]*cH;
-    var bw = b[2]*cW - x0, bh = b[3]*cH - y0;
-    var cx = x0 + bw * (0.20 + Math.random() * 0.60);
-    var cy = y0 + bh * (0.20 + Math.random() * 0.60);
-    var ang = 0.30 + Math.random() * 0.47;            /* cae entre 17° y 44° */
-    var ux = (Math.random() < 0.5 ? 1 : -1) * Math.cos(ang), uy = Math.sin(ang);
-    var vida = 780 + Math.random() * 360;
-    var rec  = (0.30 + Math.random() * 0.10) * cW;    /* lo que recorre entera */
-    var P = cPan * HONDO[2];
-    /* Y CRUZA EL HUECO EN SU MEJOR MOMENTO. Es el número que faltaba: la
-       carrera dura más que el hueco, así que apuntando el punto MEDIO de
-       la trayectoria al visor, la fugaz llegaba a su brillo máximo
-       estando todavía fuera y lo atravesaba ya apagándose — medido en
-       pantalla, entraba al 35 % de su luz y no se leía. Aquí el encuentro
-       y el pico son el MISMO instante: sube mientras entra, revienta en
-       mitad del visor y se apaga saliendo. */
-    cMet = { x: cx - ctx0 - cDx * P - ux * rec * CRUCE,
-             y: cy - cty0 - cDy * P - uy * rec * CRUCE,
-             ux: ux, uy: uy, vel: rec / vida, vida: vida, t: 0,
-             largo:   (0.075 + Math.random() * 0.045) * cW,
-             grosor:  (0.0026 + Math.random() * 0.0014) * cW };
-  }
-
-  /* La estela ADELGAZA, y por eso es un cuadrilátero y no un trazo: en
-     canvas el trazo tiene el mismo grosor de punta a punta y una estela
-     que no se estrecha se lee como un palo. En blanco cálido, del color
-     de las estrellas que ya hay, y en "screen": la luz se suma al cielo
-     en vez de taparlo. */
-  function pintaFugaz(c2, x, y, a2){
-    var m = cMet, lx = -m.ux * m.largo, ly = -m.uy * m.largo;
-    var nx = -m.uy * m.grosor, ny = m.ux * m.grosor, g3;
-    c2.save(); c2.globalCompositeOperation = "screen";
-    g3 = c2.createLinearGradient(x, y, x + lx, y + ly);
-    g3.addColorStop(0,    "rgba(255,250,238," + (0.92 * a2).toFixed(4) + ")");
-    g3.addColorStop(0.26, "rgba(255,230,196," + (0.34 * a2).toFixed(4) + ")");
-    g3.addColorStop(1,    "rgba(255,216,170,0)");
-    c2.fillStyle = g3;
-    c2.beginPath();
-    c2.moveTo(x + nx, y + ny); c2.lineTo(x - nx, y - ny);
-    c2.lineTo(x + lx, y + ly); c2.closePath(); c2.fill();
-    g3 = c2.createRadialGradient(x, y, 0, x, y, m.grosor * 6.0);
-    g3.addColorStop(0,    "rgba(255,252,244," + (0.96 * a2).toFixed(4) + ")");
-    g3.addColorStop(0.36, "rgba(255,234,204," + (0.26 * a2).toFixed(4) + ")");
-    g3.addColorStop(1,    "rgba(255,222,182,0)");
-    c2.fillStyle = g3;
-    c2.beginPath(); c2.arc(x, y, m.grosor * 6.0, 0, 6.283185); c2.fill();
-    c2.restore();
-  }
-
-  function pintaCielo(){
-    var c = cctx, k, b, x0, y0, bw, bh, L, i, t2, s, px2, py2, gg, col;
-    /* Quien manda aquí es dónde tiene el ratón SOBRE SU CARA, no dónde
-       lo tiene en la pantalla. Con pmx —que mide respecto a la ventana—
-       el barrido de la cara sólo movía un 16 % del recorrido y lo cercano
-       se desplazaba doce píxeles sobre lo lejano: medido, y no se ve.
-       scanX/scanY van de 0 a 100 de lado a lado de la cara, que es justo
-       el gesto que hace quien mira la máscara.
-
-       El signo es el de la vida real: si te mueves a la derecha, lo que
-       ves por el hueco se corre a la izquierda, y lo cercano se corre
-       MÁS. Al revés se lee como que el cielo persigue al ratón.
-
-       Encima va una deriva en elipse, una vuelta cada dos minutos y
-       medio, para que el cielo tampoco esté quieto cuando nadie toca. */
-    var dx = Math.cos(cDer) * 0.32 - (scanX - 50) / 50 * 0.78;
-    var dy = Math.sin(cDer * 0.73) * 0.32 - (scanY - 44) / 50 * 0.78;
-    dx = dx < -1 ? -1 : (dx > 1 ? 1 : dx);
-    dy = dy < -1 ? -1 : (dy > 1 ? 1 : dy);
-    cDx = dx; cDy = dy;
-    /* Dónde va la fugaz AHORA y cuánta luz le queda: enciende deprisa y
-       se apaga despacio, que es como se apaga una de verdad. */
-    var fx = 0, fy = 0, fa = 0, fu, fm;
-    if (cMet){
-      fu = cMet.t / cMet.vida;
-      fa = fu < CRUCE ? Math.pow(fu / CRUCE, 0.9)
-                      : Math.pow(1 - (fu - CRUCE) / (1 - CRUCE), 1.7);
-      fx = cMet.x + cMet.ux * cMet.vel * cMet.t + ctx0 + dx * cPan * HONDO[2];
-      fy = cMet.y + cMet.uy * cMet.vel * cMet.t + cty0 + dy * cPan * HONDO[2];
-      fm = cMet.largo + 8;
-    }
-    for (k = 0; k < CAJAS.length; k++){
-      b = CAJAS[k];
-      x0 = Math.floor(b[0]*cW); y0 = Math.floor(b[1]*cH);
-      bw = Math.ceil(b[2]*cW) - x0; bh = Math.ceil(b[3]*cH) - y0;
-      c.clearRect(x0, y0, bw, bh);
-      c.save();
-      c.beginPath(); c.rect(x0, y0, bw, bh); c.clip();
-      for (L = 0; L < capas.length; L++){
-        c.drawImage(capas[L],
-          x0 - ctx0 - dx * cPan * HONDO[L], y0 - cty0 - dy * cPan * HONDO[L],
-          bw, bh, x0, y0, bw, bh);
-      }
-      for (i = 0; i < titil.length; i++){
-        t2 = titil[i];
-        px2 = t2[0] + ctx0 + dx * cPan * HONDO[2];
-        py2 = t2[1] + cty0 + dy * cPan * HONDO[2];
-        if (px2 < x0 - 4 || px2 > x0 + bw + 4 || py2 < y0 - 4 || py2 > y0 + bh + 4) continue;
-        s = 0.28 + 0.72 * (0.5 + 0.5 * Math.sin(cTit * t2[3] + t2[4]));
-        col = t2[5] ? "255,222,182" : "220,233,255";
-        gg = c.createRadialGradient(px2, py2, 0, px2, py2, t2[2] * 3.2);
-        gg.addColorStop(0,    "rgba(" + col + "," + (0.92 * s).toFixed(3) + ")");
-        gg.addColorStop(0.32, "rgba(" + col + "," + (0.24 * s).toFixed(3) + ")");
-        gg.addColorStop(1,    "rgba(" + col + ",0)");
-        c.fillStyle = gg;
-        c.beginPath(); c.arc(px2, py2, t2[2] * 3.2, 0, 6.283185); c.fill();
-      }
-      if (fa > 0.006 && fx > x0 - fm && fx < x0 + bw + fm
-                     && fy > y0 - fm && fy < y0 + bh + fm) pintaFugaz(c, fx, fy, fa);
-      /* El hueco se apaga por el borde. Sin esto el cielo llega vivo
-         hasta el filo y el visor vuelve a leerse como una calca; con
-         ello se lee como lo que es: una tronera con fondo. */
-      c.translate(x0 + bw/2, y0 + bh/2); c.scale(bw/2, bh/2);
-      gg = c.createRadialGradient(0, 0, 0, 0, 0, 1);
-      gg.addColorStop(0,    "rgba(4,3,9,0)");
-      gg.addColorStop(0.58, "rgba(4,3,9,0)");
-      gg.addColorStop(0.86, "rgba(4,3,9,.34)");
-      gg.addColorStop(1,    "rgba(4,3,9,.78)");
-      c.fillStyle = gg; c.fillRect(-1, -1, 2, 2);
-      c.restore();
-    }
-    cVivo = true;
-  }
-
   var scanMode = finePtr && !reduce;
   var scanTX = 50, scanTY = 44, scanX = 50, scanY = 44;
   if (!scanMode) {
@@ -3987,16 +3098,16 @@ glob.Globo=Globo;
     if (cueTxt) cueTxt.textContent = "Scroll and the mask goes on";
   }
   var hoverT = 0, rev = 0;
-  /* EL MUNDO SOLO EXISTE MIENTRAS SE VE. `scrollRev` es una rampa que
+  /* LA MASCARA SOLO EXISTE MIENTRAS SE VE. `scrollRev` es una rampa que
      satura en 1 y no vuelve a bajar nunca, asi que en tactil —donde no hay
-     puntero que la apague al salir— el globo y el cielo seguian pintando a
-     60/s durante el 95 % del documento, con la portada tres pantallas mas
-     arriba. Medido: 18,3 % de CPU en el pie de la pagina, y el globo cuesta
-     2,5 ms por repintado. Un observador basta: cero coste por fotograma y
-     nada que medir a mano. Y va sobre `target`, no sobre `scrollRev`, para
-     que tambien apague lo que dejo puesto el puntero: `pointerleave` no
-     siempre dispara si el raton se queda quieto y es la pagina la que se
-     mueve debajo. */
+     puntero que la apague al salir— el casco se quedaba puesto y el bucle
+     escribiendo durante el 95 % del documento, con la portada tres
+     pantallas mas arriba. Cuando aqui dentro vivian el globo y el cielo
+     eso eran 18,3 % de CPU en el pie de la pagina; hoy cuesta mucho menos,
+     pero el observador se queda: no tiene coste por fotograma y es lo
+     unico que apaga tambien lo que dejo puesto el puntero, porque
+     `pointerleave` no siempre dispara si el raton se queda quieto y es la
+     pagina la que se mueve debajo. */
   var faceOn = true;
   if (face) {
     face.addEventListener("pointerenter", function(){ hoverT = 1; });
@@ -4283,6 +3394,7 @@ glob.Globo=Globo;
   var pmx = 0, pmy = 0, ptrOn = false;
 
   var lastY = 0, vel = 0, lastT = 0;
+  var bruegel = false;   /* la cache del Bruegel, calentada una sola vez */
   /* el reloj del mapa: segundos vividos con la pestana delante */
   var tpT = 0;
 
@@ -4305,6 +3417,18 @@ glob.Globo=Globo;
        es 0,85 de pantalla y no 1, para que se haya ido ANTES de que
        empiece a pasarle contenido por debajo y no justo al chocar. */
     body.classList.toggle("sin-marca", y > window.innerHeight * 0.85);
+
+    /* El Bruegel de Contacto pesa 315 KB y esta al final del todo. En vez de
+       esperar a que `loading="lazy"` lo pida al llegar —4.524 ms de hueco
+       medidos a 1,6 Mbps—, se calienta la cache en cuanto se pasa la segunda
+       pantalla. Una sola vez, sin bloquear nada: para cuando se llega abajo
+       ya esta. Si la red es rapida esto no se nota; si es lenta se gana todo
+       el recorrido de la pagina. */
+    if (!bruegel && y > window.innerHeight * 2) {
+      bruegel = true;
+      var bImg = new Image();
+      bImg.src = "art-bruegel.webp";
+    }
 
     /* ── EL PASO ─────────────────────────────────────────────
        Un solo recorrido manda cuatro cosas a la vez: el recorte de la
@@ -4495,63 +3619,6 @@ glob.Globo=Globo;
       if (Math.abs(target - rev) < 0.002) rev = target;
       face.style.setProperty("--rev", rev.toFixed(3));
 
-      /* El mundo gira SÓLO mientras la máscara está puesta, y cada vez que
-         se pone vuelve a empezar en España: lo primero que se ve al
-         materializarse el casco es de dónde es ella, no un trozo de océano
-         cualquiera. Una vuelta cada 86 segundos — a esa velocidad no se
-         lee como una animación, se lee como que la bola está ahí. */
-      /* red de seguridad: si la maquetación no llegó a medir (fuentes que
-         tardan, un contenedor todavía a cero), se mide aquí — pero sólo
-         mientras no haya medida, nunca en cada fotograma. */
-      if (mundo && !gW && rev > 0.03) tamGlobo();
-      if (mundo && gW) {
-        if (rev > 0.03) {
-          if (!reduce) gGiro += dt * 0.0042;
-          var glon = LON0 + gGiro + pmx * 10;
-          var glat = Math.max(-74, Math.min(74, LAT0 - pmy * 8));
-          if (gAnt < -900 || Math.abs(glon - gAnt) > 0.06 || Math.abs(glat - gLat2) > 0.06) {
-            pintaGlobo(glon, glat); gAnt = glon; gLat2 = glat;
-          }
-        } else if (gGiro) { gGiro = 0; gAnt = -999; }
-      }
-
-      /* EL CIELO. Va a 24 Hz y no a 60: lo único que se mueve por dentro
-         son una deriva de dos minutos y medio y el titileo, y a 24 ya no
-         se distingue. Con movimiento reducido se pinta UNA vez y se queda
-         quieto, que es un cielo perfectamente razonable. */
-      if (cctx && !cW && rev > 0.03) tamCielo();
-      if (cctx && cW && capas) {
-        if (rev > 0.03) {
-          if (reduce) { if (!cVivo) pintaCielo(); }
-          else {
-            cDer += dt * 0.000042; cTit += dt * 0.0011; cAcum += dt;
-            /* LA FUGAZ NO SE REGALA: hay que sostener la máscara. La
-               primera tarda 3,6 s y las siguientes van de 8 a 17, así que
-               nunca es previsible pero tampoco se hace esperar. Y en
-               cuanto se cierra la máscara, el reloj vuelve a cero: no se
-               acumula mérito a base de abrir y cerrar.
-
-               Mientras una cae el cielo sube a 60 Hz: a los 24 de siempre
-               la cabeza daría saltos de doce píxeles y la estela se
-               leería como una línea de puntos. Son 0,05 ms por fotograma
-               durante un segundo, así que sale gratis. */
-            cAbierto += dt;
-            if (cMet){
-              cMet.t += dt;
-              if (cMet.t >= cMet.vida){
-                cMet = null; cDesde = 0; cProx = 8000 + Math.random() * 9000;
-              }
-            } else {
-              cDesde += dt;
-              if (cAbierto > 3600 && cDesde > cProx) lanzaFugaz();
-            }
-            if (!cVivo || cAcum > (cMet ? 15 : 42)) { pintaCielo(); cAcum = 0; }
-          }
-        } else if (cVivo) {
-          cVivo = false; cDer = 0; cAcum = 0;
-          cMet = null; cAbierto = 0; cDesde = 0; cProx = 0;
-        }
-      }
       /* sin pin (móvil o movimiento reducido) sigue el paralaje de antes;
          con pin lo escribe el paso, que ya lleva su propio recorrido */
       if (!reduce && !pinOn) face.style.transform = "translate3d(0," + (y * 0.13).toFixed(1) + "px,0)";
@@ -4734,7 +3801,7 @@ glob.Globo=Globo;
   var rt;
   window.addEventListener("resize", function(){
     clearTimeout(rt);
-    rt = setTimeout(function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); tamGlobo(); tamCielo(); sizeBlob(); }, 140);
+    rt = setTimeout(function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); sizeBlob(); }, 140);
   }, { passive:true });
 
   /* ════════════════════════════════════════════════════════
@@ -4773,7 +3840,7 @@ glob.Globo=Globo;
     setTimeout(function(){
       body.classList.add("is-live");
       if (lenis) lenis.start();
-      layoutPin(); layoutPass(); layoutMont(); measureBands(); tamGlobo(); tamCielo();
+      layoutPin(); layoutPass(); layoutMont(); measureBands();
     }, 260);
     setTimeout(function(){ body.classList.add("is-gone"); }, 1600);
   }
@@ -4781,7 +3848,7 @@ glob.Globo=Globo;
   if (reduce || !load) {
     body.classList.add("is-done","is-live","is-gone");
     if (lenis) lenis.start();
-    layoutPin(); layoutPass(); layoutMont(); measureBands(); tamGlobo(); tamCielo();
+    layoutPin(); layoutPass(); layoutMont(); measureBands();
   } else {
     window.scrollTo(0, 0);
     var n = 0, t0 = performance.now();
@@ -4796,10 +3863,10 @@ glob.Globo=Globo;
   }
 
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); tamGlobo(); tamCielo(); });
+    document.fonts.ready.then(function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); });
   }
-  window.addEventListener("load", function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); tamGlobo(); tamCielo(); });
-  if (wide.addEventListener) wide.addEventListener("change", function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); tamGlobo(); tamCielo(); });
+  window.addEventListener("load", function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); });
+  if (wide.addEventListener) wide.addEventListener("change", function(){ layoutPin(); layoutPass(); layoutMont(); measureBands(); });
   /* Girar el teléfono cruza el umbral de ALTO sin cambiar el de anchura,
      así que este oyente no es redundante: sin él, el carril se queda
      montado (o desmontado) hasta el siguiente cambio de ancho. */
@@ -4815,7 +3882,8 @@ glob.Globo=Globo;
    primera vez que se encendió en un escenario. En cuanto se empieza a
    deslizar pasa a One more thing —la fórmula con la que él se guardaba
    lo mejor para el final— y entonces, sólo entonces, al pasar el ratón
-   por encima suelta una de las dieciséis.
+   por encima suelta una de las tres. En el teléfono, donde no hay ratón
+   que pase por encima, la suelta la sección de cierre.
 
    Salen barajadas y se agota la baraja entera antes de volver a mezclar,
    así que quien juegue un rato no ve dos veces la misma. Nada de frases
@@ -4918,6 +3986,7 @@ glob.Globo=Globo;
      y lo que tiene que parecer es alguien escribiendo. */
   var chat  = document.getElementById("chat");
   var chatT = document.getElementById("chatT");
+  var chatSr = document.getElementById("chatSr");
   var tecla = 0, antes = 0;
 
   function escribe(txt){
@@ -4926,19 +3995,22 @@ glob.Globo=Globo;
     chatT.textContent = "";
     chat.classList.remove("is-txt");
     chat.classList.add("is-on");
-    if (reduce) { chat.classList.add("is-txt"); chatT.textContent = txt; return; }
+    if (reduce) { chat.classList.add("is-txt"); chatT.textContent = txt; anuncia(txt); return; }
     antes = setTimeout(function(){
       chat.classList.add("is-txt");
       var i = 0;
       (function letra(){
         chatT.textContent = txt.slice(0, ++i);
         if (i < txt.length) tecla = setTimeout(letra, 17 + Math.random() * 27);
+        else anuncia(txt);
       })();
     }, 430);
   }
 
+  function anuncia(txt){ if (chatSr) chatSr.textContent = txt; }
   function calla(){
     if (!chat) return;
+    if (chatSr) chatSr.textContent = "";
     clearTimeout(tecla); clearTimeout(antes);
     chat.classList.remove("is-on");
   }
@@ -4975,9 +4047,11 @@ glob.Globo=Globo;
       }
 
       var dentro = t <= 78;
+      if (dentro && puesta) alCierre(true);   /* reinicia la cuenta de quietud */
       if (dentro !== puesta) {
         puesta = dentro;
         document.body.classList.toggle("in-cierre", dentro);
+        alCierre(dentro);
       }
       /* EL REBOTE. <html> lleva el papel (es el lienzo, y el cuerpo va
          transparente a propósito para que el suelo del paso se vea), así
@@ -5001,6 +4075,29 @@ glob.Globo=Globo;
     window.addEventListener("resize", pide_, { passive:true });
     cierra();
   })();
+
+  /* En tactil lo abre la seccion de cierre; en raton, la pildora. */
+  var yaDicho = false, esperaT = 0;
+  try { yaDicho = sessionStorage.getItem("ane-otra-cosa") === "1"; } catch (e) {}
+  function alCierre(dentro){
+    if (finePtr) return;
+    clearTimeout(esperaT);
+    if (!dentro) { calla(); return; }
+    if (yaDicho) return;
+    esperaT = setTimeout(function(){
+      if (yaDicho) return;          /* el IIFE del cierre corre antes que esta linea */
+      yaDicho = true;
+      try { sessionStorage.setItem("ane-otra-cosa", "1"); } catch (e) {}
+      escribe(siguiente());
+    }, 550);
+  }
+  /* Se va cuando se le dice, no cuando se le acaba el tiempo: al salir la
+     seccion, al tocar en cualquier sitio o con Escape —que es ademas la
+     mitad de lo que pide 1.4.13 y hoy no estaba ni con raton—. */
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") calla(); });
+  if (!finePtr) document.addEventListener("pointerdown", function(){
+    if (chat && chat.classList.contains("is-on")) calla();
+  }, { passive:true });
 
   if (finePtr) {
     pill.addEventListener("pointerenter", function(){ if (fuera) escribe(siguiente()); });
