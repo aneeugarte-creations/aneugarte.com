@@ -227,31 +227,38 @@ html:not(.lenis){ scroll-behavior:smooth; }
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   transition:opacity .34s ease;
 }
-/* La marca, pequeña y centrada: las mismas proporciones exactas que el
-   logotipo de la esquina —2,05em la primera línea, wdth 74, y la segunda
-   abierta a .145em—, porque es la misma marca y no una portada aparte.
-   Pequeña a propósito: el monograma de la referencia ocupa un 4 % del
-   ancho de pantalla. Lo que impresiona es el campo de color, no el tamaño
-   de lo que lleva dentro. */
+/* UNA SOLA LÍNEA, Y ES SU NOMBRE. Aquí había un saludo grande en negrita
+   con el nombre pequeño debajo, en versales, apareciendo al terminar de
+   teclearse el saludo. Se han ido las dos cosas: «quita hey welcome y deja
+   solamente mi nombre y apellido así fino sin negrita».
+
+   Que el nombre estuviera arriba y abajo era el verdadero defecto de aquello
+   —el mismo texto dos veces en una pantalla que dura un segundo—, y por eso
+   al subir el nombre a la línea grande la pequeña no se recoloca: desaparece.
+
+   FINO NO ES UN CAPRICHO DE TAMAÑO SINO DE PESO. El cuerpo se queda donde
+   estaba, de 30 px en el teléfono a 58 en el escritorio; lo que baja es el
+   eje wght, de 700 al suelo de la instancia cargada. Sobre fondo oscuro el
+   texto claro engorda ópticamente, así que un peso elegido sobre papel
+   llegaría aquí más gordo de lo que se eligió: este está elegido sobre el
+   verde noche y en crema, que es donde vive. */
 .load__n{
   margin:0; font-family:var(--display);
   white-space:nowrap;
   color:var(--cream); text-align:center;
 }
 .load__n b{
-  display:block; font-variation-settings:"wdth" 100,"wght" 700;
-  font-size:clamp(30px,3.5vw,58px); line-height:1; letter-spacing:-.01em;
+  display:block;
+  /* EL font-weight VA, Y NO SOBRA. `font-variation-settings` mueve el eje
+     de la fuente variable, pero NO toca `font-weight`, y un <b> nace en
+     700 por el navegador. Mientras Archivo viaja, el sustituto pinta el
+     nombre en Helvetica Neue BOLD — medido: la caja va de 163 px a 150 a
+     393, y de 273 a 251 a 1440, cuando entra la buena. O sea que durante
+     el swap se veia exactamente la negrita que se ha pedido quitar. */
+  font-weight:250; font-variation-settings:"wdth" 100,"wght" 250;
+  font-size:clamp(30px,3.5vw,58px); line-height:1;
+  letter-spacing:.02em; text-indent:.02em;   /* la prosa sobra por la derecha */
 }
-.load__n i{
-  display:block; font-style:normal; text-transform:uppercase;
-  opacity:0; transition:opacity .5s var(--ease);
-  font-variation-settings:"wdth" 100,"wght" 300;
-  font-size:clamp(9px,.778vw,13px); line-height:1.5;
-  letter-spacing:.3em; text-indent:.3em;   /* la prosa sobra por la derecha */
-  margin-top:clamp(11px,1.18vw,20px);
-  color:var(--cream-2);
-}
-.load__n.fin i{ opacity:1; }
 
 /* ── SE ESCRIBE ───────────────────────────────────────────────
    "Que se escriba de letra en letra como apple cuando compras uno de sus
@@ -265,7 +272,19 @@ html:not(.lenis){ scroll-behavior:smooth; }
    su sitio definitivo y el centrado no baila mientras se teclea.
    Reservar el ancho midiendolo en JS no valdria: la fuente llega
    despues del primer pintado y el ancho cambia al intercambiarse
-   —medido, 210 px antes y 212 despues—.
+   —medido con la cache fria, 147 px con el sustituto y 154 con Archivo
+   a 393; 247 y 258 a 1440—.
+
+   ESE INTERCAMBIO SE VE, Y SE DEJA VER A PROPOSITO. Grabando fotograma a
+   fotograma: a 1440 la «A» se enciende a los 383 ms y la fuente entra a
+   los 416, asi que durante 33 ms la primera letra esta pintada con el
+   sustituto y al cambiar la linea —centrada— se corre 5 px. Se puede
+   quitar arrancando el tecleo con `document.fonts`, y NO se hace: la
+   fuente tarda unos 400 ms en cache fria, y esperarla empuja el final del
+   tecleo de 780 ms a 980 y deja el reposo en 370 ms, por debajo del suelo
+   de 420 que esta pantalla tiene medido. Cinco pixeles en una letra
+   durante la primera visita cuestan menos que eso. En la segunda visita,
+   con la fuente en cache, no ocurre nada de esto.
 
    EL CURSOR existe mientras se escribe Y SE VA CON LA ULTIMA LETRA.
    Sin el, las letras aparecen de la nada y el gesto se lee como un fallo
@@ -808,8 +827,22 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    se revela con el SCROLL, y es monótono: está entero arriba del todo y
    se va retirando según bajas hasta desaparecer sobre los 580 px
    —medido en vivo, área con color 33.685 px a scroll 120, 23.467 a 334
-   y 1.908 a 580—, y el puntero no lo mueve. La MALLA alámbrica va por
-   reloj y no se entera del scroll salvo para apagarse del todo al final.
+   y 1.908 a 580—. Encaja con su código: su `uCursorIntensity` va de 1 a
+   0 en `top += alto/2.25`, que con una ventana de 860 son 382 px.
+
+   LO QUE NO ESTÁ CERRADO es cuánto entra el puntero en ese revelado.
+   Aquí llegó a poner que «el puntero no lo mueve», por una medida en
+   vivo según la cual el centro de la zona revelada no se movía paseando
+   el ratón por su cabeza. Su código dice lo contrario —el casco sólido
+   se compone con un `cursorEffect` que cuelga de `uMouseCoords`— y la
+   medida no se ha podido repetir, porque su figura no llega a pintarse
+   en un navegador sin pantalla. Así que no se da por sabido: es lo único
+   de esta nota que no tiene detrás ni una medida repetible ni una línea
+   de su código.
+
+   La MALLA alámbrica va por reloj y no se entera del scroll salvo para
+   apagarse del todo al final, con un `uOpacity` que baja de 1 a 0 en
+   0,25 s en ese mismo punto de scroll.
    Su material está en el paquete de su propia página y dice, literal:
 
        float scanEffect = 0.1;
@@ -872,9 +905,11 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    separan más de 2,0 px» y eso no se sostiene con ningún umbral: los
    2 px son el p90 y no el máximo, y aflojando a alfa>4 —o sea contando
    el halo del antialias— el máximo se va a 13 px en la fila 780. El
-   sitio sí estaba bien: esa fila es el fondo de la copa del mentón. Y va POR FUERA de su cara, no encima: es
-   una cáscara transparente alrededor de la cabeza, con el pelo dentro, y
-   se amontona sola en el canto porque allí la superficie se gira.
+   sitio sí estaba bien: esa fila es el fondo de la copa del mentón.
+
+   Y VA POR FUERA de su cara, no encima: es una cáscara transparente
+   alrededor de la cabeza, con el pelo dentro, y se amontona sola en el
+   canto porque allí la superficie se gira.
 
    DÓNDE APARCA, que es aritmética y no gusto. Con `background-size:100%
    30%`, un `background-position` del p % pone el canto de arriba de la
@@ -882,27 +917,57 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    alámbrico —medido sobre ane-dome.png, fila a fila— va de la fila 20 a
    la 1185 de 1603, o sea del 1,25 % al 73,92 %. De ahí salen los dos
    extremos: la banda toca el alambre por primera vez en p = -41,1 % y lo
-   suelta en p = 105,6 %. Aparca en -50 % y en 115 %, fuera de esa
+   suelta en p = 105,6 %. Aparca en -42 % y en 106 %, JUSTO fuera de esa
    ventana por los dos lados, y por eso no hace falta animar una segunda
    propiedad para apagarla: cuando está aparcada no hay nada que apagar.
    Los -22 % y 122 % de antes no cumplían eso, y daba igual mientras la
-   malla estuviera encendida de todas formas.
+   malla estuviera encendida de todas formas. Y justo fuera, no más
+   lejos: los -50 % y 115 % que hubo aquí un rato también apagaban, pero
+   se gastaban 18 de los 165 puntos del recorrido paseando la banda por
+   donde no hay alambre. Ese viaje en balde es hueco muerto, y con el
+   ciclo corto se nota.
 
    Y VA EN RECTA, no en la curva de antes. Ahora la banda ES la malla, y
    una curva lenta en los extremos se pasa el barrido fuera del alambre y
    lo cruza en un fogonazo: medido, con la curva vieja entre estos dos
-   aparcamientos el alambre sólo se encendía 400 ms. En recta se enciende
-   2,0 s de los 3,6 s que dura el barrido, prácticamente lo mismo que
-   duraba el paso de la banda antes de tocar nada (2,3 s).
+   aparcamientos el alambre sólo se encendía 400 ms. Y en recta el
+   reparto no depende de la velocidad: se puede elegir el ciclo sin que
+   cambie la proporción de tiempo encendida.
 
-   EL CICLO DE 7,5 s TAMPOCO ES EL SUYO, y aquí el número está encima de
-   la mesa: el de la referencia es 1,000 s, con 0,771 de barrido y 0,229
-   de hueco, o sea 77 % encendida y 23 % apagada. Éste deja 2,0 s de
-   escaneo y 5,5 s de nada: el reparto justo al revés. Tiene motivo —su
-   línea es negro al 0,1 de alfa y la nuestra gris macizo al 0,78, así
-   que a un barrido por segundo esto no se leería como un escaneo sino
-   como un parpadeo— y tiene pendiente: es UN número, y está a la espera
-   de que Ane diga si lo quiere más seguido. */
+   EL CICLO ES DE 1 s, QUE ES EL DE LA REFERENCIA, y lo pidió Ane con
+   esas palabras: «quiero que el escaneo sea más recurrente, como
+   landonorris.com». Allí el número no es de vista, está en su shader:
+   `pow(fract(-vPosition.y * 10. - uTime), 4.)` con `uTime` en segundos
+   repite cada 1,000 s, y con una cabeza de 0,0771 de alto contra un
+   periodo espacial de 0,1 salen 0,771 s de barrido y 0,229 s de hueco,
+   77 % encendida contra 23 % apagada.
+
+   Y EL REPARTO SALE SOLO, sin ajustar nada a ojo, porque lo pone la
+   misma aritmética de arriba aplicada al NÚCLEO del degradado en vez de
+   a la banda entera: lo macizo va del 44 % al 72 % de la banda, o sea de
+   0,132 a 0,216 por debajo de su canto de arriba, y eso cruza el alambre
+   entre p = -29,1 % y p = 86,8 %. Son 115,8 puntos de los 148 que hay de
+   -42 % a 106 %: 78 % encendida, 22 % apagada. Los aparcamientos los
+   manda la banda entera —para que no asome nada— y el reparto lo manda
+   el núcleo, y por eso una cosa se eligió y la otra tocó.
+
+   MEDIDO en esta misma página, con el puntero lejos de su cara y contra
+   su propio cero: a ciclo de 1 s salen 0,69 s encendida y 0,29 s
+   apagada, o sea 72-76 % según la pasada —el umbral de la medida está al
+   10 % del recorrido y se come los cantos del barrido, de ahí que dé
+   algo menos que el 78 % de la aritmética—. Y el pico no se resiente por
+   ir deprisa: 0,60 a 0,68 en tres pasadas contra los 0,56 que daba a
+   7,5 s. Esa diferencia va toda del muestreo —capturar un fotograma
+   cuesta unos 100 ms, así que a un barrido por segundo la tira cae más
+   veces cerca del pico— y no de la animación, que es recta y pinta en
+   cada instante lo que pintaba.
+
+   LO QUE NO SE PARECE, y conviene no «arreglarlo» creyendo que lo
+   acerca: la suya no se apaga nunca. Su línea es negro al 0,1 de alfa y
+   el barrido sólo se lo RESTA, así que en el peor instante aún le queda
+   el 34,7 % del pico. La nuestra se va del todo, y eso es la otra mitad
+   de lo que Ane pidió —«cuando se escanee aparece y vuelve a irse cuando
+   acaba el escaneo»—. Mismo ritmo, distinto suelo. */
 .scan{
   position:absolute; inset:0;
   pointer-events:none;
@@ -913,13 +978,16 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   opacity:calc(.9 - .9 * var(--rev,0));
-  animation:scansweep 7.5s linear infinite;
+  animation:scansweep 1s linear infinite;
 }
-/* El barrido ocupa el 48 % del ciclo; el resto la banda está aparcada
-   fuera del cuadro y no se ve nada, que es la mitad del encargo. */
+/* El ciclo entero es barrido: la banda no se detiene en ningún extremo.
+   El hueco en que no se ve nada no es una pausa programada, es el tramo
+   del recorrido en que lo macizo del degradado va por fuera del alambre.
+   Y el salto de vuelta del 106 % al -42 % cae con la banda ya fuera, que
+   es donde un salto no se ve. */
 @keyframes scansweep{
-  0%        { background-position:0 -50%; }
-  48%,100%  { background-position:0 115%; }
+  0%   { background-position:0 -42%; }
+  100% { background-position:0 106%; }
 }
 .cowl{
   position:absolute; inset:0; opacity:var(--rev,0);
@@ -2693,7 +2761,7 @@ body.is-live .rise > i{ transform:none; }
 
 <div class="load" id="load" aria-hidden="true">
   <div class="load__in">
-    <p class="load__n"><b>hey, welcome</b><i>Ane Ugarte</i></p>
+    <p class="load__n"><b>Ane Ugarte</b></p>
     <span class="load__track"><b class="load__fill" id="loadFill"></b></span>
     <span class="load__c num" id="loadC">000</span>
   </div>
@@ -4406,18 +4474,25 @@ body.is-live .rise > i{ transform:none; }
   var loadC = document.getElementById("loadC"), loadFill = document.getElementById("loadFill");
   var opened = false;
 
-  /* ── EL SALUDO, LETRA A LETRA ────────────────────────────
+  /* ── EL NOMBRE, LETRA A LETRA ────────────────────────────
      Ver la nota larga de .load__n b span en la hoja de estilos: las
-     letras ya estan en el HTML —asi la frase existe sin JS— y lo unico
+     letras ya estan en el HTML —asi el nombre existe sin JS— y lo unico
      que hace esto es encenderlas de una en una.
+
+     AQUI SE ESCRIBIA «hey, welcome», con el nombre pequenio debajo. Hoy
+     lo que se teclea ES el nombre y no hay nada mas en la pantalla, asi
+     que las cuentas de abajo se rehicieron con DIEZ caracteres en vez de
+     doce. El mecanismo no cambio ni una linea: lo unico que sabe este
+     bloque es cuantos <span> hay dentro del <b>.
 
      LAS DOS CIFRAS SALEN DEL REPOSO, no del gusto. La cortina esta
      entera en pantalla hasta que `open()` pone `is-done` —medido en el
      navegador, 1.234 ms a 1440 y 1.281 a 393— y de ahi se desvanece en
-     340 ms, asi que la frase tiene que estar escrita y QUIETA bastante
-     antes de esos 1.234. El reposo minimo es 420 ms: leer doce
-     caracteres son dos fijaciones de unos 250 ms, y como el ojo ya la ha
-     ido leyendo mientras se formaba basta una fijacion mas el retroceso.
+     340 ms, asi que el nombre tiene que estar escrito y QUIETO bastante
+     antes de esos 1.234. El reposo minimo es 420 ms: dos palabras son
+     una fijacion de unos 250 ms, y como el ojo las ha ido leyendo
+     mientras se formaban basta esa fijacion mas el retroceso. Medido con
+     el nombre: 567 ms a 1440 y 583 a 393, o sea holgado.
 
      ESPERA 200 ms antes de la primera letra: el campo verde tiene que
      llegar a leerse como campo antes de que aparezca nada encima. Es la
@@ -4430,24 +4505,27 @@ body.is-live .rise > i{ transform:none; }
      dos cadencias distintas serian dos personas. Se rompe a proposito y
      por orden —"un pelin mas despacio, como apple"—, y lo que la deja
      romperse es el TAMANIO: el globo es un mensaje en mono a .74rem en
-     una esquina y esto es un saludo a 30-58 px que llena la pantalla.
-     Una letra ocho veces mayor tarda mas en leerse, asi que a la misma
-     cadencia se lee mas deprisa de lo que se puede seguir.
-     Doce caracteres a 43,5 ms salen en 522 ms tipicos y 603 en el peor
-     reparto realista —la desviacion de la suma es 27 ms, o sea 3 sigma—.
-     Con la espera la frase esta entera entre los 722 y los 803 ms, y el
-     navegador suma ~90 ms de redondeo de temporizador.
+     una esquina y esto son 30-58 px que llenan la pantalla. Una letra
+     ocho veces mayor tarda mas en leerse, asi que a la misma cadencia se
+     lee mas deprisa de lo que se puede seguir.
+     Diez caracteres a 43,5 ms salen en 435 ms tipicos y 509 en el peor
+     reparto realista —la desviacion de la suma es 24,6 ms, o sea 3
+     sigma—. Con la espera esta entero entre los 635 y los 709 ms, y el
+     navegador suma ~90 ms de redondeo de temporizador: medido, 678 a
+     1440 y 783 a 393.
 
      MAS DESPACIO QUE ESTO NO CABE sin alargar la cortina, y la cortina
      la paga cada visita. El saludo de Apple tarda dos o tres segundos,
-     pero es UN TRAZO manuscrito de cinco letras y no doce tecleadas:
+     pero es UN TRAZO manuscrito de cinco letras y no diez tecleadas:
      para acercarse de verdad habria que subir los 1.150 ms del bucle de
      carga, y eso ya no es un ajuste sino otra decision.
 
      Y el azar no es adorno: a paso exacto suena a contador, y un
-     contador no dice hey. Tampoco lleva pausa en la coma — los 120 ms
-     de prosodia se comerian un cuarto del reposo, y el reposo es lo que
-     hace que esta pantalla se lea como corta. */
+     contador no firma. Aqui hubo ademas una nota sobre la pausa que NO
+     se hacia en la coma de «hey, welcome»; sin coma, sobra. Lo que
+     decia sigue valiendo por si algun dia vuelve a haber puntuacion:
+     los 120 ms de prosodia se comerian un cuarto del reposo, y el
+     reposo es lo que hace que esta pantalla se lea como corta. */
   var SAL_ESPERA = 200, SAL_PASO = 30, SAL_AZAR = 27;
   var loadN = load ? load.querySelector(".load__n") : null;
   var loadB = loadN ? loadN.querySelector("b") : null;
@@ -4462,8 +4540,7 @@ body.is-live .rise > i{ transform:none; }
     }
     letras[letras.length - 1].classList.add("cur");
     iLetra = letras.length;
-    loadB.classList.add("fin");
-    loadN.classList.add("fin");
+    loadB.classList.add("fin");   /* y con ella se va el cursor */
   }
 
   if (loadB && !reduce) {
@@ -4789,5 +4866,4 @@ body.is-live .rise > i{ transform:none; }
 })();
 </script>
 
-</body>
-</html>
+</body></html>
