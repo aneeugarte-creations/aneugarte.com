@@ -512,7 +512,11 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
   -webkit-mask-image:url("ane-topo.png"); mask-image:url("ane-topo.png");
   -webkit-mask-size:980px 980px;  mask-size:980px 980px;
   -webkit-mask-repeat:repeat;     mask-repeat:repeat;
-  opacity:.20;
+  /* .18 y no .20: es el mismo numero que .suelo__topo. Son el mismo mapa
+     —misma baldosa, misma tinta: medidos los dos pintados dan
+     rgb(255,168,115)— y con dos fuerzas distintas una curva que cruzara
+     del uno al otro cambiaria de intensidad justo en la juntura. */
+  opacity:.18;
 }
 
 /* El blanco entra con el recorrido, no está desde el principio. En
@@ -747,6 +751,52 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
 }
+/* EL PLANO DE LA TIERRA. Va sobre la placa —la pieza verde clara— y se
+   desplaza solo. No es la bola de antes vuelta a poner: aquella eran
+   99 kB de geometría EN la página más un motor que la proyectaba y la
+   repintaba 24 veces por segundo, y esto es un PNG de líneas y una sola
+   traslación. La geometría se queda en el guión que lo hornea (mapa.py,
+   Natural Earth a 50 m simplificado SOBRE LA ESFERA) y aquí llega ya
+   dibujada. Es un PLANO y no un globo a propósito: un globo ya lo hubo.
+
+   ES UNA BALDOSA. El mapa va de -180 a 180 de longitud, así que su canto
+   izquierdo continúa el derecho. `i` mide 300 % de ancho y lleva la
+   baldosa al 25 %, o sea cuatro justas; corriéndolo un 25 % de sí mismo
+   se desplaza exactamente una baldosa y la vuelta empalma. Comprobado en
+   el horno, y no a ojo: se redibuja el mundo girado media vuelta y se
+   compara con el original desplazado — diferencia máxima 0,0000.
+
+   El alto no es redondo porque no es libre: la baldosa mide 696 px del
+   cuadro de 928 y su proporción es 1240/462, así que 24,26 %. Y el
+   31,32 % la centra en la placa (que va de la fila 330 a la 599), donde
+   cubre justo de canto a canto.
+
+   El tono va en --gold-ink, que es la tinta de esta placa, y el 46 %
+   sale de medir: la línea queda a 2,28:1 contra el verde, dentro de la
+   banda que ella ya aceptó para el reborde (2,0-3,0) y lejos del 8,15
+   del filete, que vio y rechazó por demasiado contraste. */
+.cowl__mapa{
+  position:absolute; inset:0;
+  -webkit-mask-image:url("ane-plate.png"); mask-image:url("ane-plate.png");
+  -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  opacity:.46;
+}
+.cowl__mapa i{
+  position:absolute; left:0; top:31.32%; width:300%; height:24.26%;
+  background:var(--gold-ink);
+  -webkit-mask-image:url("ane-map.png"); mask-image:url("ane-map.png");
+  -webkit-mask-size:25% 100%; mask-size:25% 100%;
+  -webkit-mask-repeat:repeat-x; mask-repeat:repeat-x;
+  will-change:transform;
+  /* 96 s por vuelta de baldosa, que son 6,4 px de pantalla por segundo.
+     A esa velocidad no se lee como una animación: se lee como que el
+     mapa está ahí. Es el mismo criterio con el que giraba la bola. */
+  animation:mapaderiva 96s linear infinite;
+}
+@keyframes mapaderiva{ from{ transform:translateX(0); } to{ transform:translateX(-25%); } }
+@media (prefers-reduced-motion:reduce){ .cowl__mapa i{ animation:none; } }
+
 /* AQUÍ VIVÍAN LOS TRES HUECOS Y LA TIERRA, y se han ido los cuatro a la
    vez porque eran una sola idea: «va a quedar mucho más sutil si quitamos
    la tierra y dejamos lo verde sin boca ni ojos».
@@ -762,7 +812,9 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    siguen generándose. Son el calco de sus referencias —la lente está
    medida sobre dos fotos de la máscara de Spider-Man— y recuperarlas
    tiene que costar una línea, no volver a medir nada. El interruptor
-   está en helmet.py: HUECOS.
+   está en helmet.py: HUECOS. De la Tierra sí queda algo, pero no es
+   esto: es el plano de arriba, que ella pidió después y que es un
+   dibujo, no un motor.
 
    Lo que SÍ hubo que rehornear son los tres dibujos que esquivaban los
    huecos —la malla y las costuras (ane-helmlines.png), las facetas de la
@@ -1585,10 +1637,13 @@ body.js.in-mont .wm{
   /* AQUI IBA EL FILETE DE COLOR: `border-top:2px solid var(--c)`, o sea una
      linea del color del pais cruzando el canto de arriba de cada pieza
      —naranja en las espanolas, roja en la japonesa, azul en la de EE.UU.—.
-     "Prefiero las imagenes sin la linea". El marco se queda en el filo de
-     1 px de --rule por los cuatro lados, que es el que ya llevaba por los
-     otros tres, asi que el canto no desaparece: deja de tener color. La
-     caja pierde 1 px de alto y nada mas. El codigo de paises sigue vivo
+     "Prefiero las imagenes sin la linea". Primero se fue el color y el
+     canto se quedo en el filo de 1 px de --rule por los cuatro lados; y
+     despues, con "no quiero marco", se fue tambien el filo. El filo se
+     apaga en .card--fig —ver alli la medida— y no aqui, porque una
+     tarjeta que no sea una foto si lo necesita. De este bloque lo que
+     sigue vivo es el papel del fondo, que solo se ve por la cara de
+     detras y mientras carga el cuadro. El codigo de paises sigue vivo
      donde dice algo —el numero del rotulo y el fondo de la cara oculta—,
      que ahi no es adorno. */
   padding:clamp(20px,2.4vw,30px);
@@ -1695,7 +1750,7 @@ body.js.in-mont .wm{
    sacar altura: sin esto la tarjeta se quedaría en los ~116 px que ocupa
    la frase y el cuadro se vería por una rendija. La proporción es la que
    tenía cuando llevaba ficha entera, así que el carril no cambia de ritmo. */
-.card--fig{ aspect-ratio:var(--ar,5/6); }
+.card--fig{ aspect-ratio:var(--ar,5/6); border:0; }
 /* Una pieza que es SÓLO una imagen: ni vuelta, ni ficha, ni velo encima.
    El marco tiene que posicionarse —la imagen va absoluta y necesita de
    qué agarrarse— y recortar, porque el carril la hace 64 px más ancha
@@ -2366,6 +2421,7 @@ body.is-live .rise > i{ transform:none; }
         <div class="cowl" aria-hidden="true">
           <div class="cowl__fill"></div>
           <div class="cowl__plate"></div>
+          <div class="cowl__mapa"><i></i></div>
           <div class="cowl__rim"></div>
           <div class="cowl__lit"></div>
           <div class="cowl__shade"></div>
@@ -2669,7 +2725,7 @@ body.is-live .rise > i{ transform:none; }
       <figure class="read__fig">
         <img src="art-klee-p.webp" width="896" height="1280" loading="lazy" decoding="async"
              alt="Portrait of a woman in a white hat against an orange and brown background; she wears a small heart on her chest.">
-        <figcaption class="mono">Paul Klee &middot; <i>Portrait of Mrs. P. in the South</i>, 1924 &middot; Peggy Guggenheim Collection</figcaption>
+        <figcaption class="mono">Paul Klee &middot; <i>Portrait of Mrs. P. in the South</i>, 1924</figcaption>
       </figure>
 
       <div class="read__body">
@@ -3280,6 +3336,8 @@ body.is-live .rise > i{ transform:none; }
       clip.style.removeProperty("--cl");
       clip.style.removeProperty("--wa");
       hNight.style.opacity = "";
+      hNight.style.backgroundColor = "";
+      if (nightTp) nightTp.style.opacity = "";
       if (face) face.style.transform = "";
       for (var q = 0; q < corners.length; q++) corners[q].style.removeProperty("--cop");
       for (var qz = 0; qz < sigTrazos.length; qz++)
@@ -3455,6 +3513,22 @@ body.is-live .rise > i{ transform:none; }
       clip.style.setProperty("--cl", ((cx - pw / 2) * pinE / Z).toFixed(3) + "px");
 
       hNight.style.opacity = pinE.toFixed(3);
+      /* Y EN CUANTO EL SUELO EXISTE, LA PORTADA LE SUELTA EL VERDE.
+         En `pinE === 1` pasan dos cosas en el mismo fotograma: la portada
+         deja de estar clavada y empieza a subir, y el suelo ya está
+         encendido —`inicioSuelo = pinTop + pinRun`, y la clase entra 4 px
+         antes—. De ahí en adelante esta capa pinta EXACTAMENTE lo mismo
+         que el suelo: medidos los dos, rgb(10,15,0) a los dos lados del
+         canto. Lo único que hace de más es tapar lo que hay entre ella y
+         el suelo, que es la mancha del cursor — y por eso la mancha se
+         partía en el canto igual que las curvas.
+         Soltándolo, arriba y abajo del canto pinta la MISMA capa y no
+         queda nada que alinear: es el mismo espacio, no dos. El relevo no
+         se ve porque en ese fotograma las dos son el mismo píxel. La
+         frase, las marquesinas y el panel no se enteran: cuelgan de este
+         elemento, que sigue opaco y en su sitio. */
+      hNight.style.backgroundColor = pinE >= 1 ? "transparent" : "";
+      if (nightTp) nightTp.style.opacity = pinE >= 1 ? "0" : "";
       /* EL BLANCO VA POR DELANTE DEL VERDE, y es deliberado: si los dos suben
          al mismo paso, a mitad de camino hay medio verde con medio blanco
          encima y la mezcla es barro —1,76:1 sobre su cara—. El exponente
@@ -3599,11 +3673,27 @@ body.is-live .rise > i{ transform:none; }
       var tpy = -y * 0.25 / Z + ts * 16 + Math.sin(ts * 0.1187) * 84;
       var tpos = tpx.toFixed(1) + "px " + tpy.toFixed(1) + "px";
       if (topo)   topo.style.backgroundPosition = tpos;
-      /* el mapa de dentro del panel y el del verde van al mismo paso que
-         el global: al contraerse el recorte y al cambiar de color, las
-         líneas tienen que seguir siendo las mismas y estar donde estaban */
-      if (clipTp)  clipTp.style.backgroundPosition = tpos;
-      if (nightTp){ nightTp.style.webkitMaskPosition = tpos; nightTp.style.maskPosition = tpos; }
+      /* LOS DOS MAPAS DE DENTRO DE LA PORTADA LLEVAN SU PROPIA POSICIÓN.
+         Aquí se les escribía `tpos` tal cual, igual que al global y al del
+         suelo, con el comentario —correcto— de que son la misma curva de
+         nivel y no dos parecidas. Pero una posición de fondo se mide desde
+         la CAJA del elemento, y esas cajas no son la misma: `topo` y
+         `sueloTp` están fijos, o sea su caja es la ventana, y `clipTp` y
+         `nightTp` viven dentro de `.hero`, que en `pinTop + pinRun` deja de
+         estar clavado y sube con el scroll. Misma cifra escrita, cajas
+         distintas: a partir de ahí los mapas van desfasados exactamente lo
+         que la portada se ha desplazado, y en su canto de abajo TODAS las
+         curvas se cortan en seco. Medido a 2016x1113: con el scroll en
+         1500 el canto cae en y=726, y ahí estaba la raya.
+         Descontado el desplazamiento, vuelven a ser un solo mapa. Sale de
+         `pinTop`, `pinRun` e `y` —que es lo que hace el pegado: bajarlo a
+         cero y no dejarlo pasar del final del envase—, así que no cuesta
+         ni una medida más por fotograma. Entre Z porque `tpy` ya está en
+         píxeles de la página y esto viene en píxeles de la ventana. */
+      var hTop = pinOn ? Math.min(Math.max(pinTop - y, 0), pinTop + pinRun - y) : 0;
+      var tposH = tpx.toFixed(1) + "px " + (tpy - hTop / Z).toFixed(1) + "px";
+      if (clipTp)  clipTp.style.backgroundPosition = tposH;
+      if (nightTp){ nightTp.style.webkitMaskPosition = tposH; nightTp.style.maskPosition = tposH; }
       /* el del suelo va al mismo paso y con la misma baldosa que el de
          siempre: son la misma curva de nivel, no dos parecidas */
       if (sueloTp){ sueloTp.style.webkitMaskPosition = tpos; sueloTp.style.maskPosition = tpos; }
