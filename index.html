@@ -270,17 +270,36 @@ html:not(.lenis){ scroll-behavior:smooth; }
   /* EL font-weight VA, Y NO SOBRA. `font-variation-settings` mueve el eje
      de la fuente variable, pero NO toca `font-weight`, y un <b> nace en
      700 por el navegador. Mientras Archivo viaja, el sustituto pinta el
-     nombre en Helvetica Neue BOLD — medido: la caja va de 163 px a 150 a
-     393, y de 273 a 251 a 1440, cuando entra la buena. O sea que durante
-     el swap se veia exactamente la negrita que se ha pedido quitar.
+     nombre en Helvetica Neue BOLD — medido entonces, con el nombre aun en
+     caja mixta: la caja iba de 163 px a 150 a 393, y de 273 a 251 a 1440,
+     cuando entra la buena. O sea que durante el swap se veia exactamente
+     la negrita que se ha pedido quitar.
 
      Y vale 300 aunque el eje vaya a 250, que no es un descuido: este
      numero no pinta Archivo —lo hace `font-variation-settings`, que va
      por debajo y gana—, solo elige el corte del SUSTITUTO. Por debajo de
      400 el navegador busca primero hacia abajo, asi que con 250 la
-     Helvetica Neue de macOS da su UltraLight 200 y el sustituto sale mas
-     fino que el destino. Medido a 1440 contra los 258,5 px de la linea ya
-     con Archivo: 250 -> 247,4; 300 -> 255,8; 400 -> 265,0. */
+     Helvetica Neue de macOS da su UltraLight 200.
+
+     EN VERSALES EL 300 SIGUE GANANDO, PERO POR OTRO MOTIVO, y conviene
+     saberlo antes de "corregirlo" mirando solo el ancho. Medido a 58 px
+     contra Archivo, en versales el sustituto se queda CORTO en los tres
+     cortes —250: -27,7 px; 300: -12,6; 400: -3,5—, asi que por ancho
+     mandaria el 400. Por TINTA, que es lo que de verdad se ve en una
+     linea fina, el 400 pinta un 24 % de mas y el 300 se queda a un 4 %
+     del destino: nueve pixeles de ancho no valen una linea que durante
+     el swap se vea mas gorda, que es justo lo que se pidio quitar. Con
+     "Ane Ugarte" el reparto era el contrario —250: 247,4; 300: 255,8;
+     400: 265,0 contra los 258,5 de Archivo— y el 300 salia por ancho.
+     Mismo numero, otra razon.
+
+     LO QUE CUESTA: la linea nace 12,6 px mas estrecha y se ensancha al
+     llegar Archivo, o sea 6,3 px por lado en una linea centrada, y solo
+     en la primera visita con la cache fria —medido en vivo sobre el
+     dominio: 272 px de caja a los 300 ms y 287 a los 500—. Antes eran
+     2 px, y eran 2 porque el nombre iba en caja mixta. Esperar a
+     `document.fonts` lo dejaria en cero y no se hace, por lo mismo de
+     siempre: la fuente tarda unos 400 ms en cache fria. */
   font-weight:300; font-variation-settings:"wdth" 100,"wght" 250;
   font-size:clamp(30px,3.5vw,58px); line-height:1;
   letter-spacing:.02em; text-indent:.02em;   /* la prosa sobra por la derecha */
