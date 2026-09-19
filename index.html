@@ -23,6 +23,14 @@
 <body>
 
 <title>Ane Ugarte</title>
+<!-- El favicon. Corazon naranja sobre verde oscuro; la nota larga y la
+     geometria estan en el guion que lo genera. Solo llega al MOVIL: en
+     escritorio el envoltorio del dominio cierra con <plaintext> y nada
+     de esto se parsea, asi que alli manda /favicon.ico, que va al repo.
+     El PNG primero como suelo (Safari no leyo SVG de favicon hasta la
+     26) y el SVG detras, que es el que se queda quien sepa de los dos. -->
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABbUlEQVR4nMyXPVLDMBCFn4MbCmigYXIAhpqfU3CLNMkpGE5BKDgFvkVMQQUXcEcVeoReEs84sX5WiiPlzXisKOt9n6yVRi5BXeIWCk+69aivAoeV0lelXZ7xg49iY75IYNwHKXB/glO86h/XSC8O+KrABf6QfvStVJnRnCpGyKxSGnh3vr7Xy2HiRABMNhvr+9l2/7wBXprtPsZNx/24xa8bhkWoTH+YEnZV68STr3X77aYP6QP2Anw+wKt6MzoXaKvJt/lNGItwJkhIcdRTYawtp7EGpElDZJui7MvwOAFYXENr3gQA2JbMIWR+A0s7cYxc+4C1BvjAEFPhMncCUNzp9oHgs77p9K6CWIjuVr0XABVTlBJzMQCLknu52DwgVrwRSSFYdNKzQBBAC+Fanr6KN0l8ImrVGpgOHzG1Egxggog1jwboQuy2Q2U9EaUSizAngCJAhXyqsn+cjviJzIbueEea6VArL3pq738AAAD//2dJ/4oAAAAGSURBVAMACLx7vl+AekMAAAAASUVORK5CYII=">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%3E%3Crect%20width=%2232%22%20height=%2232%22%20rx=%224.00%22%20fill=%22%23001300%22/%3E%3Cpath%20fill=%22%23D14900%22%20d=%22M%200%202.48148%20L%201.62492%200.66715%20A%201.00000%201.00000%200%201%200%200%20-0.47497%20A%201.00000%201.00000%200%201%200%20-1.62492%200.66715%20Z%22%20transform=%22translate(16.0000%2012.6426)%20scale(5.88255%205.88255)%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Fraunces:opsz,wght,SOFT,WONK@144,600,0,1&family=JetBrains+Mono:wght@400;500&family=Mona+Sans:wdth,wght@75..125,200..900&family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&display=swap">
@@ -1006,6 +1014,56 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    depende de dónde se corte. La cifra firme es la de la aritmética,
    77 %.
 
+   SE VEÍA POCO, Y EL TECHO NO ERA EL DEGRADADO SINO LA MÁSCARA. Lo dijo
+   Ane en tres palabras: «debe verse y no se ve». Medido sobre
+   ane-dome.png, el alámbrico NO llega a opaco en ninguna parte —el
+   máximo es 208 de 255 y lo alcanzan DOS píxeles de 2,2 millones— y a la
+   medida a la que la página lo usa, 825x798 dentro del marco, el alfa
+   típico de la línea es 0,075 y el máximo 0,549. Con eso, una línea
+   cualquiera oscurecía el papel 9,8 puntos de luma bajo la barra y 3,4
+   bajo la estela. Tres puntos no se ven. Y subir el degradado no
+   arreglaba nada, porque ya estaba en 0,95 de 1: lo que topa es el otro
+   factor del producto.
+
+   DOS PALANCAS, Y LAS DOS SALEN DE LA REFERENCIA. La primera es PINTAR
+   EN NEGRO. Aquí el pigmento era rgb(96,96,104), un gris medio, y eso
+   regala contraste: la caída sobre el papel es (papel − pigmento) por
+   alfa, así que un gris a medio camino se come la mitad de lo que un
+   negro daría con el mismo alfa. Su shader pinta `vec3(0.0)` —negro puro
+   a alfa bajo— y el gris que se le ve es su fondo asomando por debajo;
+   eso ya estaba escrito ahí arriba y aquí no se estaba aplicando. Pasa a
+   rgb(24,24,28).
+
+   La segunda es SUMAR LA MÁSCARA CONSIGO MISMA. Ese 0,075 no es del
+   dibujo, es de la dilución: el archivo mide 1392x1603 y se pinta en
+   825x798, o sea que cada línea reparte su tinta entre cuatro píxeles de
+   origen y uno de destino. Declarada TRES VECES con
+   `mask-composite:add`, un alfa a pasa a 1 − (1−a)³ —de 0,075 a 0,208—
+   sin tocar el dibujo: es una remontada monótona, así que la forma y el
+   antialias se quedan exactamente donde estaban, sólo que con cuerpo. Y
+   la opacidad de la capa sube de 0,9 a 1, que era el último punto suelto
+   que quedaba.
+
+   MEDIDO, las dos juntas: la tinta del fotograma de pico pasa de 0,69 a
+   3,68 —5,3 veces— y la caída máxima en un píxel de 48 a 180 puntos de
+   luma. La línea típica queda en 45 bajo la barra y 15,6 bajo la estela,
+   o sea que la estela sola pinta ahora más de lo que pintaba antes la
+   barra entera. Si algún día hiciera falta más, la palanca que queda NO
+   es subir esto: es rehornear ane-dome.png con la línea más gruesa, que
+   es donde está el problema de verdad.
+
+   Y EMPIEZA CUANDO SE ENTRA, NO CUANDO SE CARGA. También lo pidió ella:
+   «quiero que en cuanto entres ya empiece». La animación arrancaba al
+   parsear y la cortina de carga tapa la portada 1,07 s, así que con un
+   ciclo de 4 s lo primero que se veía al destaparse era el casco
+   DESHACIÉNDOSE —la mitad equivocada del gesto—. Ahora nace en pausa y
+   la suelta `body.is-live`, que es el instante en que la portada empieza
+   a existir: con la cortina todavía a medio irse el barrido ya se ve a
+   través de ella, y cuando acaba de irse el ciclo va por el 20 %, con la
+   línea justo por debajo de la coronilla. Sin JS no hay `is-live` que la
+   suelte, así que la suelta el `<noscript>` —el mismo bloque que ya
+   destapa la portada—, y allí corre desde el primer fotograma.
+
    LO QUE NO SE PARECE, y conviene no «arreglarlo» creyendo que lo
    acerca: la suya no se apaga nunca. Su línea es negro al 0,1 de alfa y
    el barrido sólo se lo RESTA. La nuestra se va del todo al final de
@@ -1016,20 +1074,29 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
   position:absolute; inset:0;
   pointer-events:none;
   background:linear-gradient(180deg,
-             rgba(96,96,104,0) 0,
-             rgba(96,96,104,0) 15%,
-             rgba(96,96,104,.33) 23.333%,
-             rgba(96,96,104,.33) 61.333%,
-             rgba(96,96,104,.95) 64.667%,
-             rgba(96,96,104,.95) 66.667%,
-             rgba(96,96,104,0) 66.667%,
-             rgba(96,96,104,0) 100%);
+             rgba(24,24,28,0) 0,
+             rgba(24,24,28,0) 15%,
+             rgba(24,24,28,.33) 23.333%,
+             rgba(24,24,28,.33) 61.333%,
+             rgba(24,24,28,.95) 64.667%,
+             rgba(24,24,28,.95) 66.667%,
+             rgba(24,24,28,0) 66.667%,
+             rgba(24,24,28,0) 100%);
   background-size:100% 300%; background-repeat:no-repeat;
-  -webkit-mask-image:url("ane-dome.png"); mask-image:url("ane-dome.png");
-  -webkit-mask-size:100% 100%; mask-size:100% 100%;
-  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  opacity:calc(.9 - .9 * var(--rev,0));
-  animation:scansweep 4s linear infinite;
+  /* LA MISMA MASCARA TRES VECES, SUMADA. No es un descuido ni sobra
+     ninguna: el alfa del alambre a esta medida es 0,075 y sumandola
+     consigo misma pasa a 0,208, que es lo que hace que se vea. Ver la
+     cuenta en la nota de arriba. Quitar dos de las tres devuelve la
+     malla a invisible. */
+  -webkit-mask-image:url("ane-dome.png"),url("ane-dome.png"),url("ane-dome.png");
+          mask-image:url("ane-dome.png"),url("ane-dome.png"),url("ane-dome.png");
+  -webkit-mask-size:100% 100%,100% 100%,100% 100%;   mask-size:100% 100%,100% 100%,100% 100%;
+  -webkit-mask-repeat:no-repeat,no-repeat,no-repeat; mask-repeat:no-repeat,no-repeat,no-repeat;
+  -webkit-mask-composite:source-over,source-over;    mask-composite:add,add;
+  opacity:calc(1 - var(--rev,0));
+  /* y NACE EN PAUSA: la suelta la regla que hay justo debajo de los
+     aparcamientos, para que el ciclo no se gaste detras de la cortina */
+  animation:scansweep 4s linear infinite; animation-play-state:paused;
 }
 /* El ciclo entero es recorrido: nada se detiene en ningún extremo. Del
    100 % al -48 % la cabeza del barrido baja, sale por abajo del cuadro y
@@ -1040,6 +1107,10 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
   0%   { background-position:0 100%; }
   100% { background-position:0 -48%; }
 }
+/* EMPIEZA CUANDO SE ENTRA. `is-live` es el instante en que la portada
+   empieza a existir, 260 ms despues de que la cortina se ponga en marcha
+   y 810 ms antes de que acabe de irse. Ver la nota de arriba. */
+body.is-live .scan{ animation-play-state:running; }
 .cowl{
   position:absolute; inset:0; opacity:var(--rev,0);
   /* DOS máscaras cruzadas: la forma del casco Y la banda que sigue al
@@ -2762,7 +2833,7 @@ body.is-live .rise > i{ transform:none; }
   /* Sin barrido, pero la malla NO se va: quien pide menos movimiento
      pide eso y no menos pieza. Se queda la cáscara entera y quieta, que
      es exactamente lo que se veía aquí antes de que el escaneo la
-     revelara por tramos —mismo gris y misma fuerza—. Y ahora hace más
+     revelara por tramos —misma tinta y la fuerza de la estela—. Y ahora hace más
      falta que antes: parada en el 0 % del ciclo, la banda vieja dejaba
      una franja cruzándole la cara, pero el degradado nuevo arranca con
      la cabeza clavada en el canto de arriba y no enciende NADA. Sin
@@ -2770,8 +2841,8 @@ body.is-live .rise > i{ transform:none; }
      casco. */
   .scan{
     animation:none !important;
-    background:#9C9CA4 !important;
-    opacity:calc(.78 - .78 * var(--rev,0)) !important;
+    background:rgba(24,24,28,.33) !important;
+    opacity:calc(.87 - .87 * var(--rev,0)) !important;
   }
   .pin{ height:auto !important; }
   /* `relative`, NO `static` —que es lo que habia y estaba mal—. Lo que
@@ -2811,7 +2882,8 @@ body.is-live .rise > i{ transform:none; }
      maquetada debajo de una pantalla verde que saluda. Lo
      encontraron tres auditorias por separado, con tres metodos distintos.
      Con JS esta regla no llega a aplicarse nunca. -->
-<noscript><style>.load{ display:none !important; }</style></noscript>
+<noscript><style>.load{ display:none !important; }
+  .scan{ animation-play-state:running !important; }</style></noscript>
 
 <div class="load" id="load" aria-hidden="true">
   <div class="load__in">
