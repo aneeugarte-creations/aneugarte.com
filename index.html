@@ -22,14 +22,14 @@
 </head>
 <body>
 <title>Ane Ugarte</title>
-<!-- El favicon. Corazon naranja sobre verde oscuro; la nota larga y la
-     geometria estan en el guion que lo genera. Solo llega al MOVIL: en
-     escritorio el envoltorio del dominio cierra con <plaintext> y nada
-     de esto se parsea, asi que alli manda /favicon.ico, que va al repo.
-     El PNG primero como suelo (Safari no leyo SVG de favicon hasta la
-     26) y el SVG detras, que es el que se queda quien sepa de los dos. -->
-<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABbUlEQVR4nMyXPVLDMBCFn4MbCmigYXIAhpqfU3CLNMkpGE5BKDgFvkVMQQUXcEcVeoReEs84sX5WiiPlzXisKOt9n6yVRi5BXeIWCk+69aivAoeV0lelXZ7xg49iY75IYNwHKXB/glO86h/XSC8O+KrABf6QfvStVJnRnCpGyKxSGnh3vr7Xy2HiRABMNhvr+9l2/7wBXprtPsZNx/24xa8bhkWoTH+YEnZV68STr3X77aYP6QP2Anw+wKt6MzoXaKvJt/lNGItwJkhIcdRTYawtp7EGpElDZJui7MvwOAFYXENr3gQA2JbMIWR+A0s7cYxc+4C1BvjAEFPhMncCUNzp9oHgs77p9K6CWIjuVr0XABVTlBJzMQCLknu52DwgVrwRSSFYdNKzQBBAC+Fanr6KN0l8ImrVGpgOHzG1Egxggog1jwboQuy2Q2U9EaUSizAngCJAhXyqsn+cjviJzIbueEea6VArL3pq738AAAD//2dJ/4oAAAAGSURBVAMACLx7vl+AekMAAAAASUVORK5CYII=">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%3E%3Crect%20width=%2232%22%20height=%2232%22%20rx=%224.00%22%20fill=%22%23001300%22/%3E%3Cpath%20fill=%22%23D14900%22%20d=%22M%200%202.48148%20L%201.62492%200.66715%20A%201.00000%201.00000%200%201%200%200%20-0.47497%20A%201.00000%201.00000%200%201%200%20-1.62492%200.66715%20Z%22%20transform=%22translate(16.0000%2012.6426)%20scale(5.88255%205.88255)%22/%3E%3C/svg%3E">
+<!-- EL FAVICON NO VA AQUI, y es a proposito. Aqui estuvieron las dos
+     etiquetas en data: URI, como parche para el movil mientras el repo
+     no las tenia. Ya las tiene, en la cabecera de verdad del index.html
+     del dominio y delante del script del marco, que es donde valen para
+     escritorio y para movil. Dejarlas tambien aqui era dejar una SEGUNDA
+     fuente del icono que envejece sola: esta copia se quedo con el
+     corazon grande cuando el de la teja ya era el pequenio, y al ir
+     detras en el documento le habria ganado a la buena. Una sola. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Fraunces:opsz,wght,SOFT,WONK@144,600,0,1&family=JetBrains+Mono:wght@400;500&family=Mona+Sans:wdth,wght@75..125,200..900&family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&display=swap">
@@ -944,13 +944,13 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    velocidad: una banda de 30 % de alto deja atrás lo que ya ha cruzado
    por definición, y para que no lo deje hay que darle estela. Así que el
    degradado mide ahora TRES altos de cuadro y va, de su canto de arriba
-   al de abajo: nada hasta el 15 %, entrada suave hasta el 23,3 %, estela
+   al de abajo: nada hasta el 20 %, entrada suave hasta el 28,3 %, estela
    lisa al 0,33 hasta el 61,3 %, rampa que sube al 0,95, barra maciza de
    0,06 de alto de cuadro y, en el 66,667 % —dos tercios exactos—, CORTE
    SECO a nada.
 
    Ese corte seco es toda la pieza. Por debajo de la cabeza del barrido
-   no hay nada encendido; por encima quedan 1,30 altos de cuadro de
+   no hay nada encendido; por encima quedan 1,15 altos de cuadro de
    estela. Una sola propiedad recta, `background-position`, hace
    entonces las tres cosas seguidas: llenar de arriba abajo, quedarse
    entera y vaciarse de arriba abajo. Sin animar una segunda propiedad y
@@ -965,25 +965,35 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
      p = 100    la cabeza está clavada en el canto de arriba del cuadro
      p =  99,4  toca el alambre por primera vez
      p =  63,0  lo suelta por abajo: el casco está entero
-     p =  34,4  el borrado le muerde la coronilla
-     p = −14,5  lo ha limpiado del todo
+     p =  41,9  el borrado le muerde la coronilla
+     p =  −7,0  lo ha limpiado del todo
    Aparca en 100 % y en −48 %, y el salto de vuelta cae con todo apagado,
    que es donde un salto no se ve.
 
-   Y EL REPARTO VUELVE A SER EL DE LA REFERENCIA. Encendida de 99,4 a
-   −14,5 son 113,8 puntos de los 148 que hay de 100 a −48: 77 % encendida
-   contra 23 % apagada. landonorris.com da 77/23, y eso lo pone su shader
-   y no la vista: `pow(fract(-vPosition.y * 10. - uTime), 4.)` repite cada
-   1,000 s, y con una cabeza de 0,0771 de alto contra un periodo espacial
-   de 0,1 salen 0,771 s de barrido y 0,229 s de hueco. El aparcamiento de
-   abajo se eligió para eso: entre todos los puntos que dejan el alambre
-   limpio, el −48 % es el que reproduce su reparto.
+   EL REPARTO, QUE YA NO ES EXACTAMENTE EL DE LA REFERENCIA. Encendida
+   de 99,4 a −7,0 son 106,3 puntos de los 148 que hay de 100 a −48: 72 %
+   encendida contra 28 % apagada. La referencia da 77/23, y eso lo pone
+   su shader y no la vista: `pow(fract(-vPosition.y * 10. - uTime), 4.)`
+   repite cada 1,000 s, y con una cabeza de 0,0771 de alto contra un
+   periodo espacial de 0,1 salen 0,771 s de barrido y 0,229 s de hueco.
+
+   Aquí estuvo clavado en ese 77/23 —la estela medía 1,30 altos de
+   cuadro y el aparcamiento de abajo se eligió justo para eso— y se ha
+   soltado a sabiendas: ver «Y SE VA UN PELÍN ANTES», más abajo.
+   Adelantar el final alarga el hueco en la misma cuenta y no hay otra
+   manera de hacerlo; los cinco puntos que pierde el reparto son
+   exactamente lo que gana de oscuridad. El aparcamiento de −48 % se
+   queda donde estaba: sigue siendo un punto con todo apagado, que es la
+   única condición que de verdad tiene que cumplir.
 
    EL CICLO ES DE 4 s, que es lo de «más lento» —había 1 s—. Repartidos:
-   1,21 s dibujándose, 0,56 s entera y quieta, 1,32 s deshaciéndose por
-   arriba y 0,91 s a oscuras. El tramo más largo es el borrado, y por eso
-   el casco se lee entero aunque sólo esté liso medio segundo: cuando
-   empieza a irse todavía le queda casi todo.
+   1,00 s dibujándose, 0,57 s entera y quieta, 1,32 s deshaciéndose por
+   arriba y 1,11 s a oscuras. El tramo más largo sigue siendo el
+   borrado, y por eso el casco se lee entero aunque sólo esté liso medio
+   segundo: cuando empieza a irse todavía le queda casi todo. Y dura lo
+   mismo que antes de acortar la estela, que no es casualidad: subir su
+   canto de arriba mueve los dos extremos del borrado a la vez, así que
+   el tramo entero se adelanta sin cambiar de duración.
 
    EL 0,33 DE LA ESTELA NO ES A OJO: es el 34,7 % del 0,95 de la barra, y
    34,7 % es exactamente el suelo de la referencia —su línea no se apaga
@@ -1002,11 +1012,13 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    su propio cero: el periodo sale 3,91, 3,94, 4,06 y 4,13 s en cuatro
    vueltas seguidas —media 4,01— y el pico 0,76, contra los 0,60 que
    daba la banda de 1 s; la barra maciza más la estela pintan más que la
-   banda sola. El reparto medido va del 60 % al 84 % según dónde se ponga
-   el umbral, y esa horquilla ya no es ruido de muestreo: la cola del
-   borrado se apaga despacio, así que cuánto cuenta como «encendida»
-   depende de dónde se corte. La cifra firme es la de la aritmética,
-   77 %.
+   banda sola. El reparto medido iba del 60 % al 84 % según dónde se
+   pusiera el umbral, y esa horquilla no es ruido de muestreo: la cola
+   del borrado se apaga despacio, así que cuánto cuenta como «encendida»
+   depende de dónde se corte. La cifra firme es la de la aritmética.
+   Esas cuatro vueltas se midieron con la estela larga y siguen
+   valiendo: al acortarla no se mueven ni el periodo ni el pico —ver
+   «LO QUE NO SE TOCA», abajo—, sólo el final.
 
    SE VEÍA POCO, Y EL TECHO NO ERA EL DEGRADADO SINO LA MÁSCARA. Lo dijo
    Ane en tres palabras: «debe verse y no se ve». Medido sobre
@@ -1054,9 +1066,52 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    la suelta `body.is-live`, que es el instante en que la portada empieza
    a existir: con la cortina todavía a medio irse el barrido ya se ve a
    través de ella, y cuando acaba de irse el ciclo va por el 20 %, con la
-   línea justo por debajo de la coronilla. Sin JS no hay `is-live` que la
+   línea a cuatro quintos de camino entre la coronilla y la barbilla.
+   Sin JS no hay `is-live` que la
    suelte, así que la suelta el `<noscript>` —el mismo bloque que ya
    destapa la portada—, y allí corre desde el primer fotograma.
+
+   Y SE VA UN PELÍN ANTES. Lo pidió ella así: «que desaparezca un pelín
+   antes la máscara, solo un poco antes y ya lo tenemos». Con el ciclo y
+   la recta intactos —los dos le gustaban— el único sitio donde se puede
+   tocar el final es la LONGITUD DE LA ESTELA: el instante en que el
+   alambre queda limpio lo fija el canto de ARRIBA de la estela al
+   llegar a la barbilla, así que subirlo adelanta el final y no toca
+   nada más. Los dos primeros topes del degradado suben cinco puntos —el
+   15 % pasa a 20 % y el 23,3 % a 28,3 %— y la estela baja de 1,30 a
+   1,15 altos de cuadro. En tiempo: el borrado empieza 0,20 s antes y el
+   casco desaparece 0,20 s antes, y esos 0,20 s se los queda el tramo a
+   oscuras, que pasa de 0,91 a 1,11 s.
+
+   MEDIDO, con las dos versiones servidas a la vez: 110 fotogramas cada
+   80 ms, cada una contra su propio cero y las dos con la misma caja
+   fijada a mano. El pico se queda donde estaba —3,98 contra 3,91, que
+   es la misma cifra con otro fotograma—, y el tramo a oscuras crece
+   0,11 s con el umbral en 0,40 y 0,29 s con el umbral en 0,60. Los
+   0,20 s de la aritmética caen dentro de esa horquilla, que es lo más
+   fino que da esta vara: la cola del borrado se apaga despacio y el
+   muestreo tiene 80 ms de grano. (Los segundos medidos a oscuras salen
+   más largos que los 0,91 y 1,11 de arriba —1,45 y 1,56 con el umbral
+   en 0,40— por lo mismo: el final del borrado ya está por debajo del
+   umbral antes de apagarse del todo. Lo que se compara es el salto
+   entre las dos pasadas, no la cifra absoluta.)
+
+   LO QUE NO SE TOCA, y conviene saberlo antes de volver a mover esto.
+   El FOTOGRAMA DE PICO es el mismo píxel a píxel: mientras el casco
+   está entero, el canto de arriba de la estela va todavía 0,66 altos de
+   cuadro POR ENCIMA del cuadro, así que acortarla no le quita tinta a
+   nada de lo que se ve. Por eso las medidas de tinta de esta nota
+   siguen valiendo tal cual, y por eso este número se puede mover sin
+   volver a medir la visibilidad.
+
+   Y LA PRIMERA PETICIÓN SIGUE EN PIE, que es el límite de verdad de
+   esto. La cabeza suelta la barbilla en p = 63,0 y el borrado no muerde
+   hasta p = 41,9: el casco se queda entero 0,57 s —antes 0,77— y no se
+   empieza a borrar nada hasta mucho después de que el barrido haya
+   llegado abajo del todo. Quedan 21,2 puntos de margen, que son catorce
+   puntos más de degradado. Subirlo hasta ahí cerraría esa ventana, y
+   entonces la segunda petición se estaría cumpliendo a costa de la
+   primera.
 
    LO QUE NO SE PARECE, y conviene no «arreglarlo» creyendo que lo
    acerca: la suya no se apaga nunca. Su línea es negro al 0,1 de alfa y
@@ -1069,8 +1124,8 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
   pointer-events:none;
   background:linear-gradient(180deg,
              rgba(24,24,28,0) 0,
-             rgba(24,24,28,0) 15%,
-             rgba(24,24,28,.33) 23.333%,
+             rgba(24,24,28,0) 20%,
+             rgba(24,24,28,.33) 28.333%,
              rgba(24,24,28,.33) 61.333%,
              rgba(24,24,28,.95) 64.667%,
              rgba(24,24,28,.95) 66.667%,
