@@ -220,11 +220,21 @@ html:not(.lenis){ scroll-behavior:smooth; }
    de lo que lleva dentro. */
 .load__n{
   margin:0; font-family:var(--display);
-  font-variation-settings:"wdth" 74,"wght" 800;
-  text-transform:uppercase; line-height:.9; white-space:nowrap;
-  font-size:clamp(26.6px,2.36vw,34.9px); color:var(--cream);
-  text-align:center;
+  text-transform:uppercase; white-space:nowrap;
+  color:var(--cream); text-align:center;
   animation:marcaEntra .8s var(--ease) both;
+}
+.load__n b{
+  display:block; font-variation-settings:"wdth" 100,"wght" 700;
+  font-size:clamp(30px,3.5vw,58px); line-height:1; letter-spacing:-.01em;
+}
+.load__n i{
+  display:block; font-style:normal;
+  font-variation-settings:"wdth" 100,"wght" 300;
+  font-size:clamp(9px,.778vw,13px); line-height:1.5;
+  letter-spacing:.3em; text-indent:.3em;   /* la prosa sobra por la derecha */
+  margin-top:clamp(11px,1.18vw,20px);
+  color:var(--cream-2);
 }
 @keyframes marcaEntra{ from{ opacity:0 } to{ opacity:1 } }
 @media (prefers-reduced-motion:reduce){ .load__n{ animation:none } }
@@ -1570,6 +1580,214 @@ html.is-reading{ overflow:hidden; }
 }
 
 /* ============================================================
+   EL FILO — el corte entre Formación y Contacto
+   Hasta ahora aquí no pasaba nada: una sección terminaba, la otra
+   empezaba, y entre las dos quedaban 261 px de papel. El único corte
+   de la página que no era un corte.
+
+   No se anima NADA. Ese es todo el truco, y es el mismo que usa
+   Locomotive en sus fichas de proyecto: el envoltorio es más alto que
+   la pantalla y sólo se ve su primera pantalla, así que el borde del
+   recorte queda clavado ahí. Dentro, la sección se pega arriba. Al
+   bajar, la sección se queda quieta y el borde —que va con el
+   envoltorio, no con ella— sube: la va rebanando desde abajo. El margen
+   negativo sube Contacto exactamente lo que mide la parte tapada, así
+   que el email aparece PEGADO al filo, sin junta. Por construcción el
+   borde del recorte y el borde de Contacto son el mismo píxel: no hay
+   nada que sincronizar.
+
+   Por qué no se ve el borde: porque los dos lados son el mismo crema.
+   No hay panel, no hay cortina, no hay color que entre en escena. Lo
+   único que se percibe es que una capa se va por debajo de otra.
+
+   UN SOLO NÚMERO manda: --run, cuánto dura el corte. De él salen la
+   altura, el margen y el recorte, así que no se pueden desincronizar.
+   Está en 68svh porque es lo que tarda el filo en comerse la última
+   línea de tinta —medido: la tinta empieza a 292 px del borde de arriba
+   del panel, así que el filo necesita 608 de los 900 de pantalla, y eso
+   se mantiene entre 66 y 69 svh desde una ventana de 700 px hasta una de
+   1100—. Con 100svh el corte terminaba al 59 % del recorrido y el resto
+   era papel en blanco haciendo perder el tiempo. El recorrido que
+   le cuesta a la página es el mismo pase lo que pase —media pantalla,
+   427 px— porque en el flujo el envoltorio ocupa siempre una pantalla:
+   --run sólo decide cuánto se queda quieta la sección, no cuánto mide.
+
+   Y se despega sola: la pegajosa deja de estarlo cuando el fondo del
+   envoltorio la alcanza, que es exactamente el instante en que el
+   recorte ya se la ha comido entera.
+
+   Cero JS, cero repintado —el recorte es fijo, el compositor sólo
+   desplaza—.
+
+   LA PUERTA es sólo la anchura, como .pin y .pass, y no el movimiento
+   reducido: esto no se mueve solo, es una composición que responde al
+   scroll —igual que la portada clavada—, y apagarla por esa preferencia
+   dejaba sin la mitad del ritmo de la página a quien la tenga puesta.
+   ============================================================ */
+@media (min-width:760px){
+  body.js .filo{
+    --run:68svh;
+    height:calc(100svh + var(--run));
+    margin-bottom:calc(var(--run) * -1);
+    clip-path:inset(0 0 var(--run) 0);
+  }
+  /* Formación deja de ser la franja de 463 px que era —media pantalla
+     escasa, leída como un apunte al margen— y pasa a llenar la pantalla
+     con su contenido centrado. */
+  body.js .filo > .sec{
+    position:sticky; top:0; height:100svh;
+    display:grid; align-content:center; padding-block:0;
+  }
+  /* Y las filas respiran. No es cosmética: lo que se rebana es la tinta,
+     así que si la tinta ocupa 200 px de 900 el corte dura un suspiro y
+     lo demás es crema. Abiertas, la lista mide el doble y el filo tiene
+     algo que comerse durante todo el recorrido. De paso la sección deja
+     de parecer un bloque flotando en medio de una pantalla vacía. */
+  body.js .filo .dl__row{ padding-block:clamp(16px,4.4svh,50px); }
+  /* EL BORDE DE LA HOJA. La primera versión no llevaba ninguno, porque
+     los dos lados son el mismo crema y la idea era justamente que no se
+     viera nada entrar en escena. Error: una transición que nadie ve no
+     es una transición. Ahora Contacto llega con filo propio — un pelo de
+     regla y una sombra hacia ARRIBA.
+
+     Hacia arriba y no hacia abajo por orden de pintado: Contacto se
+     dibuja después del envoltorio, así que su sombra cae SOBRE
+     Formación. Y ésa es la lectura correcta —Contacto es una hoja que
+     sube y va tapando a Formación— en vez de la otra, que sería
+     Formación rebanada por un filo que no se ve de dónde sale. El borde
+     de Contacto y el borde del recorte son el mismo píxel por
+     construcción, así que la sombra cae clavada en el corte sin
+     sincronizar nada.
+
+     Y el email sube a recibirlo: con el relleno de siempre —108 px—
+     entre el borde y la primera tinta quedaba un cuarto de pantalla de
+     crema muerto justo en el momento en que hay que mirar. */
+  body.js #contacto{
+    padding-top:clamp(36px,6svh,64px);
+    box-shadow:0 -26px 46px -26px rgba(20,20,22,.34);
+  }
+}
+
+/* ============================================================
+   EL CIERRE — la web vuelve al mundo con el que abrió
+   La página empieza con una cortina a pantalla completa en verde noche
+   y el nombre en crema. Después es papel, con un solo volantazo al verde
+   en el manifiesto. Y terminaba en papel: el único momento de la web que
+   no cambiaba de mundo era el final.
+
+   Ahora la última sección ES el verde. No se tiñe, no se funde: ya está
+   puesta debajo, y el filo de arriba la va descubriendo. Esa distinción
+   no es estética, es aritmética. Si el suelo fuese de papel a verde
+   mientras la tinta va de negro a crema —que es lo primero que uno
+   piensa— los dos caminos se cruzan: medido en oklab, el suelo sale de
+   0,96 de luz y baja a 0,22, la tinta sale de 0,20 y sube a 0,92, y se
+   igualan en 0,575 cuando el recorrido va por el 48 %. Ahí el contraste
+   es exactamente 1 y el email no existe. Un mundo que se descubre no
+   tiene ese punto: cada píxel es de un mundo o del otro, nunca de los
+   dos a medias.
+
+   La paleta no se reescribe pieza a pieza. Se redefinen aquí dentro los
+   cinco tokens de los que cuelga toda la página —tinta, sus dos grises,
+   las reglas y el acento— y lo demás cae solo, porque no hay ni un color
+   suelto en este archivo. Por eso son cinco líneas y no cincuenta.
+
+   Y las curvas de nivel no se pierden: el PNG lleva el dibujo en el
+   canal alfa, así que de máscara sobre un relleno melocotón salen claras
+   sobre el verde. Es la misma receta exacta que el manifiesto, la misma
+   baldosa y el mismo 20 % — no son dos mapas parecidos, es el mismo.
+   ============================================================ */
+#contacto{
+  position:relative;
+  /* UNA PANTALLA COMO MÍNIMO. En móvil la sección mide 734 px de 844, y
+     eso dejaba una franja de papel asomando por arriba con el logotipo
+     encima: nunca llegaba a estar sobre el verde, así que se quedaba en
+     tinta negra y el final se leía como un bloque oscuro pegado al pie
+     en vez de como una pantalla. Centrado y no arriba, porque con el
+     contenido pegado al techo los 110 px sobrantes se leen como un error
+     de maquetación. En escritorio no cambia nada: ahí el contenido ya
+     mide más que la ventana. */
+  min-height:100svh;
+  display:grid; align-content:center;
+  background:var(--night);
+  --ink:#E9E6DA;
+  --ink-2:rgba(233,230,218,.74);
+  --ink-3:rgba(233,230,218,.64);
+  --rule:rgba(233,230,218,.26);
+  --rule-2:rgba(233,230,218,.44);
+  --accent:var(--accent-lt);
+  color:var(--ink);
+}
+#contacto::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:var(--accent-lt); opacity:.20;
+  -webkit-mask-image:url("ane-topo.png"); mask-image:url("ane-topo.png");
+  -webkit-mask-size:980px 980px;  mask-size:980px 980px;
+  -webkit-mask-repeat:repeat;     mask-repeat:repeat;
+}
+#contacto > *{ position:relative; z-index:1; }
+
+/* EL CROMO. Sobre el verde, el logotipo en tinta casi negra desaparece y
+   la píldora marrón se funde con el fondo. La página ya sabe darles la
+   vuelta —lo hace en la portada y en el manifiesto—, pero quien conmuta
+   `on-dark` es el bucle principal, y en el final dice que no. Estas
+   reglas van DESPUÉS de las suyas y con la misma especificidad, que es
+   exactamente el mismo recurso que usan .in-pass y .in-mont dos bloques
+   más arriba: el orden decide. Así el cierre no necesita que nadie toque
+   el bucle, que es lo que lo hace barato de mantener entre tres manos.
+
+   El email se queda en CREMA y no en naranja: crema sobre verde noche da
+   13,3 de contraste y el naranja 6,1. El acento se guarda para la arroba
+   y para el subrayado que sale al pasar por encima — es su segunda y
+   última aparición en la página, y ahí sí se lee como que algo está
+   vivo. */
+/* ── Y EL FINAL SE MUEVE ──────────────────────────────────────
+   La sección ya traía entrada animada —las clases .rv, que suben 22 px
+   y aparecen— y no se veía NINGUNA. El motivo no era el CSS: el
+   observador que las dispara salta cuando el bloque asoma por el borde
+   de abajo, y ahí el filo todavía lo está tapando. La animación se
+   gastaba entera detrás del recorte y llegaba a la pantalla ya quieta.
+
+   Así que el final no se anima por tiempo, se anima por RECORRIDO, que
+   es como se mueve el resto de esta página: un número, --e, que vale 0
+   cuando la sección asoma y 1 cuando toca el techo de la ventana, y del
+   que salen tres rampas escalonadas. Nada empieza y termina a la vez:
+   primero se barre el cuadro, luego sube el email, y el pie cierra.
+   Escalonar no es adorno — tres cosas moviéndose al unísono se leen
+   como una sola cosa moviéndose.
+
+   Todo en transform y clip-path, que son compositor puro: ni un
+   repintado por fotograma. Y las .rv se anulan aquí dentro a propósito,
+   porque si no se sumarían dos movimientos sobre el mismo elemento. */
+@media (prefers-reduced-motion:no-preference){
+  body.js #contacto .rv{ opacity:1; transform:none; transition:none; }
+
+  /* EL EMAIL sube desde debajo de su propia línea. La máscara es el div
+     que ya lo envolvía, así que no hay ni un elemento nuevo. El 108 %
+     —y no el 100— es para que el subrayado del hover, que cuelga 13 px
+     por debajo, también nazca fuera. */
+  .mail__m{ display:block; overflow:hidden; padding-bottom:.06em; }
+  .mail__m .mail{ transform:translate3d(0,calc((1 - var(--em,1)) * 108%),0); }
+
+  /* EL CUADRO se destapa de izquierda a derecha, como quien corre una
+     cortina. El 101 % evita que quede una uña de píxel encendida en el
+     borde derecho por el redondeo. El zoom del hover no se toca: va en
+     la imagen y esto va en el marco. */
+  #contacto .lk__fig{ clip-path:inset(0 calc((1 - var(--ec,1)) * 101%) 0 0); }
+
+  /* EL PIE entra el último y desde más cerca: es una línea de texto
+     pequeño, y lo que en un titular es un gesto, aquí sería un salto. */
+  #contacto .foot{
+    transform:translate3d(0,calc((1 - var(--ep,1)) * 20px),0);
+    opacity:var(--ep,1);
+  }
+}
+
+body.in-cierre .wm{ color:var(--cream); }
+body.in-cierre .wm::after{ background:var(--accent-lt); }
+body.in-cierre .pill{ background:var(--accent-lt); color:var(--night); }
+body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0,0,.26); }
+
+/* ============================================================
    05 · Contacto
    ============================================================ */
 .mail{
@@ -1599,7 +1817,9 @@ html.is-reading{ overflow:hidden; }
 .links a.lk{ display:block; padding-block:0 0; }
 .links a.lk:hover{ padding-left:0; }
 .lk__fig{
-  margin:0; overflow:hidden; background:var(--ground-3);
+  /* el hueco que se ve mientras el cuadro carga: sobre el verde, el gris
+     claro de antes era un rectángulo encendido en mitad de la noche */
+  margin:0; overflow:hidden; background:var(--night-2);
   aspect-ratio:1400/895;
   width:min(100%, calc(clamp(190px,36svh,380px) * 1.564));
 }
@@ -1676,7 +1896,7 @@ body.is-live .rise > i{ transform:none; }
 
 <div class="load" id="load" aria-hidden="true">
   <div class="load__in">
-    <p class="load__n">Ane Ugarte</p>
+    <p class="load__n"><b>Not finished</b><i>Ane Ugarte</i></p>
     <span class="load__track"><b class="load__fill" id="loadFill"></b></span>
     <span class="load__c num" id="loadC">000</span>
   </div>
@@ -2156,6 +2376,7 @@ body.is-live .rise > i{ transform:none; }
   </section>
 
   <!-- ══════════════ 03 FORMACIÓN ══════════════ -->
+  <div class="filo">
   <section class="sec" id="formacion">
     <div class="wrap">
       <h2 class="sr">Education</h2>
@@ -2175,6 +2396,7 @@ body.is-live .rise > i{ transform:none; }
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ══════════════ 04 CONTACTO ══════════════ -->
   <section class="sec" id="contacto">
@@ -2182,7 +2404,7 @@ body.is-live .rise > i{ transform:none; }
       <h2 class="sr">Contact</h2>
 
       <div class="body">
-        <div class="rv">
+        <div class="rv mail__m">
           <a class="mail" id="mail" href="mailto:aneeugarte@gmail.com?subject=Hello%20Ane&amp;body=Hey%20Ane%2C%0D%0A%0D%0AI%20would%20like%20to%20" data-cursor="Say hello">aneeugarte<span>@</span>gmail.com</a>
         </div>
 
@@ -4069,6 +4291,65 @@ glob.Globo=Globo;
     clearTimeout(tecla); clearTimeout(antes);
     chat.classList.remove("is-on");
   }
+
+  /* ── EL CIERRE ────────────────────────────────────────────
+     Una clase y nada más. El mundo oscuro lo pone el CSS —la sección ya
+     es verde— y esto sólo avisa al cromo de que ha cambiado de suelo.
+     El umbral es 78 px, el mismo que usa el bucle principal para decidir
+     qué hay debajo de la cabecera: si los dos midieran distinto habría
+     una franja en la que el logotipo estaría de un color y el fondo del
+     otro. Y como .wm y .pill llevan su transición de medio segundo, el
+     relevo se funde solo sin que aquí haya que animar nada. */
+  (function(){
+    var fin = document.getElementById("contacto");
+    if (!fin) return;
+    var puesta = null, lleno = null, pide = 0;
+    function tramo(v, a, b){ var x = (v - a) / (b - a); return x < 0 ? 0 : x > 1 ? 1 : x; }
+    function suave(x){ return x * x * (3 - 2 * x); }
+    function cierra(){
+      pide = 0;
+      var t = fin.getBoundingClientRect().top;
+
+      /* EL RECORRIDO. 0 cuando la sección asoma por abajo, 1 cuando su
+         borde toca el techo. Se mide contra el 86 % de la ventana y no
+         contra el 100 para que el movimiento no arranque en el píxel
+         exacto en que aparece: arrancar justo en el borde se lee como un
+         elemento que entra empujado, no como uno que llega. */
+      if (!reduce) {
+        var vh = window.innerHeight || 1;
+        var e = tramo(1 - t / (vh * 0.86), 0, 1);
+        fin.style.setProperty("--ec", suave(tramo(e, 0.08, 0.76)).toFixed(4));
+        fin.style.setProperty("--em", suave(tramo(e, 0.26, 0.92)).toFixed(4));
+        fin.style.setProperty("--ep", suave(tramo(e, 0.52, 1.00)).toFixed(4));
+      }
+
+      var dentro = t <= 78;
+      if (dentro !== puesta) {
+        puesta = dentro;
+        document.body.classList.toggle("in-cierre", dentro);
+      }
+      /* EL REBOTE. <html> lleva el papel (es el lienzo, y el cuerpo va
+         transparente a propósito para que el suelo del paso se vea), así
+         que al estirar la página por el fondo —el rebote elástico de iOS
+         y de los trackpad— asomaba una franja crema por debajo del final
+         oscuro. Se cura tiñendo el lienzo, pero NO a la vez que el cromo:
+         el lienzo se ve por cualquier hueco transparente, y entre los 78
+         px y el 0 todavía queda por arriba una banda de la sección
+         anterior que también es transparente. Teñir ahí pintaría esa
+         banda de verde y saldría un borde falso encima del de verdad.
+         Con el corte en 0 no hay hueco posible: la sección oscura llega
+         al techo de la ventana y mide una pantalla como mínimo. */
+      var todo = t <= 0;
+      if (todo !== lleno) {
+        lleno = todo;
+        document.documentElement.style.background = todo ? "#282C20" : "";
+      }
+    }
+    function pide_(){ if (!pide) pide = requestAnimationFrame(cierra); }
+    window.addEventListener("scroll", pide_, { passive:true });
+    window.addEventListener("resize", pide_, { passive:true });
+    cierra();
+  })();
 
   if (finePtr) {
     pill.addEventListener("pointerenter", function(){ if (fuera) escribe(siguiente()); });
