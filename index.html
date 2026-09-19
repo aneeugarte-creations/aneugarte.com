@@ -1460,6 +1460,16 @@ body.js .shot{ opacity:var(--fade,1); }
   .shot:nth-child(8) .shot__lbl{ text-align:right; }
 }
 .shot__lbl{ margin:0; color:var(--ink-3); }
+/* FUERA LOS ROTULOS. "Prefiero las imagenes sin la linea", dijo Ane, por
+   los `01 · Denaliving`, `06 · Tokyo, Japan` que iban encima de cada
+   pieza con el numero en el color de su pais. Se apagan y no se borran:
+   los ocho parrafos siguen en el documento —la novena pieza es el CTA y
+   nunca llevo rotulo— y devolverlos es quitar esta
+   regla. Vale para las dos composiciones, la del carril y la columna del
+   movil, porque las dos cuelgan del mismo elemento. Las piezas suben los
+   28 px que ocupaba el rotulo; el hueco entre ellas lo sigue mandando
+   --top pieza a pieza, que no se toca. */
+.shot__lbl{ display:none; }
 .shot__lbl b{ color:var(--c,var(--accent)); font-weight:400; }
 /* El rótulo es lo único de la sección que se apoya directamente sobre el
    suelo, así que mientras el suelo vira tiene que virar con él — con el
