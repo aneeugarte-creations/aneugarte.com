@@ -2219,8 +2219,9 @@ body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0
 .mail:hover::after,.mail:focus-visible::after{ transform:scaleX(1); }
 
 .links{ list-style:none; margin:clamp(26px,4vh,46px) 0 0; padding:0; }
-.links li{ border-top:1px solid var(--rule); }
-.links li:last-child{ border-bottom:1px solid var(--rule); }
+/* Sin filetes. Eran el marco de la ficha de LinkedIn cuando era una
+   linea de texto; desde que lleva el Bruegel dentro, el cuadro ya es
+   su propio bloque y las lineas lo cercaban. */
 .links a{ display:flex; align-items:baseline; gap:16px; padding-block:15px; text-decoration:none; transition:color .3s ease,padding .35s var(--ease); }
 .links a:hover{ color:var(--accent); padding-left:12px; }
 .links a span:last-child{ margin-left:auto; color:var(--ink-3); }
@@ -2253,7 +2254,10 @@ body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0
 }
 
 .foot{
-  border-top:1px solid var(--rule); padding-block:24px 34px;
+  /* sin filete: caia pixel con pixel sobre el del <li> de arriba y las
+     dos juntas eran LA linea de debajo del cuadro. El pie se separa por
+     el aire que ya tiene, 39 px contados desde la fila del enlace. */
+  padding-block:24px 34px;
   display:flex; flex-wrap:wrap; gap:12px 24px; align-items:baseline; color:var(--ink-3);
 }
 .foot__sp{ margin-left:auto; }
