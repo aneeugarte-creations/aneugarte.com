@@ -2738,7 +2738,14 @@ body.is-live .rise > i{ transform:none; }
       <!-- 08 · Su empresa. Delante el logotipo sobre el papel de la página
            —el archivo trae su propia transparencia, así que no hay ningún
            folio blanco recortado— y detrás el nombre y a qué se dedica.
-           Cuadrada, que es la forma del logotipo. -->
+           Cuadrada, que es la forma del logotipo.
+
+           AQUÍ HUBO UNA FOTOGRAFÍA DETRÁS (art-08bg.webp, con la clase
+           .card__face--onimg quitándole el papel a la cara). «Quita la
+           foto que hay detrás y deja solo el logo, ya que originalmente
+           es sólo logo»: en su página la marca es eso, un logotipo sobre
+           blanco. El archivo sigue publicado y la regla de --onimg sigue
+           en la hoja, así que devolverlo es un <img> y una clase. -->
       <figure class="shot" style="--w:36svh;--ml:14svh;--top:53svh;--c:var(--us);--cl:var(--us-lt)">
         <p class="shot__lbl mono"><b>08</b> &middot; USA &middot; Mexico</p>
         <article class="card card--flip card--fig" style="--ar:1/1;--mw:70%" tabindex="0">
@@ -2749,8 +2756,7 @@ body.is-live .rise > i{ transform:none; }
               <p class="card__d">Technology company</p>
             </div>
 
-            <div class="card__face card__face--front card__face--brand card__face--onimg" aria-hidden="true">
-              <img class="card__img" src="art-08bg.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
+            <div class="card__face card__face--front card__face--brand" aria-hidden="true">
               <img class="card__mark" src="keni.webp" loading="lazy" width="657" height="658"
                    alt="Keni Engineering" decoding="async" fetchpriority="low">
             </div>
