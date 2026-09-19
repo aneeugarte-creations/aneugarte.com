@@ -235,24 +235,58 @@ html:not(.lenis){ scroll-behavior:smooth; }
    de lo que lleva dentro. */
 .load__n{
   margin:0; font-family:var(--display);
-  text-transform:uppercase; white-space:nowrap;
+  white-space:nowrap;
   color:var(--cream); text-align:center;
-  animation:marcaEntra .8s var(--ease) both;
 }
 .load__n b{
   display:block; font-variation-settings:"wdth" 100,"wght" 700;
   font-size:clamp(30px,3.5vw,58px); line-height:1; letter-spacing:-.01em;
 }
 .load__n i{
-  display:block; font-style:normal;
+  display:block; font-style:normal; text-transform:uppercase;
+  opacity:0; transition:opacity .5s var(--ease);
   font-variation-settings:"wdth" 100,"wght" 300;
   font-size:clamp(9px,.778vw,13px); line-height:1.5;
   letter-spacing:.3em; text-indent:.3em;   /* la prosa sobra por la derecha */
   margin-top:clamp(11px,1.18vw,20px);
   color:var(--cream-2);
 }
-@keyframes marcaEntra{ from{ opacity:0 } to{ opacity:1 } }
-@media (prefers-reduced-motion:reduce){ .load__n{ animation:none } }
+.load__n.fin i{ opacity:1; }
+
+/* ── SE ESCRIBE ───────────────────────────────────────────────
+   "Que se escriba de letra en letra como apple cuando compras uno de sus
+   productos". El de Apple no se teclea —es un trazo de escritura a mano
+   que se dibuja—, pero letra a letra es lo que se ha pedido y ademas es
+   lo que la casa ya sabe hacer: el globo de la pildora escribe asi.
+
+   CADA LETRA VA EN SU <span>, Y EL <span> NACE INVISIBLE EN VEZ DE
+   VACIO. Eso es todo el truco: la caja mide desde el primer fotograma lo
+   que va a medir la frase entera, asi que la primera letra aparece ya en
+   su sitio definitivo y el centrado no baila mientras se teclea.
+   Reservar el ancho midiendolo en JS no valdria: la fuente llega
+   despues del primer pintado y el ancho cambia al intercambiarse
+   —medido, 210 px antes y 212 despues—.
+
+   EL CURSOR existe mientras se escribe Y SE VA CON LA ULTIMA LETRA.
+   Sin el, las letras aparecen de la nada y el gesto se lee como un fallo
+   de pintado: el cursor es lo que convierte la aparicion en escritura.
+   Y parpadeando durante el reposo seria movimiento en una pantalla cuyo
+   valor es estar quieta, ademas de retener el ojo al final de la linea
+   anunciando mas texto que no va a llegar. El globo lo conserva porque
+   alli la conversacion sigue abierta; aqui la frase esta dicha.
+   Y va FUERA DEL FLUJO, en absoluto: en linea ocupaba sus 0,115 em y
+   empujaba a las letras que aun no se han encendido, asi que la caja
+   volvia a crecer y a moverse justo lo que este bloque evita —medido a
+   1440, el ancho iba de 321 a 330 y el borde izquierdo bailaba 6 px
+   mientras se escribia—. */
+.load__n b span{ visibility:hidden; position:relative; }
+.load__n b span.ya{ visibility:visible; }
+.load__n b span.cur::after{
+  content:""; position:absolute; left:100%; top:.09em;
+  width:.055em; height:.82em; margin-left:.06em;
+  background:currentColor;
+}
+.load__n b.fin span.cur::after{ content:none; }
 /* Aquí vivía el rótulo de abajo, el equivalente de su "LOAD NORRIS". Fuera:
    la pantalla dice su nombre y ya está. Dos textos en una pantalla que dura
    un segundo son uno de más. */
@@ -399,6 +433,19 @@ body.is-gone .load{ display:none; }
   pointer-events:none;
 }
 .chat.is-on{ opacity:1; transform:none; }
+/* WCAG 1.4.13 «Hoverable». Lo que sale al pasar el raton tiene que poder
+   RECIBIR el raton: si al ir hacia el se cierra, no hay manera de leerlo
+   despacio ni de seleccionar lo que dice. Medido en vivo a 1512 px antes
+   de esto: el raton se apagaba en 10 de los 16 pasos del camino de la
+   pildora al globo, y con el puntero ya en el CENTRO del globo la clase
+   `is-on` estaba quitada. Entre el canto de abajo de la pildora y el
+   techo del globo abierto hay 8,9 px de hueco medidos a 1512.
+   Hacen falta las dos mitades, y esta es la primera: cerrado sigue en
+   `none` —si no, taparia la esquina de la portada— y solo al abrirse
+   deja de ser transparente al puntero. La otra mitad esta en el guion.
+   Solo con raton fino: en tactil no hay «pasar por encima» que cumplir, y
+   dejarlo pulsable alli taparia lo que tenga debajo. */
+@media (hover:hover) and (pointer:fine){ .chat.is-on{ pointer-events:auto; } }
 body.on-dark .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0,0,.26); }
 
 .chat__who{
@@ -2314,7 +2361,19 @@ body.is-live .rise > i{ transform:none; }
   .hero__dot{ animation:none !important; }
   .scan{ animation:none !important; background-position:0 46% !important; }
   .pin{ height:auto !important; }
-  .hero{ position:static !important; height:auto !important; min-height:100svh; }
+  /* `relative`, NO `static` —que es lo que habia y estaba mal—. Lo que
+     hay que apagar aqui es el `sticky` de los 900 px, no el anclaje: en
+     reposo `.hero` ya es `position:relative`, y es ese `relative` el que
+     hace de bloque contenedor de todo lo que lleva dentro en absoluto
+     —el recorte, el retrato, las dos marquesinas— y por tanto el que
+     deja que su propio `overflow:clip` los recorte. En `static` no
+     recorta nada: el bloque contenedor de sus hijos absolutos pasa a ser
+     `.pin`, que esta por encima del recorte y no lo tiene, asi que la
+     marquesina se escapa por los dos lados con sus 9.539 px de banda.
+     Medido a 1440x900 con movimiento reducido: `scrollWidth` 2878 contra
+     1440 de ventana, o sea 1.438 px de desplazamiento horizontal en una
+     pagina que no tiene nada que enseniar a la derecha. */
+  .hero{ position:relative !important; height:auto !important; min-height:100svh; }
   .hero__night{ opacity:0 !important; }
   .hero__clip{ -webkit-mask-image:none !important; mask-image:none !important; }
   .sig{ display:none !important; }
@@ -2336,14 +2395,14 @@ body.is-live .rise > i{ transform:none; }
 
 <!-- Sin JavaScript la cortina no se retiraba NUNCA: quien la quita es
      `body.is-done`, y eso lo pone el bucle de carga. La web entera quedaba
-     maquetada debajo de una pantalla verde que dice NOT FINISHED. Lo
+     maquetada debajo de una pantalla verde que saluda. Lo
      encontraron tres auditorias por separado, con tres metodos distintos.
      Con JS esta regla no llega a aplicarse nunca. -->
 <noscript><style>.load{ display:none !important; }</style></noscript>
 
 <div class="load" id="load" aria-hidden="true">
   <div class="load__in">
-    <p class="load__n"><b>Not finished</b><i>Ane Ugarte</i></p>
+    <p class="load__n"><b>hey, welcome</b><i>Ane Ugarte</i></p>
     <span class="load__track"><b class="load__fill" id="loadFill"></b></span>
     <span class="load__c num" id="loadC">000</span>
   </div>
@@ -3921,9 +3980,53 @@ body.is-live .rise > i{ transform:none; }
   var loadC = document.getElementById("loadC"), loadFill = document.getElementById("loadFill");
   var opened = false;
 
+  /* ── EL SALUDO, LETRA A LETRA ────────────────────────────
+     Ver la nota larga de .load__n b span en la hoja de estilos: las
+     letras ya estan en el HTML —asi la frase existe sin JS— y lo unico
+     que hace esto es encenderlas de una en una. */
+  var SAL_ESPERA = 200, SAL_PASO = 17, SAL_AZAR = 27;
+  var loadN = load ? load.querySelector(".load__n") : null;
+  var loadB = loadN ? loadN.querySelector("b") : null;
+  var letras = [], iLetra = 0, tLetra = 0;
+
+  function acaba(){
+    clearTimeout(tLetra);
+    if (!letras.length) return;
+    for (var q = 0; q < letras.length; q++) {
+      letras[q].classList.add("ya");
+      letras[q].classList.remove("cur");
+    }
+    letras[letras.length - 1].classList.add("cur");
+    iLetra = letras.length;
+    loadB.classList.add("fin");
+    loadN.classList.add("fin");
+  }
+
+  if (loadB && !reduce) {
+    (function(){
+      var txt = loadB.textContent, q;
+      loadB.textContent = "";
+      for (q = 0; q < txt.length; q++) {
+        var sp = document.createElement("span");
+        sp.textContent = txt.charAt(q);
+        loadB.appendChild(sp);
+        letras.push(sp);
+      }
+      tLetra = setTimeout(function paso(){
+        if (iLetra >= letras.length) { acaba(); return; }
+        if (iLetra) letras[iLetra - 1].classList.remove("cur");
+        letras[iLetra].classList.add("ya");
+        letras[iLetra].classList.add("cur");
+        iLetra++;
+        tLetra = setTimeout(paso, SAL_PASO + Math.random() * SAL_AZAR);
+      }, SAL_ESPERA);
+    })();
+  }
+
   function open(){
     if (opened) return;
     opened = true;
+    acaba();                      /* si la pestana estaba al fondo, la frase va a medias */
     if (loadC) loadC.textContent = "100";
     if (loadFill) loadFill.style.transform = "scaleX(1)";
     body.classList.add("is-done");
@@ -4077,11 +4180,11 @@ body.is-live .rise > i{ transform:none; }
   var chat  = document.getElementById("chat");
   var chatT = document.getElementById("chatT");
   var chatSr = document.getElementById("chatSr");
-  var tecla = 0, antes = 0;
+  var tecla = 0, antes = 0, sale = 0;
 
   function escribe(txt){
     if (!chat || !chatT) return;
-    clearTimeout(tecla); clearTimeout(antes);
+    clearTimeout(tecla); clearTimeout(antes); clearTimeout(sale);
     chatT.textContent = "";
     chat.classList.remove("is-txt");
     chat.classList.add("is-on");
@@ -4101,9 +4204,22 @@ body.is-live .rise > i{ transform:none; }
   function calla(){
     if (!chat) return;
     if (chatSr) chatSr.textContent = "";
-    clearTimeout(tecla); clearTimeout(antes);
+    clearTimeout(tecla); clearTimeout(antes); clearTimeout(sale);
     chat.classList.remove("is-on");
   }
+  /* La segunda mitad de 1.4.13 «Hoverable». No basta con que el globo
+     reciba el raton: salir de la pildora dispara `pointerleave` TAMBIEN
+     cuando el raton entra en el globo en el mismo gesto, y el navegador
+     manda el `leave` antes que el `enter`, asi que cerrar en el acto es
+     perder la carrera siempre. Por eso salir no cierra: PIDE cerrar, y
+     entrar en cualquiera de las dos piezas retira la peticion.
+     220 ms es de sobra para el hueco que hay entre ellas —8,9 px medidos
+     a 1512— y no llega a leerse como un globo que se resiste a irse.
+     `calla` se queda tal cual para lo que cierra de verdad y en el acto:
+     la tecla Escape, el toque en tactil, salir de la seccion y el `blur`
+     del teclado, que ahi no hay ningun viaje del raton que cubrir. */
+  function despide(){ clearTimeout(sale); sale = setTimeout(calla, 220); }
+  function quedate(){ clearTimeout(sale); }
 
   /* ── EL CIERRE ────────────────────────────────────────────
      Una clase y nada más. El mundo oscuro lo pone el CSS —la sección ya
@@ -4182,18 +4298,29 @@ body.is-live .rise > i{ transform:none; }
     }, 550);
   }
   /* Se va cuando se le dice, no cuando se le acaba el tiempo: al salir la
-     seccion, al tocar en cualquier sitio o con Escape —que es ademas la
-     mitad de lo que pide 1.4.13 y hoy no estaba ni con raton—. */
+     seccion, al tocar en cualquier sitio o con Escape. Escape es la mitad
+     de 1.4.13 («Dismissible»); la otra mitad —«Hoverable»— es el par
+     despide/quedate de arriba y el `pointer-events` del globo. Las tres
+     condiciones medidas en vivo: cumple, cumple y cumple. */
   document.addEventListener("keydown", function(e){ if (e.key === "Escape") calla(); });
   if (!finePtr) document.addEventListener("pointerdown", function(){
     if (chat && chat.classList.contains("is-on")) calla();
   }, { passive:true });
 
   if (finePtr) {
-    pill.addEventListener("pointerenter", function(){ if (fuera) escribe(siguiente()); });
-    pill.addEventListener("pointerleave", calla);
-    pill.addEventListener("focus",  function(){ if (fuera) escribe(siguiente()); });
+    /* Y no vuelve a teclear si ya esta abierto. Antes no hacia falta
+       —salir de la pildora lo cerraba, asi que al volver a entrar nunca
+       estaba abierto—, pero ahora volver del globo a la pildora borraria
+       la frase que se estaba leyendo, que es justo lo que 1.4.13 protege. */
+    function abre(){ quedate(); if (fuera && chat && !chat.classList.contains("is-on")) escribe(siguiente()); }
+    pill.addEventListener("pointerenter", abre);
+    pill.addEventListener("pointerleave", despide);
+    pill.addEventListener("focus",  abre);
     pill.addEventListener("blur",   calla);
+    if (chat) {
+      chat.addEventListener("pointerenter", quedate);
+      chat.addEventListener("pointerleave", despide);
+    }
   }
 })();
 </script>
