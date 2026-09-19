@@ -41,9 +41,9 @@
      (El retrato no se delata: su alfa es recta, sin fondo blanco
      horneado — medido sobre el archivo, borde marrón que no tiende
      al blanco por ningún tramo.) */
-  --ground:#F7F7F0;
-  --ground-2:#EDEDE5;
-  --ground-3:#E3E3DB;
+  --ground:#FDFCFC;
+  --ground-2:#F3F2F1;
+  --ground-3:#E9E8E7;
 
   --ink:#141416;
   --ink-2:#5A5A5D;
@@ -57,7 +57,7 @@
 
   /* acento muestreado de su pelo y su ceja: el tono de piel de antes
      tenía 2,0 de contraste sobre blanco, ilegible. Este tiene 7,4. */
-  --accent:#7A4A2E;
+  --accent:#BD4200;
 
   /* El casco va entero en oro, pero en DOS ACABADOS del mismo metal:
      no dos colores distintos, que se leerían como dos objetos pegados,
@@ -65,11 +65,11 @@
 
      La placa frontal, el oro claro: es la cara que recibe la luz y la
      que lleva los ojos, la boca y casi toda la librea. */
-  --gold:#C99A48;
-  --gold-2:#E8CC8B;                         /* la luz que le entra arriba */
-  --gold-3:#9A7433;                         /* el canto en sombra */
-  --gold-lt:#F0D89A;
-  --gold-ink:#2A2116;                       /* tinta de las calcas sobre oro */
+  --gold:#016019;
+  --gold-2:#008750;                         /* la luz que le entra arriba */
+  --gold-3:#00410C;                         /* el canto en sombra */
+  --gold-lt:#00905C;
+  --gold-ink:#E4EFE6;                       /* tinta de las calcas sobre oro */
 
   /* La carcasa que la rodea, en latón envejecido: el mismo oro bajado
      de luz y subido de rojo. Tiene que ser bastante más oscuro que la
@@ -77,10 +77,10 @@
      verdad (2,6 entre una y otra, que a simple vista es un escalón
      claro) y porque encima van calcas en créma: contra este latón dan
      5,6 de contraste y contra el oro claro daban 1,9. */
-  --brass:#604317;
-  --brass-2:#95692A;
-  --brass-3:#4A3210;
-  --accent-lt:#E9A987;
+  --brass:#001901;
+  --brass-2:#003905;
+  --brass-3:#000A00;
+  --accent-lt:#FFA873;
   --es-lt:#C97B52;
   --jp-lt:#B9564F;
   --mx-lt:#7D9464;
@@ -103,8 +103,8 @@
      De paso deja de ser de la familia del casco, que era verde botella:
      ahora son tonos distintos y el casco se recorta contra el fondo en
      vez de fundirse con él. */
-  --night:#282C20;
-  --night-2:#3B3C38;                        /* su --color--dark-green-tint-1 */
+  --night:#0A0F00;
+  --night-2:#1A1E11;                        /* su --color--dark-green-tint-1 */
   --cream:#E9E6DA;
   --cream-2:rgba(233,230,218,.58);
   /* SU NARANJA. Sustituye al lima de la referencia (su --color--lime,
@@ -118,7 +118,7 @@
      Da 6,1 de contraste sobre el verde, de sobra para un cuerpo grande, y
      2,2 sobre el papel del panel, donde el ámbar daba 1,7: al oscurecerse
      la firma se lee MEJOR sobre la portada que antes, no peor. */
-  --orange:#F79009;
+  --orange:#D14900;
 
   --display:"Archivo","Helvetica Neue",Arial,sans-serif;
   /* La letra del bloque de impacto de la referencia, que es Mona Sans —la
@@ -726,7 +726,7 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    entre las dos piezas. */
 .cowl__rim{
   position:absolute; inset:0;
-  background:linear-gradient(158deg,var(--gold-3),#5E4318 58%,#3E2C10);
+  background:linear-gradient(158deg,var(--gold-3),#001901 58%,#000501);
   -webkit-mask-image:url("ane-rim.png"); mask-image:url("ane-rim.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
@@ -4813,7 +4813,7 @@ glob.Globo=Globo;
       var todo = t <= 0;
       if (todo !== lleno) {
         lleno = todo;
-        document.documentElement.style.background = todo ? "#282C20" : "";
+        document.documentElement.style.background = todo ? "#0A0F00" : "";
       }
     }
     function pide_(){ if (!pide) pide = requestAnimationFrame(cierra); }
