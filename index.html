@@ -1437,7 +1437,7 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
 
    Después vino una pila de cuatro frases a 66 px con un barrido de
    entrada. Resolvía la tinta y no resolvía lo otro: el barrido dura
-   1,35 s, se acaba, y la banda vuelve a estar tan quieta como antes.
+   1,35 s, se acaba, y la banda vuelve a estar tan quieta que da igual.
    De ahí sale ésta.
 
    ═══ LA TORRE ═══
@@ -1448,79 +1448,82 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    la portada, que sí ruedan solas a 30 y 35 px/s; y es lo que hace que
    esto se mueva cada vez que se pasa por delante, y no una sola vez.
 
-   Y NO ES UN BUCLE, a propósito. El bloque son 8 renglones sobre una
-   ventana de 4,5: ratio 1,78x medido, cuando la marquesina horizontal tiene
-   9.539/1.440 = 6,6x. Por debajo de eso el bucle se ve —reaparece
-   arriba lo que acabas de leer abajo—, y con frases el empalme
-   IMAGINE -> PASSIONATELY no se lee como bucle sino como un error de
-   maquetación. Además «Imagine» está escrita para cerrar: en bucle no
-   cierra nada. Así que la pila es finita, viaja y se acaba.
+   EL CONTENIDO lo eligió Ane: las cuatro cosas que hace. Antes fueron
+   cuatro frases suyas —«Passionately curious.», «Nothing turns out to
+   be unrelated.», «Nothing is everything?» e «Imagine»— y se
+   sustituyeron enteras. OJO, porque esto hay que vigilarlo: son
+   LITERALMENTE la fila «Craft» de #formacion, que va justo debajo. Hoy
+   la misma lista se lee dos veces en dos secciones seguidas.
+
+   NO ES UN BUCLE, a propósito. La pila es finita: viaja de punta a
+   punta y se acaba. Un bucle necesita que el ciclo sea mucho mayor que
+   la ventana —la marquesina horizontal va a 9.539/1.440 = 6,6x— y aquí
+   el ratio es 1,20: se vería reaparecer arriba lo que acabas de leer
+   abajo, y una lista de cuatro cosas repetida sin fin no es una lista,
+   es un error de maquetación.
 
    LOS CORTES DE RENGLÓN NO SE FUERZAN. No hay un solo <br>: se fija la
-   medida en 75vw y caen solos. MEDIDO a 1440: 59/38/66/41/49/46/57/34
-   %vw, media 48,9 y dentado de 32 puntos, con «PASSIONATELY» de pico y
-   «IMAGINE» corto y solo al final. Abrir con el renglón más ancho no es
-   casual: fija la referencia con la que el ojo juzga los demás; si el
-   pico llegara al final, la torre parecería ensancharse.
+   medida en 75vw y caen solos. MEDIDO a 1440, seis renglones —«Spatial
+   design,» / «business» / «operations,» / «automation,» / «artificial»
+   / «intelligence»— de 66/40/53/56/44/57 %vw, media 52,5 y dentado de
+   26 puntos. Las comas quedan a final de renglón y son las que marcan
+   dónde acaba cada cosa, así que el corte por medida no rompe la
+   lectura. En vw y no en ch porque abajo tiene que partir MÁS: a 390 la
+   pila pasa de 6 renglones a 7 y por eso sigue habiendo viaje.
 
-   En vw y no en ch porque abajo tiene que partir MÁS: a 390 el bloque
-   pasa de 8 renglones a 9 y por eso sigue habiendo viaje; con la medida
-   en caracteres el bloque cabría entero en la ventana y el teléfono se
-   quedaría sin movimiento. Criterio si alguna vez se toca: renglón más
-   largo por debajo del 75 % del ancho —a 390 se va al 83 %, porque ahí
-   «PASSIONATELY» es más ancha que la medida y una palabra no se parte;
-   entra por 25 px en el .wrap y por eso el suelo del clamp lleva un
-   min() con 11,2vw, que la retira por debajo de 371 px de pantalla— y
-   renglones totales >= 1,7x los visibles.
-
-   Probado también con la medida en 62vw: parte en otro sitio, el
-   dentado cae a 26 puntos y a 390 deja un renglón con «is» solo al
-   10 %, que no es silueta sino descuido. Se quedó en 75.
-
-   EL CUERPO, 110 px. Estuvo en 88 y se subió por una medida: a 88 el
-   viaje daba 0,32 px de torre por px de scroll en el portátil pero
-   0,15 en tableta y teléfono, que es el umbral exacto por debajo del
-   cual un movimiento ligado al scroll deja de leerse —el referente es
-   el carril, que va a 1,000 px/px—. Y el teléfono se quedaba en 28 px,
-   POR DEBAJO de los 31,6 de la maqueta anterior: en el móvil habríamos
-   ido hacia atrás. A 110 son 0,42 / 0,22 / 0,25 y el teléfono sube a
-   41,6 px.
+   EL CUERPO, 110 px, con el suelo del clamp en min(2.6rem, 10,4vw). El
+   min() no es adorno: en pantallas estrechas el tope no lo pone el
+   gusto sino la palabra más larga, que no parte. Medido, «PASSIONATELY»
+   —la más larga de la maqueta anterior— ocupaba 7,81 px por cada px de
+   cuerpo, o sea que a 390 el cuerpo no podía pasar de 44,8. Con el
+   texto de hoy la más larga es «intelligence», más corta, así que sobra
+   margen; el suelo se deja donde está porque protege de cualquier
+   palabra futura y no cuesta nada.
 
    Sí, 110 px le quita el cuerpo mayor al manifiesto (91,8 px, o sea
    1,20x). Se le quita a sabiendas y el manifiesto conserva el pico que
-   de verdad importa: su renglón más largo mide 1.132 px contra los 955
+   de verdad importa: su renglón más largo mide 1.132 px contra los 947
    del nuestro. Dos picos distintos —la torre la letra más alta, el
    manifiesto el renglón más ancho y toda la masa—, y el manifiesto ya
-   tiene además el pin, el paso, el suelo que vira y la firma. Nota para
-   quien venga: el techo del «72 %» sólo se cumplía a 1440; medido en
-   los seis anchos, la banda anterior ya iba al 90-93 % en tableta y al
-   107 % en móvil.
+   tiene además el pin, el paso, el suelo que vira y la firma.
 
-   CUATRO RENGLONES Y MEDIO DE VENTANA. El número sale de la frase más
-   larga: «Nothing turns out to be unrelated.» ocupa cuatro renglones y
-   tiene que caber entera, con medio de margen para que se vea que la
-   lista sigue. MEDIDO a 1440: paso de renglón 96,3 px, bloque 770,
-   ventana 433, y el recorrido va del PRIMER renglón centrado al ÚLTIMO,
-   o sea siete pasos = 674 px, repartidos en los 1.594 px que la banda
-   está a la vista: factor 0,42. Esa definición del recorrido no es un
-   adorno: es lo que hace que los ocho renglones pasen por el acento una
-   vez cada uno y que la banda cierre con «Imagine» encendido. Con el
-   reparto anterior —el hueco que sobra más un renglón de sobrepaso por
-   lado— el último se quedaba a 39,0 px del centro contra 38,65 de
-   tolerancia y no se encendía NUNCA.
+   CINCO RENGLONES DE VENTANA —seis en estrecho—, Y EL LÍMITE ES DURO
+   POR ARRIBA. Con seis, la pila de 1440 cabría ENTERA dentro y el
+   ratio bajaría a 1,00: no faltaría nunca ningún renglón, todo estaría
+   siempre presente y el viaje dejaría de leerse. Medido con la ventana
+   a seis: el recorrido caía a 193 px y el factor a 0,11, por debajo del
+   umbral. 1,17 es el último ratio que conserva «la lista sigue», y hoy
+   queda en 1,20 a 1440 y 1,17 a 390 — o sea justo encima.
 
-   LO QUE CUESTA DE SCROLL. La banda crece —es lo que se paga por la
-   presencia— pero sigue por debajo de UNA PANTALLA en los seis anchos,
-   sin pin nuevo, y el ~49 % de scroll anclado no se mueve, que es la
-   condición que de verdad importaba. De paso se fue el margin-top de
-   .pf, 45 px que venían de la maqueta anterior: la sección ya trae su
-   propio relleno y aquí no separaba de nada.
+   Crecer o encoger la ventana NO cambia el recorrido: el viaje va del
+   primer renglón centrado al último, o sea (n-1) pasos, y el alto de la
+   ventana no aparece en esa cuenta. Lo único que cambia es cuánta
+   pantalla llena la banda y cuánto falta por ver.
+
+   EL RECORRIDO, medido a 1440: paso de renglón 96,3 px, bloque 578,
+   ventana 481, viaje 5 x 96,3 = 482 px repartidos en los 1.598 px que
+   la banda está a la vista. Factor 0,30 px de torre por px de scroll.
+
+   Y EL UMBRAL, que también está medido y no puesto a ojo: el referente
+   es el carril de #montado, que va a 1,000 px/px exacto. Por debajo de
+   0,15 un movimiento ligado al scroll deja de leerse; a partir de 0,30
+   se lee bien. HOY: 0,30 a 1440, 0,29 a 1512, 0,26 a 1024, 0,18 a 390
+   — y 0,15/0,16 en las dos tabletas, o sea JUSTO en el umbral. Con las
+   cuatro frases de antes iban a 0,22, porque había ocho renglones y no
+   seis. Si algún día la lista se alarga, esto sube solo; si se acorta
+   más, la tableta se queda sin movimiento y habría que partir más fino
+   por debajo de 900 px.
+
+   LO QUE CUESTA DE SCROLL: 698 px medidos = 0,78 pantallas a 1440. Por
+   debajo de una pantalla en los seis anchos (0,78 / 0,75 / 0,69 / 0,47
+   / 0,46 / 0,41), sin pin nuevo, y el ~49 % de scroll anclado no se
+   mueve, que es la condición que de verdad importaba.
 
    CON MOVIMIENTO REDUCIDO no hay ventana ni máscara ni viaje: la pila
    se lee entera y quieta. Cuelga de body.js, que la página sólo se pone
    cuando NO hay movimiento reducido, así que es también lo que se ve si
    el JS no llega. Se prefirió eso a dejar la ventana puesta y quieta:
-   con la ventana, 3 de los 7 renglones quedarían escondidos para
+   con la ventana, un renglón de cada seis quedaría escondido para
    siempre, y no se le esconde contenido a quien pide menos movimiento. */
 .pf{
   font-family:var(--impact); font-variation-settings:"wght" 800,"wdth" 110;
@@ -1544,8 +1547,8 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    la ventana, con media caja de tolerancia: hay uno o ninguno, nunca
    dos. SIN transition a propósito —el chasquido es el efecto; un
    fundido de 0,3 s deja dos renglones medio teñidos y se pierde—. Son
-   siete relevos en el paso completo de la banda, o sea la mitad del
-   movimiento que se percibe: los otros 674 px son deslizamiento. */
+   cinco relevos en el paso completo de la banda, o sea la mitad del
+   movimiento que se percibe: los otros 482 px son deslizamiento. */
 .pf__r.is-hot{ color:var(--accent); }
 
 /* SEIS RENGLONES DE VENTANA, y el límite es duro por arriba: con SIETE la
@@ -1568,12 +1571,12 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    ahí la pila tiene 9 renglones en vez de 8, así que 7 todavía deja 1,29
    de ratio. */
 body.js .pf__win{
-  height:5.28em;                               /* 6 renglones x .88 */
+  height:4.40em;                               /* 5 renglones x .88 */
   overflow:hidden;
   -webkit-mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);
           mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);
 }
-@media (max-width:699px){ body.js .pf__win{ height:6.16em; } }  /* 7 renglones */
+@media (max-width:699px){ body.js .pf__win{ height:5.28em; } }  /* 6 renglones */
 body.js .pf__col{ will-change:transform; }
 
 .pull{
@@ -3089,10 +3092,10 @@ body.is-live .rise > i{ transform:none; }
   <!-- ══════════════ 01 PERFIL ══════════════
        Aquí hubo cuatro citas de Einstein, cada una con su carta y su año.
        Fuera las cuatro: una página personal que se apoya en lo que dijeron
-       otros se lee como un tablón de frases, no como alguien. Lo que queda
-       son cuatro líneas suyas, cortas y SIN firmar — sin <cite> no hay a
-       quién atribuir nada, que es exactamente el punto. Cambiar cualquiera
-       es reescribir su <p>, y nada más.
+       otros se lee como un tablón de frases, no como alguien. Después
+       hubo cuatro frases suyas. Hoy hay una sola línea: las cuatro cosas
+       que hace, que es lo que ella pidió poner en su lugar. Cambiarla es
+       reescribir ese <p>, y nada más — los renglones los parte la medida.
 
        Ya no asoma por debajo del recorrido del mensaje: el que lo hace
        ahora es el tablero, y el perfil viene después de él, cuando el
@@ -3102,17 +3105,16 @@ body.is-live .rise > i{ transform:none; }
     <div class="wrap">
       <h2 class="sr">Profile</h2>
 
-      <!-- Las frases van enteras y sin <br>: los renglones los parte el
+      <!-- La lista va entera y sin <br>: los renglones los parte el
            navegador contra la medida (max-width:75vw) y luego el JS los
            envuelve uno a uno para poder encender el que cruza el centro.
-           Sin JS no se envuelve nada y se lee la pila entera, quieta. -->
+           Sin JS no se envuelve nada y se lee la pila entera, quieta.
+           Son las mismas cuatro cosas que la fila «Craft» de #formacion:
+           si una cambia, la otra también. -->
       <div class="pf">
         <div class="pf__win">
           <div class="pf__col">
-            <p class="pf__l">Passionately curious.</p>
-            <p class="pf__l">Nothing turns out to be unrelated.</p>
-            <p class="pf__l">Nothing is everything?</p>
-            <p class="pf__l">Imagine</p>
+            <p class="pf__l">Spatial design, business operations, automation, artificial intelligence</p>
           </div>
         </div>
       </div>
@@ -4338,13 +4340,14 @@ body.is-live .rise > i{ transform:none; }
      de ahí sale todo lo demás: son (n-1) pasos, cada renglón pasa por
      el centro exactamente una vez, en 0,5 la pila queda centrada en su
      ventana justo cuando la banda está centrada en la pantalla, y la
-     banda CIERRA con «Imagine» encendido —que es la palabra escrita
-     para cerrar—. Medido: 464 px a 1440, factor 0,32.
+     banda cierra con el ÚLTIMO renglón encendido. Medido: 482 px a
+     1440, factor 0,30.
 
      Antes esto era «el hueco que sobra más un renglón de sobrepaso por
-     lado», 386 px. Medido, con ese reparto el último renglón se quedaba
-     a 39,0 px del centro contra una tolerancia de 38,65: «Imagine» no
-     se encendía NUNCA, y era el único de los siete. */
+     lado». Medido, con aquel reparto el último renglón se quedaba a
+     39,0 px del centro contra una tolerancia de 38,65: no se encendía
+     NUNCA, y era el único de la pila. Derivar el recorrido del
+     CONTENIDO en vez de elegirlo por simetría es lo que lo arregla. */
   function torrePaso(y){
     if (!pfWin || reduce || !pfStep) return;
     var p = (pfVH - (pfTop - y)) / (pfVH + pfWinH);
