@@ -745,36 +745,28 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
 }
-/* El filete: el canto mecanizado que cerca cada ojo, enmarca la boca y
-   recorre el borde de la placa. Es lo que convierte tres agujeros en
-   tres piezas montadas.
+/* El filete: hoy SÓLO el canto de la placa, y a 0,5 px.
 
-   VA CLARO, y antes iba en bronce oscuro. No es un cambio de gusto: un
-   canto mecanizado es siempre lo contrario de la superficie en la que
-   está cortado. Sobre la placa dorada de antes —luminancia 0,360— lo
-   que se veía era un SURCO, y por eso iba oscuro. Sobre la placa verde
-   de ahora —0,084— un surco oscuro no existe, y lo que se ve es el
-   brillo del canto.
+   Cercaba también cada ojo y la boca, y con la placa verde ese cerco
+   había pasado a pintarse claro para devolverle contraste al reborde
+   negro —de 2,0-3,0 a 8,15, medido sobre la página con el casco abierto
+   y no sobre la hoja de estilos—. Ella lo vio y lo dijo en una línea:
+   demasiado contraste. Así que el cerco se va.
 
-   Lo que había dejó de hacer su trabajo, y está medido sobre la página
-   con el casco abierto, no sobre la hoja de estilos: el reborde negro
-   que ella pidió «más gordo y negro» tenía 7,67 de contraste contra el
-   oro y contra lo que ahora lo rodea de verdad se había quedado en
-   2,0-3,0. Con este canto vuelve a 8,15, que es por encima del suelo de
-   7,67 con el que se calculó.
+   Lo que eso cuesta, escrito para que no se vuelva a descubrir dentro
+   de seis meses: el reborde negro que pidió «más gordo y negro» se
+   queda otra vez en 2,0-3,0 contra lo que de verdad lo rodea, que es el
+   globo y no la placa. Y contra esta placa NO se puede arreglar con más
+   negro: el tope absoluto, con negro puro, es 2,69. Para que el negro
+   diera los 7,67 de antes la placa tendría que estar en luminancia
+   0,3601, y el oro viejo estaba en 0,3600 — o sea que aquel 7,67 no era
+   un umbral de legibilidad, era el resultado de aquel oro.
 
-   Contra la placa verde ningún reborde OSCURO puede llegar: el tope
-   absoluto, con negro puro, es 2,69. Para que el negro diera 7,67 la
-   placa tendría que estar en luminancia 0,3601 — el oro de antes estaba
-   en 0,3600. O sea que el reborde no se puede arreglar con más negro,
-   sólo dándole un canto claro que lo bordee.
-
-   Y de paso devuelve el escalón entre las dos piezas: entre la placa y
-   la carcasa quedan 2,36 de contraste y el mínimo con el que se diseñó
-   era 2,6 —imposible ya: con la placa en 0,084 el negro puro da 2,69 y
-   no hay sitio—. Así que las dos piezas dejan de separarse por el tono
-   y se separan por la JUNTA, que es este mismo canto recorriendo el
-   borde de la placa. */
+   El canto que queda va a 0,5 px y no a 2,4: a 2,4 era un reborde, no
+   un canto. Es la junta entre la placa y la carcasa, y hace falta
+   porque el escalón de tono entre las dos ya no existe: están a 2,36 y
+   el mínimo con el que se diseñaron era 2,6, imposible con la placa en
+   0,084. Las dos piezas se separan por la junta, no por el color. */
 .cowl__rim{
   position:absolute; inset:0;
   background:linear-gradient(158deg,#F4F1E4,#D8D3C0 58%,#A8A492);
