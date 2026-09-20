@@ -1456,12 +1456,12 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    Se comba con la pieza por la misma proyección que la malla, como
    cualquier calca que entre aquí.
 
-   Y VA EN x=328, CIEN PÍXELES A LA DERECHA DE DONDE NACIÓ. Lo pidió
-   ella dos veces —«la foto de miguel un poco más a la derecha» y luego
-   «más a la derecha»—, así que fue en dos pasos: 228 → 258 → 328. Nació
-   en 228 para que los dos dedos que se tocan cayeran en el EJE del
-   casco, axis(706)=444; esa alineación se pierde, y se pierde a
-   sabiendas: manda ella.
+   Y VA EN x=358, CIENTO TREINTA PÍXELES A LA DERECHA DE DONDE NACIÓ.
+   Lo pidió ella tres veces —«la foto de miguel un poco más a la
+   derecha», «más a la derecha» y «último empujón»—, así que fue en tres
+   pasos: 228 → 258 → 328 → 358. Nació en 228 para que los dos dedos que
+   se tocan cayeran en el EJE del casco, axis(706)=444; esa alineación se
+   pierde, y se pierde a sabiendas: manda ella.
 
    LO QUE CUESTA, porque no se ve venir: LA VENTANA NO SE MUEVE. La fija
    la copa del mentón, no la hoja. Así que correr la hoja a la derecha no
@@ -1474,14 +1474,35 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    está buscando, es la figura de Adán, que antes quedaba fuera del hueco
    y ahora ancla el centro.
 
-   Y DÓNDE ESTÁ EL MURO, medido y no supuesto, porque la próxima vez que
-   alguien quiera correrlo más conviene saberlo: los dos dedos que se
-   tocan están en (520,240) del original de 1280x720, o sea en el 39,4 %
-   del ancho del recorte, o sea en x+221. En 328 caen en 549 y el canto
-   de la copa los recorta en ≈620: quedan SETENTA Y UN PÍXELES. Otros
-   setenta de desplazamiento se los comen. De aquí en adelante lo que se
-   pierde ya no es fondo: es el asunto del cuadro. Si hiciera falta
-   correrlo más, lo que hay que mover es el RECORTE, no la caja.
+   DÓNDE ESTABA EL MURO, Y CÓMO SE MIDIÓ MAL UNA VEZ — que es la parte
+   que hay que leer antes de volver a mover esto. Los dos dedos que se
+   tocan están en (520,240) del original de 1280x720: el 39,4 % del ancho
+   del recorte y el 43,4 % del alto, o sea x+221 y FILA 706 —el mismo 706
+   del que salía axis(706)=444, y no es casualidad—. Aquí se escribió que
+   en x=328 quedaban 71 px hasta el canto, y era FALSO: ese ≈620 era el
+   máximo del bbox de la tinta, que es de OTRA FILA. El canto que manda
+   es el de la fila de los dedos, y ahí la copa no llega a 620 sino
+   a ≈557.
+
+   Medido como hay que medirlo —metiendo un punto sintético en la hoja
+   plana y combándolo con EL MISMO campo que la calca, porque el alabeo
+   lo mueve otros 7 px a la derecha y 20 hacia arriba—: en 228 los dedos
+   caían en 450 con 106 px de margen; en 258, en 482 con 73; en 328, en
+   556 con CERO. Al segundo empujón ya estaban clavados en el filo.
+
+   Y EN 358 ESTÁN 28 PX FUERA: se pierden. Cuestan poco de lo que se
+   veía, porque en 328 ya no se leía el encuentro —estaban justo en el
+   canto—, y lo que queda es Adán reclinado con el brazo tendido, que es
+   lo que ella ha ido buscando en los tres pasos. De aquí no se sigue: lo
+   siguiente que sale por el canto es el brazo, y entonces no queda
+   cuadro. Si hiciera falta correrlo más, lo que se mueve es el RECORTE,
+   no la caja.
+
+   Y EL 46 % PASA A 44 %, por la regla que ya dejó escrita la Ariadna:
+   mover el recorte cambia qué tinta cuenta como «a plena fuerza», así
+   que hay que volver a medir la opacidad. Con la hoja en 358 el mismo
+   46 % da 2,32:1 y el 44 % da 2,21:1, que es el gemelo exacto del
+   Leonardo (2,21). Se conserva el contraste, no el número.
 
    El horno es `dos/hornea_adan.py`. 80 kB, tinta en el 2,63 % del cuadro. */
 .cowl__adan{
@@ -1490,7 +1511,7 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
   -webkit-mask-image:url("ane-adan.png"); mask-image:url("ane-adan.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  opacity:.46;
+  opacity:.44;
 }
 /* Y LA TERCERA: ARIADNA ABANDONADA POR TESEO, de Angelica Kauffmann
    (h. 1774), en la corona. Ella la pidió «en la parte de arriba de la
