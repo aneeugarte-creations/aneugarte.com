@@ -2487,16 +2487,33 @@ body.js.in-mont .wm{
    izquierda, asi que esta pasa a ser la unica opticamente centrada.
    Igualarlas es decision suya y pide una regla propia: `.mono` es global y
    la usan tambien lineas alineadas a la izquierda. */
-.card__d{
-  margin:0; color:var(--ink-2);
-  font-family:var(--display);
-  font-variation-settings:"wdth" 74,"wght" 600;
-  font-size:.82rem;                 /* 13,1 px */
-  line-height:1.15;
-  letter-spacing:.145em; text-indent:.0725em;
-  text-transform:uppercase;
-  margin-top:-.3rem;                /* cierra el bloque con el titular */
-}
+/* AQUI VIVIA `.card__d`, el descriptor de la pieza 08. Decia «Technology
+   company»; luego «Technology» a secas —«con dejar Technology BASTA»—; y
+   al final se fue entero: «puede que no haga falta poner Technology
+   porque en las webs ya se ve lo que hace». Es la misma tijera dos veces,
+   y la segunda es la regla de la casa aplicada al pie de la letra: la
+   palabra ENGINEERING del nombre de encima ya dice el campo, y
+   «technology» es igual de cierto de miles de empresas —o sea lo
+   contrario de intransferible—. Lo que de verdad distingue a las dos
+   direcciones no es esa palabra: es lo que hace cada una, y eso, si algun
+   dia entra, va DEBAJO de cada direccion y no aqui (ver `.card__cues`).
+
+   Devolverlo es un <p> con la clase card__d en la cara y esta regla, que se
+   conserva entera porque sale del dictamen de un tipografo y volver a
+   deducirla costaria lo mismo que la primera vez:
+
+     .card__d{ margin:0; color:var(--ink-2);
+       font-family:var(--display);
+       font-variation-settings:"wdth" 74,"wght" 600;
+       font-size:.82rem; line-height:1.15;
+       letter-spacing:.145em; text-indent:.0725em;
+       text-transform:uppercase; margin-top:-.3rem; }
+
+   —wdth 74 es el eje exacto de KENI ENGINEERING, y esa anchura compartida
+   era lo que ataba las dos lineas en un bloque; el cuerpo baja de 15,7 a
+   13,1 px porque las versales rinden un ~18 % mas grandes; el text-indent
+   es la mitad de la prosa, que el letter-spacing mete su hueco tambien
+   detras de la ultima letra y descentra lo centrado—. */
 .card__foot{ margin-top:auto; display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; padding-top:6px; border-top:1px solid var(--rule); }
 .card__metric{ display:flex; flex-direction:column; gap:2px; }
 .card__metric b{
@@ -3769,11 +3786,10 @@ body.is-live .rise > i{ transform:none; }
             <div class="card__face card__face--back card__face--solo">
               <p class="card__kind mono">Build</p>
               <h3 class="card__t">Keni Engineering</h3>
-              <!-- «Technology» a secas: «no hace falta poner Technology
-                   company con dejar Technology BASTA». La palabra que
-                   sobraba era la que ya decia el titulo de al lado —Keni
-                   Engineering—, asi que company lo decia dos veces. -->
-              <p class="card__d">Technology</p>
+              <!-- AQUI IBA EL DESCRIPTOR, «Technology». Se fue porque las
+                   dos direcciones de abajo ya ensenian lo que hace y
+                   ENGINEERING lo dice en el nombre de arriba. Sus medidas
+                   siguen escritas en la hoja, donde vivia `.card__d`. -->
 
               <span class="card__cues">
                 <a class="card__cue mono" href="https://kenitech.io"
