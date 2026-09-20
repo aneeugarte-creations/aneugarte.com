@@ -2491,6 +2491,38 @@ body.js.in-mont .wm{
 /* una tarjeta que es un enlace sigue siendo una tarjeta */
 .card--link{ text-decoration:none; }
 
+/* ── DOS PUERTAS EN UNA TARJETA ───────────────────────────────
+   Keni no tiene una direccion sino dos —kenitech.io y ia.kenitech.io—,
+   asi que la pieza no puede ser un enlace entera como la 03 y la 04: un
+   <a> lleva a UN sitio y aqui hay que elegir. La que gira sigue siendo
+   la tarjeta; lo que enlaza son las dos lineas de detras.
+
+   EL RATON SE DIBUJA DOS VECES A PROPOSITO. En la 03 y en la 04 dice
+   «esta tarjeta lleva a un sitio»; aqui dice «esta LINEA lleva a un
+   sitio», que es lo que hace falta cuando hay dos destinos. Uno solo
+   encima de las dos volveria a dejar sin senal cual se pulsa.
+
+   Y EN LA LINEA VA SOLO LA DIRECCION. Los dos negocios no son el mismo
+   —kenitech.io es consultoria de DevOps para equipos de software en
+   EEUU y ia.kenitech.io es formacion en IA para empresas de habla
+   hispana—, pero eso son dos renglones mas en una tarjeta de 317 px
+   que ya lleva tres: medido, «ia.kenitech.io · AI training» en una
+   linea son 257 px contra los 257 de hueco, o sea que parte. Si algun
+   dia se quiere decir lo que es cada una, cabe DEBAJO de la direccion
+   en un segundo renglon, no al lado. */
+.card__cues{ display:grid; justify-items:center; gap:9px; }
+a.card__cue{
+  color:var(--ink-3); text-decoration:none;
+  transition:color .35s var(--ease);
+}
+a.card__cue:hover,a.card__cue:focus-visible{ color:var(--ink); }
+/* Con el teclado el foco pasa de la tarjeta a las lineas de detras, y
+   ahi `.card--flip:focus-visible` ya no se cumple: sin esto la tarjeta
+   se daria la vuelta justo al ir a pulsar y el foco quedaria en una
+   cara que no se ve. Comprobado con el tabulador: la tarjeta se gira al
+   recibir el foco y sigue girada en los dos enlaces. */
+.card--flip:has(a.card__cue:focus-visible) .card__flip{ transform:rotateY(180deg); }
+
 /* ── La cara de detrás cuando sólo lleva una frase ────────────
    Va después de --back a propósito: misma especificidad, decide el orden.
    Sin número, sin lugar, sin métrica y sin recuadros pendientes, lo que
@@ -3125,7 +3157,8 @@ body.is-live .rise > i{ transform:none; }
   .card__face--front{ transition:opacity .25s linear; }
   .card--flip:hover .card__face--front,
   .card--flip:focus-visible .card__face--front,
-  .card--flip.is-flipped .card__face--front{ opacity:0; }
+  .card--flip.is-flipped .card__face--front,
+  .card--flip:has(a.card__cue:focus-visible) .card__face--front{ opacity:0; }
   .load{ display:none !important; }
 }
 </style>
@@ -3546,7 +3579,23 @@ body.is-live .rise > i{ transform:none; }
            foto que hay detrás y deja solo el logo, ya que originalmente
            es sólo logo»: en su página la marca es eso, un logotipo sobre
            blanco. El archivo sigue publicado y la regla de --onimg sigue
-           en la hoja, así que devolverlo es un <img> y una clase. -->
+           en la hoja, así que devolverlo es un <img> y una clase.
+
+           Y DETRÁS YA NO HAY UNA FICHA MUDA: hay dos enlaces, uno a
+           kenitech.io y otro a ia.kenitech.io. «Tengo 2 páginas web»,
+           así que la pieza no podía copiar a la 03 y a la 04 y hacerse
+           enlace entera —un <a> lleva a un sitio—: gira la tarjeta y
+           enlazan las líneas. El ratón se dibuja en cada una porque
+           aquí ya no dice «esto gira» sino «esta línea lleva a un
+           sitio». El porqué de que vaya sólo la dirección, sin decir
+           qué es cada negocio, está en la hoja, en `.card__cues`.
+
+           LO QUE NO ALCANZA, y conviene saberlo: con movimiento
+           reducido no se pone `.js`, así que en un teléfono con esa
+           preferencia la cara de detrás no se destapa al tocar —le
+           pasa igual a la 01, la 02, la 06 y la 07, sólo que ahí lo que
+           se queda sin ver es una ficha y aquí son dos direcciones—.
+           Con ratón y con teclado se llega a las dos. -->
       <figure class="shot" style="--w:36svh;--ml:14svh;--top:53svh;--c:var(--us);--cl:var(--us-lt)">
         <p class="shot__lbl mono"><b>08</b> &middot; USA &middot; Mexico</p>
         <article class="card card--flip card--fig" style="--ar:1/1;--mw:70%" tabindex="0">
@@ -3556,6 +3605,29 @@ body.is-live .rise > i{ transform:none; }
               <p class="card__kind mono">Build</p>
               <h3 class="card__t">Keni Engineering</h3>
               <p class="card__d">Technology company</p>
+
+              <span class="card__cues">
+                <a class="card__cue mono" href="https://kenitech.io"
+                   target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 14 20" aria-hidden="true" focusable="false">
+                    <rect x="1" y="1" width="12" height="18" rx="6"
+                          fill="none" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="7" y1="5.2" x2="7" y2="8.6" stroke="currentColor"
+                          stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                  kenitech.io
+                </a>
+                <a class="card__cue mono" href="https://ia.kenitech.io"
+                   target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 14 20" aria-hidden="true" focusable="false">
+                    <rect x="1" y="1" width="12" height="18" rx="6"
+                          fill="none" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="7" y1="5.2" x2="7" y2="8.6" stroke="currentColor"
+                          stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                  ia.kenitech.io
+                </a>
+              </span>
             </div>
 
             <div class="card__face card__face--front card__face--brand" aria-hidden="true">
