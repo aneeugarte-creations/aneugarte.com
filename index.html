@@ -1381,8 +1381,11 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    que hacen los meridianos. Desplazamiento máximo medido, 30 px.
 
    EL TONO ES EL DE LAS CALCAS y el alfa está medido sobre la pieza ya
-   compuesta, con la luz encima: `--gold-ink` al 30 % da 2,25:1 contra la
-   carcasa. Es el gemelo del 2,28:1 que el mapa tiene contra la placa
+   compuesta, con la luz encima: `--gold-ink` al 36 % da 2,22:1 contra la
+   carcasa. Fue el 30 % mientras la hoja estuvo arriba; al bajarla a
+   y=229 su tinta entra en la banda que `ane-shade` oscurece y el mismo
+   30 % cae a 1,89:1, por debajo del suelo de 2,0. Se conserva el
+   CONTRASTE, no el número — la misma regla del mentón y de la Ariadna. Es el gemelo del 2,28:1 que el mapa tiene contra la placa
    —misma tinta, mismo peso aparente— y va un pelo POR DEBAJO a
    propósito: la carcasa es tres veces la placa, y a igual contraste
    local pesaría más que el foco de la cara. Dentro de la banda 2,0-3,0
@@ -1401,27 +1404,39 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    quitamos la tierra»). Y se descartó cubrir el casco entero: eso borra
    el dibujo y lo deja en textura, y lo que pidió es ESTA foto.
 
-   Y LA HOJA BAJÓ 70 PX —de y=124 a y=194— para hacerle sitio a la
-   Ariadna de Kauffmann en la corona: «baja un pelín la de leonardo para
-   que esta también se vea». Setenta y no más, y el número lo puso la
-   placa: es opaca y se come la hoja por abajo, así que cada píxel de
-   bajada cuesta dibujo. Medido dentro de la carcasa, bajando 70 px queda
-   el 90 % de la tinta; 110 px, el 82 %; 130 px, el 71 %. A 70 el carro
-   falcado sigue entero y la corona se abre de 87 a 157 px de banda
-   libre, que es lo que necesitaba la otra.
+   Y LA HOJA BAJÓ 105 PX EN DOS VECES —de y=124 a 194 y luego a 229—,
+   las dos para hacerle sitio a la Ariadna de Kauffmann en la corona:
+   «baja un pelín la de leonardo para que esta también se vea», y después
+   «baja el de leonardo y sube el de la chica para que no se pisen».
+
+   LO QUE CUESTA NO ES LINEAL, y por eso el segundo tramo salió casi
+   gratis. La placa es opaca y se come la hoja por abajo, pero entre 70 y
+   105 la hoja entra en una parte MÁS ANCHA de la carcasa. Medido contra
+   la tinta que tenía a 70: a 90 px queda el 101,4 % —o sea más—, a 100
+   el 98,1 %, a 105 el 96,0 % y a 110 el 92,5 %. Ahí empieza a caer de
+   verdad, y por eso el segundo empujón se paró en 105.
+
+   Y LA OTRA NO PODÍA SUBIR, que es lo que ella pedía: la tinta de la
+   Ariadna empieza en la fila 14 y la carcasa también. Cero margen. Así
+   que «subirla» sólo podía significar acortarla por abajo, y eso se hizo
+   en su recorte. Entre las dos palancas dejan de pisarse: de 1.564 px
+   compartidos en las filas 175..237 se pasa a CERO, con siete filas de
+   chapa limpia entre una y otra. El reparto no es simétrico a propósito
+   —al Leonardo bajar le cuesta un 4 % y a ella acortarse un 25 %— pero
+   ella no tiene la otra palanca.
 
    El horno es `vinci/hornea.py`: la tinta al alfa con el papel estimado
    localmente, ya colocada y ya combada, a 1,25x del cuadro —la escala de
    ane-helmlines.png, por lo mismo— y con el alfa en 32 niveles, que
-   baja el archivo de 206 a 146 kB con un error de 0,016 de alfa; al 30 %
-   eso son 0,005 de alfa final. */
+   baja el archivo de 206 a 145 kB con un error de 0,016 de alfa; al 36 %
+   eso son 0,006 de alfa final. */
 .cowl__vinci{
   position:absolute; inset:0;
   background:var(--gold-ink);
   -webkit-mask-image:url("ane-vinci.png"); mask-image:url("ane-vinci.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  opacity:.30;
+  opacity:.36;
 }
 /* Y LA SEGUNDA HOJA: LA CREACIÓN DE ADÁN, en la copa del mentón. Ella la
    pidió «por al lado» de la de Leonardo, y el único hueco entero que le
@@ -1538,7 +1553,9 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    2,24:1, entre el Leonardo (2,23) y el plano de la placa (2,28). Es la
    misma regla del mentón leída al revés —SE CONSERVA EL CONTRASTE, NO LA
    OPACIDAD—: allí hubo que subir de 30 a 46, aquí hay que bajar de 30
-   a 24.
+   a 24. Y hoy va al 26 %, no al 24: al acortar el recorte por abajo
+   volvió a moverse la población de tinta a plena fuerza, y el 24 % cayó
+   a 2,14:1. Es la tercera vez que pasa lo mismo en esta pieza.
 
    Y EL NÚMERO SE MOVIÓ CON EL RECORTE, que es lo que no se ve venir: con
    el pie en 425 este mismo alfa daba 2,28 al 22 %. Al subir el pie a 395
@@ -1548,7 +1565,7 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    ser otra población. Tocar el recorte de un grabado obliga a volver a
    medir la opacidad.
 
-   FUERA EL MAR. El recorte, (200,98)-(670,395) del original, empieza
+   FUERA EL MAR. El recorte, (200,98)-(670,350) del original, empieza
    detrás de la mano alzada, y con él se va la línea del horizonte: una
    recta larguísima sobre una cúpula curva es lo único que declara que
    hay un rectángulo pegado, lo mismo que las cornisas del marco pintado
@@ -1556,14 +1573,22 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    asunto del cuadro; medía 15 px y no se leía. Queda el gesto, que sí:
    un brazo tendido hacia donde se fue y la frente caída en la otra mano.
 
-   Y EL PIE DEL RECORTE EN 395 Y NO EN 425. Lo vio un grabador sobre la
-   pieza ya compuesta: el faldón de Ariadna aterrizaba justo encima del
-   eje del carro de Leonardo, y entre los caballos y el filo de la placa
-   quedaba una banda apelmazada. Medido, subir el pie 30 px se lleva el
-   45 % de la tinta de esas filas —y 230..260, de 156/178/189 px por fila
-   a 112/98/91— sin perder la diagonal del cuerpo, que es lo que de
-   verdad se lee. Lo que se va con ellas es el cojín dorado y el pie
+   Y EL PIE DEL RECORTE SUBIÓ DOS VECES: 425 → 395 → 350.
+
+   La primera la vio un grabador sobre la pieza ya compuesta: el faldón
+   de Ariadna aterrizaba justo encima del eje del carro de Leonardo, y
+   entre los caballos y el filo de la placa quedaba una banda apelmazada.
+   Medido, subir el pie 30 px se llevó el 45 % de la tinta de esas filas
+   —y 230..260, de 156/178/189 px por fila a 112/98/91— sin perder la
+   diagonal del cuerpo. Se fueron con ellas el cojín dorado y el pie
    descalzo.
+
+   La segunda la pidió ella con las dos calcas ya puestas: «sube el de la
+   chica para que no se pisen». Y SUBIRLA NO SE PODÍA: su tinta empieza
+   en la fila 14 y la carcasa también, o sea cero margen por arriba. Así
+   que subirla sólo podía ser acortarla por abajo. De 395 a 350 pierde el
+   24,7 % de su tinta —el resto del manto— y su pie pasa de la fila 241
+   a la 204, que con el Leonardo ya en 229 deja siete filas de aire.
 
    Va en la caja (233,18) a 380 px de ancho, el canto se desvanece 26 px
    y se comba con la pieza por la misma proyección que la malla, como
@@ -1574,7 +1599,7 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
   -webkit-mask-image:url("ane-ariadna.png"); mask-image:url("ane-ariadna.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  opacity:.24;
+  opacity:.26;
 }
 /* La placa frontal, dorada. Es la que manda: lleva los ojos, la boca y
    casi toda la librea. Un metal no es un color plano: la luz entra por
