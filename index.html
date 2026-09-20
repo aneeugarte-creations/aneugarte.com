@@ -4644,11 +4644,45 @@ body.is-live .rise > i{ transform:none; }
         </article>
       </figure>
 
-      <div class="shot" style="--w:28svh;--ml:18svh;--top:40svh">
-        <a class="mont__cta" href="#contacto">
-          <b>Let&rsquo;s talk</b>
-        </a>
-      </div>
+      <!-- AQUI VIVIA EL «LET'S TALK», LA NOVENA PIEZA DEL CARRIL.
+           Ane, 20-09-2026: «quita lo de lets talk al lado de las
+           targetas». Era la ultima pieza de #montado y el unico enlace
+           a #contacto de toda la pagina:
+
+             <div class="shot" style="--w:28svh;--ml:18svh;--top:40svh">
+               <a class="mont__cta" href="#contacto">
+                 <b>Let&rsquo;s talk</b>
+               </a>
+             </div>
+
+           LO QUE SE LLEVA POR DELANTE, para quien lo busque:
+
+           · El carril se acorta SOLO. `montMax` sale de
+             `mRail.offsetWidth` y las posiciones de cada pieza de su
+             `offsetLeft`, medidos en `layoutMont()` sobre el DOM vivo:
+             al quitar la pieza se van 46svh de recorrido —28 de ancho
+             mas 18 de hueco— y la altura de la seccion baja con ellos.
+             No queda hueco vacio al final: el relleno derecho del
+             carril, `clamp(40px,6vw,120px)`, es el que separa la
+             tarjeta de Keni del borde, y ese sigue puesto.
+
+           · `.shot` pasa de nueve a ocho. Las reglas `nth-child(9)`
+             de LA COMPOSICION DEL MOVIL y de la tableta se quedan sin
+             nadie a quien pintar. NO se tocan aqui: son tres bloques
+             de numeros calibrados pieza a pieza y moverlos para
+             limpiar una linea muerta es arriesgar lo que si pinta.
+
+           · Las reglas `.mont__cta` siguen arriba, muertas tambien.
+             Pero su mencion en el AREA TOCABLE de 44 px comparte
+             selector con la pildora, el correo y la × del panel:
+             `.pill::before,.mont__cta::before,.mail::before,
+             .read__x::before`. Esa NO se toca, que los otros tres
+             siguen vivos y el fragmento muerto no les hace nada.
+
+           · Y lo unico que de verdad pierde la pagina: era el unico
+             `href="#contacto"`. A 04 se llega ahora bajando, y el
+             correo sigue donde estaba, en la pildora «Hello.» que va
+             fija arriba a la derecha toda la visita. -->
 
       </div>
     </div>
