@@ -11,9 +11,9 @@
      Delante se parsea con normalidad y el icono vale para las dos ramas.
      El .ico lleva tres imagenes rasterizadas por separado —16, 32 y 48—; el
      navegador lo pide por convencion aunque no hubiera ninguna etiqueta. -->
-<link rel="icon" href="/favicon.ico?v=4" sizes="any">
-<link rel="icon" type="image/svg+xml" href="/icon.svg?v=4">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4">
+<link rel="icon" href="/favicon.ico?v=5" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icon.svg?v=5">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=5">
 <script>(function(){var d=document,w=window;if(w.self!==w.top)return;var z=0.75,m=/[?&]z=(\d{2,3})/.exec(location.search);if(m)z=+m[1]/100;if(!(z>.1&&z<=4))z=0.75;if(!w.matchMedia("(min-width:900px)").matches)return;d.write('<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;'+'background:#F7F7F0}body>plaintext{display:none}#marco{display:block;position:fixed;'+'top:0;left:0;border:0;width:calc(100vw / '+z+');height:calc(100svh / '+z+');'+'transform:scale('+z+');transform-origin:0 0}'+'@media (max-width:899px){#marco{width:100vw;height:100svh;transform:none}}</style>'+'<iframe id="marco" title="'+d.title+'" src="'+location.pathname+location.search+location.hash+'"></iframe><plaintext>');function ancla(){try{history.replaceState(null,"",f.contentWindow.location.hash||location.pathname)}catch(e){}}var f;function listo(){try{var v=f.contentWindow;v.focus();v.addEventListener("hashchange",ancla);if(!v.__gz){v.__gz=1;v.addEventListener("wheel",function(e){if(e.__gz||e.ctrlKey)return;e.__gz=1;try{Object.defineProperty(e,"deltaY",{value:e.deltaY/z,configurable:true});Object.defineProperty(e,"deltaX",{value:e.deltaX/z,configurable:true})}catch(_){}if(!v.Lenis){e.preventDefault();v.scrollBy(e.deltaX,e.deltaY)}},{capture:true,passive:false})}}catch(e){}}d.addEventListener("DOMContentLoaded",function(){var t=d.querySelector("plaintext");if(t)t.parentNode.removeChild(t);f=d.getElementById("marco");if(!f)return;f.addEventListener("load",listo);try{if(f.contentDocument&&f.contentDocument.readyState==="complete")listo()}catch(e){}});})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -267,41 +267,54 @@ html:not(.lenis){ scroll-behavior:smooth; }
 }
 .load__n b{
   display:block;
-  /* EL font-weight VA, Y NO SOBRA. `font-variation-settings` mueve el eje
-     de la fuente variable, pero NO toca `font-weight`, y un <b> nace en
-     700 por el navegador. Mientras Archivo viaja, el sustituto pinta el
-     nombre en Helvetica Neue BOLD — medido entonces, con el nombre aun en
-     caja mixta: la caja iba de 163 px a 150 a 393, y de 273 a 251 a 1440,
-     cuando entra la buena. O sea que durante el swap se veia exactamente
-     la negrita que se ha pedido quitar.
+  /* LA MISMA LETRA QUE EL FAVICON, que es lo que se pidio: Archivo en
+     wght 800 / wdth 66 —la instancia que la pagina ya usa en `.band__w`—
+     con el logotipo de JACQUEMUS de referencia: grotesca muy negra,
+     condensada y en versales. Medidas del dibujo de referencia contra los
+     ejes de Archivo: asta/versal 0,23 y avance/versal ~0,69; Archivo llega
+     a 0,226 de asta en wght 800, y de avance no baja de 0,736 ni en el
+     wdth 62 del tope, asi que el 66 es lo mas cerca que se puede estar sin
+     sentarse en el extremo del eje.
 
-     Y vale 300 aunque el eje vaya a 250, que no es un descuido: este
-     numero no pinta Archivo —lo hace `font-variation-settings`, que va
-     por debajo y gana—, solo elige el corte del SUSTITUTO. Por debajo de
-     400 el navegador busca primero hacia abajo, asi que con 250 la
-     Helvetica Neue de macOS da su UltraLight 200.
+     EL font-weight VA, Y NO SOBRA, y ahora vale 800 y no 300.
+     `font-variation-settings` mueve el eje de la fuente variable pero NO
+     toca `font-weight`, y ese numero solo elige el corte del SUSTITUTO
+     mientras Archivo viaja. Medido a 58 px contra la instancia nueva:
+     Helvetica Neue no tiene corte condensado, asi que sale ancha en todos
+     los pesos —250: +62,1 px; 300: +77,2; 400: +86,3; de 600 para arriba:
+     +101,3— y por ANCHO mandaria el 250. Por TINTA, que es lo que de
+     verdad se ve en una linea gorda sobre campo oscuro, el reparto se da
+     la vuelta: el 250 pinta un 55,7 % de menos, el 300 un 37,9 % de menos,
+     el 400 un 20,4 % de menos y el 700 se queda a un 16,8 % de mas, que es
+     el mas cercano de los cuatro. Se escribe 800 para que sea el mismo
+     numero que el eje; en macOS del 600 al 900 sale el mismo Helvetica
+     Neue Bold —medido: los cuatro, 388,6 px—, o sea que hoy 700 y 800 son
+     identicos y el 800 solo gana si algun dia el sustituto tiene Heavy.
 
-     EN VERSALES EL 300 SIGUE GANANDO, PERO POR OTRO MOTIVO, y conviene
-     saberlo antes de "corregirlo" mirando solo el ancho. Medido a 58 px
-     contra Archivo, en versales el sustituto se queda CORTO en los tres
-     cortes —250: -27,7 px; 300: -12,6; 400: -3,5—, asi que por ancho
-     mandaria el 400. Por TINTA, que es lo que de verdad se ve en una
-     linea fina, el 400 pinta un 24 % de mas y el 300 se queda a un 4 %
-     del destino: nueve pixeles de ancho no valen una linea que durante
-     el swap se vea mas gorda, que es justo lo que se pidio quitar. Con
-     "Ane Ugarte" el reparto era el contrario —250: 247,4; 300: 255,8;
-     400: 265,0 contra los 258,5 de Archivo— y el 300 salia por ancho.
-     Mismo numero, otra razon.
+     LA REGLA DE ANTES ERA ESTA MISMA CON EL SIGNO CAMBIADO, y conviene
+     saberlo antes de "corregirlo": cuando el eje iba a 250 se escribia 300
+     para que el sustituto no pintase MAS gordo que el destino, porque lo
+     que se habia pedido era quitar la negrita. Ahora el destino ES negro,
+     y el sustituto que menos se nota es el que tambien lo es.
 
-     LO QUE CUESTA: la linea nace 12,6 px mas estrecha y se ensancha al
-     llegar Archivo, o sea 6,3 px por lado en una linea centrada, y solo
-     en la primera visita con la cache fria —medido en vivo sobre el
-     dominio: 272 px de caja a los 300 ms y 287 a los 500—. Antes eran
-     2 px, y eran 2 porque el nombre iba en caja mixta. Esperar a
-     `document.fonts` lo dejaria en cero y no se hace, por lo mismo de
-     siempre: la fuente tarda unos 400 ms en cache fria. */
-  font-weight:300; font-variation-settings:"wdth" 100,"wght" 250;
-  font-size:clamp(30px,3.5vw,58px); line-height:1;
+     EL CUERPO SUBE PORQUE LA LETRA ADELGAZA, y no es un capricho de
+     tamaño. Condensar de wdth 100 a 66 deja la linea un tercio mas corta:
+     medido, "ANE UGARTE" pasa de 387 px de caja a 287 con el mismo cuerpo
+     de 58 px. El clamp se reescala por ese 1,348 —40 px de suelo donde
+     habia 30, 4,7vw donde habia 3,5 y 78 px de techo donde habia 58— para
+     que la linea ocupe en pantalla lo que ocupaba y la cortina no cambie
+     de composicion. Comprobado en vivo: 199 px de caja a 393 contra los 200
+     de antes. En escritorio hay que medir DENTRO del marco y multiplicar
+     por 0,75, y ademas el clamp topa por el ancho INTERIOR —1920 con la
+     ventana a 1440—, asi que el cuerpo se va al techo en los dos casos:
+     388 px dentro, 291 en pantalla, contra los 290 de antes.
+
+     LO QUE CUESTA: la linea nace ANCHA y se ESTRECHA al llegar Archivo,
+     justo al reves que antes, y solo en la primera visita con la cache
+     fria. Esperar a `document.fonts` lo dejaria en cero y no se hace, por
+     lo mismo de siempre: la fuente tarda unos 400 ms en cache fria. */
+  font-weight:800; font-variation-settings:"wdth" 66,"wght" 800;
+  font-size:clamp(40px,4.7vw,78px); line-height:1;
   letter-spacing:.02em; text-indent:.02em;   /* la prosa sobra por la derecha */
 }
 
