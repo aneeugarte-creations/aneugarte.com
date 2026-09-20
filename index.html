@@ -2522,6 +2522,34 @@ a.card__cue:hover,a.card__cue:focus-visible{ color:var(--ink); }
    cara que no se ve. Comprobado con el tabulador: la tarjeta se gira al
    recibir el foco y sigue girada en los dos enlaces. */
 .card--flip:has(a.card__cue:focus-visible) .card__flip{ transform:rotateY(180deg); }
+/* Y LA CARA QUE MIRA PARA EL OTRO LADO SE APARTA DEL RATON.
+   `backface-visibility:hidden` hace que el navegador deje de PINTARLA,
+   pero la sigue poniendo en el camino del puntero. Medido en vivo el
+   20-09-2026 con un clic de verdad y no deducido: con la tarjeta ya
+   girada —`transform` en matrix3d(-1,...)— un `elementFromPoint` sobre
+   el centro de cualquiera de las dos lineas devolvia
+   `IMG.card__mark`, el logotipo de la cara de DELANTE, y el clic se lo
+   quedaba el. Las dos direcciones no se podian pulsar.
+
+   No se habia notado nunca porque hasta ahora ninguna cara de detras
+   tenia nada que pulsar: en la 03 y en la 04 la tarjeta ENTERA es el
+   enlace, asi que da igual cual de las dos caras reciba el clic —las
+   dos cuelgan del mismo <a>—. Aqui el enlace va DENTRO, y entonces si
+   importa.
+
+   Los cuatro selectores son los mismos que giran la tarjeta, y por eso
+   vale tambien con MOVIMIENTO REDUCIDO, donde no hay giro sino una cara
+   que se desvanece: un elemento a `opacity:0` se queda el raton igual
+   que uno de espaldas.
+
+   Al puntero no le pasa nada por esto: el `:hover` cuelga de la
+   TARJETA, y quitar de en medio una de sus caras deja el puntero sobre
+   la otra, que sigue siendo suya. Y el toque tampoco: lo escucha la
+   tarjeta, no la cara. */
+.card--flip:hover .card__face--front,
+.card--flip:focus-visible .card__face--front,
+.card--flip.is-flipped .card__face--front,
+.card--flip:has(a.card__cue:focus-visible) .card__face--front{ pointer-events:none; }
 
 /* ── La cara de detrás cuando sólo lleva una frase ────────────
    Va después de --back a propósito: misma especificidad, decide el orden.
