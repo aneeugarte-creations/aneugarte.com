@@ -730,7 +730,12 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
      Comprobado en cuatro ventanas —1512x860 y 1440x900 a dpr 2,
      1920x1080 y 1280x800 a dpr 1— y en siete posiciones de cada una.
      La geometria del panel no se entera: la mascara se mide sobre la
-     caja de borde, que no cambia de tamano. */
+     caja de borde, que no cambia de tamano.
+     Y LA CAUSA YA NO EXISTE desde que el marco dibuja a escala 1
+     (5f3e468 del repositorio, comprobado en vivo el 20-09-2026): sin
+     `scale()` no hay pixel partido y la raya no puede volver. El parche
+     se queda porque no cuesta nada y porque el mando `?z=75` devuelve la
+     escala vieja; lo que caduca es la urgencia, no la medida. */
   border-bottom:2px solid transparent; background-clip:padding-box;
   /* EL CANTO, CON ANTIALIAS Y NO ENCAJADO. Aqui habia
      `clip-path:inset(...)`, que el navegador redondea al pixel del
@@ -2125,9 +2130,13 @@ body.js .shot{ opacity:var(--fade,1); }
    Y la regla que no se adivina sin medir: DOS PIEZAS QUE SE TOCAN
    SUMAN COMO MUCHO EL 80 % DEL ANCHO. Verificada en sus cinco
    parejas (78, 69, 64, 74, 69 %). Es lo que obliga a que cada pieza
-   grande vaya emparejada con una del suelo; aqui 02+03 = 78 %,
-   04+05 = 79 % y 07+08 = 80 %, y el canal libre entre las dos
-   nunca baja de 37 px.
+   grande vaya emparejada con una del suelo; aqui 04+05 = 79 % y
+   07+08 = 80 %, y el canal libre entre las dos nunca baja de 37 px.
+   RACIMOS HAY DOS Y NO TRES desde que Denaliving es la mayor. La
+   casilla tercera TOCABA a la segunda, y eso la condenaba al suelo:
+   con el futbol en 50 no le quedaban mas de 30. Darle hueco es lo que
+   permite agrandarla, y es el precio; la referencia tiene racimos de
+   dos y de tres, asi que dos no rompe nada.
    ---------------------------------------------------------------- */
 @media (max-width:899px), (max-height:659px), (max-aspect-ratio:999/1000){
   /* La condición es el complemento exacto de la del carril: esto vale
@@ -2138,8 +2147,8 @@ body.js .shot{ opacity:var(--fade,1); }
   .mont__rail{ gap:0; }
 
   /* Ancho y hueco de arriba, pieza a pieza. Paleta de seis valores
-     para nueve piezas, con el suelo repetido dos veces —igual que
-     ella, seis para diez—, y el orden roto a proposito: las CASILLAS
+     para nueve piezas —igual que ella, seis para diez—, y el orden
+     roto a proposito: las CASILLAS
      tercera y octava bajan al suelo sin llevar las piezas menores del
      carril, y la quinta sube por encima de la cuarta. Casillas y no
      piezas: desde que Denaliving se mudo detras del futbol los dos
@@ -2148,7 +2157,7 @@ body.js .shot{ opacity:var(--fade,1); }
      composicion propia. */
   .shot:nth-child(1){ --wm:33vmin; margin-top:0;     }  /* 128 px a 390 */
   .shot:nth-child(2){ --wm:50vmin; margin-top:55px;  }  /* 195          */
-  .shot:nth-child(3){ --wm:28vmin; margin-top:0;     }  /* 110 · suelo, pegada */
+  .shot:nth-child(3){ --wm:56vmin; margin-top:88px;  }  /* 220 · la mayor */
   .shot:nth-child(4){ --wm:37vmin; margin-top:96px;  }  /* 145 */
   .shot:nth-child(5){ --wm:42vmin; margin-top:0;     }  /* 165 · pegada */
   .shot:nth-child(6){ --wm:46vmin; margin-top:76px;  }  /* 180 */
@@ -2194,8 +2203,10 @@ body.js .shot{ opacity:var(--fade,1); }
      techo del movil habria sido el arreglo equivocado: rompe los racimos
      a 744 igual que a 390, porque la regla es proporcional.
 
-     La forma se conserva bimodal, dos gigantes y siete medianas, con el
-     mismo orden roto: ratio 3,07:1 contra el 3,15 de la referencia.
+     La forma se conserva bimodal —hoy TRES gigantes y seis medianas, que
+     Denaliving se sumo a las grandes— con el mismo orden roto: ratio
+     3,07:1 contra el 3,15 de la referencia, que no se mueve porque ni el
+     techo ni el suelo han cambiado.
      ---------------------------------------------------------------- */
   /* `max-aspect-ratio` no es decorativo: sin el, un telefono tumbado
      —932x430, que entra aqui por la rama `max-height:659`— pedia piezas
@@ -2214,7 +2225,7 @@ body.js .shot{ opacity:var(--fade,1); }
 
     .shot:nth-child(1){ --wm:35vw; margin-top:0;      }
     .shot:nth-child(2){ --wm:88vw; margin-top:8.2vw;  }
-    .shot:nth-child(3){ --wm:30vw; margin-top:8.2vw;  }
+    .shot:nth-child(3){ --wm:92vw; margin-top:8.2vw;  }
     .shot:nth-child(4){ --wm:39vw; margin-top:22.2vw; }
     .shot:nth-child(5){ --wm:44vw; margin-top:8.2vw;  }
     .shot:nth-child(6){ --wm:48vw; margin-top:15.9vw; }
@@ -2454,9 +2465,16 @@ body.js.in-mont .wm{
    no le caen encima ni el recorte, ni el filtro de color, ni el
    deslizamiento de 64 px que el carril les escribe a los cuadros.
 
-   La proporción 4/3 no es decorativa: sin ficha detrás, la tarjeta se
-   quedaría con la altura del logotipo —unos 145 px— y en un carril donde
-   las demás miden entre 240 y 460 se leería como un recorte suelto. */
+   LA PROPORCION LA DECIDE EL TAMAÑO, y en los dos sentidos. Aqui ponia
+   que el 4/3 no era decorativo porque sin ficha detras la tarjeta se
+   quedaria con la altura del logotipo —unos 145 px— y en un carril donde
+   las demas miden entre 240 y 460 se leeria como un recorte suelto. Eso
+   valia mientras Denaliving media 30svh. Hoy mide 80, es la mayor de
+   todas, y el defecto se ha dado la vuelta: sobra caja y el logotipo se
+   pierde dentro. Por eso lleva 16/9 —la cuenta esta en su pieza— y Keni,
+   que es un logotipo cuadrado y pequenio, sigue en 1/1. La regla no es
+   un numero: es que el rotulo ocupe cerca de un tercio del alto de su
+   papel. */
 .card__mark{ display:block; align-self:center; width:100%; height:auto; }
 .card__cue{
   justify-self:center; display:inline-flex; align-items:center; gap:9px;
@@ -3322,12 +3340,28 @@ body.is-live .rise > i{ transform:none; }
            táctil a propósito—, así que ahí un toque lleva a Instagram sin
            más, que es lo que la frase pedía de todos modos.
 
+           ES LA MAYOR DEL CARRIL, 80svh, y lo es por orden suya: "la pieza
+           mas importante de todas no puede ser mini". Pasa por delante de
+           Etxebarri, que hasta hoy era la mayor con 76.
+
+           Y LA PROPORCION CAMBIA CON EL TAMAÑO, que no es un capricho sino
+           la regla de la tarjeta-marca aplicada al reves: el 4/3 estaba
+           puesto para DARLE alto cuando media 30svh, y a 80 el defecto se da
+           la vuelta. Medido a 1512x860 con el marco ya a escala 1 —o sea
+           8,6 px por svh—: la tarjeta sale de 688 px de ancho y el logotipo,
+           que ocupa el ancho entero menos los 44 de relleno, mide 600x107.
+           En 4/3 la caja seria de 516 px de alto y esos 107 son el 21 %: un
+           rotulo pequenio en mitad de un folio. En 16/9 la caja queda en 387
+           y sube al 28 %, que es a lo que un logotipo se lee PUESTO sobre un
+           papel y no perdido en el. El alto cabe de sobra: 80 x 9/16 = 45svh
+           y con --top en 26 acaba en 71 de los 96 del escenario.
+
            El --mw:100% deja el logotipo a su tamaño de siempre: la regla de
            la cara lo baja al 80 %, y eso se pidió para el de Keni, no para
            este. -->
-      <figure class="shot" style="--w:30svh;--ml:12svh;--top:56svh;--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:80svh;--ml:12svh;--top:26svh;--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>03</b> &middot; Denaliving</p>
-        <a class="card card--flip card--fig card--link" style="--ar:4/3;--mw:100%"
+        <a class="card card--flip card--fig card--link" style="--ar:16/9;--mw:100%"
            href="https://www.instagram.com/denaliving/"
            target="_blank" rel="noopener noreferrer">
           <div class="card__flip">
@@ -3648,9 +3682,19 @@ body.is-live .rise > i{ transform:none; }
      (ver el comentario largo que hay allí). */
   var railOk  = window.matchMedia("(min-width: 900px) and (min-height: 630px) and (min-aspect-ratio: 1/1)");
 
-  /* LA ESCALA A LA QUE SE DIBUJA LA PAGINA. Dentro del artifact vale 1
-     y todo lo que sigue es inerte; publicada en el dominio, el visor se
-     reproduce con zoom:0.75 en :root y entonces vale 0,75.
+  /* LA ESCALA A LA QUE SE DIBUJA LA PAGINA, Y HOY VALE 1 EN LOS DOS
+     SITIOS, asi que todo lo que sigue es inerte. Medido el 20-09-2026
+     sobre el dominio en vivo: el `transform` de `#marco` es
+     `matrix(1, 0, 0, 1, 0, 0)` y la ventana interior a 1512x860 mide
+     1512x860. El marco dibujaba al 75 % hasta el commit 5f3e468 del
+     repositorio, que lo puso a 1 porque los dos topes en px del panel
+     del retrato no se enteran de la escala.
+     Y AUN ASI ESTA LINEA NUNCA DEVOLVIO 0,75: lee `zoom`, y el marco
+     nunca uso `zoom` sino `transform:scale()`, que `getComputedStyle`
+     no reporta ahi. O sea que Z ha valido 1 desde el primer dia y toda
+     la aritmetica que lo usa es una multiplicacion por uno. Aqui ponia
+     lo contrario. No se toca el codigo por esto —vale 1 y acierta—,
+     pero que nadie lo lea como si midiera algo.
      Hace falta porque las dos mitades del DOM no hablan la misma unidad:
        · getBoundingClientRect, innerWidth/innerHeight, clientWidth y
          scrollY devuelven px DIBUJADOS;
