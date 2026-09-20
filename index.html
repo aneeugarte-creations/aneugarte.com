@@ -838,7 +838,34 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
 .sig path{
   fill:none; stroke:var(--orange);
   stroke-linecap:round; stroke-linejoin:round;
-  stroke-dasharray:1; stroke-dashoffset:1;
+  /* EL HUECO VALE 2 Y NO 1, Y ESO ES LO QUE QUITA LOS CUATRO PUNTOS.
+
+     `stroke-dasharray:1` quiere decir «1 de trazo, 1 de hueco»: un patron
+     de periodo 2 sobre un camino que mide 1. En reposo el desplazamiento
+     vale 1, asi que el camino entero cae dentro del hueco —no se pinta
+     nada, que es justo lo que se busca— pero el trazo SIGUIENTE empieza
+     exactamente en el 1, que es el punto final del camino. Eso es un trazo
+     de longitud cero, y un trazo de longitud cero con `linecap:round` SE
+     PINTA: sale un disco naranja del grosor de la pluma —17 px— clavado en
+     el cabo del rasgo.
+
+     Se veian cuatro sobre la portada, y son los cabos de sig1, sig2, sig4 y
+     sig5. El quinto no salia, y esa es la pista de que no hay un camino
+     defectuoso: que el redondeo caiga en el 1 o un pelo despues depende de
+     la longitud real de cada camino y de la escala a la que se dibuje.
+     Medido en los siete anchos que la firma toma de verdad —de 648 px, que
+     es 72vw con la ventana en el umbral de 900, hasta el tope de 940—:
+     0, 1, 2, 4, 4, 3 y 0 puntos. Una loteria de redondeo no se arregla
+     moviendo numeros; hay que quitarle el sorteo.
+
+     Con el hueco en 2 el periodo pasa a 3 y el trazo siguiente empieza en
+     el 2, fuera del camino, asi que no queda nada de longitud cero que
+     rematar. Y LO QUE SE DIBUJA NO CAMBIA: en los dos casos lo pintado va
+     del 0 al 1 menos el desplazamiento, porque el hueco solo decide donde
+     empieza el trazo de DESPUES. Comprobado pixel a pixel en siete momentos
+     del recorrido —1, 0,9, 0,75, 0,5, 0,25, 0,1 y 0—: cero pixeles de
+     diferencia y la misma tinta hasta la unidad. */
+  stroke-dasharray:1 2; stroke-dashoffset:1;
 }
 /* sin recorrido no hay nada que trazar, y sobre el blanco de la portada
    el naranja se sostiene por el grosor del trazo, no por el contraste:
