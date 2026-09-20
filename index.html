@@ -48,16 +48,26 @@
  "knowsAbout":["Business operations","Spatial design","Product design","Automation","Artificial intelligence"],
  "sameAs":["https://www.linkedin.com/in/aneugarte/"]}
 </script>
-<!-- El favicon. Corazon naranja sobre verde oscuro; la geometria y los dos
-     colores estan en el guion que lo genera. VA ANTES DEL SCRIPT DEL MARCO,
-     y no es indiferente: en escritorio ese script cierra con <plaintext> y
-     se traga todo lo que venga detras, asi que aqui detras no existiria.
-     Delante se parsea con normalidad y el icono vale para las dos ramas.
-     El .ico lleva tres imagenes rasterizadas por separado —16, 32 y 48—; el
-     navegador lo pide por convencion aunque no hubiera ninguna etiqueta. -->
-<link rel="icon" href="/favicon.ico?v=5" sizes="any">
-<link rel="icon" type="image/svg+xml" href="/icon.svg?v=5">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=5">
+<!-- El favicon: la A dentro de un DISCO blanco, en el verde oscuro de la
+     pagina. Misma letra que el ANE UGARTE de la intro (Archivo wght 800 /
+     wdth 66) y misma pareja de colores, --ground #FDFCFC y --night #0A0F00.
+     La versal es 22 de 32, la proporcion de la marca que dio de referencia;
+     manda la distancia de las DOS ESQUINAS DE ABAJO de la A al canto del
+     circulo —0,865 del radio, un anillo de ~1 px a 16—, no el aire a los
+     lados, que en un circulo no significa nada. A 16 px ese verde se lee
+     NEGRO: es su decision, con la medida delante, no un descuido.
+     El de iOS va cuadrado y opaco hasta el borde: alli lo transparente se
+     compone sobre negro y un disco calado saldria con esquinas negras.
+     VA ANTES DEL SCRIPT DEL MARCO, y no es indiferente: en escritorio ese
+     script cierra con <plaintext> y se traga todo lo que venga detras, asi
+     que aqui detras no existiria. Delante se parsea con normalidad y el
+     icono vale para las dos ramas. El .ico lleva tres imagenes rasterizadas
+     por separado —16, 32 y 48—; el navegador lo pide por convencion aunque
+     no hubiera ninguna etiqueta. El ?v= sube con cada cambio de icono: el
+     navegador guarda el favicon con mucha mas mano que el HTML. -->
+<link rel="icon" href="/favicon.ico?v=6" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/icon.svg?v=6">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=6">
 <script>(function(){var d=document,w=window;if(w.self!==w.top)return;var z=0.75,m=/[?&]z=(\d{2,3})/.exec(location.search);if(m)z=+m[1]/100;if(!(z>.1&&z<=4))z=0.75;if(!w.matchMedia("(min-width:900px)").matches)return;d.write('<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;'+'background:#F7F7F0}body>plaintext{display:none}#marco{display:block;position:fixed;'+'top:0;left:0;border:0;width:calc(100vw / '+z+');height:calc(100svh / '+z+');'+'transform:scale('+z+');transform-origin:0 0}'+'@media (max-width:899px){#marco{width:100vw;height:100svh;transform:none}}</style>'+'<iframe id="marco" title="'+d.title+'" src="'+location.pathname+location.search+location.hash+'"></iframe><plaintext>');function ancla(){try{history.replaceState(null,"",f.contentWindow.location.hash||location.pathname)}catch(e){}}var f;function listo(){try{var v=f.contentWindow;v.focus();v.addEventListener("hashchange",ancla);if(!v.__gz){v.__gz=1;v.addEventListener("wheel",function(e){if(e.__gz||e.ctrlKey)return;e.__gz=1;try{Object.defineProperty(e,"deltaY",{value:e.deltaY/z,configurable:true});Object.defineProperty(e,"deltaX",{value:e.deltaX/z,configurable:true})}catch(_){}if(!v.Lenis){e.preventDefault();v.scrollBy(e.deltaX,e.deltaY)}},{capture:true,passive:false})}}catch(e){}}d.addEventListener("DOMContentLoaded",function(){var t=d.querySelector("plaintext");if(t)t.parentNode.removeChild(t);f=d.getElementById("marco");if(!f)return;f.addEventListener("load",listo);try{if(f.contentDocument&&f.contentDocument.readyState==="complete")listo()}catch(e){}});})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
