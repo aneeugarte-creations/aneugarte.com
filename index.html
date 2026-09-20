@@ -1414,6 +1414,49 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   opacity:.30;
 }
+/* Y LA SEGUNDA HOJA: LA CREACIÓN DE ADÁN, en la copa del mentón. Ella la
+   pidió «por al lado» de la de Leonardo, y el único hueco entero que le
+   queda a la carcasa es ése: la corona es una banda de 110 px donde la
+   escena se enreda con el carro falcado —medido, se pisan del 14 al 38 %
+   según el tamaño—, y debajo de la placa no se pisan nada, 0,0 %.
+
+   DOS COSAS QUE NO SE PUDIERON COPIAR DE LA HOJA DE LEONARDO:
+
+   UN FRESCO NO ES UNA PLUMA. La receta de ane-vinci.png mete en el alfa
+   cuánto oscurece el trazo su papel, y eso vale porque un dibujo a pluma
+   es línea sobre blanco. La Sixtina es claroscuro: masas de tono sin
+   contorno. Metida al alfa tal cual, al 30 % sobre el verde oscuro se
+   convierte en una mancha —el mismo fracaso exacto que los campos
+   profundos del Hubble cuando se probó el universo—. Así que del cuadro
+   se saca SU DIBUJO: módulo del gradiente sobre la luminancia suavizada
+   (sigma 2,0), normalizado por el percentil 99,5 y con el mismo umbral
+   blando. Es lo que hacía un grabador con una pintura antes de que
+   existiera la fotografía, y devuelve la pieza a la familia de la casa:
+   línea, como la malla de 0,34 px y como la pluma de Leonardo.
+
+   Y POR ESO VA AL 46 % Y NO AL 30 %. El mentón está en sombra —ane-shade
+   al 52 % le pasa por encima—, así que la misma tinta rinde ahí 2,5
+   veces menos. Medido sobre la pieza compuesta: al 30 % da 1,45:1, que
+   es invisible; al 46 % da 2,25:1, gemelo exacto del Leonardo (2,25) y
+   del plano de la placa (2,28). LO QUE SE CONSERVA ES EL CONTRASTE, NO
+   LA OPACIDAD; copiar el .30 habría sido copiar el número equivocado.
+
+   La escena va recortada por (75,25)-(1205,520) del original: fuera el
+   marco pintado —sus cornisas dan verticales rectísimas que declaran el
+   rectángulo— y fuera el registro de abajo; el canto se desvanece 30 px.
+   Y va corrida a x=228 para que los dos dedos que se tocan caigan en el
+   EJE del casco, axis(706)=444. Se comba con la pieza por la misma
+   proyección que la malla, como cualquier calca que entre aquí.
+
+   El horno es `dos/hornea_adan.py`. 80 kB, tinta en el 2,63 % del cuadro. */
+.cowl__adan{
+  position:absolute; inset:0;
+  background:var(--gold-ink);
+  -webkit-mask-image:url("ane-adan.png"); mask-image:url("ane-adan.png");
+  -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  opacity:.46;
+}
 /* La placa frontal, dorada. Es la que manda: lleva los ojos, la boca y
    casi toda la librea. Un metal no es un color plano: la luz entra por
    arriba a la izquierda, el cuerpo es el oro y el canto se va a sombra. */
@@ -3895,6 +3938,7 @@ body.is-live .rise > i{ transform:none; }
                placa es opaca y le pasa por encima, asi que el dibujo
                sale solo en el verde oscuro sin una segunda mascara. -->
           <div class="cowl__vinci"></div>
+          <div class="cowl__adan"></div>
           <div class="cowl__plate"></div>
           <div class="cowl__mapa"><i></i></div>
           <div class="cowl__rim"></div>
