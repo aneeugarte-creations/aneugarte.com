@@ -2068,6 +2068,46 @@ body.js .pf__col{ will-change:transform; }
    anchos son muy distintos entre sí, y la imagen se desliza DENTRO de su
    marco mientras la pieza cruza la pantalla.
 
+   Y ESOS ANCHOS YA NO SON UNA RAMPA: SON DOS GIGANTES Y SIETE MEDIANAS.
+   Hasta el 20-09-2026 iban 76, 58, 52, 44, 40, 36, 34 y 32svh, o sea una
+   escalera donde cada pieza es un poco menor que la anterior y ninguna
+   manda. La referencia no hace eso. Medida su tira de portada en vivo a
+   1512x880, imagen a imagen y en su propio orden: 294, 314, 632, 249,
+   244, 239, 592, 335 y 297 px de ancho. Son DOS gigantes —632 y 592, o
+   sea 71,8 y 67,3svh— y siete piezas apretadas entre 239 y 335 px (27,1
+   a 38,1svh): la banda pequena vale 1,40:1 y el salto al gigante, 2,64:1.
+   Y sus dos gigantes caen en las posiciones TERCERA y OCTAVA de nueve,
+   que aqui son justo Denaliving y Keni: «Denaliving y la de Keni
+   Engineering son los mas importantes», 20-09-2026. El orden no se toca,
+   solo el reparto.
+
+   LO QUE SE COPIA ES EL AREA, NO EL ANCHO, y conviene saberlo antes de
+   mover un numero. Sus fotos son casi cuadradas —de 0,84 a 1,09 de
+   proporcion—, asi que alli ancho y alto vienen a ser lo mismo; aqui la
+   proporcion va de 0,70 (el Klee) a 1,73 (Etxebarri). Copiando sus
+   ANCHOS, Etxebarri se quedaria en 314x181 —una rendija— y el Klee en
+   205 px de ancho. Lo que se iguala es g = raiz(ancho x alto) de cada
+   pieza suya, y de ahi sale la nuestra: ancho = g x raiz(proporcion) y
+   alto = g / raiz(proporcion). Por eso Etxebarri, la mas apaisada, sigue
+   siendo la mas ancha de las medianas (50svh) sin ser la mayor de todas.
+
+   Y EL GIGANTE MIDE LO QUE MIDE EL SUYO, NI MAS NI MENOS. Su pieza mayor
+   ocupa el 27,5 % de la pantalla (632x579 dentro de 1512x880). Denaliving
+   a 69svh ocupa el 27,7 % y Keni a 66, el 25,4 %. Ella habia rechazado
+   una prueba de Denaliving a 80svh —«demasiado grande»—, y 80svh es el
+   37,2 % de la pantalla: un tercio mas de mancha que el gigante de la
+   referencia. El 69 no es un punto medio elegido a ojo, es el numero que
+   iguala la mancha del suyo.
+
+   LAS ALTURAS SE REPARTEN POR LA PROPORCION DE CADA PIEZA, y esto es lo
+   unico que hay que rehacer si alguna cambia de --top. En una ventana de
+   630 px —el minimo con el que se enciende el carril— el suelo de 248 px
+   de `.shot` congela el ancho de las pequenas y su ALTO se dispara: 47,3
+   svh la 01, 56,2 el Klee y 44,7 la 05. Por eso las tres de proporcion
+   alta van arriba (--top 43, 36 y 6) y las apaisadas abajo (02, 06 y 07).
+   Con ese reparto la pieza que mas baja termina en 96,6 % a 630 y en
+   93,2 % a 880, dentro del escenario de 100.
+
    Sin JS, con movimiento reducido o en pantalla estrecha no hay carril:
    las piezas caen en una columna alternando lado.
    ============================================================ */
@@ -2130,8 +2170,13 @@ body.js .shot{ opacity:var(--fade,1); }
    Y la regla que no se adivina sin medir: DOS PIEZAS QUE SE TOCAN
    SUMAN COMO MUCHO EL 80 % DEL ANCHO. Verificada en sus cinco
    parejas (78, 69, 64, 74, 69 %). Es lo que obliga a que cada pieza
-   grande vaya emparejada con una del suelo; aqui 04+05 = 79 % y
-   07+08 = 80 %, y el canal libre entre las dos nunca baja de 37 px.
+   grande vaya emparejada con una del suelo; aqui 04+05 = 74 % y
+   07+08 = 78 %, y el canal libre entre las dos nunca baja de 86 px.
+   Desde el 20-09-2026 las dos grandes de los racimos son las dos
+   importantes —Denaliving en la quinta casilla no, en la tercera, que va
+   suelta; Keni si, emparejada con la septima—, y esa regla es la que le
+   pone el techo a Keni en 50: con la septima en el suelo de 28, mas no
+   cabe.
    RACIMOS HAY DOS Y NO TRES desde que Denaliving dejo el suelo. La
    casilla tercera TOCABA a la segunda, y eso la condenaba a 30 —con el
    futbol en 50, mas no cabe—. Darle hueco es lo que permite sacarla de
@@ -2147,23 +2192,25 @@ body.js .shot{ opacity:var(--fade,1); }
      los igualaba a todos y es justo lo que hay que quitar. */
   .mont__rail{ gap:0; }
 
-  /* Ancho y hueco de arriba, pieza a pieza. Paleta de seis valores
-     para nueve piezas —igual que ella, seis para diez—, y el orden
-     roto a proposito: las CASILLAS
-     tercera y octava bajan al suelo sin llevar las piezas menores del
-     carril, y la quinta sube por encima de la cuarta. Casillas y no
-     piezas: desde que Denaliving se mudo detras del futbol los dos
-     numeros dejaron de coincidir. Si el orden se conservara, esto se leeria como
-     una version encogida del escritorio en vez de como una
-     composicion propia. */
+  /* Ancho y hueco de arriba, pieza a pieza. Paleta de siete valores para
+     nueve piezas —ella usa seis para diez— y las dos importantes en lo
+     alto de la paleta: la tercera, Denaliving, en 52, y la octava, Keni,
+     en 50. Aqui el salto al gigante es mucho menor que en el escritorio
+     —1,86:1 contra 2,6:1— y no por gusto: manda el suelo. Dos piezas que
+     se tocan suman como mucho el 80 % del ancho, y eso pone techo a
+     cualquier gigante que tenga pareja. Esto NO es el escritorio
+     encogido; es la misma jerarquia dicha con el margen que hay.
+     (El orden de las OTRAS siete se queda roto a proposito: la quinta por
+     encima de la cuarta y la septima en el suelo, para que esto no se lea
+     como una version en miniatura de arriba.) */
   .shot:nth-child(1){ --wm:33vmin; margin-top:0;     }  /* 128 px a 390 */
-  .shot:nth-child(2){ --wm:50vmin; margin-top:55px;  }  /* 195          */
-  .shot:nth-child(3){ --wm:44vmin; margin-top:88px;  }  /* 173 */
-  .shot:nth-child(4){ --wm:37vmin; margin-top:96px;  }  /* 145 */
-  .shot:nth-child(5){ --wm:42vmin; margin-top:0;     }  /* 165 · pegada */
-  .shot:nth-child(6){ --wm:46vmin; margin-top:76px;  }  /* 180 */
-  .shot:nth-child(7){ --wm:52vmin; margin-top:120px; }  /* 203 · la mayor */
-  .shot:nth-child(8){ --wm:28vmin; margin-top:0;     }  /* 110 · suelo, pegada */
+  .shot:nth-child(2){ --wm:42vmin; margin-top:55px;  }  /* 164          */
+  .shot:nth-child(3){ --wm:52vmin; margin-top:88px;  }  /* 203 · Denaliving, la mayor */
+  .shot:nth-child(4){ --wm:28vmin; margin-top:96px;  }  /* 110 · suelo */
+  .shot:nth-child(5){ --wm:46vmin; margin-top:0;     }  /* 180 · pegada a la 4: 28+46 = 74 % */
+  .shot:nth-child(6){ --wm:37vmin; margin-top:76px;  }  /* 145 */
+  .shot:nth-child(7){ --wm:28vmin; margin-top:120px; }  /* 110 · suelo */
+  .shot:nth-child(8){ --wm:50vmin; margin-top:0;     }  /* 195 · Keni, pegada a la 7: 28+50 = 78 % */
   .shot:nth-child(9){ --wm:33vmin; margin-top:164px; }  /* 128 · el CTA */
 
   /* Lados alternos: nunca dos seguidas al mismo margen. Cuatro a la
@@ -2184,7 +2231,7 @@ body.js .shot{ opacity:var(--fade,1); }
      «Denaliving»: el badge medía un tercio del alto de la tarjeta. Con 26
      y 10 el logotipo llega hasta el 56 % del alto y el disco empieza en el
      63 %, y no se tocan. En el carril no cambia nada: allí la pieza más
-     pequeña mide 248 px y le sobra sitio.
+     pequeña mide 255 px y le sobra sitio.
      (Lleva `.card` delante por especificidad: las reglas de la tarjeta
      viven más abajo en la hoja y a igualdad de peso ganarían ellas.) */
   .card .card__cap{ padding:10px; }
@@ -2204,10 +2251,16 @@ body.js .shot{ opacity:var(--fade,1); }
      techo del movil habria sido el arreglo equivocado: rompe los racimos
      a 744 igual que a 390, porque la regla es proporcional.
 
-     La forma se conserva bimodal, dos gigantes y siete medianas, con el
-     mismo orden roto: ratio 3,07:1 contra el 3,15 de la referencia. Ni el
-     techo ni el suelo se han movido en todo el ir y venir de Denaliving,
-     que llego a estar en 92 —canto a canto— y hoy esta en 44.
+     La forma se conserva bimodal, dos gigantes y siete medianas: ratio
+     3,07:1 contra el 3,15 de la referencia. Ni el techo ni el suelo se han
+     movido en todo el ir y venir de Denaliving, que llego a estar en 92
+     —canto a canto—, bajo a 46 y el 20-09-2026 vuelve a 92: aqui las dos
+     casillas gigantes son las dos piezas importantes, la tercera y la
+     octava, y las que las dejan libres son el futbol (46) y Etxebarri
+     (30). Cuadradas las dos, 92vw son 767 px de alto en una pantalla de
+     834x1194 y 88vw son 734: caben, y suben la mancha hacia el 45-49 %
+     medido en la referencia, que con la septima apaisada se quedaba por
+     debajo.
      ---------------------------------------------------------------- */
   /* `max-aspect-ratio` no es decorativo: sin el, un telefono tumbado
      —932x430, que entra aqui por la rama `max-height:659`— pedia piezas
@@ -2225,13 +2278,13 @@ body.js .shot{ opacity:var(--fade,1); }
     .mont__rail{ padding-inline:4vw; }
 
     .shot:nth-child(1){ --wm:35vw; margin-top:0;      }
-    .shot:nth-child(2){ --wm:88vw; margin-top:8.2vw;  }
-    .shot:nth-child(3){ --wm:46vw; margin-top:8.2vw;  }
+    .shot:nth-child(2){ --wm:46vw; margin-top:8.2vw;  }
+    .shot:nth-child(3){ --wm:92vw; margin-top:8.2vw;  }  /* Denaliving */
     .shot:nth-child(4){ --wm:39vw; margin-top:22.2vw; }
     .shot:nth-child(5){ --wm:44vw; margin-top:8.2vw;  }
     .shot:nth-child(6){ --wm:48vw; margin-top:15.9vw; }
-    .shot:nth-child(7){ --wm:92vw; margin-top:8.2vw;  }
-    .shot:nth-child(8){ --wm:30vw; margin-top:11vw;   }
+    .shot:nth-child(7){ --wm:30vw; margin-top:8.2vw;  }
+    .shot:nth-child(8){ --wm:88vw; margin-top:11vw;   }  /* Keni */
     .shot:nth-child(9){ --wm:35vw; margin-top:32.4vw; }
 
     /* Los huecos son los de la referencia a 834 —68, 68, 185, 68, 133,
@@ -3363,7 +3416,7 @@ body.is-live .rise > i{ transform:none; }
            dice que es suya y a qué se dedica. Fuera el número, el lugar, la
            métrica y el recuadro del año: no los pidió y eran lo que hacía
            que la tarjeta pareciese un formulario a medio rellenar. -->
-      <figure class="shot" style="--w:34svh;--ml:0;--top:48svh;--sat:0.70;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:30svh;--ml:0;--top:43svh;--sat:0.70;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>01</b> &middot; Spain</p>
         <article class="card card--flip card--fig" tabindex="0">
           <div class="card__flip">
@@ -3387,7 +3440,7 @@ body.is-live .rise > i{ transform:none; }
            que el recorte se queda en nada; las piezas sin ficha llevan cada
            una la suya en --ar, porque lo que manda es la forma de lo que
            enseñan y no un formato común. -->
-      <figure class="shot" style="--w:58svh;--ml:9svh;--top:max(96px,10svh);--sat:0.95;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:45svh;--ml:9svh;--top:max(79px,9svh);--sat:0.95;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>02</b> &middot; Spain</p>
         <article class="card card--flip card--fig" style="--ar:3/2" tabindex="0">
           <div class="card__flip">
@@ -3427,6 +3480,18 @@ body.is-live .rise > i{ transform:none; }
            ver su pieza—. NO se deduce de la importancia de la pieza:
            es una decision suya y solo ella la cambia.
 
+           Y EL 20-09-2026 LA CAMBIO ELLA, con otra frase: «quiero que la
+           seccion de las tarjetas, desde la 01 hasta la 08 vayan en
+           distinto tamano como landonorris.com [...] Denaliving y la de
+           Keni Engineering son los mas importantes». Eso convierte a esta
+           pieza en uno de los DOS gigantes de la tira, y su tamano deja de
+           ser el escalon de en medio de tres para ser el que iguala la
+           mancha del gigante de la referencia: 69svh, el 27,7 % de la
+           pantalla contra el 27,5 % del suyo —la cuenta entera esta en la
+           nota larga del carril—. No devuelve los 80svh que rechazo: eso
+           era el 37,2 %, un tercio mas de mancha. Sigue siendo decision
+           suya; lo que hay aqui es un numero medido, no un gusto.
+
            LA FORMA Y EL TAMAÑO DEL ROTULO SALEN DE UNA IMAGEN SUYA, medida,
            y NO de la regla de la tarjeta-marca que hay unas lineas mas
            abajo. "Quiero que Denaliving se vea asi tal cual la foto esta",
@@ -3460,15 +3525,16 @@ body.is-live .rise > i{ transform:none; }
            tarjeta-marca—. La unica diferencia que queda con su imagen es
            ese papel: #FDFCFC en vez de #FFFFFF, dos puntos de luma.
 
-           Y EL --top BAJA DE 56 A 50 porque la caja cuadrada mide ahora
-           44svh de alto y no 24,75: a 56 acabaria en 100 y el escenario da
-           96. A 50 acaba en 94. Por abajo tampoco puede subir mucho mas: la
-           franja del futbol va de 10 a 48,7 y dos piezas de tamanio
-           parecido a la misma altura se leen como una fila.
+           Y EL --top BAJA DE 50 A 20, que es lo que obliga la caja: mide
+           69svh de alto, y el rotulo de encima pesa 3,2svh a 880 y 4,4 a
+           630, asi que el techo esta en 23,6 —a 630, 24+4,4+69 = 97,8 ya
+           se sale—. A 20 acaba en 92,2 a 880 y en 93,4 a 630. Por arriba
+           tampoco conviene subirla mas: la franja del futbol va de 9 a
+           41,2 y dos piezas a la misma altura se leen como una fila.
 
            (El --mw sustituye al 80 % que pone la regla de la cara, que se
            eligio para el logotipo de Keni y nunca fue de este.) -->
-      <figure class="shot" style="--w:44svh;--ml:12svh;--top:50svh;--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:69svh;--ml:12svh;--top:20svh;--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>03</b> &middot; Denaliving</p>
         <a class="card card--flip card--fig card--link" style="--ar:1/1;--mw:76.4%;--bp:0"
            href="https://www.instagram.com/denaliving/"
@@ -3502,16 +3568,18 @@ body.is-live .rise > i{ transform:none; }
            lectura y sin JS baja hasta el mismo texto, que ahí abajo se
            pinta como una sección. Proporción 7/10, la del cuadro.
 
-           BAJA DE 44 A 40svh, y no por ella: es la que va justo detras de
-           Denaliving y las dos se quedaron clavadas en 44 al elegir ella el
-           escalon medio. El carril vive de que los anchos sean distintos
-           entre si —es de donde sale la profundidad, no de darle a cada
-           pieza su propia velocidad— y dos iguales seguidas lo aplanan.
-           Cede esta y no Denaliving por geometria: con 7/10 es la mas alta
-           en proporcion de todo el carril, y a 48svh mediria 68,6 de alto
-           que, con su --top en 28, acabarian en 96,6 —fuera del escenario
-           de 96—. A 40 mide 57,1 y acaba en 85,1. -->
-      <figure class="shot" style="--w:40svh;--ml:13svh;--top:28svh;--sat:1;--con:1;--c:var(--es);--cl:var(--es-lt)">
+           31svh, Y EL PORQUE NO ES ELLA. Esta pieza entra en la banda
+           pequena de la tira —la cuenta esta en la nota larga del carril—
+           con la g = 35,9 de una de las suyas, y con 7/10 de proporcion
+           eso son 31 de ancho por 44,3 de alto: sigue siendo la mas alta
+           en proporcion de todo el carril. De ahi sale su --top, que sube
+           de 28 a 36 y no puede pasar de ahi: a 630 el suelo de 248 px le
+           congela el ancho y el alto se le va a 56,2svh, o sea que con 36
+           de partida acaba en 96,6 —dentro del escenario por los pelos—.
+           Antes media 40svh con --top 28, cuando el carril era una rampa
+           sin gigantes y esta pieza bajaba de 44 para no empatar con
+           Denaliving. -->
+      <figure class="shot" style="--w:31svh;--ml:13svh;--top:36svh;--sat:1;--con:1;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>04</b> &middot; Some essays</p>
         <a class="card card--flip card--fig card--link" style="--ar:7/10"
            href="#ensayo-klee" data-read="ensayo-klee">
@@ -3544,7 +3612,7 @@ body.is-live .rise > i{ transform:none; }
            archivo (2500×2838), así que no se recorta por ningún lado.
            Y el alt sí existe: quien no ve la página tiene que saber qué
            hay aquí, aunque en pantalla no haya una sola palabra. -->
-      <figure class="shot" style="--w:32svh;--ml:10svh;--top:max(118px,14svh);--sat:0.82;--c:var(--jp);--cl:var(--jp-lt)">
+      <figure class="shot" style="--w:29svh;--ml:10svh;--top:max(53px,6svh);--sat:0.82;--c:var(--jp);--cl:var(--jp-lt)">
         <p class="shot__lbl mono"><b>05</b></p>
         <article class="card card--fig card--plain" style="--ar:2500/2838">
           <img class="card__img" src="art-05.webp" loading="lazy" decoding="async" fetchpriority="low"
@@ -3556,7 +3624,7 @@ body.is-live .rise > i{ transform:none; }
            frase debajo. Proporción 3/2, la exacta de la fotografía. Y el
            código de color pasa de España a Japón, que es lo que tiñe el
            número del rótulo mientras el suelo cambia. -->
-      <figure class="shot" style="--w:52svh;--ml:16svh;--top:58svh;--sat:0.95;--c:var(--jp);--cl:var(--jp-lt)">
+      <figure class="shot" style="--w:41svh;--ml:16svh;--top:55svh;--sat:0.95;--c:var(--jp);--cl:var(--jp-lt)">
         <p class="shot__lbl mono"><b>06</b> &middot; Tokyo, Japan</p>
         <article class="card card--flip card--fig" style="--ar:3/2" tabindex="0">
           <div class="card__flip">
@@ -3578,7 +3646,7 @@ body.is-live .rise > i{ transform:none; }
            exacta del archivo (2984×1720) para no recortarle nada: la
            fotografía se juega entre la pared de piedra y la ventana, y
            cualquier recorte se come uno de los dos. -->
-      <figure class="shot" style="--w:76svh;--ml:7svh;--top:max(104px,11svh);--sat:1.00;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:50svh;--ml:7svh;--top:max(141px,16svh);--sat:1.00;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>07</b> &middot; Bizkaia, Spain</p>
         <article class="card card--flip card--fig" style="--ar:2984/1720" tabindex="0">
           <div class="card__flip">
@@ -3624,7 +3692,7 @@ body.is-live .rise > i{ transform:none; }
            pasa igual a la 01, la 02, la 06 y la 07, sólo que ahí lo que
            se queda sin ver es una ficha y aquí son dos direcciones—.
            Con ratón y con teclado se llega a las dos. -->
-      <figure class="shot" style="--w:36svh;--ml:14svh;--top:53svh;--c:var(--us);--cl:var(--us-lt)">
+      <figure class="shot" style="--w:66svh;--ml:14svh;--top:24svh;--c:var(--us);--cl:var(--us-lt)">
         <p class="shot__lbl mono"><b>08</b> &middot; USA &middot; Mexico</p>
         <article class="card card--flip card--fig" style="--ar:1/1;--mw:70%" tabindex="0">
           <div class="card__flip">
@@ -3667,7 +3735,7 @@ body.is-live .rise > i{ transform:none; }
         </article>
       </figure>
 
-      <div class="shot" style="--w:26svh;--ml:18svh;--top:44svh">
+      <div class="shot" style="--w:28svh;--ml:18svh;--top:40svh">
         <a class="mont__cta" href="#contacto">
           <b>Let&rsquo;s talk</b>
         </a>
