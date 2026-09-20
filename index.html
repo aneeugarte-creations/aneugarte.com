@@ -5101,10 +5101,11 @@ body.is-live .rise > i{ transform:none; }
    por encima suelta una de las tres. En el teléfono, donde no hay ratón
    que pase por encima, la suelta la sección de cierre.
 
-   Salen barajadas y se agota la baraja entera antes de volver a mezclar,
-   así que quien juegue un rato no ve dos veces la misma. Nada de frases
-   de taza: cosas pequeñas, concretas y de hoy. El día de alguien se
-   mejora con un vaso de agua, no con un consejo.
+   La primera de cada visita está decidida —siempre la de la naturaleza—
+   y detrás salen las otras barajadas, agotando la baraja entera antes de
+   volver a mezclar, así que quien juegue un rato no ve dos veces la
+   misma. Nada de frases de taza: cosas pequeñas, concretas y de hoy. El
+   día de alguien se mejora con un vaso de agua, no con un consejo.
 
    Va en su propio bloque a propósito: no toca nada del guión grande.
    ═════════════════════════════════════════════════════════════════════ */
@@ -5142,9 +5143,14 @@ body.is-live .rise > i{ transform:none; }
      —medido, no teorizado: Science, 2010—.
 
      Ninguna lleva "we", ni un adjetivo de elogio, ni una palabra que apunte
-     hacia atrás: salen barajadas, así que cada una es la primera para
-     alguien. Y ninguna finge ser una cita: el globo lleva su nombre. */
+     hacia atrás. La primera ya no lo necesitaría —está fijada—, pero las
+     otras dos siguen barajándose entre ellas y ninguna puede dar por hecho
+     cuál se leyó antes. Y ninguna finge ser una cita: el globo lleva su
+     nombre. */
   var FRASES = [
+    /* LA PRIMERA DEL ARRAY ES LA PRIMERA DE LA VISITA. `siguiente()` la
+       saca por su POSICIÓN, no por su texto, así que reordenar esto
+       cambia con qué frase te recibe la página. */
     "Nature could have made almost anyone.\nIt made you.",
     "You stopped to find out.",
     "No one else\u2019s clock keeps your time."
@@ -5154,14 +5160,41 @@ body.is-live .rise > i{ transform:none; }
   var finePtr = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
   /* la baraja */
-  var baraja = [], ultima = "";
+  /* LA PRIMERA NO SE BARAJA. Lo pidió así: «la primera vez que hayas
+     entrado en la web la primera frase siempre sea la de nature could have
+     made almost...». El azar entra a partir de la segunda.
+
+     De las tres es la única que puede ir sola: nombra el campo entero —todo
+     lo que la naturaleza pudo hacer— y luego saca de él a quien lee. Las
+     otras dos dan por hecho que ya estás dentro («you stopped», «your
+     time») y valen más de segunda que de bienvenida.
+
+     POR VISITA Y NO POR NAVEGADOR, que es lo que hace cierto el «siempre»:
+     cada vez que se entra, la página vuelve a recibir con ésa. No se guarda
+     nada, así que no depende de que el navegador conserve nada ni de que el
+     visitante sea el mismo.
+
+     En táctil no cambia nada salvo cuál sale: allí la visita entera da UNA
+     frase —`ane-otra-cosa` en sessionStorage— y ahora esa única es ésta. */
+  var baraja = [], ultima = "", estrenada = false;
+  function mezcla(a){
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = (Math.random() * (i + 1)) | 0, t = a[i];
+      a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
   function siguiente(){
+    if (!estrenada) {
+      estrenada = true;
+      /* las otras dos quedan barajadas detrás, así que la primera vuelta
+         sigue enseñando las tres sin repetir ninguna */
+      baraja = mezcla(FRASES.slice(1));
+      ultima = FRASES[0];
+      return ultima;
+    }
     if (!baraja.length) {
-      baraja = FRASES.slice();
-      for (var i = baraja.length - 1; i > 0; i--) {
-        var j = (Math.random() * (i + 1)) | 0, t = baraja[i];
-        baraja[i] = baraja[j]; baraja[j] = t;
-      }
+      baraja = mezcla(FRASES.slice());
       /* que la primera de la baraja nueva no repita la última de la vieja */
       if (baraja.length > 1 && baraja[baraja.length - 1] === ultima) baraja.unshift(baraja.pop());
     }
