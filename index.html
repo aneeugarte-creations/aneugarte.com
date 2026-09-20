@@ -2118,14 +2118,16 @@ body.js .shot{ opacity:var(--fade,1); }
 
   /* Ancho y hueco de arriba, pieza a pieza. Paleta de seis valores
      para nueve piezas, con el suelo repetido dos veces —igual que
-     ella, seis para diez—, y el orden roto a proposito: 02 y 08
-     bajan al suelo sin ser las menores del carril, y 05 sube por
-     encima de 04. Si el orden se conservara, esto se leeria como
+     ella, seis para diez—, y el orden roto a proposito: las CASILLAS
+     tercera y octava bajan al suelo sin llevar las piezas menores del
+     carril, y la quinta sube por encima de la cuarta. Casillas y no
+     piezas: desde que Denaliving se mudo detras del futbol los dos
+     numeros dejaron de coincidir. Si el orden se conservara, esto se leeria como
      una version encogida del escritorio en vez de como una
      composicion propia. */
   .shot:nth-child(1){ --wm:33vmin; margin-top:0;     }  /* 128 px a 390 */
-  .shot:nth-child(2){ --wm:28vmin; margin-top:55px;  }  /* 110 · suelo  */
-  .shot:nth-child(3){ --wm:50vmin; margin-top:0;     }  /* 195 · pegada */
+  .shot:nth-child(2){ --wm:50vmin; margin-top:55px;  }  /* 195          */
+  .shot:nth-child(3){ --wm:28vmin; margin-top:0;     }  /* 110 · suelo, pegada */
   .shot:nth-child(4){ --wm:37vmin; margin-top:96px;  }  /* 145 */
   .shot:nth-child(5){ --wm:42vmin; margin-top:0;     }  /* 165 · pegada */
   .shot:nth-child(6){ --wm:46vmin; margin-top:76px;  }  /* 180 */
@@ -2190,8 +2192,8 @@ body.js .shot{ opacity:var(--fade,1); }
     .mont__rail{ padding-inline:4vw; }
 
     .shot:nth-child(1){ --wm:35vw; margin-top:0;      }
-    .shot:nth-child(2){ --wm:30vw; margin-top:8.2vw;  }
-    .shot:nth-child(3){ --wm:88vw; margin-top:8.2vw;  }
+    .shot:nth-child(2){ --wm:88vw; margin-top:8.2vw;  }
+    .shot:nth-child(3){ --wm:30vw; margin-top:8.2vw;  }
     .shot:nth-child(4){ --wm:39vw; margin-top:22.2vw; }
     .shot:nth-child(5){ --wm:44vw; margin-top:8.2vw;  }
     .shot:nth-child(6){ --wm:48vw; margin-top:15.9vw; }
@@ -2621,7 +2623,7 @@ html.is-reading{ overflow:hidden; }
 
    Lo que se pierde no es la pista de giro —el raton la da— sino el aviso
    de que DOS de las nueve piezas no giran sino que llevan a otro sitio,
-   la 01 a Instagram y la 05 al ensayo. Con raton se nota igual, porque el
+   la 03 a Instagram y la 04 al ensayo. Con raton se nota igual, porque el
    puntero cambia a mano sobre un enlace; al tocar en un telefono no hay
    puntero que cambie. Ahi esas dos quedan sin senal propia.
 
@@ -3241,7 +3243,55 @@ body.is-live .rise > i{ transform:none; }
     <div class="mont__pin">
       <div class="mont__rail" id="montRail">
 
-      <!-- 01 · DENALIVING. La pieza ENTERA es un enlace a su Instagram, así
+      <!-- 01 · El cuadro y una frase, nada más. Delante «Batalla de las
+           Navas de Tolosa», de Francisco de Paula van Halen (1864); detrás
+           dice que es suya y a qué se dedica. Fuera el número, el lugar, la
+           métrica y el recuadro del año: no los pidió y eran lo que hacía
+           que la tarjeta pareciese un formulario a medio rellenar. -->
+      <figure class="shot" style="--w:34svh;--ml:0;--top:48svh;--sat:0.70;--c:var(--es);--cl:var(--es-lt)">
+        <p class="shot__lbl mono"><b>01</b> &middot; Spain</p>
+        <article class="card card--flip card--fig" tabindex="0">
+          <div class="card__flip">
+
+            <div class="card__face card__face--back card__face--solo">
+              <p class="card__kind mono">Build</p>
+              <h3 class="card__t">History content creation</h3>
+            </div>
+
+            <div class="card__face card__face--front" aria-hidden="true">
+              <img class="card__img" src="art-navas.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
+              <span class="card__veil"></span>
+            </div>
+
+          </div>
+        </article>
+      </figure>
+
+      <!-- 02 · La foto de equipo delante y, detrás, qué era aquello: una
+           empresa suya. La proporción es 3/2, la de la propia fotografía, así
+           que el recorte se queda en nada; las piezas sin ficha llevan cada
+           una la suya en --ar, porque lo que manda es la forma de lo que
+           enseñan y no un formato común. -->
+      <figure class="shot" style="--w:58svh;--ml:9svh;--top:max(96px,10svh);--sat:0.95;--c:var(--es);--cl:var(--es-lt)">
+        <p class="shot__lbl mono"><b>02</b> &middot; Spain</p>
+        <article class="card card--flip card--fig" style="--ar:3/2" tabindex="0">
+          <div class="card__flip">
+
+            <div class="card__face card__face--back card__face--solo">
+              <p class="card__kind mono">Build</p>
+              <h3 class="card__t">Football club management</h3>
+            </div>
+
+            <div class="card__face card__face--front" aria-hidden="true">
+              <img class="card__img" src="art-futbol.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
+              <span class="card__veil"></span>
+            </div>
+
+          </div>
+        </article>
+      </figure>
+
+      <!-- 03 · DENALIVING. La pieza ENTERA es un enlace a su Instagram, así
            que la tarjeta es un <a> y no un <article>; el tabindex sobra,
            porque un enlace ya entra en el recorrido del teclado por sí solo.
 
@@ -3254,8 +3304,8 @@ body.is-live .rise > i{ transform:none; }
            El --mw:100% deja el logotipo a su tamaño de siempre: la regla de
            la cara lo baja al 80 %, y eso se pidió para el de Keni, no para
            este. -->
-      <figure class="shot" style="--w:30svh;--ml:0;--top:14svh;--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
-        <p class="shot__lbl mono"><b>01</b> &middot; Denaliving</p>
+      <figure class="shot" style="--w:30svh;--ml:12svh;--top:56svh;--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
+        <p class="shot__lbl mono"><b>03</b> &middot; Denaliving</p>
         <a class="card card--flip card--fig card--link" style="--ar:4/3;--mw:100%"
            href="https://www.instagram.com/denaliving/"
            target="_blank" rel="noopener noreferrer">
@@ -3283,59 +3333,11 @@ body.is-live .rise > i{ transform:none; }
         </a>
       </figure>
 
-      <!-- 02 · El cuadro y una frase, nada más. Delante «Batalla de las
-           Navas de Tolosa», de Francisco de Paula van Halen (1864); detrás
-           dice que es suya y a qué se dedica. Fuera el número, el lugar, la
-           métrica y el recuadro del año: no los pidió y eran lo que hacía
-           que la tarjeta pareciese un formulario a medio rellenar. -->
-      <figure class="shot" style="--w:34svh;--ml:16svh;--top:48svh;--sat:0.70;--c:var(--es);--cl:var(--es-lt)">
-        <p class="shot__lbl mono"><b>02</b> &middot; Spain</p>
-        <article class="card card--flip card--fig" tabindex="0">
-          <div class="card__flip">
-
-            <div class="card__face card__face--back card__face--solo">
-              <p class="card__kind mono">Build</p>
-              <h3 class="card__t">History content creation</h3>
-            </div>
-
-            <div class="card__face card__face--front" aria-hidden="true">
-              <img class="card__img" src="art-navas.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
-              <span class="card__veil"></span>
-            </div>
-
-          </div>
-        </article>
-      </figure>
-
-      <!-- 03 · La foto de equipo delante y, detrás, qué era aquello: una
-           empresa suya. La proporción es 3/2, la de la propia fotografía, así
-           que el recorte se queda en nada; las piezas sin ficha llevan cada
-           una la suya en --ar, porque lo que manda es la forma de lo que
-           enseñan y no un formato común. -->
-      <figure class="shot" style="--w:58svh;--ml:9svh;--top:max(96px,10svh);--sat:0.95;--c:var(--es);--cl:var(--es-lt)">
-        <p class="shot__lbl mono"><b>03</b> &middot; Spain</p>
-        <article class="card card--flip card--fig" style="--ar:3/2" tabindex="0">
-          <div class="card__flip">
-
-            <div class="card__face card__face--back card__face--solo">
-              <p class="card__kind mono">Build</p>
-              <h3 class="card__t">Football club management</h3>
-            </div>
-
-            <div class="card__face card__face--front" aria-hidden="true">
-              <img class="card__img" src="art-futbol.webp" loading="lazy" alt="" decoding="async" fetchpriority="low">
-              <span class="card__veil"></span>
-            </div>
-
-          </div>
-        </article>
-      </figure>
-
       <!-- 04 · El Klee y su ensayo. La pieza es un ENLACE de verdad
            (href="#ensayo-klee"), no un botón: con JS abre el panel de
            lectura y sin JS baja hasta el mismo texto, que ahí abajo se
            pinta como una sección. Proporción 7/10, la del cuadro. -->
-      <figure class="shot" style="--w:44svh;--ml:18svh;--top:28svh;--sat:1;--con:1;--c:var(--es);--cl:var(--es-lt)">
+      <figure class="shot" style="--w:44svh;--ml:13svh;--top:28svh;--sat:1;--con:1;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>04</b> &middot; Some essays</p>
         <a class="card card--flip card--fig card--link" style="--ar:7/10"
            href="#ensayo-klee" data-read="ensayo-klee">
@@ -3376,7 +3378,7 @@ body.is-live .rise > i{ transform:none; }
         </article>
       </figure>
 
-      <!-- 06 · Tokio. Misma forma que la 03: el tipo de trabajo arriba y la
+      <!-- 06 · Tokio. Misma forma que la 02: el tipo de trabajo arriba y la
            frase debajo. Proporción 3/2, la exacta de la fotografía. Y el
            código de color pasa de España a Japón, que es lo que tiñe el
            número del rótulo mientras el suelo cambia. -->
@@ -3398,7 +3400,7 @@ body.is-live .rise > i{ transform:none; }
         </article>
       </figure>
 
-      <!-- 07 · Etxebarri. Misma forma que la 03 y la 06. La proporción es la
+      <!-- 07 · Etxebarri. Misma forma que la 02 y la 06. La proporción es la
            exacta del archivo (2984×1720) para no recortarle nada: la
            fotografía se juega entre la pared de piedra y la ventana, y
            cualquier recorte se come uno de los dos. -->
