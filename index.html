@@ -2455,7 +2455,48 @@ body.js.in-mont .wm{
   text-transform:uppercase; font-size:clamp(1.45rem,3.1vw,2.05rem);
   line-height:.98; letter-spacing:-.005em; text-wrap:balance;
 }
-.card__d{ margin:0; color:var(--ink-2); font-size:.98rem; }
+/* EL DESCRIPTOR VA EN VERSALES Y DEJA LA SERIF. Lo primero lo pidio ella
+   —«y en mayuscula»—; lo segundo es dictamen de un tipografo, con las
+   medidas de esta cara delante, porque componerlas tenia tres salidas y
+   ninguna era obvia.
+
+   NO EN LA MONO, que era la salida facil: el rotulo de arriba («Build») y
+   los dos enlaces de abajo ya son mono a 11,2 px con .16em, asi que el
+   descriptor habria sido la TERCERA etiqueta identica de la cara y habria
+   dejado el titular solo en medio de tres. Y NO EN LA SERIF EN VERSALES:
+   seria el unico caso de toda la pagina a cuerpo pequenio —Newsreader no
+   tiene versalita real, asi que son versales de asta fina y muy anchas— y
+   se leeria como descuido.
+
+   ARCHIVO CONDENSADA, y el motivo es el EJE: wdth 74 es exactamente el de
+   «KENI ENGINEERING» justo encima, y esa anchura compartida ata las dos
+   lineas en un bloque. El cuerpo (13,1 contra 32,8) y el peso (600 contra
+   800) mantienen el rango. La instancia no se estrena aqui: es la misma
+   que ya llevan las dos etiquetas de las esquinas de la pagina.
+
+   EL CUERPO BAJA de 15,7 a 13,1 px porque las versales rinden un ~18 % mas
+   grandes que la minuscula del mismo cuerpo: asi la mancha se queda donde
+   estaba. LA INTERLINEA baja de 1,62 —que es de prosa— a 1,15: sin
+   ascendentes ni descendentes que alojar, 1,62 solo inflaba el hueco.
+
+   Y EL text-indent ES LA MITAD DE LA PROSA: el letter-spacing anade su
+   hueco tambien DETRAS de la ultima letra, asi que una linea centrada cae
+   medio hueco a la izquierda. Mismo recurso que `.load__n b`, por lo mismo.
+   OJO, lo que queda suelto: las otras tres lineas de esta cara —el rotulo
+   y los dos enlaces— no llevan esa correccion y estan 0,9 px a la
+   izquierda, asi que esta pasa a ser la unica opticamente centrada.
+   Igualarlas es decision suya y pide una regla propia: `.mono` es global y
+   la usan tambien lineas alineadas a la izquierda. */
+.card__d{
+  margin:0; color:var(--ink-2);
+  font-family:var(--display);
+  font-variation-settings:"wdth" 74,"wght" 600;
+  font-size:.82rem;                 /* 13,1 px */
+  line-height:1.15;
+  letter-spacing:.145em; text-indent:.0725em;
+  text-transform:uppercase;
+  margin-top:-.3rem;                /* cierra el bloque con el titular */
+}
 .card__foot{ margin-top:auto; display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; padding-top:6px; border-top:1px solid var(--rule); }
 .card__metric{ display:flex; flex-direction:column; gap:2px; }
 .card__metric b{
