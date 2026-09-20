@@ -98,7 +98,36 @@
      unico que sigue aportando es tragarse el cuerpo detras del script;
      si algun dia sobra, quitarlo ahorra la segunda peticion del HTML
      (+143 KB) y le devuelve el texto al robot de escritorio. -->
-<script>(function(){var d=document,w=window;if(w.self!==w.top)return;var z=1,m=/[?&]z=(\d{2,3})/.exec(location.search);if(m)z=+m[1]/100;if(!(z>.1&&z<=4))z=1;if(!w.matchMedia("(min-width:900px)").matches)return;d.write('<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;'+'background:#F7F7F0}body>plaintext{display:none}#marco{display:block;position:fixed;'+'top:0;left:0;border:0;width:calc(100vw / '+z+');height:calc(100svh / '+z+');'+'transform:scale('+z+');transform-origin:0 0}'+'@media (max-width:899px){#marco{width:100vw;height:100svh;transform:none}}</style>'+'<iframe id="marco" title="'+d.title+'" src="'+location.pathname+location.search+location.hash+'"></iframe><plaintext>');function ancla(){try{history.replaceState(null,"",f.contentWindow.location.hash||location.pathname)}catch(e){}}var f;function listo(){try{var v=f.contentWindow;v.focus();v.addEventListener("hashchange",ancla);if(!v.__gz){v.__gz=1;v.addEventListener("wheel",function(e){if(e.__gz||e.ctrlKey)return;e.__gz=1;try{Object.defineProperty(e,"deltaY",{value:e.deltaY/z,configurable:true});Object.defineProperty(e,"deltaX",{value:e.deltaX/z,configurable:true})}catch(_){}if(!v.Lenis){e.preventDefault();v.scrollBy(e.deltaX,e.deltaY)}},{capture:true,passive:false})}}catch(e){}}d.addEventListener("DOMContentLoaded",function(){var t=d.querySelector("plaintext");if(t)t.parentNode.removeChild(t);f=d.getElementById("marco");if(!f)return;f.addEventListener("load",listo);try{if(f.contentDocument&&f.contentDocument.readyState==="complete")listo()}catch(e){}});})();</script>
+<!-- EL MARCO PIDE EL CUERPO FRESCO, y el `v=` no es un adorno.
+     GitHub Pages sirve el HTML con `Cache-Control: max-age=600` y eso NO
+     se puede configurar: durante diez minutos el navegador tiene permiso
+     para reutilizar la copia vieja. Para quien llega nuevo da igual —se
+     la baja fresca—, pero quien estuvo hace un rato seguia viendo la
+     anterior, y esta pagina se publica varias veces al dia desde tres
+     sitios a la vez. Ane lo dijo dos veces: «debe estar en aneugarte.com».
+
+     Se le pega al iframe un sello que cambia cada 10 s —`Date.now()/1e4`
+     entero—, asi que la direccion de dentro es nueva y la cache no la
+     puede servir. Diez y no cero: recargar dos veces seguidas dentro del
+     mismo intervalo sigue siendo gratis, y diez segundos no los nota
+     nadie. El documento de FUERA sigue cacheado sus diez minutos, y no
+     importa: no lleva contenido, solo esta cabecera y este script.
+
+     LO QUE CUESTA, medido el 20-09-2026: 126 KB comprimidos por visita de
+     escritorio, porque el cuerpo deja de servirse desde la cache del
+     navegador en la segunda peticion. En movil no cuesta nada —por debajo
+     de 900 px este script se va por la puerta de arriba y no hay marco—.
+
+     Y OJO AL ESTRENARLO: el arreglo no vale para la visita en la que se
+     publica. Quien tenga el documento de fuera cacheado sigue corriendo
+     el script VIEJO, que no lleva sello, durante lo que le quede de esos
+     diez minutos. Empieza a valer a la siguiente.
+
+     Se conservan `location.search` y `location.hash`: el mando `?z=75`
+     tiene que seguir llegando dentro, y el ancla tambien. Dentro del
+     iframe este mismo script se va por `w.self!==w.top`, asi que el sello
+     no se encadena. -->
+<script>(function(){var d=document,w=window;if(w.self!==w.top)return;var z=1,m=/[?&]z=(\d{2,3})/.exec(location.search);if(m)z=+m[1]/100;if(!(z>.1&&z<=4))z=1;if(!w.matchMedia("(min-width:900px)").matches)return;d.write('<style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;'+'background:#F7F7F0}body>plaintext{display:none}#marco{display:block;position:fixed;'+'top:0;left:0;border:0;width:calc(100vw / '+z+');height:calc(100svh / '+z+');'+'transform:scale('+z+');transform-origin:0 0}'+'@media (max-width:899px){#marco{width:100vw;height:100svh;transform:none}}</style>'+'<iframe id="marco" title="'+d.title+'" src="'+location.pathname+(location.search?location.search+'&':'?')+'v='+(Date.now()/1e4|0)+location.hash+'"></iframe><plaintext>');function ancla(){try{history.replaceState(null,"",f.contentWindow.location.hash||location.pathname)}catch(e){}}var f;function listo(){try{var v=f.contentWindow;v.focus();v.addEventListener("hashchange",ancla);if(!v.__gz){v.__gz=1;v.addEventListener("wheel",function(e){if(e.__gz||e.ctrlKey)return;e.__gz=1;try{Object.defineProperty(e,"deltaY",{value:e.deltaY/z,configurable:true});Object.defineProperty(e,"deltaX",{value:e.deltaX/z,configurable:true})}catch(_){}if(!v.Lenis){e.preventDefault();v.scrollBy(e.deltaX,e.deltaY)}},{capture:true,passive:false})}}catch(e){}}d.addEventListener("DOMContentLoaded",function(){var t=d.querySelector("plaintext");if(t)t.parentNode.removeChild(t);f=d.getElementById("marco");if(!f)return;f.addEventListener("load",listo);try{if(f.contentDocument&&f.contentDocument.readyState==="complete")listo()}catch(e){}});})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Fraunces:opsz,wght,SOFT,WONK@144,600,0,1&family=JetBrains+Mono:wght@400;500&family=Mona+Sans:wdth,wght@75..125,200..900&family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&display=swap">
