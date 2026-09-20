@@ -1708,9 +1708,13 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    la portada, que sí ruedan solas a 30 y 35 px/s; y es lo que hace que
    esto se mueva cada vez que se pasa por delante, y no una sola vez.
 
-   EL CONTENIDO lo eligió Ane: las cinco cosas que hace —«product
-   design» entró la última, y por eso va pegada a «spatial design»: son
-   la misma familia y así la lista no empieza y acaba con lo mismo—.
+   EL CONTENIDO Y SU ORDEN los eligió Ane: las cinco cosas que hace, con
+   «business operations» abriendo y los dos diseños detrás —«pon spatial
+   design y product design después de business operations»—. Entraron en
+   otro orden y lo cambió ella: aquí no hay nada que deducir. Y el orden
+   no cuesta geometría —medido: los siete renglones, el paso de 96,3 px,
+   el bloque de 674 y el viaje de 578 salen idénticos con las cinco en
+   cualquier orden; lo único que se reparte distinto son los anchos—.
    Antes fueron
    cuatro frases suyas —«Passionately curious.», «Nothing turns out to
    be unrelated.», «Nothing is everything?» e «Imagine»— y se
@@ -1726,15 +1730,16 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    es un error de maquetación.
 
    LOS CORTES DE RENGLÓN NO SE FUERZAN. No hay un solo <br>: se fija la
-   medida en 75vw y caen solos. MEDIDO a 1440, siete renglones —«Spatial
-   design,» / «product design,» / «business» / «operations,» /
+   medida en 75vw y caen solos. MEDIDO a 1440, siete renglones
+   —«Business» / «operations,» / «spatial design,» / «product design,» /
    «automation,» / «artificial» / «intelligence»— de
-   66/73/40/53/56/44/57 %vw, media 55,6 y dentado de 33 puntos. Las comas
+   40/53/66/73/56/44/57 %vw, media 55,6 y dentado de 33 puntos. Las comas
    quedan a final de renglón y son las que marcan dónde acaba cada cosa,
-   así que el corte por medida no rompe la lectura —y el renglón nuevo
-   tampoco: «product design,» cae entero en uno—. En vw y no en ch porque
-   abajo tiene que partir MÁS: a 390 la pila pasa de 7 renglones a 9 y
-   por eso sigue habiendo viaje.
+   así que el corte por medida no rompe la lectura, y los dos diseños
+   caen enteros, uno en cada renglón. La única que se parte es la
+   primera, «business operations», igual que se partía cuando iba en
+   medio. En vw y no en ch porque abajo tiene que partir MÁS: a 390 la
+   pila pasa de 7 renglones a 9 y por eso sigue habiendo viaje.
 
    EL CUERPO, 110 px, con el suelo del clamp en min(2.6rem, 10,4vw). El
    min() no es adorno: en pantallas estrechas el tope no lo pone el
@@ -3398,7 +3403,7 @@ body.is-live .rise > i{ transform:none; }
       <div class="pf">
         <div class="pf__win">
           <div class="pf__col">
-            <p class="pf__l">Spatial design, product design, business operations, automation, artificial intelligence</p>
+            <p class="pf__l">Business operations, spatial design, product design, automation, artificial intelligence</p>
           </div>
         </div>
       </div>
