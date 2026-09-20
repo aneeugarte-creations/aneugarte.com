@@ -1313,6 +1313,78 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
      planas encima de un metal redondo y se leerían pegadas. */
   background:var(--brass);
 }
+/* LAS MAQUINAS DE GUERRA DE LEONARDO, GRABADAS EN LA CHAPA. Lo pidió
+   ella: «quiero que en la máscara verde oscura de la portada haya esta
+   foto con transparencia», con la hoja del carro falcado y el carro
+   acorazado delante. La máscara tiene DOS verdes y el claro ya estaba
+   dado —la placa lleva el plano de la Tierra desde que ella lo pidió—,
+   así que esto es el otro: la carcasa, que es el 73 % del área.
+
+   VA DEBAJO DE LA PLACA Y POR ESO SÓLO SE VE EN EL VERDE OSCURO. No hay
+   una segunda máscara que recorte la carcasa: la placa es opaca y le
+   pasa por encima, que es la forma de decir «sólo aquí» sin inventar
+   geometría nueva. Y va por DEBAJO de la malla y de la luz horneada, así
+   que recibe el mismo foco que el resto del casco — que es justo lo que
+   hace que una calca se lea pintada y no pegada.
+
+   LA COMPOSICIÓN NO ES MÍA. La decidió un grabador con ocho pruebas
+   renderizadas delante —el casco recompuesto capa a capa, no la hoja de
+   estilos—: el friso del carro de guerra cruzando la frente, a sangre
+   por los dos costados, con la cúpula de la corona limpia por encima; el
+   resto de la hoja —la barca, el carro acorazado, las lanzas, los pies
+   de escritura— pasa por detrás de la placa y por fuera de la silueta.
+   La hoja no se recorta: LA RECORTA EL CASCO. Los cortes que quedan son
+   verticales contra los cantos de la placa, y un corte vertical se lee
+   como continuación; lo que no puede pasar es que el labio de la placa
+   corte un objeto redondo por su parte ancha, y de ahí sale la y = 124.
+
+   A 1,00x DE LA HOJA: sus 700 px nativos son 700 px del cuadro de 928.
+   Ni se amplía ni se reduce, así que la pluma pesa lo que pesa y
+   pertenece a la misma familia grabada que la malla de 0,34 px. A 1.100
+   la línea engorda 1,57 veces y ya es de otro taller.
+
+   Y LA HOJA SE COMBA CON LA PIEZA. Va horneada, no aquí: pasa por LA
+   MISMA PROYECCIÓN que la malla de la chapa —el elipsoide de helmet.py
+   visto desde 3.400 con la cámara a la altura de sus ojos—, porque el
+   eje del carro es una recta larguísima que cruza la cúpula entera y
+   plana sobre una superficie curva es lo único que delata una calca. En
+   el canto no se mueve; hacia el centro se hincha 1,097, que es lo mismo
+   que hacen los meridianos. Desplazamiento máximo medido, 30 px.
+
+   EL TONO ES EL DE LAS CALCAS y el alfa está medido sobre la pieza ya
+   compuesta, con la luz encima: `--gold-ink` al 30 % da 2,25:1 contra la
+   carcasa. Es el gemelo del 2,28:1 que el mapa tiene contra la placa
+   —misma tinta, mismo peso aparente— y va un pelo POR DEBAJO a
+   propósito: la carcasa es tres veces la placa, y a igual contraste
+   local pesaría más que el foco de la cara. Dentro de la banda 2,0-3,0
+   que ella aceptó, lejos del 8,15 que vio y rechazó.
+
+   UNA CALCA Y NO UNA BALDOSA. Repetida crearía costuras y una retícula
+   propia que pelearía con la malla, y la hoja dejaría de ser ESTA hoja
+   para ser papel pintado.
+
+   LO QUE SE PIERDE, para que conste: el carro acorazado —que es el
+   motivo que rima con la pieza, una cúpula sobre otra— queda casi entero
+   detrás de la placa; sólo asoma su popa por el costado derecho. Se
+   descartó aislarlo grande en la corona porque suelto y con aire
+   alrededor se lee como emblema pegado, que es exactamente el tipo de
+   objeto que ella ya quitó de aquí («va a quedar mucho más sutil si
+   quitamos la tierra»). Y se descartó cubrir el casco entero: eso borra
+   el dibujo y lo deja en textura, y lo que pidió es ESTA foto.
+
+   El horno es `vinci/hornea.py`: la tinta al alfa con el papel estimado
+   localmente, ya colocada y ya combada, a 1,25x del cuadro —la escala de
+   ane-helmlines.png, por lo mismo— y con el alfa en 32 niveles, que
+   baja el archivo de 206 a 146 kB con un error de 0,016 de alfa; al 30 %
+   eso son 0,005 de alfa final. */
+.cowl__vinci{
+  position:absolute; inset:0;
+  background:var(--gold-ink);
+  -webkit-mask-image:url("ane-vinci.png"); mask-image:url("ane-vinci.png");
+  -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  opacity:.30;
+}
 /* La placa frontal, dorada. Es la que manda: lleva los ojos, la boca y
    casi toda la librea. Un metal no es un color plano: la luz entra por
    arriba a la izquierda, el cuerpo es el oro y el canto se va a sombra. */
@@ -3417,6 +3489,10 @@ body.is-live .rise > i{ transform:none; }
 
         <div class="cowl" aria-hidden="true">
           <div class="cowl__fill"></div>
+          <!-- ENTRE LA CARCASA Y LA PLACA, y ese sitio ES la regla: la
+               placa es opaca y le pasa por encima, asi que el dibujo
+               sale solo en el verde oscuro sin una segunda mascara. -->
+          <div class="cowl__vinci"></div>
           <div class="cowl__plate"></div>
           <div class="cowl__mapa"><i></i></div>
           <div class="cowl__rim"></div>
