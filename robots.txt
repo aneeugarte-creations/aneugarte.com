@@ -1,0 +1,7 @@
+# aneugarte.com — todo abierto a los buscadores.
+# El sitio es UNA pagina; el sitemap existe para que Google tenga
+# una puerta que pedir en vez de esperar a descubrirla por un enlace.
+User-agent: *
+Allow: /
+
+Sitemap: https://aneugarte.com/sitemap.xml
