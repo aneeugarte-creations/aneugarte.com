@@ -1401,6 +1401,15 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    quitamos la tierra»). Y se descartó cubrir el casco entero: eso borra
    el dibujo y lo deja en textura, y lo que pidió es ESTA foto.
 
+   Y LA HOJA BAJÓ 70 PX —de y=124 a y=194— para hacerle sitio a la
+   Ariadna de Kauffmann en la corona: «baja un pelín la de leonardo para
+   que esta también se vea». Setenta y no más, y el número lo puso la
+   placa: es opaca y se come la hoja por abajo, así que cada píxel de
+   bajada cuesta dibujo. Medido dentro de la carcasa, bajando 70 px queda
+   el 90 % de la tinta; 110 px, el 82 %; 130 px, el 71 %. A 70 el carro
+   falcado sigue entero y la corona se abre de 87 a 157 px de banda
+   libre, que es lo que necesitaba la otra.
+
    El horno es `vinci/hornea.py`: la tinta al alfa con el papel estimado
    localmente, ya colocada y ya combada, a 1,25x del cuadro —la escala de
    ane-helmlines.png, por lo mismo— y con el alfa en 32 niveles, que
@@ -1456,6 +1465,52 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   opacity:.46;
+}
+/* Y LA TERCERA: ARIADNA ABANDONADA POR TESEO, de Angelica Kauffmann
+   (h. 1774), en la corona. Ella la pidió «en la parte de arriba de la
+   máscara que está libre», y libre de verdad sólo había una media luna
+   de 87 px entre el canto del casco y la pluma de Leonardo; de ahí que
+   el Leonardo baje 70 px y la media luna pase a 157. Es óleo, no pluma,
+   así que va por el mismo camino que La Creación de Adán: GRABADA
+   —módulo del gradiente sobre la luminancia suavizada—, porque el
+   claroscuro metido al alfa tal cual se vuelve mancha.
+
+   DOS COSAS QUE LA HOJA DEL MENTÓN NO PODÍA SABER TODAVÍA:
+
+   LA FINURA DE LA LÍNEA SE MIDE EN EL DESTINO, NO EN LA FUENTE. El sigma
+   del grabado se multiplica por la reducción: el Adán sale de un recorte
+   de 1.130 px puesto a 560, o sea sigma 2,0 → 0,99 px reales. Este
+   cuadro es de 718 px y el recorte mucho menor, así que copiar «sigma
+   2,0» habría dado una línea casi el doble de gorda —de otro taller—.
+   Se fija el sigma EFECTIVO en esos 0,99 px y se deduce el de la fuente.
+
+   Y POR ESO VA AL 22 % Y NO AL 30 %. La corona es justo donde cae la luz
+   horneada (ane-lit al 34 %), al revés que el mentón, que está en
+   sombra. Medido sobre la pieza compuesta: al 30 % da 2,83:1, más fuerte
+   que el propio Leonardo y bastante para comerse la cara; al 22 % da
+   2,27:1, gemelo del Leonardo (2,26) y del plano de la placa (2,28). Es
+   la misma regla del mentón leída al revés —SE CONSERVA EL CONTRASTE, NO
+   LA OPACIDAD—: allí hubo que subir de 30 a 46, aquí hay que bajar de 30
+   a 22.
+
+   FUERA EL MAR. El recorte, (200,98)-(670,425) del original, empieza
+   detrás de la mano alzada, y con él se va la línea del horizonte: una
+   recta larguísima sobre una cúpula curva es lo único que declara que
+   hay un rectángulo pegado, lo mismo que las cornisas del marco pintado
+   de la Sixtina. Se pierde el barco de Teseo alejándose, que es el
+   asunto del cuadro; medía 15 px y no se leía. Queda el gesto, que sí:
+   un brazo tendido hacia donde se fue y la frente caída en la otra mano.
+
+   Va en la caja (233,18) a 380 px de ancho, el canto se desvanece 26 px
+   y se comba con la pieza por la misma proyección que la malla, como
+   cualquier calca que entre aquí. El horno es `dos/hornea_ariadna.py`. */
+.cowl__ariadna{
+  position:absolute; inset:0;
+  background:var(--gold-ink);
+  -webkit-mask-image:url("ane-ariadna.png"); mask-image:url("ane-ariadna.png");
+  -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  opacity:.22;
 }
 /* La placa frontal, dorada. Es la que manda: lleva los ojos, la boca y
    casi toda la librea. Un metal no es un color plano: la luz entra por
@@ -3939,6 +3994,7 @@ body.is-live .rise > i{ transform:none; }
                sale solo en el verde oscuro sin una segunda mascara. -->
           <div class="cowl__vinci"></div>
           <div class="cowl__adan"></div>
+          <div class="cowl__ariadna"></div>
           <div class="cowl__plate"></div>
           <div class="cowl__mapa"><i></i></div>
           <div class="cowl__rim"></div>
