@@ -1708,7 +1708,10 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    la portada, que sí ruedan solas a 30 y 35 px/s; y es lo que hace que
    esto se mueva cada vez que se pasa por delante, y no una sola vez.
 
-   EL CONTENIDO lo eligió Ane: las cuatro cosas que hace. Antes fueron
+   EL CONTENIDO lo eligió Ane: las cinco cosas que hace —«product
+   design» entró la última, y por eso va pegada a «spatial design»: son
+   la misma familia y así la lista no empieza y acaba con lo mismo—.
+   Antes fueron
    cuatro frases suyas —«Passionately curious.», «Nothing turns out to
    be unrelated.», «Nothing is everything?» e «Imagine»— y se
    sustituyeron enteras. Venían de la fila «Craft» de #formacion, que se
@@ -1718,18 +1721,20 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    NO ES UN BUCLE, a propósito. La pila es finita: viaja de punta a
    punta y se acaba. Un bucle necesita que el ciclo sea mucho mayor que
    la ventana —la marquesina horizontal va a 9.539/1.440 = 6,6x— y aquí
-   el ratio es 1,20: se vería reaparecer arriba lo que acabas de leer
-   abajo, y una lista de cuatro cosas repetida sin fin no es una lista,
+   el ratio es 1,40: se vería reaparecer arriba lo que acabas de leer
+   abajo, y una lista de cinco cosas repetida sin fin no es una lista,
    es un error de maquetación.
 
    LOS CORTES DE RENGLÓN NO SE FUERZAN. No hay un solo <br>: se fija la
-   medida en 75vw y caen solos. MEDIDO a 1440, seis renglones —«Spatial
-   design,» / «business» / «operations,» / «automation,» / «artificial»
-   / «intelligence»— de 66/40/53/56/44/57 %vw, media 52,5 y dentado de
-   26 puntos. Las comas quedan a final de renglón y son las que marcan
-   dónde acaba cada cosa, así que el corte por medida no rompe la
-   lectura. En vw y no en ch porque abajo tiene que partir MÁS: a 390 la
-   pila pasa de 6 renglones a 7 y por eso sigue habiendo viaje.
+   medida en 75vw y caen solos. MEDIDO a 1440, siete renglones —«Spatial
+   design,» / «product design,» / «business» / «operations,» /
+   «automation,» / «artificial» / «intelligence»— de
+   66/73/40/53/56/44/57 %vw, media 55,6 y dentado de 33 puntos. Las comas
+   quedan a final de renglón y son las que marcan dónde acaba cada cosa,
+   así que el corte por medida no rompe la lectura —y el renglón nuevo
+   tampoco: «product design,» cae entero en uno—. En vw y no en ch porque
+   abajo tiene que partir MÁS: a 390 la pila pasa de 7 renglones a 9 y
+   por eso sigue habiendo viaje.
 
    EL CUERPO, 110 px, con el suelo del clamp en min(2.6rem, 10,4vw). El
    min() no es adorno: en pantallas estrechas el tope no lo pone el
@@ -1742,48 +1747,63 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
 
    Sí, 110 px le quita el cuerpo mayor al manifiesto (91,8 px, o sea
    1,20x). Se le quita a sabiendas y el manifiesto conserva el pico que
-   de verdad importa: su renglón más largo mide 1.132 px contra los 947
-   del nuestro. Dos picos distintos —la torre la letra más alta, el
+   de verdad importa: su renglón más largo mide 1.132 px contra los 1.046
+   del nuestro —que ahora es «product design,» y no «Spatial design,»;
+   eran 948 y sigue por debajo—. Dos picos distintos —la torre la letra más alta, el
    manifiesto el renglón más ancho y toda la masa—, y el manifiesto ya
    tiene además el pin, el paso, el suelo que vira y la firma.
 
    CINCO RENGLONES DE VENTANA —seis en estrecho—, Y EL LÍMITE ES DURO
-   POR ARRIBA. Con seis, la pila de 1440 cabría ENTERA dentro y el
+   POR ARRIBA. Con SIETE, la pila de 1440 cabría ENTERA dentro y el
    ratio bajaría a 1,00: no faltaría nunca ningún renglón, todo estaría
-   siempre presente y el viaje dejaría de leerse. Medido con la ventana
-   a seis: el recorrido caía a 193 px y el factor a 0,11, por debajo del
-   umbral. 1,17 es el último ratio que conserva «la lista sigue», y hoy
-   queda en 1,20 a 1440 y 1,17 a 390 — o sea justo encima.
+   siempre presente y el viaje dejaría de leerse. 1,17 es el último
+   ratio que conserva «la lista sigue», y hoy queda en 1,40 a 1440 y
+   1,50 a 390, o sea con holgura. Medido a 1440 subiendo la ventana:
+   cinco renglones dan 1,40, seis dan 1,17 clavado y siete dan 1,00 —de
+   modo que el techo es SEIS—.
+
+   ESE MARGEN LO TRAJO «product design», y conviene no gastarlo: con la
+   lista de cuatro cosas el ratio era 1,20 y 1,17, justo encima del
+   umbral, y el techo de la ventana era CINCO. Un renglón más sube las
+   dos cifras y deja sitio arriba; uno menos las devuelve al borde.
 
    Crecer o encoger la ventana NO cambia el recorrido: el viaje va del
    primer renglón centrado al último, o sea (n-1) pasos, y el alto de la
    ventana no aparece en esa cuenta. Lo único que cambia es cuánta
    pantalla llena la banda y cuánto falta por ver.
 
-   EL RECORRIDO, medido a 1440: paso de renglón 96,3 px, bloque 578,
-   ventana 481, viaje 5 x 96,3 = 482 px repartidos en los 1.598 px que
-   la banda está a la vista. Factor 0,30 px de torre por px de scroll.
+   EL RECORRIDO, medido a 1440: paso de renglón 96,3 px, bloque 674,
+   ventana 482, viaje 6 x 96,3 = 578 px repartidos en los 1.382 px que
+   la banda está a la vista. Factor 0,42 px de torre por px de scroll.
+
+   Y ESOS 1.382 SON `pfVH + pfWinH`, que es el tramo que `torrePaso` usa
+   de verdad. Aquí ponía 1.598, que es la ventana más la ALTURA DE LA
+   SECCIÓN —otro número, de otra cuenta—, y de ahí salía un factor de
+   0,30 que no era comparable con nada. Con la vara del guión, la lista
+   de cuatro cosas daba 0,35 y ésta da 0,42.
 
    Y EL UMBRAL, que también está medido y no puesto a ojo: el referente
    es el carril de #montado, que va a 1,000 px/px exacto. Por debajo de
    0,15 un movimiento ligado al scroll deja de leerse; a partir de 0,30
-   se lee bien. HOY: 0,30 a 1440, 0,29 a 1512, 0,26 a 1024, 0,18 a 390
-   — y 0,15/0,16 en las dos tabletas, o sea JUSTO en el umbral. Con las
-   cuatro frases de antes iban a 0,22, porque había ocho renglones y no
-   seis. Si algún día la lista se alarga, esto sube solo; si se acorta
-   más, la tableta se queda sin movimiento y habría que partir más fino
+   se lee bien. HOY: 0,42 a 1440, 0,43 a 1512, 0,37 a 1024, 0,27 a 390 y
+   0,23/0,22 en las dos tabletas. Con la lista de cuatro cosas eran
+   0,35 / 0,36 / 0,31 / 0,20 y 0,19/0,18: las tabletas estaban a un
+   suspiro del suelo de 0,15 y un renglón más las saca de ahí. Si algún
+   día la lista se acorta, vuelven al borde y habría que partir más fino
    por debajo de 900 px.
 
-   LO QUE CUESTA DE SCROLL: 698 px medidos = 0,78 pantallas a 1440. Por
-   debajo de una pantalla en los seis anchos (0,78 / 0,75 / 0,69 / 0,47
-   / 0,46 / 0,41), sin pin nuevo, y el ~49 % de scroll anclado no se
-   mueve, que es la condición que de verdad importaba.
+   LO QUE CUESTA DE SCROLL: 702 px medidos = 0,78 pantallas a 1440, y NO
+   sube con la lista —lo que mide la sección es la VENTANA, que es fija,
+   no la pila—. Por debajo de una pantalla en los seis anchos (0,78 /
+   0,80 / 0,69 / 0,47 / 0,46 / 0,41), sin pin nuevo, y el ~49 % de
+   scroll anclado no se mueve, que es la condición que de verdad
+   importaba.
 
    CON MOVIMIENTO REDUCIDO no hay ventana ni máscara ni viaje: la pila
    se lee entera y quieta. Cuelga de body.js, que la página sólo se pone
    cuando NO hay movimiento reducido, así que es también lo que se ve si
    el JS no llega. Se prefirió eso a dejar la ventana puesta y quieta:
-   con la ventana, un renglón de cada seis quedaría escondido para
+   con la ventana, DOS renglones de siete quedarían escondidos para
    siempre, y no se le esconde contenido a quien pide menos movimiento. */
 .pf{
   font-family:var(--impact); font-variation-settings:"wght" 800,"wdth" 110;
@@ -1811,25 +1831,27 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    movimiento que se percibe: los otros 482 px son deslizamiento. */
 .pf__r.is-hot{ color:var(--accent); }
 
-/* SEIS RENGLONES DE VENTANA, y el límite es duro por arriba: con SIETE la
-   ventana contendría la pila entera —ratio 1,00— y el viaje dejaría de
-   leerse, porque no faltaría nunca ningún renglón y lo único que pasaría
-   es que todo se desliza a la vez. 1,17 es el último ratio que conserva
-   «la lista sigue»; con 6 quedan 1,33 a 1440 y 1,29 a 390.
+/* CINCO RENGLONES DE VENTANA, y el límite es duro por arriba: con SIETE
+   la ventana contendría la pila entera —ratio 1,00— y el viaje dejaría
+   de leerse, porque no faltaría nunca ningún renglón y lo único que
+   pasaría es que todo se desliza a la vez. 1,17 es el último ratio que
+   conserva «la lista sigue», y medido a 1440 con la lista de hoy cinco
+   renglones dan 1,40, seis dan 1,17 clavado y siete dan 1,00: el techo
+   es SEIS. Este bloque decía SEIS y un techo de siete, que era de
+   cuando la ventana medía otra cosa —y contradecía a la regla que hay
+   tres líneas más abajo—.
 
    Y crecer NO cuesta movimiento: el recorrido va del primer renglón
    centrado al último, o sea (n-1) pasos, y el alto de la ventana no
-   aparece en esa cuenta. Aquí hubo 4,5 renglones con el argumento de que
-   más ventana era menos viaje, y con este recorrido ese argumento es
-   falso. Lo que se compra con los 155 px son presencia: la ventana pasa
-   del 48 % al 64 % de la pantalla a 1440, que es lo que quita el «tercio
-   central rodeado de papel».
+   aparece en esa cuenta. Aquí hubo 4,5 renglones con el argumento de
+   que más ventana era menos viaje, y con este recorrido ese argumento
+   es falso. Lo que se compra es presencia: medido a 1440, la ventana
+   ocupa el 53 % de la pantalla con cinco renglones y el 64 % con seis,
+   que es lo que quita el «tercio central rodeado de papel».
 
-   En estrecho van SIETE y no seis: el teléfono es mucho más alto que
-   ancho, así que la misma composición ocupa menos altura relativa —a 390
-   la ventana de 4,5 era el 19 % de la pantalla contra el 48 % a 1440—. Y
-   ahí la pila tiene 9 renglones en vez de 8, así que 7 todavía deja 1,29
-   de ratio. */
+   En estrecho van SEIS y no cinco: el teléfono es mucho más alto que
+   ancho, así que la misma composición ocupa menos altura relativa. Y
+   ahí la pila tiene 9 renglones, así que seis deja 1,50 de ratio. */
 body.js .pf__win{
   height:4.40em;                               /* 5 renglones x .88 */
   overflow:hidden;
@@ -3376,7 +3398,7 @@ body.is-live .rise > i{ transform:none; }
       <div class="pf">
         <div class="pf__win">
           <div class="pf__col">
-            <p class="pf__l">Spatial design, business operations, automation, artificial intelligence</p>
+            <p class="pf__l">Spatial design, product design, business operations, automation, artificial intelligence</p>
           </div>
         </div>
       </div>
