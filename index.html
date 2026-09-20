@@ -1870,6 +1870,122 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
    Secciones
    ============================================================ */
 .sec{ padding-block:clamp(70px,12vh,140px); }
+
+/* ============================================================
+   EL ASTRONOMO — «El astronomo» de Vermeer (1668) en 03 Formación
+   Tres estados y ninguno mas:
+     · sin JS o con movimiento reducido  -> el cuadro ENTERO en flujo,
+       nunca recortado, con su cartela y los dos bloques al lado;
+     · por debajo de 700 px              -> lo mismo, apilado;
+     · con JS y ancho                    -> cuatro tiempos dentro de la
+       seccion pegada (ver la nota del bucle).
+   El primero es el unico que tiene que aguantar solo: con movimiento
+   reducido `body.js` no se pone y con el se cae el filo ENTERO.
+   ============================================================ */
+.as{ margin:0; }
+.as__plate{ position:relative; width:min(420px,100%); }
+.as__img{ display:block; width:100%; height:auto; }
+/* el detalle solo existe en el escenario: en flujo se vería el recorte
+   encima del cuadro entero, que es justo lo que no queremos enseñar */
+.as__det,.as__mid,.as__topo{ display:none; }
+
+/* AQUI HUBO UNA CARTELA, dos veces: una debajo de la lamina y otra
+   sobre el lienzo al final. Decia «Johannes Vermeer · The Astronomer ·
+   1668 · oil on canvas · 51 × 45 cm · Musée du Louvre, Paris», en la
+   mono de la casa y con la convencion de museo. Las dos las pidio
+   quitar la dueña, preguntada expresamente por las dos.
+   Lo que se pierde, para que conste: la obra queda sin acreditar, y la
+   practica de museos y prensa seria es la contraria —recortar sin
+   complejo pero acreditar donde se enseña entera—. Lo unico que sigue
+   nombrandola es el `alt` de la imagen. Y por eso el `alt` tambien se
+   ha reescrito: decia «Johannes Vermeer, The Astronomer, 1668: a man
+   leaning over...», o sea que traia el credito de vuelta por la puerta
+   de atras. Ahora describe lo que se ve y nada mas. */
+
+/* ── LOS DOS BLOQUES ───────────────────────────────────────
+   El registro de la casa: Mona Sans wght 660 / wdth 93 en versales para
+   el dato fuerte, una sola palabra de acento en Fraunces, y el rotulo
+   mono con el numero en el acento. `--accent` y no `--orange` a pelo:
+   asi el naranja oscuro sale sobre crema y el claro sobre el cuadro,
+   que es lo que ya hace la arroba de ANEUGARTE@GMAIL.COM. */
+.fm{ display:grid; gap:0; }
+/* AQUI HUBO UN FILETE DE PELO por fila y su relleno —17 px arriba, 14
+   abajo—. Los pidio quitar la dueña junto con las dos etiquetas de
+   categoria: «quita las rayas y tanto 01 · Academic como 02 · Languages.
+   con leer lo que hay ya saben a que se refiere». Al irse el filete, el
+   relleno se queda sin nada que apartar, asi que se va con el; la
+   separacion entera pasa al hueco de `.as__col`, que es un solo numero
+   y se lee. Lo que se pierde, para que conste: el filete era lo que
+   decia «esto es una lista de dos filas» de un vistazo. Ahora lo dice
+   solo el blanco. */
+.fm__row{ padding:0; }
+/* LOS DOS BLOQUES SE SEPARAN POR BLANCO Y NADA MAS, asi que el blanco
+   tiene que ganarle al interlineado o los dos titulares se leen como un
+   parrafo de nueve lineas. El avance de linea es `font-size` x 0,96;
+   el hueco es 1,1 de ese cuerpo, o sea 1,15 avances, y eso pone la
+   distancia entre la ultima linea del 01 y la primera del 02 en 2,15
+   avances: el salto de seccion de toda la vida, dos espacios de linea.
+   Escrito con el MISMO clamp que el cuerpo para que no puedan
+   desacoplarse al cambiar la ventana. */
+.as__col{ display:grid; row-gap:calc(1.1 * clamp(1.5rem,min(4.9vw,7.3svh),4.5rem)); }
+.fm__k{ margin:0; color:var(--ink-3); }
+.fm__n{ color:var(--accent); }
+.fm__inst::before{ content:none; }
+.fm__v{
+  margin:15px 0 0;
+  /* DE 660 A 200. Lo pidio la dueña: «quiero que las letras de THREE
+     YEARS OF BUSINESS... sean en vez de negrita en finas totalmente
+     elegantes». Mona Sans se carga con el eje `wght` de 200 a 900, asi
+     que 200 es peso real y no una simulacion.
+     La prosa se va con el peso: los -.0625rem estaban ahi porque a 660
+     los contornos se cierran solos y la caja alta pide apretar; a peso
+     fino ese mismo valor junta las astas y el renglon se lee sucio. */
+  font-family:var(--impact); font-variation-settings:"wght" 200,"wdth" 93;
+  text-transform:uppercase;
+  /* EL TOPE BAJA A 4.1rem, Y NO ES UN RECORTE: ES QUITAR UN ESTADO
+     QUE NADIE HABIA VISTO. Con 4.5rem el cuerpo llegaba a 72 px en
+     pantallas altas, y en la columna de 633 px eso parte el bloque 01
+     en SIETE renglones en vez de cinco —188 px mas de bloque—, una
+     composicion que solo existia por encima de 1728 y que no es la que
+     se aprobo. Medido en la captura de la dueña: «THREE YEARS OF /
+     BUSINESS / ADMINISTRATION / AND / MANAGEMENT + / SALES /
+     MANAGEMENT». El salto de 5 a 6 lineas cae entre 65,7 y 66,4 px, asi
+     que 4.1rem (65,6) es el ultimo escalon que aguanta cinco.
+     Con esto la seccion se ve IGUAL de 1440 a 2560: mismo cuerpo,
+     mismas 5+3 lineas, misma lamina, mismo medianil. */
+  font-size:clamp(1.5rem,min(8.2vw,12.2svh),6.85rem);
+  line-height:.96; letter-spacing:0; color:var(--ink);
+}
+.fm__v em{
+  font-family:var(--brier); font-variation-settings:var(--brier-vs);
+  font-style:normal; font-weight:600;
+  font-size:1.043em; letter-spacing:-.022em; color:var(--accent);
+}
+.fm__a{ margin:10px 0 0; font-family:var(--serif);
+        font-size:1.1625rem; line-height:1.5; color:var(--ink-2); }
+@media (max-width:599px){
+  .fm__inst{ display:block; margin-top:6px; }
+  .fm__inst::before{ content:none; }
+}
+/* en flujo, el cuadro a la izquierda y el texto a la derecha a partir de
+   880 px, que es el corte que la pagina ya usa para partir cuerpos.
+   `body:not(.js)` y no `#formacion` a secas: un selector con id (1,0,0)
+   ganaria a `body.js .filo > .sec` (0,3,1) y se llevaria por delante el
+   position:sticky del escenario. */
+@media (min-width:880px){
+  /* la rejilla va en `.as`, que es quien tiene los tres hijos: el cuadro,
+     el bloque 01 con su cartela y el bloque 02. El cuadro ocupa la
+     columna izquierda entera y los dos bloques se apilan a la derecha. */
+  body:not(.js) #formacion .as{
+    display:grid; align-items:start;
+    column-gap:clamp(32px,5vw,80px); row-gap:clamp(26px,4svh,52px);
+    grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);
+    max-width:1360px; margin-inline:auto; padding-inline:var(--gutter);
+  }
+  body:not(.js) #formacion .as__stage{ grid-column:1; grid-row:1; }
+  body:not(.js) #formacion .as__col{ grid-column:2; grid-row:1; }
+  body:not(.js) #formacion .as__plate{ width:100%; }
+}
 .sec--tight{ padding-block:clamp(56px,9vh,104px); }
 
 /* Aquí vivía la cabecera de sección: número, título grande, un apunte a
@@ -3071,10 +3187,267 @@ html.is-reading{ overflow:hidden; }
 @media (min-width:700px){
   body.js .filo{
     --run:68svh;
-    height:calc(100svh + var(--run));
+    /* EL RECORRIDO. Se le añade al envoltorio por DELANTE del corte y el
+       corte no se entera. La cuenta:
+         · pegado        = alto - 100svh = --zoom + --run
+         · el borde del recorte esta en (alto - recorte) - scroll, asi
+           que mientras eso sea > 100svh el borde va por DEBAJO de la
+           pantalla y no recorta nada;
+         · al acabar el pegado vale 100svh - recorte = 32svh, que es
+           donde tiene que acabar, INDEPENDIENTE del alto.
+       O sea: recorte 68svh, margen -68svh, el filo termina en el mismo
+       pixel de siempre, y lo unico que cambia es que antes del corte hay
+       --zoom svh de seccion pegada y ENTERA. Tocar --run sigue estando
+       prohibido: es la geometria de la tinta.
+
+       264svh y no 150: con un zoom que se LEE el recorrido lo manda la
+       lectura, no el espectaculo. Ver la nota del bucle. */
+    --zoom:0svh;
+    height:calc(100svh + var(--zoom) + var(--run));
     margin-bottom:calc(var(--run) * -1);
     clip-path:inset(0 0 var(--run) 0);
   }
+  /* 320svh, Y ES LO QUE APROBO ANE. El ritmo en px sale de
+     `W0 x ln(K) / recorrido`, asi que acortar el recorrido multiplica
+     TODA la curva por igual y no la deforma —a diferencia de tocar el
+     exponente, que deja un extremo rapido y el otro muerto—. Con 320 el
+     primer pixel de scroll mueve 0,40 px, por encima del umbral de
+     0,25. La variante corta, de 200svh, sube ese arranque a 0,64 y
+     quita 1,2 pantallas de pagina, pero es POSTERIOR a la aprobacion:
+     esta guardada detras del interruptor de este mismo fichero, no
+     puesta. Ver la cabecera. */
+  body.js .filo:has(.as){ --zoom:min(200svh,175vw); }
+
+  /* EL ESCENARIO. Absoluto contra la seccion, y NO hace falta
+     position:relative en #formacion: la seccion ya esta posicionada
+     porque es sticky, y escribir #formacion{position:relative} (1,0,0)
+     mataria ese sticky (0,3,1). Si hiciera falta, :where(#formacion). */
+  /* SIN FONDO. Esto tenia `background:var(--ground)` y era un error que
+     se ve a simple vista: el mapa de curvas va en `.topo`, que es fija y
+     z-index 1, y se pinta POR DEBAJO de `main` —que lleva z-index 2— y
+     por encima del crema de `html`. O sea que las curvas se ven a traves
+     de las secciones porque las secciones son transparentes. Ponerle un
+     crema opaco a esta tapaba la capa entera y dejaba la seccion en
+     papel liso: medido, desviacion 0,26 contra los 4,0 de la pagina.
+     La seccion no necesita fondo propio: el crema ya esta debajo. */
+  body.js .filo .as{
+    --cab:calc(var(--gutter) + 9px + 2.451 * clamp(17px,1.4vw,21px));
+    --aire:clamp(12px,2.2svh,28px);
+    /* LA COLUMNA DE CONTENIDO, que es la referencia de TODA la pagina:
+       `.wrap` topa en 1360 y por encima de ahi el contenido ya no crece.
+       Aqui hacian falta dos tokens porque el ancla del cuadro se medía
+       contra `100vw`, y la ventana sigue creciendo cuando el contenido
+       ya no: medido, el ancla se corria del 55,8 % de la columna a
+       1440 al 60,4 % a 2560, y como el canto derecho esta clavado en la
+       regla de la pagina, lo que encogia era la lamina —544 px a 1440,
+       488 a 2560—. La dueña lo vio en su pantalla: «el tamaño de la
+       foto al inicio era mas grande no?». */
+    --cw:calc(min(1360px,100vw) - 2 * var(--gutter));
+    --cl:calc((100vw - min(1360px,100vw)) / 2 + var(--gutter));
+    position:absolute; inset:0; margin:0; padding:0; z-index:0;
+  }
+  /* EL RECORTE VA EN LA CAJA INTERIOR, no en el <figure>, y es `clip` y
+     no `hidden`: `hidden` monta un contenedor de scroll y basta con que
+     algo de dentro reciba el foco para que el navegador lo desplace por
+     su cuenta. Ademas asi la caja del <figure> no se mueve nunca y el
+     canto del filo no ve nada: coste 0,000 dy/ds al corte. */
+  /* Y VA POR DELANTE DE LA COLUMNA. Lo pidio la dueña: «no hace falta
+     que se borre el texto... simplemente ve como esta ahora a la foto y
+     ya». El texto deja de estar porque el lienzo LE HA PASADO POR
+     DELANTE, no porque se haya desvanecido: un fundido es un efecto y
+     se mira a si mismo.
+     `z-index:3` contra el 2 de `.as__col`, y no se escapa de ahi: `.as`
+     es `position:absolute` con `z-index:0`, o sea que ABRE CONTEXTO DE
+     APILAMIENTO y todo lo de dentro se pinta como un bloque. El
+     logotipo y la pildora (z-index 56) y la capa `.topo` de la pagina
+     (fija, z-index 1, por debajo de `main`) viven FUERA de `.as` y no
+     se enteran. Comprobado: no cambia ni un pixel de ninguno de los
+     tres. */
+  body.js .filo .as__stage{ position:absolute; inset:0; overflow:clip; z-index:3; }
+
+  /* LA CAJA QUE SE MUEVE. Una sola propiedad animada, transform, sobre
+     UN envoltorio: las dos imagenes van dentro y escalan juntas, asi que
+     no pueden desregistrarse. La caja lleva la proporcion exacta del
+     master —4401x5000— para que el transform-origin en % sea, pixel a
+     pixel, el del archivo. */
+  body.js .filo .as__plate{
+    /* 0,45 DE LA COLUMNA DE CONTENIDO. El ancla cae en el 0,55 y el
+       canto derecho en la regla de la pagina, asi que la lamina es el
+       resto: 554 px constantes de 1488 en adelante, y la composicion
+       deja de depender de lo ancho que sea el monitor. De propina son
+       10 px mas que los 544 de antes, con 48 px de medianil a 1440,
+       que es el peor caso. */
+    --eW:min(var(--cw) * 0.45,
+             0.8802 * (100svh - var(--cab) - 2 * var(--aire)));
+    --ek:1;                 /* la escala   — la escribe el bucle */
+    --eo:0;                 /* el centrado — la escribe el bucle */
+    position:absolute; left:50%; top:50%;
+    width:var(--eW); aspect-ratio:4401 / 5000;
+    margin-left:calc(var(--eW) * -.5);
+    margin-top:calc(var(--eW) * -.5681);        /* alto = ancho * 1,1361 */
+    /* EL PUNTO DE ENTRADA: el globo celeste, medido por foto-prep. Y no
+       es gusto, es geometria: el globo mide 873x873 px exactos —la
+       esfera cierra sola— y a 1:1 en un marco de 1440x900 llena el 97 %
+       del alto y el 61 % del ancho. El libro (520x115) pediria 2,77x y
+       la ventana (234x1977) 6,2x: ninguno puede ser destino. */
+    transform-origin:30.25% 49.17%;
+    /* El translate va PRIMERO, asi que NO lo escala el scale que viene
+       detras: lleva el punto de entrada al centro exacto de la pantalla
+       y ahi se queda. Las constantes salen del origen y de nada mas:
+       -(0,3027-0,5) = +0,1973  y  -(0,4901-0,5)*1,1361 = +0,01125 */
+    /* --eP clava el canto izquierdo del cuadro mientras se lee, para que
+       no invada la columna de texto. Lo calcula el bucle y se apaga con
+       `--eo` en la ultima transicion. */
+    --eP:0px;   /* lo escribe el bucle: ver EL ANCLA */
+    /* Y EL CANTO DE ARRIBA IGUAL. Con la lamina de partida a 1,6 veces,
+       el borde superior sube tan pronto que la pildora se quedaba A
+       MEDIO TAPAR 296 px de scroll a 1440x700 —hoy son 16—, o sea media
+       palabra sobre papel y media sobre el lienzo, con el texto todavia
+       en pantalla. Clavado el canto, la lamina crece SOLO hacia abajo y
+       hacia la derecha mientras se lee, y la cabecera no se toca hasta
+       que `--eo` suelta las dos anclas, ya en la parte rapida. A k=1 no
+       cambia ni un pixel: la lamina esta donde estaba. */
+    --ePy:0px;  /* lo escribe el bucle: ver EL ANCLA */
+    transform:
+      translate3d(calc(var(--eP) * (1 - var(--eo)) + var(--eW) * .1975 * var(--eo)),
+                  calc(var(--ePy) * (1 - var(--eo)) + var(--eW) * .00943 * var(--eo)), 0)
+      scale(var(--ek));
+    will-change:transform;
+  }
+  /* AQUI HUBO UN MARCO. Paspartu de 12,2 % a los lados y 16,2/20,6 %
+     arriba y abajo —base pesada—, filete de un pelo compensado con la
+     escala y sombra proyectada, todo dibujado y no fotografiado, en una
+     caja 4:5 exacta. Lo pidio quitar la dueña: «podemos quitar el marco
+     y dejar solo la imagen». El cuadro no cambio de tamaño ni de sitio.
+     Lo que se pierde, para que conste: el marco daba la escala real de
+     la obra —51 x 45 cm, que plana y a pantalla completa se lee como un
+     mural— y le daba un canto a un rectangulo que en pequeño es muy
+     oscuro. La version con marco esta en `sitio/pV.marco.html`. */
+  body.js .filo .as__plate > picture{ display:contents; }
+  body.js .filo .as__img,
+  body.js .filo .as__mid{ position:absolute; inset:0; width:100%; height:100%; }
+  /* EL PRIMER RELEVO. `vermeer-chico` (1600 px, 93 kB) es el primer
+     pintado: en la lamina va a 0,21x de si mismo y no hay razon para
+     bajar 327 kB para eso. Cede a `vermeer-todo` justo al llegar a su
+     1:1, en 1.600 px de ancho dibujado. Tres ficheros propios en tres
+     elementos propios, nunca candidatas de un mismo `srcset`: asi no hay
+     ninguna decision que el navegador pueda congelar al crecer la caja. */
+  body.js .filo .as__mid{ opacity:var(--emid,0); will-change:opacity; }
+
+  /* EL RELEVO. `vermeer-todo` son 2560 px: a 1:1 del master tendria que
+     inventarse 1,72x. `vermeer-detalle` es el recorte 402,1876 ->
+     2262,3040 del master A 1:1, sin reescalar un pixel, y va colocado
+     exactamente sobre su region:
+       x  9,134 % .. 51,397 %   ancho 42,263 %
+       y 37,520 % .. 60,800 %   alto  23,280 %
+     Como vive DENTRO de la caja transformada, escala con ella y no hay
+     nada que sincronizar. Al final el detalle se dibuja a 1.848 px de
+     sus 1.860 = 0,994x: por debajo del 1:1, sin ampliar un solo pixel.
+     Y el fotograma final cae ENTERO dentro del recorte —ventana visible
+     x 13,91..46,63 % e y 40,01..58,01 %— con margen por los cuatro
+     lados. */
+  body.js .filo .as__det{
+    display:block; position:absolute;
+    left:9.134%; top:37.520%; width:42.263%; height:23.280%;
+    opacity:var(--edet,0);
+    will-change:opacity;
+  }
+
+  /* EL LOGOTIPO Y LA PILDORA CRUZAN POR SEPARADO, cada uno cuando
+     cambia SU suelo. Aqui hubo un parche de noche arriba a la izquierda
+     para que el logotipo pudiera cruzar a la vez que la pildora, y era
+     rompiendo la regla que yo mismo escribi arreglando esto en la
+     version de la fachada. Se veia: un rectangulo gris sobre el papel
+     con un escalon de 55 niveles en y=155.
+
+     Los dos momentos estan medidos y son muy distintos, porque el punto
+     de entrada esta en el 30,25 % del lienzo —a la izquierda del
+     centro— y el cuadro se extiende mucho mas por la derecha:
+       · la pildora  (x 1243..1376) pierde el papel con    745 px de
+         ancho dibujado;
+       · el logotipo (x   64.. 147) aguanta hasta          1.888 px.
+     Entre los dos hay 1.143 px de ancho dibujado en los que el logotipo esta
+     sobre papel y tiene que seguir siendo negro. `on-dark` los pinta a
+     los dos a la vez, asi que al logotipo se le devuelve su tinta con
+     una clase propia mientras le quede suelo. */
+  body.as-wm-dia .wm{ color:var(--ink); }
+
+  /* LA CAPA QUE NO TERMINA NUNCA. Un zoom atado al scroll se acaba: con
+     la mano quieta no se moveria un pixel, y aqui ademas hay dos
+     DESCANSOS en los que la imagen esta parada a proposito. Lo unico de
+     esta pagina que no termina son las curvas de nivel —38 px/s de
+     arrastre mas tres periodos de 31,0 / 86,0 / 52,9 s que no son
+     multiplos entre si— y ese bucle ya corre. Misma baldosa y la receta
+     del suelo oscuro: de mascara sobre melocoton, para que salga clara
+     sobre el cuadro en vez de negra sobre negro. Una linea en el rAF. */
+  body.js .filo .as__topo{
+    display:block; position:absolute; inset:0;
+    background:var(--accent-lt); opacity:calc(var(--eo,0) * .11);
+    -webkit-mask-image:url("ane-topo.png"); mask-image:url("ane-topo.png");
+    -webkit-mask-size:980px 980px;  mask-size:980px 980px;
+    -webkit-mask-repeat:repeat;     mask-repeat:repeat;
+  }
+
+  /* ── LOS DOS BLOQUES, UNO POR DESCANSO ───────────────────
+     CADA BLOQUE VIVE EN UN SOLO MUNDO y se va antes de que el mundo
+     cambie, asi que NO HAY CRUCE DE TINTA: ni dos copias, ni velo, ni
+     halo, ni relevo instantaneo. Todo aquel aparato existia porque con
+     la fachada el texto tenia que sobrevivir al cambio de suelo; aqui
+     no lo hace.
+       · 01 se lee sobre CREMA, al lado de la lamina, en tinta negra, y
+         se funde durante la primera transicion;
+       · 02 entra ya sobre el cuadro, en crema, y vive en la banda alta
+         —medido a 1.361 px de ancho equivalente: 12,00 de contraste en
+         x 720 y 130, contra 1,32 en el centro y 1,97 sobre la ventana—.
+     Nunca pisan ni el globo ni la ventana, que es donde el cuadro no
+     admite texto (1,04-2,13 medido). */
+  /* EL ENVOLTORIO. Los dos bloques son dos filas de UNA lista y se leen
+     a la vez, asi que quien se posiciona es la columna, no cada bloque.
+     `--cab` reconstruye el alto de la cabecera fija —gutter + logotipo
+     (2,05em + 1em a lh .84, con el -0,111em del tope) + el filete de
+     2px con sus 7 de margen— para centrar el par en la banda que queda
+     POR DEBAJO del logotipo y no en la ventana: medido 122 px a
+     1440x900, 117 a 1280, 102 a 1024 y 88 a 744. */
+  body.js .filo .as__col{
+    position:absolute; z-index:2;
+    left:calc((100% - min(1360px,100%)) / 2 + var(--gutter));
+    /* 54,4 % DE LA COLUMNA DE CONTENIDO, no 49 % de la ventana. Es el
+       mismo numero: hasta 1280 el gutter es 5vw, asi que el contenido
+       es 0,9vw y 49/0,9 = 54,4; y de 1300 en adelante manda el tope de
+       62ch y ninguno de los dos porcentajes llega a tocar. Verificado
+       ventana a ventana: la columna sale identica al pixel y los cortes
+       de renglon no se mueven. Se cambia para que el texto y la lamina
+       cuelguen de la MISMA referencia y no puedan separarse. */
+    width:min(62ch,calc(var(--cw) * 0.544));
+    top:calc(var(--cab) + (100% - var(--cab)) / 2);
+    transform:translateY(-50%);
+    display:grid; row-gap:calc(1.1 * clamp(1.5rem,min(4.9vw,7.3svh),4.5rem));
+  }
+  /* EL BLOQUE 02, EN LA CREMA Y EN LA MISMA COLUMNA QUE EL 01.
+     Estaba sobre el lienzo y en crema; ahora los dos viven en el mismo
+     mundo, el papel, y con eso se cae lo ultimo que quedaba del aparato
+     de mundos: ni tokens de noche, ni `--eL` atado a la fraccion del
+     lienzo, ni contraste que vigilar sobre el cuadro.
+
+     NO estan los dos a la vez, y no es estetica: esta medido. Con el
+     texto tal cual —y el texto es contenido, no se toca— los dos
+     bloques mas la cartela piden 938 px de 900 a 1440x900, 789 de 700 a
+     1440x700 y 855 de 800 a 1280x800, y eso con separacion CERO. Ni
+     quitando la cartela caben a 1440x700 (713 de 700). Se leen en serie,
+     y el 02 entra por DEBAJO de donde acaba el 01 para que la lectura
+     baje por la columna como bajaria en una maqueta apilada —que es
+     literalmente lo que hace en flujo, con `reduce` y en el movil—. */
+  body.js .filo .as__b2{
+    position:static; width:auto;
+    /* ARRANCA EN LA MITAD DE DONDE ESTABA EL 01, o sea claramente mas
+       abajo en la columna, para que la lectura baje. No puede arrancar
+       donde el 01 TERMINA —679 px a 1440x900— porque sus 313 px se
+       saldrian por el pie; con los ~70 px que ha liberado la cartela
+       esto respira, pero los dos juntos siguen sin caber: 862 de 900,
+       713 de 700, 779 de 800, y eso con separacion cero. */
+  }
+
+  body.js .filo > .sec > .wrap{ display:none; }
   /* Formación deja de ser la franja de 463 px que era —media pantalla
      escasa, leída como un apunte al margen— y pasa a llenar la pantalla
      con su contenido centrado. */
@@ -4013,8 +4386,54 @@ body.is-live .rise > i{ transform:none; }
   <!-- ══════════════ 03 FORMACIÓN ══════════════ -->
   <div class="filo">
   <section class="sec" id="formacion">
+    <figure class="as" id="as">
+      <div class="as__stage">
+        <div class="as__plate" id="asPlate">
+          <picture>
+            <source srcset="vermeer-chico.avif" type="image/avif">
+            <img class="as__img" id="asImg" src="vermeer-chico.webp" width="1600" height="1818"
+                 decoding="async"
+                 alt="A man leaning over a celestial globe beside a window, an open book on the table beside him">
+          </picture>
+          <picture>
+            <source id="asMidSrc" type="image/avif">
+            <img class="as__mid" id="asMid" width="2560" height="2908"
+                 decoding="async" aria-hidden="true" alt="">
+          </picture>
+          <picture>
+            <source id="asDetSrc" type="image/avif">
+            <img class="as__det" id="asDet" width="1860" height="1164"
+                 decoding="async" aria-hidden="true" alt="">
+          </picture>
+        </div>
+        <span class="as__topo" id="asTopo" aria-hidden="true"></span>
+      </div>
+
+      <!-- AQUI HUBO DOS BLOQUES. El 01 decia «University of the Basque
+           Country (EHU) / Three years of Business Administration and
+           Management + Sales Management» y era el titular largo de la
+           seccion: cinco renglones de caja alta. Lo quito la dueña el
+           20-09-2026 —«quiero que quites la parte de la universidad y
+           solo dejes la de los idiomas»—, asi que la columna se queda
+           con un solo bloque y `.as__col` ya no separa nada: su
+           `row-gap` no tiene a quien apartar. Se deja puesto porque no
+           cuesta nada y porque devolver el 01 es volver a meter el div.
+           Lo que SI cambia de verdad es el tiempo de lectura: ver la
+           nota de `AS_T`. -->
+      <div class="as__col" id="asCol">
+      <div class="as__b2" id="asB2">
+        <div class="fm">
+          <div class="fm__row">
+            <p class="fm__v">Spanish, English and <em>Basque</em>.</p>
+            <p class="fm__a">A little French and Japanese.</p>
+          </div>
+        </div>
+      </div>
+      </div>
+
+    </figure>
     <div class="wrap">
-      <h2 class="sr">Education</h2>
+      <h2 class="sr">Languages</h2>
 
       <!-- AQUÍ HUBO UNA TERCERA FILA, «Craft»: «Spatial design, business
            operations, automation and artificial intelligence.» Se fue cuando
@@ -4025,18 +4444,12 @@ body.is-live .rise > i{ transform:none; }
            OJO al quitarla: lo que el filo rebana es la TINTA de esta
            sección, así que una fila menos es un corte más corto. Ver la
            medida en la nota de .filo. -->
-      <div class="body body--split">
-        <dl class="dl rv">
-          <div class="dl__row"><dt class="dl__k mono">Academic</dt><dd class="dl__v">Three years of Business Administration and Management&nbsp;+ Sales Management at the University of the Basque&nbsp;Country (EHU)</dd></div>
-          <div class="dl__row"><dt class="dl__k mono">Languages</dt><dd class="dl__v">Spanish, English and Basque. A little French and Japanese.</dd></div>
-        </dl>
-
-        <div class="rv" style="--d:120ms">
-          <blockquote class="pull" data-split>
-            I&rsquo;m no fan of certificates. I love learning.
-          </blockquote>
-        </div>
-      </div>
+      <!-- Aqui vivia una cita que la duena pidio retirar, en su propio
+           bloque y con su barra de acento. Se fue entera y no vuelve; el
+           motivo esta en el historial, no en este archivo.
+           Y los dos datos ya no viven aqui: los pinta `.as`, que es quien
+           sabe en que mundo esta cada uno. Este `.wrap` se queda solo con
+           el encabezado invisible para no cambiar el esqueleto. -->
     </div>
   </section>
   </div>
@@ -4649,6 +5062,375 @@ body.is-live .rise > i{ transform:none; }
     passRun = Math.max(1, pr.height - dkH);
   }
 
+  /* ── EL ASTRONOMO ──────────────────────────────────────────
+     UN SOLO TRAMO Y SIN DESCANSOS. Aqui hubo cuatro tiempos —75/38/75/76
+     vh, con la imagen QUIETA mientras se leia cada bloque— siguiendo el
+     `progress:false` que scrollama trae por defecto, que es la practica
+     del oficio para un texto que se lee junto a una figura. Se fue
+     entero: los dos bloques se leen ahora a la vez, en un solo estado,
+     y la escala es `k = asK3^e`, continua de punta a punta.
+
+     LO QUE ESO CUESTA, Y ESTA ACEPTADO: el movimiento durante la lectura
+     pasa de CERO px por fijacion a 12,5 —y son 12,5 en las CUATRO
+     combinaciones medidas, asi que no es consecuencia de esta y no se
+     arregla eligiendo otra—. La
+     literatura de lectura da 238 palabras por minuto, y de ahi salen los
+     4-5 px por fijacion que esta misma nota llamaba «el limite de lo
+     tolerable, no un objetivo»: estamos entre 2,4 y 3 veces por encima.
+     NO es un descuido y no hay que «arreglarlo» en una revision futura.
+     Lo pidio la dueña tres veces y lo confirmo con «dale caña»; si
+     alguien lo toca, que sea porque ella lo pida.
+
+     El umbral de 0,25-0,35 px de elemento por px de scroll si se cumple,
+     y ahora en TODO el recorrido y no solo en las transiciones: con el
+     exponente en 1 el primer pixel de scroll ya mueve 0,64 px.
+
+     Y UN RESULTADO QUE SALE AL REVES DE LO QUE PARECE: acortar el
+     recorrido NO empeora los px por fijacion durante la lectura. La
+     lectura ocupa una FRACCION fija del viaje (p <= 0,27) y tarda un
+     TIEMPO fijo —el texto no cambia—, asi que al acortar el recorrido la
+     velocidad de scroll baja en la misma proporcion en que sube el
+     movimiento por pixel, y el producto no se mueve. Medido: la
+     velocidad del canto al principio de la lectura es 0,320 px/px con
+     1.800 px de recorrido y 0,204 con 2.880 —razon 1,57 contra los 1,60
+     de los recorridos—, asi que los px por fijacion se quedan donde
+     estaban. Lo que si sube un 60 % es el arranque en px por pixel de
+     scroll, que es otra cosa: eso es lo que se ve como «va rapido».
+
+     LA OTRA PERDIDA, tambien aceptada: `vermeer-todo` se pinta estirado
+     a 1,161x durante 204 px de scroll con mas de la mitad de opacidad,
+     contra 132 px antes. El estiramiento MAXIMO no cambia —es el mismo
+     1,161x—, solo dura mas. Si algun dia molesta, el arreglo no es mover
+     un umbral: es reexportar ese fichero a ~3.400 px, +180 kB. */
+  var as     = document.getElementById("as");
+  var asPl   = document.getElementById("asPlate");
+  var asDet  = document.getElementById("asDet");
+  var asMid  = document.getElementById("asMid");
+  var asMidS = document.getElementById("asMidSrc");
+  var asDetS = document.getElementById("asDetSrc");
+  var asTp   = document.getElementById("asTopo");
+  var asB2   = document.getElementById("asB2");
+  var asSec  = document.getElementById("formacion");
+  var asFilo = asSec && asSec.parentNode;
+  /* el centro del recorte de foto-prep, localizado por correlacion */
+  var AS_PX = 0.3027, AS_PY = 0.4901;
+  /* 4.401 px = el master a 1:1. Por encima de ahi el navegador tendria
+     que inventar, y el detalle ya llega justo: 0,994x de sus 1.860. */
+  var AS_FIN = 4401;
+  /* AQUI HUBO UN `AS_TXT`. Cuando el bloque 02 se leia ENCIMA del
+     lienzo hacia falta saber donde acaba la ventana pintada —el 22,7 %
+     del ancho, medido: de x=300 a x=620 la crema daba 0,82-1,51 de
+     contraste y a partir de x=660 subia a 9,9-11,6— para arrancar el
+     texto en el 25 %. Desde que los dos bloques se leen a la vez y
+     sobre CREMA no hay texto sobre el lienzo y la constante sobra. */
+  /* donde se clava el canto izquierdo del cuadro mientras se lee: a la
+     derecha de la columna de texto, con aire. La columna es
+     `min(62ch,49%)` y mide x 104..737 a 1440 —medido, no supuesto: sale
+     de los rects de LINEA y no de la caja, porque una palabra puede ser
+     mas ancha que su columna—. Aqui decia 104..554, de cuando eran
+     44ch. */
+  var AS_X0 = 0;
+  /* LAS CUATRO MARCAS, en fraccion del recorrido. Ya no son cuatro
+     tramos de zoom —la escala es una sola curva, `asK3^e`— sino cuatro
+     marcas:
+       0,25  fin de la lectura
+       0,27  el texto ya no esta (lo TAPA el lienzo, no se desvanece)
+       0,35  `--eo` suelta las dos anclas y el lienzo va a su sitio
+       0,75  ya esta: de aqui al final solo escala, a pantalla completa
+
+  /* LA VENTANA DE `--eo`, 0,35 a 0,75, Y LA RAZON ES EL PULSO LATERAL.
+     El desplazamiento del lienzo hasta su encuadre final es una
+     distancia fija, asi que cuanto mas corta la ventana mas violento el
+     empujon al asentarse. Medido sobre la base buena: esta ventana da
+     un pulso lateral de 1,76 px/px, la mas suave de las cuatro
+     combinaciones probadas —A 2,39, C 3,81, D 2,77—. Confirmado por
+     duplicado, con dos barridos independientes: 1,77 y 2,42 contra
+     1,76 y 2,39.
+
+     ESO ES LO QUE SE ELIGIO, y conviene decirlo porque el numero que
+     salta a la vista es otro: el canto tarda 432 px de scroll en cruzar
+     la columna de texto, contra 189 de C. Quien mire ese 432 dentro de
+     seis meses va a pensar que es un descuido y va a querer
+     «arreglarlo». NO LO ES. Ane lleva desde el principio pidiendo que
+     sea fluido —«no es fluido» fueron sus palabras—, y el tiron lateral
+     al asentarse es literalmente eso: el cruce del texto es un
+     fotograma feo, el pulso es la sensacion de todo el movimiento. Se
+     le enseñaron las dos y eligio esta sabiendo el coste.
+
+     (Los que la evaluamos primero la juzgamos por el cruce y por el
+     remate y le dimos poco peso al pulso, que era justo la metrica que
+     mas le importaba a ella. El fallo de criterio fue nuestro.
+
+     Y antes hubo aqui otro parrafo con las marcas en 0,70 y 0,80 y con
+     estas cifras: cruce 190 px, remate 530, pulso 7,7 contra un pico de
+     5,9. Eran de la curva `e^1,7` y de una base cuyo viaje terminaba un
+     12 % corto por el `asRun` caducado; el razonamiento valia, los
+     numeros no.) */
+  var AS_T = [0.25, 0.27, 0.35, 0.75];
+  var asOn = false, asNear = false, asRun = 1, asCut = 1, asK3 = 1;
+  /* las dos cajas de la cabecera, medidas por tamaño de ventana */
+  var asPill = document.querySelector(".pill"), asWM = null, asCab = 0;
+  var asLast = "", asDark = false;
+
+  /* donde empieza la tinta del bloque, medido y no calculado */
+  function izqTinta(el){
+    if (!el) return 0;
+    var m = 1e9, n = el.querySelectorAll(".fm__k,.fm__v,.fm__a"), i, j, rs;
+    for (i = 0; i < n.length; i++) {
+      rs = n[i].getClientRects();
+      for (j = 0; j < rs.length; j++) if (rs[j].left < m) m = rs[j].left;
+    }
+    return m === 1e9 ? 0 : m / Z;
+  }
+  /* el ancho de la linea mas larga que de verdad se pinta en un bloque */
+  function anchoTinta(el){
+    if (!el) return 0;
+    var m = 0, n = el.querySelectorAll(".fm__k,.fm__v,.fm__a"), i, j, rs;
+    for (i = 0; i < n.length; i++) {
+      rs = n[i].getClientRects();
+      for (j = 0; j < rs.length; j++) if (rs[j].width > m) m = rs[j].width;
+    }
+    return m / Z;
+  }
+
+  function layoutAs(){
+    if (!as || !asPl || !asSec) { asOn = false; return; }
+    asOn = (window.innerWidth / Z) >= 700 && !reduce;
+    if (!asOn) {
+      as.style.removeProperty("--edet"); as.style.removeProperty("--emid");
+      body.classList.remove("as-wm-dia");
+      asPl.style.removeProperty("--ek"); asPl.style.removeProperty("--eo");
+      asLast = ""; asDark = false;
+      return;
+    }
+    /* --run en pixeles, leido del recorte y no supuesto */
+    var ns = (getComputedStyle(asFilo).clipPath || "").match(/-?[\d.]+(?=px)/g);
+    asCut = Math.max(1, ns ? Math.max.apply(null, ns.map(parseFloat)) : 0) / Z;
+    asRun = Math.max(1, asFilo.getBoundingClientRect().height / Z
+                      - (window.innerHeight || 1) / Z - asCut);
+    var W0 = asPl.offsetWidth || 1;
+    asK3 = AS_FIN / W0;                  /* el 1:1 */
+    /* AQUI SE CALCULABA `asK2 = asK3^0,49`, la escala del descanso de en
+       medio. Se fue con los descansos: la curva es de un solo tramo y no
+       hay meseta que escalar. Se borra en vez de dejarlo calculandose,
+       que es lo que hace creer dentro de seis meses que significa algo. */
+    /* donde empieza el texto del descanso 2: el 25 % del ancho del
+       lienzo, que es justo pasada la ventana (22,7 % medido). Se calcula
+       una vez por tamaño de ventana, no por fotograma. */
+    var vw = (window.innerWidth || 1) / Z;
+    /* EL ANCLA SALE DE LA TINTA QUE DE VERDAD SE PINTA, no del ancho de
+       la caja. La caja miente por los dos lados: la ultima linea es mas
+       corta que su ancho, y sobre todo una palabra puede ser MAS ANCHA
+       que su columna —«ADMINISTRATION» a 72 px de Mona Sans mide ~590 px
+       en una columna de 450 y no hay donde partirla—. Midiendo la caja,
+       el cuadro se clavaba en 658 y la palabra llegaba a 665: 7 px por
+       debajo del lienzo a 1440x900, que es la ventana mas comun.
+       Asi que se recorren los rects de LINEA de los dos bloques y manda
+       el mas ancho. Se hace una vez por tamaño de ventana, no por
+       fotograma. */
+    /* EL MEDIANIL ES EL `--gutter` DE LA PAGINA, resuelto. Y hay que
+       resolverlo con cuidado: `getPropertyValue("--gutter")` devuelve la
+       cadena `clamp(20px,5vw,64px)` sin evaluar —una propiedad
+       personalizada no registrada no se resuelve—, asi que parseFloat
+       daba NaN y se caia al 20 de reserva. Se lee del `padding-left` YA
+       RESUELTO de `.wrap`, que es quien lo usa. */
+    var wrp = asSec.querySelector(".wrap");
+    var gut = (wrp ? parseFloat(getComputedStyle(wrp).paddingLeft) : 0) ||
+              Math.min(64, Math.max(20, vw * 0.05));
+    /* y el arranque de la columna sale de la propia tinta, no de otra
+       cuenta que pueda desviarse de ella */
+    var izqT = izqTinta(asB2);
+    var tinta = anchoTinta(asB2);
+    /* EL ANCLA, EN FRACCION DE LA COLUMNA DE CONTENIDO y no de la
+       ventana: ver `--cw` en el CSS. El termino de tinta se queda como
+       suelo —en pantallas estrechas manda el, igual que antes— y el
+       0,55 solo gobierna de 1488 en adelante, donde el contenido ya es
+       constante. */
+    var _cw = Math.min(1360, vw) - 2 * gut;
+    var _cl = (vw - Math.min(1360, vw)) / 2 + gut;
+    AS_X0 = Math.max(izqT + tinta + 40, _cl + _cw * 0.55);
+    /* LA CAJA DEL LOGOTIPO SI ES FIJA —dice siempre ANE / UGARTE— asi
+       que se mide aqui, con lo demas, y no cada fotograma. La de la
+       pildora NO: ver EL CRUCE. */
+    var _w = wmEl && wmEl.getBoundingClientRect();
+    asWM = _w ? [_w.left / Z, _w.top / Z, _w.right / Z, _w.bottom / Z] : null;
+    /* el borde de abajo de la cabecera, MEDIDO. El CSS lo reconstruye en
+       `--cab` a partir del gutter y del cuerpo del logotipo; aqui no
+       hace falta reconstruir nada porque la caja ya esta leida. */
+    asCab = asWM ? asWM[3] : 0;
+  }
+
+  /* LA POSICION SE LEE, NO SE RECUERDA. Formación esta a siete pantallas
+     de la portada y por encima hay ocho imagenes perezosas: cada una que
+     carga la mueve. Medido en el prototipo anterior, guardar el top
+     dejaba el recorrido desplazado 175 px. Un rectangulo por fotograma y
+     solo con la seccion cerca; ademas asi el zoom y el recorte leen EL
+     MISMO numero —el scroll ya pintado— y el desfase con Lenis es cero
+     por construccion. */
+  function pasoAs(y){
+    if (!asOn || !asNear) return;
+    /* EL RECORRIDO SE LEE, NO SE RECUERDA — y el `top` tampoco. Medido:
+       con `asRun` cacheado desde `layoutAs`, el final del viaje se
+       quedaba en `ek` 7,14 en vez de 8,09, o sea el cuadro terminaba a
+       0,882x del master en vez de a 1:1, un 12 % corto. La causa es la
+       de siempre en esta seccion: Formación esta a siete pantallas de la
+       portada y por encima hay imagenes perezosas, asi que cualquier
+       medida guardada caduca. El alto sale del MISMO rectangulo del que
+       ya sale el `top`, asi que no cuesta ni una lectura mas. */
+    var fr  = asFilo.getBoundingClientRect();
+    var top = fr.top / Z;
+    var run = Math.max(1, fr.height / Z - (window.innerHeight || 1) / Z - asCut);
+    var e = tramo(-top / run, 0, 1);
+    var s = e.toFixed(4);
+    if (s === asLast) return;
+    asLast = s;
+
+    /* `asK3^e` Y NO `asK3^(e^p)`, y esto es medido, no gusto.
+       La percepcion de tamaño es logaritmica, asi que lo que se ve como
+       un zoom UNIFORME es el que mantiene constante el ritmo
+       PROPORCIONAL, d(ln W)/ds. Con `e^1,7` ese ritmo subia de 0,15 a
+       1,18 (x1000) a lo largo del recorrido —ocho veces y media— y el
+       arranque valia 0,014 px/px, una diecisieteava parte del umbral de
+       percepcion: no se movia nada durante 400 px y luego se disparaba.
+       La dueña lo dijo con dos frases: «no es fluido» y «quiero que al
+       deslizar vaya rapidamente a agrandarse la foto».
+       Con el exponente en 1 el ritmo proporcional sale PLANO —medido
+       0,70 a 0,73 de punta a punta— y el primer pixel de scroll ya mueve
+       0,40 px, por encima del umbral de 0,25. De propina el pico final
+       baja de 5,4 a 3,2 px/px: arranca antes y acaba mas tranquilo.
+       Exponentes por debajo de 1 no valen: la derivada en e=0 diverge.
+       Y una rampa lineal en ancho tampoco: el ritmo proporcional caeria
+       ocho veces, que es el mismo defecto del reves. */
+    var k = Math.pow(asK3, e);
+
+    /* el centrado sobre el punto de entrada se completa con la primera
+       transicion: en la lamina el cuadro esta centrado como cuadro, y la
+       punteria se desplaza al globo mientras crece */
+    /* EL CENTRADO SOBRE EL GLOBO SE APLAZA A LA ULTIMA TRANSICION. Antes
+       se completaba en la primera, y eso ponia el cuadro en el centro de
+       la pantalla justo cuando hay que leer el 02 en la columna de la
+       izquierda. Ahora, mientras se lee, el cuadro crece ANCLADO POR SU
+       CANTO IZQUIERDO —se va hacia la derecha y hacia abajo, sangrando
+       fuera— y la columna no se toca; cuando el texto ya esta leido, se
+       recentra sobre el globo y entra. */
+    var eo = tramo(e, AS_T[2], AS_T[3]); eo = eo * eo * (3 - 2 * eo);
+    /* el relevo, atado al ancho DIBUJADO: 2.560 (el `todo` a 1:1) ->
+       3.407 (el `detalle` cubriendo). Cae dentro de la segunda
+       transicion, donde la imagen va a varios px/px, asi que el cambio
+       de fichero es invisible. */
+    var ed = tramo(asPl.offsetWidth * k, 2560, 3407); ed = ed * ed * (3 - 2 * ed);
+    /* y el primero, en 1.600: el `chico` a su 1:1 cede al `todo` */
+    var em = tramo(asPl.offsetWidth * k, 1520, 1680); em = em * em * (3 - 2 * em);
+    /* AQUI SE CALCULABA LA OPACIDAD DE LOS DOS BLOQUES, `--eb1` y
+       `--eb2`, que los desvanecia en e 0,25..0,27. Fuera: el texto no
+       se borra, lo TAPA el lienzo al pasarle por delante. El unico
+       limite es el canto izquierdo, y lo pone la geometria, no una
+       curva de opacidad. Medido: el canto tarda 273 px de scroll en
+       cruzar los 630 px de columna, y en ningun fotograma hay una letra
+       a medias —el canto es un borde opaco de un pixel, sin
+       transparencia ni halo—. */
+    /* LA CABECERA CRUZA CUANDO PIERDE EL SUELO, no al final. Mientras el
+       lienzo deja franja de crema a la izquierda —y la deja hasta que su
+       ancho dibujado llega a 2.380 px, que es 720/0,3025— el logotipo se
+       apoya en ella en tinta negra y no cruza de mundo. Pasado ese ancho
+       ya no hay donde apoyarse y tiene que ser crema. Atado al ancho y
+       no al progreso: si cambian los tiempos, el cruce no se mueve. */
+    /* DOS UMBRALES, uno por pieza. `on-dark` lo dispara la pildora, que
+       es la primera en quedarse sin suelo; al logotipo se le devuelve la
+       tinta negra hasta que a el le toque. Atados al ancho DIBUJADO y no
+       al progreso: si cambian los tiempos, los cruces no se mueven. */
+    var W = asPl.offsetWidth * k;
+    /* los umbrales son donde el lienzo TOCA cada caja de texto, no donde
+       la cubre entera: la pildora empieza en x=1243 y el borde derecho
+       del cuadro llega ahi con 750 px de ancho dibujado —no con los 940
+       del cubrimiento total—, y el logotipo acaba en x=147 y el borde
+       izquierdo llega con 1.894, no con 2.380. Puestos en el
+       cubrimiento, cada uno pasaba ~20 px de scroll con la tinta del
+       mundo equivocado encima del lienzo. */
+    /* los dos umbrales se calculan abajo, cuando ya existe el ancla:
+       ver EL CRUCE. */
+
+    /* EL ANCLA. Con origen en (px,py) y `translate(T) scale(k)`, el canto
+       izquierdo cae en  cx - W0/2 + T + px*W0*(1-k), asi que para
+       clavarlo en AS_X0 basta despejar T. Se escribe en `--eP`, que es
+       el termino que `--eo` apaga en la ultima transicion. */
+    var W0p = asPl.offsetWidth || 1;
+    var cx  = (window.innerWidth || 1) / Z / 2;
+    var eP  = AS_X0 - cx + W0p * (0.5 - AS_PX * (1 - k));
+
+    /* EL CRUCE. Antes eran dos constantes —745 y 1.888 de ancho
+       dibujado— y las dos salian de un lienzo CENTRADO en la ventana:
+       1243 = 720 + 0,6975*W y 147 = 720 - 0,3025*W. Desde que el canto
+       izquierdo se clava en AS_X0 mientras se lee, y AS_X0 sale de la
+       tinta y de la ventana, esas dos cuentas describen otra geometria.
+       Medido sobre el recorrido: la pildora se quedaba hasta 624 px de
+       scroll en tinta NEGRA sobre el lienzo, y el logotipo cruzaba a
+       crema hasta 320 px ANTES de perder su papel —crema sobre crema—.
+       Ya pasaba hoy, con 24-40 y 56-144 px; el ancla nueva y la lamina
+       mayor lo multiplican por diez.
+       Ahora cada uno cruza cuando cambia SU suelo, y el umbral sale del
+       MISMO sitio que la posicion: el rectangulo dibujado, en forma
+       cerrada desde --eP, --ek y --eo, con las constantes del
+       `transform-origin` del CSS (30,25 % / 49,17 %) y no con el punto
+       de punteria (30,27 % / 49,01 %), que es otro numero. Verificado
+       contra getBoundingClientRect: 0,00 px de error a 1440x900 y <=4 px
+       en el resto, y sin leer layout ni una vez por fotograma. */
+    var pL = (cx - W0p / 2) + (eP * (1 - eo) + W0p * 0.1975 * eo)
+             + 0.3025 * W0p * (1 - k);
+    /* el termino que cancela la deriva hacia arriba que mete el origen
+       del escalado: 0,5586 = 49,17 % x 1,1361 */
+    var ePy = asCab / 2 + 0.5586 * W0p * (k - 1);
+    var pT = ((window.innerHeight || 1) / Z / 2 - 0.5681 * W0p)
+             + (asCab / 2) * (1 - eo)
+             + W0p * 0.00943 * eo + 0.5586 * W0p * (1 - k) * eo;
+    var pR = pL + W;
+    /* LA PILDORA SE MIDE CADA FOTOGRAMA Y EL LOGOTIPO NO, y no es un
+       descuido: el logotipo dice siempre ANE / UGARTE y su caja no
+       cambia; la pildora CAMBIA DE TEXTO por seccion —«Hello.», «ONE
+       MORE THING»…— y con el texto se mueve su canto izquierdo, que es
+       justo el que marca la primera tangencia. Cacheandola en layoutAs
+       el umbral salia 240 px de scroll TARDE a 1440x700: medido. Es un
+       rect por fotograma y solo con la seccion cerca, igual que el del
+       filo que ya se lee ahi al lado.
+       Esta arriba a la DERECHA: pierde el papel cuando el lienzo la
+       toca por su canto izquierdo. */
+    var piR = asPill ? asPill.getBoundingClientRect() : null;
+    asDark = !!(piR && pR >= piR.left / Z && pT <= piR.bottom / Z);
+    /* el logotipo esta arriba a la IZQUIERDA y aguanta mucho mas: se le
+       devuelve la tinta negra mientras le quede papel debajo */
+    body.classList.toggle("as-wm-dia",
+      asDark && !(asWM && pL <= asWM[2] && pT <= asWM[3]));
+    asPl.style.setProperty("--eP", eP.toFixed(1) + "px");
+    asPl.style.setProperty("--ePy", ePy.toFixed(1) + "px");
+    asPl.style.setProperty("--ek", k.toFixed(4));
+    asPl.style.setProperty("--eo", eo.toFixed(4));
+    as.style.setProperty("--edet", ed.toFixed(4));
+    as.style.setProperty("--emid", em.toFixed(4));
+  }
+
+  if (asFilo && "IntersectionObserver" in window) {
+    new IntersectionObserver(function(es){ asNear = es[0].isIntersecting; },
+      { rootMargin:"100% 0px 100% 0px" }).observe(asFilo);
+    /* LA PRECARGA, 150 vh antes. Y el detalle NO lleva `sizes`: son dos
+       <img> con `src` fijo que se funden, asi que no hay decision que el
+       navegador pueda congelar mientras el elemento crece —que es lo que
+       pasa con `sizes`, que no se reevalua—. Aqui lo unico que se hace
+       es darle el `src` a tiempo. */
+    new IntersectionObserver(function(es){
+      if (!es[0].isIntersecting || !asDet || asDet.src) return;
+      if (asDetS) asDetS.srcset = "vermeer-detalle.avif";
+      asDet.src = "vermeer-detalle.webp";
+      if (asMidS) asMidS.srcset = "vermeer-todo.avif";
+      if (asMid)  asMid.src = "vermeer-todo.webp";
+    }, { rootMargin:"150% 0px 150% 0px" }).observe(asFilo);
+  } else {
+    asNear = true;
+    if (asDetS) asDetS.srcset = "vermeer-detalle.avif";
+    if (asDet)  asDet.src = "vermeer-detalle.webp";
+    if (asMidS) asMidS.srcset = "vermeer-todo.avif";
+    if (asMid)  asMid.src = "vermeer-todo.webp";
+  }
+
   /* marquesinas: velocidad base + lo que aporte el scroll, con
      sentido incluido — al subir rápido se dan la vuelta */
   var b1x = 0, b2x = 0, seqW1 = 0, seqW2 = 0;
@@ -4707,6 +5489,12 @@ body.is-live .rise > i{ transform:none; }
     var y   = lenis ? lenis.scroll : (window.scrollY || root.scrollTop || 0);
     vel = lenis ? (lenis.velocity || 0) : (y - lastY);
     lastY = y;
+
+    /* PRIMERO DE TODO: aqui dentro se lee un rectangulo, y en este punto
+       del fotograma el navegador ya ha maquetado y pintado lo del
+       anterior, asi que la lectura es gratis. Cinco lineas mas abajo
+       empiezan las escrituras y ya no lo seria. */
+    pasoAs(y);
 
     /* La cabeza se abre con el ratón o con el propio scroll, y ella
        se queda un poco rezagada mientras la portada sale de pantalla. */
@@ -4910,7 +5698,9 @@ body.is-live .rise > i{ transform:none; }
         onDark = tt < 0.5;
       } else {
         var hr = (pinOn && pinE > 0.35 && heroEl) ? heroEl.getBoundingClientRect() : null;
-        onDark = (hr && hr.bottom > 78) || (dkTop <= 78 && dkBot >= 78);
+        /* y el cuadro, que en el ultimo tramo es todo el suelo de la
+           cabecera y es negro. Es el MISMO mecanismo, no uno nuevo. */
+        onDark = asDark || (hr && hr.bottom > 78) || (dkTop <= 78 && dkBot >= 78);
       }
       body.classList.toggle("on-dark", onDark);
     }
@@ -4954,6 +5744,12 @@ body.is-live .rise > i{ transform:none; }
       /* el del suelo va al mismo paso y con la misma baldosa que el de
          siempre: son la misma curva de nivel, no dos parecidas */
       if (sueloTp){ sueloTp.style.webkitMaskPosition = tpos; sueloTp.style.maskPosition = tpos; }
+      /* y el del cuadro, a la misma cifra y en la misma baldosa: es la
+         misma curva de nivel, no una parecida. Su caja es la seccion
+         pegada, que durante el recorrido esta quieta en la pantalla, o
+         sea el mismo marco que el global: la cifra vale tal cual. Es lo
+         unico que sigue moviendose durante los dos descansos. */
+      if (asTp){ asTp.style.webkitMaskPosition = tpos; asTp.style.maskPosition = tpos; }
     }
 
     if (face) {
@@ -5149,7 +5945,7 @@ body.is-live .rise > i{ transform:none; }
   var rt;
   window.addEventListener("resize", function(){
     clearTimeout(rt);
-    rt = setTimeout(function(){ layoutPin(); layoutPass(); layoutMont(); medirTodo(); sizeBlob(); }, 140);
+    rt = setTimeout(function(){ layoutPin(); layoutPass(); layoutMont(); layoutAs(); medirTodo(); sizeBlob(); }, 140);
   }, { passive:true });
 
   /* ════════════════════════════════════════════════════════
@@ -5316,7 +6112,7 @@ body.is-live .rise > i{ transform:none; }
     setTimeout(function(){
       body.classList.add("is-live");
       if (lenis) lenis.start();
-      layoutPin(); layoutPass(); layoutMont(); medirTodo();
+      layoutPin(); layoutPass(); layoutMont(); layoutAs(); medirTodo();
     }, 260);
     setTimeout(function(){ body.classList.add("is-gone"); }, 1600);
   }
@@ -5324,7 +6120,7 @@ body.is-live .rise > i{ transform:none; }
   if (reduce || !load) {
     body.classList.add("is-done","is-live","is-gone");
     if (lenis) lenis.start();
-    layoutPin(); layoutPass(); layoutMont(); medirTodo();
+    layoutPin(); layoutPass(); layoutMont(); layoutAs(); medirTodo();
   } else {
     window.scrollTo(0, 0);
     var n = 0, t0 = performance.now();
@@ -5339,10 +6135,10 @@ body.is-live .rise > i{ transform:none; }
   }
 
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function(){ layoutPin(); layoutPass(); layoutMont(); medirTodo(); });
+    document.fonts.ready.then(function(){ layoutPin(); layoutPass(); layoutMont(); layoutAs(); medirTodo(); });
   }
-  window.addEventListener("load", function(){ layoutPin(); layoutPass(); layoutMont(); medirTodo(); });
-  if (wide.addEventListener) wide.addEventListener("change", function(){ layoutPin(); layoutPass(); layoutMont(); medirTodo(); });
+  window.addEventListener("load", function(){ layoutPin(); layoutPass(); layoutMont(); layoutAs(); medirTodo(); });
+  if (wide.addEventListener) wide.addEventListener("change", function(){ layoutPin(); layoutPass(); layoutMont(); layoutAs(); medirTodo(); });
   /* Girar el teléfono cruza el umbral de ALTO sin cambiar el de anchura,
      así que este oyente no es redundante: sin él, el carril se queda
      montado (o desmontado) hasta el siguiente cambio de ancho. */
