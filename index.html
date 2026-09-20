@@ -3501,8 +3501,11 @@ body.is-live .rise > i{ transform:none; }
            centrado. Por eso --ar:1/1.
 
            EL 76,4 % NO ES EL 74 %, y la diferencia no es un redondeo. --mw
-           mide el <img>, no la tinta, y dena.webp lleva 6 px de alfa a cada
-           lado: su tinta ocupa el 96,86 % del archivo. 74,0 / 0,9686 =
+           mide el <img>, no la tinta, y dena.webp lleva 48 px de alfa a cada
+           lado de sus 3.056: su tinta ocupa el 96,86 % del archivo —el
+           mismo margen relativo que cuando media 382x68 con 6 px, y por eso
+           al rehornearlo en grande este numero no ha habido que volver a
+           dividirlo—. 74,0 / 0,9686 =
            76,4, y asi la TINTA cae en el 74,0 % de la tarjeta, que es lo
            que se midio en su imagen. Si algun dia se rehornea dena.webp con
            otro margen, este numero hay que volver a dividirlo.
@@ -3516,14 +3519,39 @@ body.is-live .rise > i{ transform:none; }
            56/382 del archivo, o sea el 11,2 % de una caja cuadrada, que es
            exactamente el 11,2 % medido en su imagen.
 
-           EL ARCHIVO NO CAMBIA, y es deliberado: su 1.png y dena.webp son
-           el MISMO dibujo —caja de tinta 370x56 los dos, y el mismo verde
-           rgb(0,36,20) medido en ambos—; lo unico que cambia es el lienzo,
-           blanco opaco en el suyo y alfa en el de la web. Se queda el de
-           alfa para que la marca siga posandose sobre el papel de la pagina
-           en vez de traer su propio folio recortado —ver la nota de la
-           tarjeta-marca—. La unica diferencia que queda con su imagen es
-           ese papel: #FDFCFC en vez de #FFFFFF, dos puntos de luma.
+           EL ARCHIVO SI CAMBIO, Y SOLO DE TAMANIO: 382x68 -> 3.056x544.
+           «Quiero que la foto de Denaliving se vea en 4K, no que se vean
+           borrosas las letras», 20-09-2026, y el defecto estaba medido:
+           desde que la pieza mide 607 px el navegador pinta 928 px de
+           DISPOSITIVO a partir de 382, o sea 2,43 veces de mas. Su
+           DENALIVING (3).jpg —el que trajo ese dia— es el mismo de
+           siempre, 500x500 con la tinta en 370x56, asi que la resolucion
+           no estaba en ninguna parte y hubo que reconstruirla.
+
+           COMO, PORQUE NO ES UN REESCALADO A SECAS. El alfa de un canto
+           suavizado lleva escrita la posicion del borde en SUBPIXEL —en su
+           archivo un asta pasa de 0,015 a 0,873 en un solo pixel—, asi que
+           se amplia EL ALFA ocho veces con Lanczos, se le suaviza el contorno
+           —sin tocar astas ni tinta— y se le devuelve la pendiente, dejando
+           la transicion en ~1,1 px de dispositivo medidos en pantalla.
+           Lo que se pierde es +-1/8 de pixel del original, o sea +-1 px de
+           los 2.960 que mide ahora el rotulo. Comprobado contra el archivo
+           viejo reducido al mismo tamanio: correlacion 0,9993 y las astas
+           dentro de 0,4 px (11,25 contra 11,0; 27,62 contra 28,0).
+
+           Y DE PASO RECUPERA LA TINTA QUE FALTABA. El dena.webp de 382 px
+           pintaba el 89,7 % de la tinta de su archivo —un umbral le habia
+           adelgazado las letras— y el nuevo pinta el 100,2 %: es el mismo
+           dibujo con el grosor que ella mando. Mismo verde, rgb(0,36,20)
+           medido en los tres archivos, y mismo lienzo en alfa para que la
+           marca siga posandose sobre el papel de la pagina en vez de traer
+           su propio folio recortado —ver la nota de la tarjeta-marca—. La
+           unica diferencia que queda con su imagen es ese papel: #FDFCFC en
+           vez de #FFFFFF, dos puntos de luma.
+
+           EL HORNO ES `_dena4k.py`, y si algun dia ella trae una version de
+           verdad en alta —un PDF, un SVG o el archivo del disenador— eso
+           gana a esto sin discusion: aqui se ha estirado lo que habia.
 
            Y EL --top BAJA DE 50 A 20, que es lo que obliga la caja: mide
            69svh de alto, y el rotulo de encima pesa 3,2svh a 880 y 4,4 a
@@ -3555,7 +3583,7 @@ body.is-live .rise > i{ transform:none; }
             </div>
 
             <div class="card__face card__face--front card__face--brand">
-              <img class="card__mark" src="dena.webp" loading="lazy" width="382" height="68"
+              <img class="card__mark" src="dena.webp" loading="lazy" width="3056" height="544"
                    alt="Denaliving" decoding="async" fetchpriority="low">
             </div>
 
