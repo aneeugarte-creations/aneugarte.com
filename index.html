@@ -2558,7 +2558,13 @@ body:not(.js) .read__x{ display:none; }
 /* Con el panel abierto, la página de detrás no se mueve. No vale la clase
    de Lenis: si Lenis no llegó a cargar, esa clase no existe. */
 html.is-reading{ overflow:hidden; }
-/* el tipo de trabajo, encima de la frase y en el tono de los rótulos */
+/* El rotulo de la cara de detras, encima de la frase y en el tono de los
+   demas. Tiene DOS valores y la diferencia la fijo ella: JOB donde
+   trabajo para otro —la academia de Tokio y Etxebarri— y BUILD donde la
+   empresa es suya —«son empresas que yo he creado»: Denaliving, la 02,
+   la 03 y Keni—. No es una etiqueta de tamano ni de importancia: dice de
+   quien es la casa. La 04 lleva ESSAY, que es la tercera cosa que hay en
+   el carril y por eso el rotulo no se llama «tipo de trabajo». */
 .card__kind{ margin:0; }
 /* La que aún no tiene cuadro. Su portada se hace con el material de la
    propia página —las mismas curvas de nivel— teñidas con el color de su
@@ -3239,7 +3245,7 @@ body.is-live .rise > i{ transform:none; }
            que la tarjeta es un <a> y no un <article>; el tabindex sobra,
            porque un enlace ya entra en el recorrido del teclado por sí solo.
 
-           Delante, la marca sola. Detrás, la invitación a pulsar: con ratón
+           Delante, la marca sola. Detrás, BUILD y la invitación a pulsar: con ratón
            se descubre al pasar por encima y con el teclado al enfocarla. En
            el móvil no gira —las tarjetas que enlazan quedan fuera del gesto
            táctil a propósito—, así que ahí un toque lleva a Instagram sin
@@ -3256,6 +3262,7 @@ body.is-live .rise > i{ transform:none; }
           <div class="card__flip">
 
             <div class="card__face card__face--back card__face--solo">
+              <p class="card__kind mono">Build</p>
               <span class="card__cue mono">
                 <svg viewBox="0 0 14 20" aria-hidden="true" focusable="false">
                   <rect x="1" y="1" width="12" height="18" rx="6"
@@ -3278,7 +3285,7 @@ body.is-live .rise > i{ transform:none; }
 
       <!-- 02 · El cuadro y una frase, nada más. Delante «Batalla de las
            Navas de Tolosa», de Francisco de Paula van Halen (1864); detrás
-           sólo dice a qué se dedica la pieza. Fuera el número, el lugar, la
+           dice que es suya y a qué se dedica. Fuera el número, el lugar, la
            métrica y el recuadro del año: no los pidió y eran lo que hacía
            que la tarjeta pareciese un formulario a medio rellenar. -->
       <figure class="shot" style="--w:34svh;--ml:16svh;--top:48svh;--sat:0.70;--c:var(--es);--cl:var(--es-lt)">
@@ -3287,6 +3294,7 @@ body.is-live .rise > i{ transform:none; }
           <div class="card__flip">
 
             <div class="card__face card__face--back card__face--solo">
+              <p class="card__kind mono">Build</p>
               <h3 class="card__t">History content creation</h3>
             </div>
 
@@ -3299,8 +3307,8 @@ body.is-live .rise > i{ transform:none; }
         </article>
       </figure>
 
-      <!-- 03 · La foto de equipo delante y, detrás, qué era aquello: un
-           trabajo. La proporción es 3/2, la de la propia fotografía, así
+      <!-- 03 · La foto de equipo delante y, detrás, qué era aquello: una
+           empresa suya. La proporción es 3/2, la de la propia fotografía, así
            que el recorte se queda en nada; las piezas sin ficha llevan cada
            una la suya en --ar, porque lo que manda es la forma de lo que
            enseñan y no un formato común. -->
@@ -3310,6 +3318,7 @@ body.is-live .rise > i{ transform:none; }
           <div class="card__flip">
 
             <div class="card__face card__face--back card__face--solo">
+              <p class="card__kind mono">Build</p>
               <h3 class="card__t">Football club management</h3>
             </div>
 
@@ -3414,7 +3423,7 @@ body.is-live .rise > i{ transform:none; }
 
       <!-- 08 · Su empresa. Delante el logotipo sobre el papel de la página
            —el archivo trae su propia transparencia, así que no hay ningún
-           folio blanco recortado— y detrás el nombre y a qué se dedica.
+           folio blanco recortado— y detrás BUILD, el nombre y a qué se dedica.
            Cuadrada, que es la forma del logotipo.
 
            AQUÍ HUBO UNA FOTOGRAFÍA DETRÁS (art-08bg.webp, con la clase
@@ -3429,6 +3438,7 @@ body.is-live .rise > i{ transform:none; }
           <div class="card__flip">
 
             <div class="card__face card__face--back card__face--solo">
+              <p class="card__kind mono">Build</p>
               <h3 class="card__t">Keni Engineering</h3>
               <p class="card__d">Technology company</p>
             </div>
