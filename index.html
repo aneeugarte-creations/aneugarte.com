@@ -2518,7 +2518,17 @@ body.js.in-mont .wm{
 .card__face--brand{
   background:var(--ground);
   display:grid; place-items:center;
-  padding:clamp(24px,4.5vw,44px);
+  /* EL RELLENO SE PUEDE APAGAR, y hace falta que se pueda: --mw mide el
+     <img> contra la caja de CONTENIDO, o sea ya descontado esto, asi que
+     con relleno puesto un porcentaje no dice nada sobre la tarjeta. Y el
+     relleno lleva un termino en vw, de modo que la proporcion que se come
+     CAMBIA con la ventana: medido con Denaliving al 76,4 %, su rotulo
+     salia al 56,8 % de la tarjeta a 1512, al 53,5 % a 393 y al 59,5 % a
+     834 —tres cifras distintas para un solo numero escrito—. Donde hay una
+     referencia que cumplir eso no vale: se pone --bp:0 y entonces --mw si
+     mide contra la tarjeta. Quien no la tenga —Keni— se queda con el
+     relleno, que para eso esta. */
+  padding:var(--bp,clamp(24px,4.5vw,44px));
 }
 /* El logotipo no llena el hueco: le deja aire a los lados. A tamaño
    completo se comía la tarjeta entera y se leía como un icono, no como
@@ -3371,6 +3381,15 @@ body.is-live .rise > i{ transform:none; }
            que se midio en su imagen. Si algun dia se rehornea dena.webp con
            otro margen, este numero hay que volver a dividirlo.
 
+           Y EL --bp:0 NO SOBRA: --mw mide contra la caja de CONTENIDO, asi
+           que con el relleno de la cara puesto el 76,4 % se aplicaba a la
+           tarjeta menos 44 px por lado y el rotulo salia al 56,8 % en vez
+           de al 74 —y como ese relleno lleva un termino en vw, cambiaba
+           ademas con la ventana: 53,5 % a 393 y 59,5 % a 834—. Apagado, el
+           numero dice lo que parece decir. El alto sale solo: la tinta mide
+           56/382 del archivo, o sea el 11,2 % de una caja cuadrada, que es
+           exactamente el 11,2 % medido en su imagen.
+
            EL ARCHIVO NO CAMBIA, y es deliberado: su 1.png y dena.webp son
            el MISMO dibujo —caja de tinta 370x56 los dos, y el mismo verde
            rgb(0,36,20) medido en ambos—; lo unico que cambia es el lienzo,
@@ -3390,7 +3409,7 @@ body.is-live .rise > i{ transform:none; }
            eligio para el logotipo de Keni y nunca fue de este.) -->
       <figure class="shot" style="--w:44svh;--ml:12svh;--top:50svh;--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>03</b> &middot; Denaliving</p>
-        <a class="card card--flip card--fig card--link" style="--ar:1/1;--mw:76.4%"
+        <a class="card card--flip card--fig card--link" style="--ar:1/1;--mw:76.4%;--bp:0"
            href="https://www.instagram.com/denaliving/"
            target="_blank" rel="noopener noreferrer">
           <div class="card__flip">
