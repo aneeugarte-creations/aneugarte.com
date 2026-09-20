@@ -2060,14 +2060,45 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
 .fm__inst::before{ content:none; }
 .fm__v{
   margin:15px 0 0;
-  /* DE 660 A 200. Lo pidio la dueña: «quiero que las letras de THREE
-     YEARS OF BUSINESS... sean en vez de negrita en finas totalmente
-     elegantes». Mona Sans se carga con el eje `wght` de 200 a 900, asi
-     que 200 es peso real y no una simulacion.
-     La prosa se va con el peso: los -.0625rem estaban ahi porque a 660
-     los contornos se cierran solos y la caja alta pide apretar; a peso
-     fino ese mismo valor junta las astas y el renglon se lee sucio. */
-  font-family:var(--impact); font-variation-settings:"wght" 200,"wdth" 93;
+  /* Y DE 200 OTRA VEZ A 660, QUE ES EL PESO DE LA CASA. Ida y vuelta en
+     dos dias, asi que van las dos frases y el motivo de cada una: quien
+     lea solo la segunda va a creer que la primera fue un capricho.
+
+     A 200 lo pidio ella: «quiero que las letras de THREE YEARS OF
+     BUSINESS... sean en vez de negrita en finas totalmente elegantes».
+     Mona Sans se carga con el eje `wght` de 200 a 900, asi que 200 era
+     peso real y no una simulacion. Lo aprobo y se publico.
+
+     LO QUE PASO DESPUES es que la vio en el dominio, con la pagina
+     entera delante, y dijo «quiero que el tipo de letra de spanish,
+     english... sea con la del resto de la web». MEDIDO ANTES DE TOCAR
+     NADA, porque la frase apunta a la familia y la familia no era el
+     problema: esta linea ya iba en Mona Sans, la MISMA que `.pf__l` de
+     01 Perfil y que `.stmt` del mensaje, y `<em>Basque</em>` en Fraunces
+     es el patron de la casa —una sola palabra de acento, igual que el
+     mensaje—, no un despiste. Lo unico que se salia era el PESO: 200
+     contra los 660 del mensaje y los 800 del perfil. A 109,6 px eso no
+     se lee como Mona Sans delgada, se lee como otra letra, y era lo que
+     ella estaba viendo. Se le enseñaron las cuatro lecturas con su coste
+     —esta, Archivo fina, solo el acento, y todo en una sola letra— y
+     eligio esta sabiendo que deshace lo fino que habia aprobado.
+
+     LA PROSA VUELVE CON EL PESO, y por la razon de siempre: los
+     -.0625rem estaban aqui porque a 660 los contornos se cierran solos
+     y la caja alta pide apretar; a peso fino ese mismo valor juntaba las
+     astas y el renglon se leia sucio. Es el numero exacto de `.stmt`,
+     que es el otro bloque de la pagina a 660: si algun dia se mueve uno,
+     se mueven los dos.
+
+     LO QUE NO SE MUEVE, medido en siete anchos —2560, 1728, 1440, 1280,
+     1024, 744 y 390—: el numero de renglones sale IDENTICO en las siete
+     (4/4/4/3/4/4/2), no hay desborde en ninguna, y la tinta del renglon
+     mas largo crece 21 px en el peor caso —441 a 462 a 1440— dentro de
+     una columna de 633,5. O sea que esto es un cambio de peso y de nada
+     mas: ni la lamina, ni el ancla del cuadro, ni los cortes de linea se
+     enteran. Y el solape de 11,3 px con `.fm__a` que ya habia sigue
+     exactamente igual de grande: no lo trae esto. */
+  font-family:var(--impact); font-variation-settings:"wght" 660,"wdth" 93;
   text-transform:uppercase;
   /* EL TOPE BAJA A 4.1rem, Y NO ES UN RECORTE: ES QUITAR UN ESTADO
      QUE NADIE HABIA VISTO. Con 4.5rem el cuerpo llegaba a 72 px en
@@ -2081,13 +2112,43 @@ body.in-pass .pill::after{ background:color-mix(in oklab,var(--accent-lt),var(--
      Con esto la seccion se ve IGUAL de 1440 a 2560: mismo cuerpo,
      mismas 5+3 lineas, misma lamina, mismo medianil. */
   font-size:clamp(1.5rem,min(8.2vw,12.2svh),6.85rem);
-  line-height:.96; letter-spacing:0; color:var(--ink);
+  line-height:.96; letter-spacing:-.0625rem; color:var(--ink);
 }
-.fm__v em{
-  font-family:var(--brier); font-variation-settings:var(--brier-vs);
-  font-style:normal; font-weight:600;
-  font-size:1.043em; letter-spacing:-.022em; color:var(--accent);
-}
+/* AQUI VIVIA LA PALABRA DE ACENTO, y con ella se va el ultimo resto del
+   registro de la casa en esta seccion. Lo pidio ella en seis palabras:
+   «basque en negro y mismo formato que spanish». O sea las dos cosas que
+   la distinguian —la serif y el naranja— y tambien la tercera que no
+   nombro pero que «mismo formato» incluye: el cuerpo, que iba un 4,3 %
+   mayor para igualar la caja alta de las dos familias.
+
+   SE VA TAMBIEN EL `<em>` DEL HTML, y eso es deliberado. Un `<em>` que
+   se pinta exactamente igual que lo que lo rodea no dice nada a la
+   vista y SI dice algo al lector de pantalla, que lo entona: seria
+   marcado que promete un enfasis que ya no existe. Con la palabra
+   dentro del texto corrido, lo que se lee y lo que se oye vuelven a
+   ser lo mismo.
+
+   LO QUE SE PIERDE, para que conste: era lo que ataba esta seccion con
+   el manifiesto —`.stmt em` sigue igual, con su Fraunces y su naranja—
+   y con la arroba del correo. La pagina tenia tres apariciones del
+   acento y ahora tiene dos. `.stmt em` NO se toca: alli la palabra de
+   acento sigue siendo el gesto, y esta orden hablaba de esta linea.
+
+   Devolverla son dos cosas, el `<em>Basque</em>` en el parrafo y esta
+   regla tal cual:
+
+     .fm__v em{
+       font-family:var(--brier); font-variation-settings:var(--brier-vs);
+       font-style:normal; font-weight:600;
+       font-size:1.043em; letter-spacing:-.022em; color:var(--accent);
+     }
+
+   —el 1,043 iguala la CAJA ALTA de las dos familias, medido pintando
+   una «H» de cada una al mismo cuerpo: Mona Sans 147 filas de tinta,
+   Newsreader 144; el -.022em es la prosa de la referencia para este
+   papel; y el `font-weight:600` era INERTE —Fraunces se carga como una
+   sola instancia, @144,600,0,1, asi que ese numero solo elegia el corte
+   del sustituto mientras la fuente viajaba—. */
 .fm__a{ margin:10px 0 0; font-family:var(--serif);
         font-size:1.1625rem; line-height:1.5; color:var(--ink-2); }
 @media (max-width:599px){
@@ -4553,7 +4614,7 @@ body.is-live .rise > i{ transform:none; }
       <div class="as__b2" id="asB2">
         <div class="fm">
           <div class="fm__row">
-            <p class="fm__v">Spanish, English and <em>Basque</em>.</p>
+            <p class="fm__v">Spanish, English and Basque.</p>
             <p class="fm__a">A little French and Japanese.</p>
           </div>
         </div>
