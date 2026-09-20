@@ -1737,6 +1737,71 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
   -webkit-mask-image:url("ane-shade.png"); mask-image:url("ane-shade.png");
 }
 
+/* EN ALTO CONTRASTE, EL CASCO CONSERVA SUS COLORES — Y NO ES UN CAPRICHO:
+   SIN ESTO LA PÁGINA LE TAPA LA CARA.
+
+   `forced-colors: active` es el alto contraste de Windows. NO quita las
+   máscaras: medido en vivo, la figura conserva sus 14 `mask-image` con
+   el modo puesto y sin él. Lo que hace es forzar los COLORES a la paleta
+   del sistema — y de las doce capas del casco hay DOS sin `opacity`
+   propia, `.cowl__fill` y `.cowl__plate`, que sobreviven OPACAS, con su
+   forma intacta y pintadas del color del fondo. Las otras diez se
+   pierden.
+
+   LO QUE SE VEÍA, medido en el píxel pintado y no en `getComputedStyle`:
+     · escritorio con ratón fino → la ventana de revelado de `.cowl` es
+       una elipse de 46 % x 13 % al 50 %/44 %, así que salía UNA BARRA
+       NEGRA de sien a sien, como la censura de una foto de archivo; y
+       como la ventana sigue al puntero, la barra se le paseaba por la
+       cara.
+     · teléfono, o escritorio con MOVIMIENTO REDUCIDO → ahí no se pone
+       `body.has-cur` —cuelga de `finePtr && !reduce`—, la ventana se
+       queda en el 200 % por defecto y el revelado lo hace el scroll:
+       medido a 393x852, `--rev` llega a 1,000 con 500 px. Entonces lo
+       que se pintaba no era una barra sino la SILUETA ENTERA del casco:
+       un jersey de cuello vuelto y encima nada. Frente, boca y jersey
+       medían los tres (255,255,255) en tema claro y (0,0,0) en oscuro.
+       No había cabeza.
+   Alto contraste y movimiento reducido son dos ajustes que suele llevar
+   la misma persona, así que ese segundo caso no era el raro: era el
+   típico.
+
+   LO QUE HACE ESTA REGLA, medido con ella SERVIDA EN LA HOJA: el píxel
+   del centro de la visera pasa de (0,0,0) a (9,91,26) —el verde— y da
+   EXACTAMENTE lo mismo en tema claro y en oscuro, que es la prueba de
+   que el color ha dejado de forzarse de verdad. En esquema CLARO la
+   página no se parece al original: ES el original, con los seis valores
+   medidos coincidiendo al byte; lo único distinto es el blanco puro del
+   fondo. En OSCURO se conserva la visera con su mapamundi y las tres
+   calcas —tinta a 5,38:1 en la corona, 3,60 en el mentón y 7,54 en la
+   visera contra el fondo— y se difumina el latón, que contra negro se
+   queda en 1,14:1. O sea: en oscuro se pierde la chapa que las sostiene,
+   no las calcas.
+
+   Y LA TRAMPA, que costó descartar esta salida una vez y devolverla
+   después: INYECTAR LA REGLA EN CALIENTE NO REPRODUCE UNA HOJA. Metida
+   con JS después de que la capa ya se compuso en modo forzado, el
+   navegador no repinta: `getComputedStyle` contesta
+   `forced-color-adjust:none` y `rgb(1,96,25)` mientras el píxel sigue
+   siendo (0,0,0). Cualquier propiedad que actúe AL COMPONER hay que
+   servirla en el documento para medirla.
+
+   LAS TRES CLASES Y NO SÓLO `.cowl`: `.scan` y `.face__som` NO son sus
+   hijas, son sus HERMANAS dentro de `<figure class="hero__cut">`. Una
+   regla puesta sólo en `.cowl` deja fuera la malla del escaneo y la
+   sombra verde del retrato.
+
+   Y POR QUÉ ESTO NO ES SALTARSE UNA PREFERENCIA DE ACCESIBILIDAD A LA
+   LIGERA: `forced-color-adjust:none` existe justo para el contenido
+   donde el color ES el contenido —imágenes, ilustraciones, muestras—, y
+   esto es un dibujo sobre una fotografía. El texto de la página, que es
+   lo que ese modo protege, no se toca ni una coma. Lo que se corrige es
+   un modo que estaba estropeando una imagen, no una ayuda que estorbe.
+   La decisión la tomó ella con las capturas delante. */
+@media (forced-colors: active){
+  .cowl, .scan, .face__som{ forced-color-adjust:none; }
+}
+
 /* Las esquinas. En pantalla ancha flotan sobre ella; en vertical
    se apilan debajo, porque ahí no hay hueco a los lados. */
 .hero__corner{ position:relative; z-index:3; }
