@@ -2470,13 +2470,16 @@ body.js.in-mont .wm{
    que el 4/3 no era decorativo porque sin ficha detras la tarjeta se
    quedaria con la altura del logotipo —unos 145 px— y en un carril donde
    las demas miden entre 240 y 460 se leeria como un recorte suelto. Eso
-   valia mientras Denaliving media 30svh. Hoy mide 44 —y llego a medir 80,
-   ver su pieza— y el defecto se ha dado la vuelta: sobra caja y el
-   logotipo se pierde dentro. Por eso lleva 16/9 —la cuenta esta en su
-   pieza— y Keni,
-   que es un logotipo cuadrado y pequenio, sigue en 1/1. La regla no es
-   un numero: es que el rotulo ocupe cerca de un tercio del alto de su
-   papel. */
+   valia mientras Denaliving media 30svh, y de ahi salieron primero un
+   16/9 y una cuenta sobre cuanto alto debia ocupar el rotulo.
+   ESA REGLA YA NO GOBIERNA A DENALIVING, y conviene saberlo antes de
+   "arreglarla": su forma y su --mw salen hoy de una imagen que trajo
+   Ane, medida —cuadrada, rotulo al 74 % del ancho y al 11,2 % del
+   alto—, y eso gana a cualquier proporcion deducida aqui. La cuenta
+   esta en su pieza. Lo que sigue vivo de este parrafo es el caso
+   general: cuando NO hay una referencia, una tarjeta-marca necesita
+   alto propio si el logotipo es pequenio y lo necesita menos cuanto
+   mayor sea la pieza. Keni, que no tiene referencia, sigue en 1/1. */
 .card__mark{ display:block; align-self:center; width:100%; height:auto; }
 .card__cue{
   justify-self:center; display:inline-flex; align-items:center; gap:9px;
@@ -3353,27 +3356,41 @@ body.is-live .rise > i{ transform:none; }
            ver su pieza—. NO se deduce de la importancia de la pieza:
            es una decision suya y solo ella la cambia.
 
-           LA PROPORCION SI SE DEDUCE, y por eso no volvio con el tamanio. El
-           4/3 estaba puesto para DARLE alto cuando media 30svh; de 44 para
-           arriba el defecto es el contrario y sobra caja. Medido a 1512x860
-           con el marco a escala 1 —o sea 8,6 px por svh—: la tarjeta sale de
-           378 px de ancho y el logotipo, que ocupa el ancho entero menos los
-           44 de relleno a cada lado, mide 290x52. En 4/3 la caja tendria 284
-           px de alto y esos 52 serian el 18 %: un rotulo pequenio en mitad
-           de un folio. En 16/9 la caja queda en 213 y sube al 24 %, que es a
-           lo que un logotipo se lee PUESTO sobre un papel y no perdido en
-           el. El alto cabe: 44 x 9/16 = 24,75svh y con --top en 56 acaba en
-           80,75 de los 96 del escenario. Y el --top es 56 y no 26 por lo de
-           siempre: a 26 caeria dentro de la franja del futbol —que va de 10
-           a 48,7— y dos piezas de tamanio parecido a la misma altura se leen
-           como una fila.
+           LA FORMA Y EL TAMAÑO DEL ROTULO SALEN DE UNA IMAGEN SUYA, medida,
+           y NO de la regla de la tarjeta-marca que hay unas lineas mas
+           abajo. "Quiero que Denaliving se vea asi tal cual la foto esta",
+           con su 1.png delante. Medido sobre ese archivo: lienzo 500x500
+           —cuadrado exacto—, caja de tinta 370x56 con 65 px de aire a cada
+           lado, o sea el rotulo al 74,0 % del ancho y al 11,2 % del alto,
+           centrado. Por eso --ar:1/1.
 
-           El --mw:100% deja el logotipo a su tamaño de siempre: la regla de
-           la cara lo baja al 80 %, y eso se pidió para el de Keni, no para
-           este. -->
-      <figure class="shot" style="--w:44svh;--ml:12svh;--top:56svh;--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
+           EL 76,4 % NO ES EL 74 %, y la diferencia no es un redondeo. --mw
+           mide el <img>, no la tinta, y dena.webp lleva 6 px de alfa a cada
+           lado: su tinta ocupa el 96,86 % del archivo. 74,0 / 0,9686 =
+           76,4, y asi la TINTA cae en el 74,0 % de la tarjeta, que es lo
+           que se midio en su imagen. Si algun dia se rehornea dena.webp con
+           otro margen, este numero hay que volver a dividirlo.
+
+           EL ARCHIVO NO CAMBIA, y es deliberado: su 1.png y dena.webp son
+           el MISMO dibujo —caja de tinta 370x56 los dos, y el mismo verde
+           rgb(0,36,20) medido en ambos—; lo unico que cambia es el lienzo,
+           blanco opaco en el suyo y alfa en el de la web. Se queda el de
+           alfa para que la marca siga posandose sobre el papel de la pagina
+           en vez de traer su propio folio recortado —ver la nota de la
+           tarjeta-marca—. La unica diferencia que queda con su imagen es
+           ese papel: #FDFCFC en vez de #FFFFFF, dos puntos de luma.
+
+           Y EL --top BAJA DE 56 A 50 porque la caja cuadrada mide ahora
+           44svh de alto y no 24,75: a 56 acabaria en 100 y el escenario da
+           96. A 50 acaba en 94. Por abajo tampoco puede subir mucho mas: la
+           franja del futbol va de 10 a 48,7 y dos piezas de tamanio
+           parecido a la misma altura se leen como una fila.
+
+           (El --mw sustituye al 80 % que pone la regla de la cara, que se
+           eligio para el logotipo de Keni y nunca fue de este.) -->
+      <figure class="shot" style="--w:44svh;--ml:12svh;--top:50svh;--sat:0.80;--c:var(--es);--cl:var(--es-lt)">
         <p class="shot__lbl mono"><b>03</b> &middot; Denaliving</p>
-        <a class="card card--flip card--fig card--link" style="--ar:16/9;--mw:100%"
+        <a class="card card--flip card--fig card--link" style="--ar:1/1;--mw:76.4%"
            href="https://www.instagram.com/denaliving/"
            target="_blank" rel="noopener noreferrer">
           <div class="card__flip">
