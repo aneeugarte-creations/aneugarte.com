@@ -293,7 +293,9 @@ body{
 /* Fondo topográfico: curvas de nivel de una baldosa que encaja consigo
    misma. Es el lenguaje de líneas de la referencia, generado aquí.
    Va como capa propia y no como body::before: con z-index negativo lo
-   tapaba el propio fondo blanco del body. */
+   tapaba el propio fondo blanco del body.
+   APAGADO el 21-09-2026: la pared se quedó lisa. El porqué, con los
+   números y con lo que NO entra en el cambio, en la nota de `.topo`. */
 /* La mancha del cursor: va por debajo de las curvas de nivel, como en la
    referencia. Lienzo a resolución baja porque es una mancha difusa: lo que
    se pierde al ampliar lo tapa el desenfoque, y así el bucle no cuesta. */
@@ -307,16 +309,40 @@ body.has-blob .blob{ opacity:1; }
    competía con el texto */
 body.is-scrolled .blob{ opacity:.55; }
 
+/* LA PARED SE QUEDA LISA. 21-09-2026. Ella: «siento que necesita mas
+   sencillez, me gusta mucho apple menos es mas, las galerias vacias con
+   el arte, los espacios simetricos», y despues «vamos de 1 en 1». Esta
+   es la 1. El dictamen del experto en diseno: una pared de galeria es
+   lisa; si la pared se mueve, ya no es pared, es obra.
+
+   Y ESTA SE MOVIA, aunque cueste verlo: no con una animacion CSS —por
+   eso no aparece en `document.getAnimations()` y una primera cuenta la
+   dio por quieta— sino escrita por JS en cada fotograma, un arrastre de
+   38 px/s con dos vaivenes de 31 y 86 s en horizontal y uno de 53 en
+   vertical, 71 px/s en punta, con la pagina quieta y sin repetirse nunca.
+   La cuenta sigue viva unas lineas mas abajo porque mueve a los otros
+   tres mapas; lo que se va es esta capa. Medido antes de tocar nada:
+   pintaba en 9 de las 12 pantallas y cambiaba entre el 0,5 % y el 3,4 %
+   de cada una, 222.876 px en total.
+
+   NO SE BORRA, SE APAGA. El `display:none` deja en pie la baldosa, el
+   tamano y el 12 % —22,6 puntos de luma por debajo del crema; al 18 %
+   que hubo aqui eran 40,7, el doble de contraste que la referencia, que
+   esta en 21,9 medido en su pantalla y no en su hoja de estilos— para
+   que volver atras sea borrar una linea.
+
+   LO QUE NO ENTRA EN ESTA: los otros tres mapas de la misma baldosa
+   —`.hero__cliptopo`, `.hero__nighttopo` y `.suelo__topo`— siguen
+   pintando. Son de la portada y del suelo, no de la pared, y son otra
+   decision suya. Y las dos reglas `body.js.in-pass .topo{opacity:0}` y
+   `body.js.in-mont .topo{opacity:0}` quedan sin efecto: se dejan donde
+   estan para que restaurar la capa no obligue a reescribirlas. */
 .topo{
   position:fixed; inset:0; z-index:1; pointer-events:none;
   background-image:url("ane-topo.png");
   background-size:980px 980px; background-repeat:repeat;
-  /* 22,6 puntos de luma por debajo del crema. La referencia esta en 21,9
-     —medido en su pantalla, no en su hoja de estilos, que declara un color
-     bastante mas oscuro y lo convierte antes de pintarlo—. Al 18 % que
-     habia aqui eran 40,7: el doble de contraste que ellos. El numero sale
-     de medir el resultado, no de la formula: ver la nota del script. */
   opacity:.12;
+  display:none;
 }
 main{ position:relative; z-index:2; }
 ::selection{ background:var(--accent); color:var(--ground); }
