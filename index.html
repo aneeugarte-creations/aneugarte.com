@@ -1067,7 +1067,37 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
      asienta sin dejar mancha reconocible. */
   filter:drop-shadow(6px 10px 48px rgba(20,20,22,.10))
          drop-shadow(18px 26px 28px rgba(20,20,22,.15));
-}
+
+  /* Y EL ARCHIVO SE RETOCO EL MISMO DIA. Con la sombra puesta ella vio lo
+     que la textura tapaba: «al lado de las orejas, esa parte no esta
+     transparente, consigue con mucho cuidado que este transparente». Eran
+     dos restos del fondo del estudio que el recorte se habia dejado
+     pegados: uno bajo la oreja izquierda (x 178-252, y 450-628 del
+     archivo) y otro junto a la derecha (x 600-660, y 418-566).
+
+     NO SE SEPARAN POR CLARIDAD. Se probo primero y no vale: su piel ahi
+     llega a 194 de luma en el percentil 95 y los filamentos que quedaban
+     estaban entre 180 y 205, o sea encima de ella. LOS SEPARA EL COLOR:
+     las manchas tienen saturacion 4 y 13 de mediana —son gris de estudio—
+     y su piel no baja de 78 en la mejilla ni de 37 en la oreja. La regla
+     que se aplico pide LAS DOS cosas, claro Y desaturado:
+     alfa *= (1 - rampa(luma,170,200) * (1 - rampa(saturacion,26,42))),
+     solo dentro de esas dos cajas, y la propia rampa difuminada 1,4 px
+     para que el canto de la caja no se vea. 1.438 pixeles pasan a
+     transparentes, el 0,315 % del alfa total.
+
+     REENCODADO A CALIDAD 100, no sin perdidas: sin perdidas pesaba 478 KB
+     y esta es la imagen de portada con fetchpriority alta. A 100 pesa
+     167.776 B —8.828 MENOS que los 176.604 de antes— con desviacion media
+     de 0,5 niveles sobre 255 en los pixeles visibles y maxima de 7 en el
+     2,9 % de ellos. El alfa se conserva exacto fuera de las cajas.
+
+     EL ENCUADRE NO SE TOCA, que es la regla de esta foto: las mascaras del
+     casco estan calcadas sobre el, y `.face__som` usa este mismo archivo
+     de mascara. Mismo tamano, misma posicion, solo alfa.
+
+     QUEDA UNA IGUAL SIN TOCAR, a la espera de que ella decida: 53 px de
+     fondo blanco en el canto del pelo, en x 186-193, y 220-232. */
 
 /* LA SOMBRA VERDE, que entra con el tamaño.
 
