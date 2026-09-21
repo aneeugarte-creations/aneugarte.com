@@ -3,18 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Ane Ugarte</title>
+<title>Site in progress</title>
 
 <!-- ══════════════════════════════════════════════════════════════════
      PAGINA DE ESPERA, 21-09-2026.
 
      Lo pidio Ane: «pon que la web esta en proceso (fondo blanco y muy
-     minimalista). Porque no quiero que ahora este nada publicado».
+     minimalista). Porque no quiero que ahora este nada publicado», y
+     luego, sobre una primera version que llevaba tambien el rotulo:
+     «PON SOLAMENTE SITE IN PROGRESS Y YA».
+
+     Asi que en la pagina hay UNA linea y nada mas. Se fue con el rotulo
+     todo su aparato: la pareja de `<span>`, el interlineado de .84 y el
+     entreletrado de la segunda linea. Si alguien vuelve a meter algo
+     aqui —un correo, un «vuelve pronto», un enlace—, esta dejando de
+     cumplir lo que ella pidio.
+
+     EL TITULO TAMBIEN DICE ESO Y NO SU NOMBRE. La pestaña del navegador
+     y cualquier vista previa de un enlace son texto publicado igual que
+     el cuerpo; dejar ahi «Ane Ugarte» seria publicar justo lo que no
+     quiere. El favicon SI se queda: no es contenido de la pagina, y sin
+     el la pestaña sale con el icono roto, que parece una averia en vez
+     de una espera.
 
      LA WEB NO SE HA BORRADO. Esta entera en el historial de este mismo
-     repositorio, en el commit anterior a este. Para devolverla:
+     repositorio, en el commit 535bd04. Para devolverla:
 
-         git checkout <ese commit> -- index.html && git commit && git push
+         git checkout 535bd04 -- index.html && git commit && git push
 
      El resto de los archivos —las fotos, las mascaras, el favicon, el
      CNAME, robots.txt y sitemap.xml— siguen donde estaban y no se han
@@ -28,12 +43,6 @@
      cuando vuelva la web. Ojo: `robots.txt` NO se toca, porque si se
      bloquea el rastreo el buscador no llega a leer este `noindex` y se
      queda con lo que ya tenia.
-
-     EL ROTULO ES EL SUYO, no uno inventado para esta pagina: la misma
-     construccion que el logotipo de la portada —Archivo, dos lineas
-     apiladas, `wdth` 74 con `wght` 800 arriba y 600 abajo, el mismo
-     entreletrado de .145em en la segunda y el mismo interlineado de .84—.
-     Lo unico que cambia es que aqui esta centrado y no en una esquina.
      ══════════════════════════════════════════════════════════════════ -->
 
 <meta name="robots" content="noindex">
@@ -45,11 +54,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap">
 
 <style>
-  :root{
-    color-scheme:light;                 /* blanco tambien en tema oscuro */
-    --ink:#141416;
-    --display:"Archivo","Helvetica Neue",Arial,sans-serif;
-  }
+  :root{ color-scheme:light; }        /* blanco tambien con el tema oscuro puesto */
   *{ box-sizing:border-box; }
   html,body{ height:100%; }
   body{
@@ -58,32 +63,21 @@
                  calc(env(safe-area-inset-bottom,0px) + 24px);
     padding-inline:24px;
     background:#FFFFFF;
-    color:var(--ink);
-    font-family:var(--display);
-    display:flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    gap:clamp(22px,4vh,34px);
+    color:#141416;
+    font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
+    display:flex; align-items:center; justify-content:center;
     text-align:center;
   }
-  .wm{
-    line-height:.84;
-    text-transform:uppercase;
-    font-size:clamp(17px,1.4vw,21px);
-  }
-  .wm__a{ display:block; font-size:2.05em; font-variation-settings:"wdth" 74,"wght" 800; }
-  .wm__b{ display:block; font-variation-settings:"wdth" 74,"wght" 600; letter-spacing:.145em; }
-  .nota{
+  p{
     margin:0;
-    font-size:clamp(11px,1vw,12px);
-    font-variation-settings:"wdth" 88,"wght" 400;
-    letter-spacing:.16em;
+    font-size:clamp(12px,1.15vw,14px);
+    font-variation-settings:"wdth" 88,"wght" 500;
+    letter-spacing:.18em;
     text-transform:uppercase;
-    color:#6E6E6C;
   }
 </style>
 </head>
 <body>
-  <p class="wm"><span class="wm__a">Ane</span><span class="wm__b">Ugarte</span></p>
-  <p class="nota">Site in progress</p>
+  <p>Site in progress</p>
 </body>
 </html>
