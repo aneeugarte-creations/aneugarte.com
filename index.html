@@ -1029,9 +1029,44 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   /* Sin máscara de transparencia a propósito: sus hombros tocan el borde
      del original y hay que disolver esos cortes, pero volverla translúcida
-     deja ver lo que tiene detrás. Ahora detrás sólo está el fondo
-     topográfico, así que su base se disuelve en alfa —horneado en el
-     archivo— y las curvas de nivel se ven a través de ella. */
+     deja ver lo que tiene detrás. Su base se disuelve en alfa, horneado en
+     el archivo. (Hasta el 21-09-2026 detrás había un fondo topográfico y
+     las curvas se veían a través de ella; esa capa está apagada, así que
+     ahora lo que se ve a través es el papel.) */
+
+  /* LA SOMBRA, 21-09-2026. Ella, al ver la pared lisa: «deberiamos poner
+     una sombra a ane o algo que haga que quede bien encima del blanco
+     porque sino es como una pegatina mal pegada».
+
+     NO ERA EL RECORTE. Medido antes de decidir: el alfa de ane-cut.webp
+     tarda 5 px de mediana en pasar de transparente a opaco —1,77 % de
+     pixel semitransparente— y no hay orla clara: el canto a medio alfa da
+     rgb(89,80,78) y el interior rgb(91,68,60), o sea el canto es mas
+     OSCURO que el interior y no mas claro. Con halo blanco seria al reves.
+     Lo que faltaba era apoyo: la textura de curvas hacia de campo y sin
+     ella la silueta flota.
+
+     DOS SOMBRAS Y LAS DOS ABAJO A LA DERECHA, porque el foco de esta
+     pagina esta escrito y es «arriba a la izquierda» —ver las notas del
+     casco—. La ancha y floja (48 px, .10) asienta la silueta ENTERA; la
+     corta (28 px, .15) pone la direccion. Una proyectada sola oscurece un
+     canto y deja el otro igual de recortado contra el papel: la pegatina
+     sobrevive por la izquierda. Y un halo sin direccion contradice el foco.
+     Descartado tambien meter un campo radial o un degradado en el papel:
+     acabamos de quitarle una capa a la pared y devolverla disfrazada no es
+     quitarla.
+
+     SIN SUELO: las ultimas 140 filas del archivo (13,1 %) se van por
+     debajo del canto de la pantalla, asi que no hay donde apoyar una
+     sombra de contacto. Es sombra de pared, no de mesa.
+
+     Va en la imagen y no en `.hero__cut`, que es quien lleva la escala del
+     recorrido y los hermanos `.scan`, `.face__som` y `.cowl`: ahi la sombra
+     se los comeria tambien. Medido pintado a 1512x860: 133.747 px cambian
+     sobre el papel y 112.693 sobre el panel gris, y en los dos sitios
+     asienta sin dejar mancha reconocible. */
+  filter:drop-shadow(6px 10px 48px rgba(20,20,22,.10))
+         drop-shadow(18px 26px 28px rgba(20,20,22,.15));
 }
 
 /* LA SOMBRA VERDE, que entra con el tamaño.
