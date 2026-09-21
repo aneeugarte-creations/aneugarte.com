@@ -293,9 +293,7 @@ body{
 /* Fondo topográfico: curvas de nivel de una baldosa que encaja consigo
    misma. Es el lenguaje de líneas de la referencia, generado aquí.
    Va como capa propia y no como body::before: con z-index negativo lo
-   tapaba el propio fondo blanco del body.
-   APAGADO el 21-09-2026: la pared se quedó lisa. El porqué, con los
-   números y con lo que NO entra en el cambio, en la nota de `.topo`. */
+   tapaba el propio fondo blanco del body. */
 /* La mancha del cursor: va por debajo de las curvas de nivel, como en la
    referencia. Lienzo a resolución baja porque es una mancha difusa: lo que
    se pierde al ampliar lo tapa el desenfoque, y así el bucle no cuesta. */
@@ -309,40 +307,16 @@ body.has-blob .blob{ opacity:1; }
    competía con el texto */
 body.is-scrolled .blob{ opacity:.55; }
 
-/* LA PARED SE QUEDA LISA. 21-09-2026. Ella: «siento que necesita mas
-   sencillez, me gusta mucho apple menos es mas, las galerias vacias con
-   el arte, los espacios simetricos», y despues «vamos de 1 en 1». Esta
-   es la 1. El dictamen del experto en diseno: una pared de galeria es
-   lisa; si la pared se mueve, ya no es pared, es obra.
-
-   Y ESTA SE MOVIA, aunque cueste verlo: no con una animacion CSS —por
-   eso no aparece en `document.getAnimations()` y una primera cuenta la
-   dio por quieta— sino escrita por JS en cada fotograma, un arrastre de
-   38 px/s con dos vaivenes de 31 y 86 s en horizontal y uno de 53 en
-   vertical, 71 px/s en punta, con la pagina quieta y sin repetirse nunca.
-   La cuenta sigue viva unas lineas mas abajo porque mueve a los otros
-   tres mapas; lo que se va es esta capa. Medido antes de tocar nada:
-   pintaba en 9 de las 12 pantallas y cambiaba entre el 0,5 % y el 3,4 %
-   de cada una, 222.876 px en total.
-
-   NO SE BORRA, SE APAGA. El `display:none` deja en pie la baldosa, el
-   tamano y el 12 % —22,6 puntos de luma por debajo del crema; al 18 %
-   que hubo aqui eran 40,7, el doble de contraste que la referencia, que
-   esta en 21,9 medido en su pantalla y no en su hoja de estilos— para
-   que volver atras sea borrar una linea.
-
-   LO QUE NO ENTRA EN ESTA: los otros tres mapas de la misma baldosa
-   —`.hero__cliptopo`, `.hero__nighttopo` y `.suelo__topo`— siguen
-   pintando. Son de la portada y del suelo, no de la pared, y son otra
-   decision suya. Y las dos reglas `body.js.in-pass .topo{opacity:0}` y
-   `body.js.in-mont .topo{opacity:0}` quedan sin efecto: se dejan donde
-   estan para que restaurar la capa no obligue a reescribirlas. */
 .topo{
   position:fixed; inset:0; z-index:1; pointer-events:none;
   background-image:url("ane-topo.png");
   background-size:980px 980px; background-repeat:repeat;
+  /* 22,6 puntos de luma por debajo del crema. La referencia esta en 21,9
+     —medido en su pantalla, no en su hoja de estilos, que declara un color
+     bastante mas oscuro y lo convierte antes de pintarlo—. Al 18 % que
+     habia aqui eran 40,7: el doble de contraste que ellos. El numero sale
+     de medir el resultado, no de la formula: ver la nota del script. */
   opacity:.12;
-  display:none;
 }
 main{ position:relative; z-index:2; }
 ::selection{ background:var(--accent); color:var(--ground); }
@@ -1029,75 +1003,10 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   /* Sin máscara de transparencia a propósito: sus hombros tocan el borde
      del original y hay que disolver esos cortes, pero volverla translúcida
-     deja ver lo que tiene detrás. Su base se disuelve en alfa, horneado en
-     el archivo. (Hasta el 21-09-2026 detrás había un fondo topográfico y
-     las curvas se veían a través de ella; esa capa está apagada, así que
-     ahora lo que se ve a través es el papel.) */
-
-  /* LA SOMBRA, 21-09-2026. Ella, al ver la pared lisa: «deberiamos poner
-     una sombra a ane o algo que haga que quede bien encima del blanco
-     porque sino es como una pegatina mal pegada».
-
-     NO ERA EL RECORTE. Medido antes de decidir: el alfa de ane-cut.webp
-     tarda 5 px de mediana en pasar de transparente a opaco —1,77 % de
-     pixel semitransparente— y no hay orla clara: el canto a medio alfa da
-     rgb(89,80,78) y el interior rgb(91,68,60), o sea el canto es mas
-     OSCURO que el interior y no mas claro. Con halo blanco seria al reves.
-     Lo que faltaba era apoyo: la textura de curvas hacia de campo y sin
-     ella la silueta flota.
-
-     DOS SOMBRAS Y LAS DOS ABAJO A LA DERECHA, porque el foco de esta
-     pagina esta escrito y es «arriba a la izquierda» —ver las notas del
-     casco—. La ancha y floja (48 px, .10) asienta la silueta ENTERA; la
-     corta (28 px, .15) pone la direccion. Una proyectada sola oscurece un
-     canto y deja el otro igual de recortado contra el papel: la pegatina
-     sobrevive por la izquierda. Y un halo sin direccion contradice el foco.
-     Descartado tambien meter un campo radial o un degradado en el papel:
-     acabamos de quitarle una capa a la pared y devolverla disfrazada no es
-     quitarla.
-
-     SIN SUELO: las ultimas 140 filas del archivo (13,1 %) se van por
-     debajo del canto de la pantalla, asi que no hay donde apoyar una
-     sombra de contacto. Es sombra de pared, no de mesa.
-
-     Va en la imagen y no en `.hero__cut`, que es quien lleva la escala del
-     recorrido y los hermanos `.scan`, `.face__som` y `.cowl`: ahi la sombra
-     se los comeria tambien. Medido pintado a 1512x860: 133.747 px cambian
-     sobre el papel y 112.693 sobre el panel gris, y en los dos sitios
-     asienta sin dejar mancha reconocible. */
-  filter:drop-shadow(6px 10px 48px rgba(20,20,22,.10))
-         drop-shadow(18px 26px 28px rgba(20,20,22,.15));
-
-  /* Y EL ARCHIVO SE RETOCO EL MISMO DIA. Con la sombra puesta ella vio lo
-     que la textura tapaba: «al lado de las orejas, esa parte no esta
-     transparente, consigue con mucho cuidado que este transparente». Eran
-     dos restos del fondo del estudio que el recorte se habia dejado
-     pegados: uno bajo la oreja izquierda (x 178-252, y 450-628 del
-     archivo) y otro junto a la derecha (x 600-660, y 418-566).
-
-     NO SE SEPARAN POR CLARIDAD. Se probo primero y no vale: su piel ahi
-     llega a 194 de luma en el percentil 95 y los filamentos que quedaban
-     estaban entre 180 y 205, o sea encima de ella. LOS SEPARA EL COLOR:
-     las manchas tienen saturacion 4 y 13 de mediana —son gris de estudio—
-     y su piel no baja de 78 en la mejilla ni de 37 en la oreja. La regla
-     que se aplico pide LAS DOS cosas, claro Y desaturado:
-     alfa *= (1 - rampa(luma,170,200) * (1 - rampa(saturacion,26,42))),
-     solo dentro de esas dos cajas, y la propia rampa difuminada 1,4 px
-     para que el canto de la caja no se vea. 1.438 pixeles pasan a
-     transparentes, el 0,315 % del alfa total.
-
-     REENCODADO A CALIDAD 100, no sin perdidas: sin perdidas pesaba 478 KB
-     y esta es la imagen de portada con fetchpriority alta. A 100 pesa
-     167.776 B —8.828 MENOS que los 176.604 de antes— con desviacion media
-     de 0,5 niveles sobre 255 en los pixeles visibles y maxima de 7 en el
-     2,9 % de ellos. El alfa se conserva exacto fuera de las cajas.
-
-     EL ENCUADRE NO SE TOCA, que es la regla de esta foto: las mascaras del
-     casco estan calcadas sobre el, y `.face__som` usa este mismo archivo
-     de mascara. Mismo tamano, misma posicion, solo alfa.
-
-     QUEDA UNA IGUAL SIN TOCAR, a la espera de que ella decida: 53 px de
-     fondo blanco en el canto del pelo, en x 186-193, y 220-232. */
+     deja ver lo que tiene detrás. Ahora detrás sólo está el fondo
+     topográfico, así que su base se disuelve en alfa —horneado en el
+     archivo— y las curvas de nivel se ven a través de ella. */
+}
 
 /* LA SOMBRA VERDE, que entra con el tamaño.
 
