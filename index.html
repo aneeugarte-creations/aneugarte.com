@@ -778,12 +778,68 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
      el antialias— y el borde pasa a moverse en subpixel como todo lo
      demas. Las cuatro medidas las escribe el mismo bucle del paso. */
   --ct:0px; --cr:0px; --cb:0px; --cl:0px;
+  /* LA RAMPA VA POR FUERA DEL CANTO, Y NO POR DENTRO. Aqui los cuatro
+     pares de paradas estaban escritos hacia adentro:
+
+         #0000 var(--ct),                    #000 calc(var(--ct) + 1px)
+         #000 calc(100% - var(--cb) - 1px),  #0000 calc(100% - var(--cb))
+
+     o sea que el pixel que hacia de antialias se lo comia AL PANEL. Con
+     el panel contraido eso da igual —un pixel de un canto que de todas
+     formas es borroso— pero EN REPOSO las cuatro variables valen cero y
+     entonces la rampa cae dentro de la caja: el ultimo pixel CSS de
+     `.hero__clip` se funde a transparente SIEMPRE, este quieta la pagina
+     o no.
+
+     Y AHI VIVE ELLA. `.hero__cutwrap` es hija de `.hero__clip`, no de
+     `.hero`, y se demuestra con su propia caja: su `bottom` sale en
+     982,48 = 858 + 124,49, medido contra la caja de RELLENO de 858 —los
+     860 menos el borde inferior de 2 px de dos notas mas arriba— y no
+     contra los 860 del `.hero`. Asi que la rampa le fundia a ella el
+     canto de abajo, que es justo donde su jersey negro sale por el pie
+     de la pantalla. Negro fundido contra el papel = una raya gris clara
+     cruzando el jersey, del ancho exacto del jersey.
+
+     Ane, 21-09-2026: «hay una linea fina blanca justo al acabar la
+     portada en la parte de abajo, quita esa linea blanca, no pinta nada
+     y parece como si fuese un fallo».
+
+     MEDIDO en el dominio a dpr 2, luma media sobre el jersey en las
+     cuatro ultimas filas de pantalla, con la pagina en reposo:
+
+         antes            16,5 · 16,6 ·  75,2 · 193,2
+         sin mascara      16,5 · 16,6 ·  16,5 ·  16,0
+         con esto         16,5 · 16,6 ·  16,5 ·  16,0
+
+     Las tres, iguales en 1512x860, 1512x900 y 1440x900. La captura que
+     mando ella da 77,2 y 194,8 en esas dos filas: es la misma raya, y el
+     ancho cambia con el alto de la ventana porque el ancho de la raya es
+     el del jersey, que sale de `--cutH`.
+
+     QUE NO SE PIERDE. Sigue siendo una rampa de un pixel conducida por
+     una variable, que es para lo que se puso la mascara en lugar de un
+     `clip-path:inset()`: aquel redondeaba al pixel del dispositivo y el
+     canto avanzaba a tirones. `--cb` sigue avanzando de 1,05 en 1,05 px
+     —medido en 21 posiciones— y eso no lo toca nadie. Lo unico que
+     cambia es que el canto del panel queda medio pixel mas afuera.
+
+     COMPROBADO QUE NO ROMPE EL CANTO, con el control de ruido de rigor:
+     en esas 21 posiciones del tramo de contraccion, parche contra
+     control da 5,7-8,3 % de pixeles movidos... y el control contra SI
+     MISMO en otra carga da 3,7-7,8 %, con el salto maximo identico en
+     las dos columnas en las 21. Es el ruido del mapa y de las bandas,
+     que no paran nunca.
+
+     NO SE TOCA EL `border-bottom:2px solid transparent` ni el
+     `background-clip:padding-box` de la nota de arriba: aquello es otra
+     cosa —el papel del panel asomando en un pixel partido cuando el
+     marco dibujaba a escala 0,75— y ahora mismo no cuesta nada. */
   -webkit-mask-image:
-    linear-gradient(to bottom,#0000 var(--ct),#000 calc(var(--ct) + 1px),#000 calc(100% - var(--cb) - 1px),#0000 calc(100% - var(--cb))),
-    linear-gradient(to right,#0000 var(--cl),#000 calc(var(--cl) + 1px),#000 calc(100% - var(--cr) - 1px),#0000 calc(100% - var(--cr)));
+    linear-gradient(to bottom,#0000 calc(var(--ct) - 1px),#000 var(--ct),#000 calc(100% - var(--cb)),#0000 calc(100% - var(--cb) + 1px)),
+    linear-gradient(to right,#0000 calc(var(--cl) - 1px),#000 var(--cl),#000 calc(100% - var(--cr)),#0000 calc(100% - var(--cr) + 1px));
           mask-image:
-    linear-gradient(to bottom,#0000 var(--ct),#000 calc(var(--ct) + 1px),#000 calc(100% - var(--cb) - 1px),#0000 calc(100% - var(--cb))),
-    linear-gradient(to right,#0000 var(--cl),#000 calc(var(--cl) + 1px),#000 calc(100% - var(--cr) - 1px),#0000 calc(100% - var(--cr)));
+    linear-gradient(to bottom,#0000 calc(var(--ct) - 1px),#000 var(--ct),#000 calc(100% - var(--cb)),#0000 calc(100% - var(--cb) + 1px)),
+    linear-gradient(to right,#0000 calc(var(--cl) - 1px),#000 var(--cl),#000 calc(100% - var(--cr)),#0000 calc(100% - var(--cr) + 1px));
   -webkit-mask-composite:source-in;  mask-composite:intersect;
 }
 /* el mapa de dentro del recorte deriva al mismo paso que el global,
