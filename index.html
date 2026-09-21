@@ -1195,8 +1195,8 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    del 1,12 % al 73,78 % del alto del cuadro. El alámbrico que había
    antes —ane-dome.png, 1392x1603, que es el mismo dibujo a 3x— daba
    1,25 % y 73,92 %. Trece y catorce CENTÉSIMAS de punto de diferencia:
-   sobre un ciclo de 148 puntos en 4 s, menos de 2 ms en cada uno de los
-   cinco instantes de abajo. Por eso el reparto, los aparcamientos y las
+   sobre un ciclo de 148 puntos, menos de 2 ms en cada uno de los cinco
+   instantes de abajo cuando duraba 4 s, y 1,75 ms a los 3,5 s de hoy. Por eso el reparto, los aparcamientos y las
    dos peticiones de Ane sobre el ritmo siguen valiendo tal cual, sin
    volver a medir nada: cambió la tinta, no la silueta.
 
@@ -1250,14 +1250,47 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    queda donde estaba: sigue siendo un punto con todo apagado, que es la
    única condición que de verdad tiene que cumplir.
 
-   EL CICLO ES DE 4 s, que es lo de «más lento» —había 1 s—. Repartidos:
-   1,00 s dibujándose, 0,57 s entero y quieto, 1,32 s deshaciéndose por
-   arriba y 1,11 s a oscuras. El tramo más largo sigue siendo el
-   borrado, y por eso el casco se lee entero aunque sólo esté liso medio
-   segundo: cuando empieza a irse todavía le queda casi todo. Y dura lo
-   mismo que antes de acortar la estela, que no es casualidad: subir su
-   canto de arriba mueve los dos extremos del borrado a la vez, así que
-   el tramo entero se adelanta sin cambiar de duración.
+   EL CICLO ES DE 3,5 s. Fue de 1 s, luego de 4 —«haz que el escaneo sea
+   más lento»— y desde el 21-09-2026 es de 3,5: «debe escanearse un toque
+   más rápido». Repartidos: 0,88 s dibujándose, 0,50 s entero y quieto,
+   1,16 s deshaciéndose por arriba y 0,97 s a oscuras. El tramo más largo
+   sigue siendo el borrado, y por eso el casco se lee entero aunque sólo
+   esté liso medio segundo: cuando empieza a irse todavía le queda casi
+   todo. Y dura lo mismo que antes de acortar la estela, que no es
+   casualidad: subir su canto de arriba mueve los dos extremos del
+   borrado a la vez, así que el tramo entero se adelanta sin cambiar de
+   duración.
+
+   CAMBIAR LA VELOCIDAD NO MUEVE NADA MÁS, y eso está puesto a propósito:
+   el ciclo va EN RECTA —ver el párrafo de abajo— así que las cuatro
+   fracciones son las mismas a cualquier duración, y las dos peticiones
+   de Ane sobre el gesto se siguen cumpliendo igual. Los cinco instantes
+   en `p` no se tocan; sólo se estiran o se encogen en segundos.
+
+   PERO HAY UN SUELO, Y ES DURO: 3,25 s. No es de gusto, es la PRIMERA
+   petición —«quiero que en cuanto entres ya empiece»—. La cadena entera,
+   comprobada el 21-09-2026 leyendo el reloj dentro de la página y no la
+   nota: `open()` pone `is-done` y desde ahí `is-live` va a +260 ms y
+   `is-gone` a +1600 ms; la cortina se APAGA con `body.is-done .load{
+   opacity:0 }`, que transiciona `opacity .65s ease .42s`, o sea que deja
+   de taparlo todo a los 0,42 + 0,65 = 1,07 s. Así que cuando la portada
+   queda a la vista la animación lleva 1,07 − 0,26 = 0,81 s corridos,
+   pase lo que pase con la duración del ciclo.
+
+   OJO CON `is-gone`, QUE NO ES ESO Y CUESTA UNA MEDIDA: llega a los
+   1,6 s y lo único que hace es `display:none` sobre una cortina que ya
+   era invisible desde los 1,07. Medir con ella da 1.333 ms de ciclo
+   corrido en vez de 810, o sea el 33 % en vez del 20 %, y desde ahí se
+   concluye que incluso los 4 s de antes llegaban tarde. No es verdad.
+
+   LA CUENTA: el tramo en que el casco SE DIBUJA ocupa el 24,93 % del
+   ciclo, así que hace falta que esos 0,810 s sean menos de ese 24,93 %
+   — o sea T > 3,249 s. Por debajo de ahí, lo primero que se ve al
+   destaparse la portada es el casco DESHACIÉNDOSE, que es exactamente el
+   fallo que ya se arregló una vez. A 4 s el ciclo iba por el 20,3 % y
+   quedaban 187 ms de dibujo por ver; a 3,5 s va por el 23,1 % y quedan
+   64 ms. Sigue dentro, pero ahí está el coste de correr: lo que se
+   acorta de verdad es el trozo de dibujo que se llega a ver al entrar.
 
    EL 0,33 DE LA ESTELA NO ES A OJO: es el 34,7 % del 0,95 de la barra, y
    34,7 % es exactamente el suelo de la referencia —su línea no se apaga
@@ -1274,8 +1307,9 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
 
    MEDIDO en esta misma página, con el puntero lejos de su cara y contra
    su propio cero: el periodo sale 3,91, 3,94, 4,06 y 4,13 s en cuatro
-   vueltas seguidas —media 4,01— y el pico 0,76, contra los 0,60 que
-   daba la banda de 1 s. Esas cifras son del alámbrico; el periodo vale
+   vueltas seguidas —media 4,01, contra los 4 s que entonces pedía la
+   hoja; hoy pide 3,5— y el pico 0,76, contra los 0,60 que daba la banda
+   de 1 s. Esas cifras son del alámbrico; el periodo vale
    igual —es el mismo reloj— y el pico no, porque el pico depende de la
    tinta y la tinta ha cambiado. El reparto medido iba del 60 % al 84 %
    según dónde se pusiera el umbral, y esa horquilla no es ruido de
@@ -1290,8 +1324,10 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    DESHACIÉNDOSE —la mitad equivocada del gesto—. Ahora nace en pausa y
    la suelta `body.is-live`, que es el instante en que la portada empieza
    a existir: con la cortina todavía a medio irse el barrido ya se ve a
-   través de ella, y cuando acaba de irse el ciclo va por el 20 %, con la
-   línea a cuatro quintos de camino entre la coronilla y la barbilla.
+   través de ella, y cuando acaba de irse el ciclo va por el 23,1 % —iba
+   por el 20 % cuando duraba 4 s—, con la línea casi en la barbilla. Ese
+   número es el que topa con el suelo de 3,25 s de la nota de arriba: es
+   el mismo hecho contado desde el otro lado.
    Sin JS no hay `is-live` que la
    suelte, así que la suelta el `<noscript>` —el mismo bloque que ya
    destapa la portada—, y allí corre desde el primer fotograma.
@@ -1304,9 +1340,12 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    llegar a la barbilla, así que subirlo adelanta el final y no toca
    nada más. Los dos primeros topes del degradado suben cinco puntos —el
    15 % pasa a 20 % y el 23,3 % a 28,3 %— y la estela baja de 1,30 a
-   1,15 altos de cuadro. En tiempo: el borrado empieza 0,20 s antes y el
-   casco desaparece 0,20 s antes, y esos 0,20 s se los queda el tramo a
-   oscuras, que pasa de 0,91 a 1,11 s.
+   1,15 altos de cuadro. En tiempo, con el ciclo de 4 s que había cuando
+   se midió: el borrado empieza 0,20 s antes y el casco desaparece 0,20 s
+   antes, y esos 0,20 s se los queda el tramo a oscuras, que pasa de 0,91
+   a 1,11 s. A los 3,5 s de hoy son 0,175 s y el tramo a oscuras va de
+   0,80 a 0,97 s: la misma cuenta encogida, porque el reparto es el
+   mismo.
 
    MEDIDO, con las dos versiones servidas a la vez: 110 fotogramas cada
    80 ms, cada una contra su propio cero y las dos con la misma caja
@@ -1330,7 +1369,8 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
 
    Y LA PRIMERA PETICIÓN SIGUE EN PIE, que es el límite de verdad de
    esto. La cabeza suelta la barbilla en p = 63,1 y el borrado no muerde
-   hasta p = 41,9: el casco se queda entero 0,57 s —antes 0,77— y no se
+   hasta p = 41,9: el casco se queda entero 0,50 s —0,57 con el ciclo de
+   4 s, 0,77 antes de acortar la estela— y no se
    empieza a borrar nada hasta mucho después de que el barrido haya
    llegado abajo del todo. Quedan 21,2 puntos de margen, que son catorce
    puntos más de degradado. Subirlo hasta ahí cerraría esa ventana, y
@@ -1389,7 +1429,7 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
           mask-composite:intersect,add,add;
   /* y NACE EN PAUSA: la suelta la regla que hay justo debajo, para que
      el ciclo no se gaste detras de la cortina */
-  animation:cowlsweep 4s linear infinite; animation-play-state:paused;
+  animation:cowlsweep 3.5s linear infinite; animation-play-state:paused;
 }
 /* El ciclo entero es recorrido: nada se detiene en ningún extremo. Del
    100 % al -48 % la cabeza del barrido baja, sale por abajo del cuadro y
