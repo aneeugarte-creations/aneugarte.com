@@ -994,7 +994,7 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    medida en la referencia — allí la carcasa flota alrededor de la
    cabeza y puede deslizarse; aquí está PUESTA, y un deslizamiento
    grande no se leería como profundidad sino como un error de registro. */
-.scan,.cowl{ translate:var(--hx,0px) var(--hy,0px); }
+.cowl{ translate:var(--hx,0px) var(--hy,0px); }
 .hero__cut{
   position:relative; margin:0; width:100%; height:100%;
   container-type:inline-size; will-change:transform;
@@ -1045,13 +1045,53 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    que sus ojos siguen mirando, y baja hasta pasada la barbilla. De un
    color, como un casco, y encima la librea: palabras, banderas y objetos
    puestos a distintos tamaños y ángulos, como se pegan de verdad. */
-/* EL ESCANEO, Y LA MALLA CON ÉL.
+/* EL ESCANEO, Y EL CASCO CON ÉL.
 
-   Lo pidió Ane así: «a Lando sólo se le ve el casco de fuera gris al
-   hacerse el escaneo, y yo quiero lo mismo: cuando se escanee aparece y
-   vuelve a irse cuando acaba». Eso es lo que hay aquí ahora, y AQUÍ
-   ANTES HABÍA DOS CAPAS: `.ghost` pintaba la cáscara alámbrica entera,
-   siempre, y esto le pasaba una banda por encima.
+   Lo pidió Ane así el primer día: «a Lando sólo se le ve el casco de
+   fuera gris al hacerse el escaneo, y yo quiero lo mismo: cuando se
+   escanee aparece y vuelve a irse cuando acaba».
+
+   LO QUE SE ENCIENDE ES EL CASCO, Y ESO ES DEL 21-09-2026. Lo pidió
+   ella con la pieza delante: «quiero que lo que se escanea en la cara
+   de ane en la portada no sean las rayas de la mascara quiero que sea
+   lo que al pasar el raton se ve, quiero que eso sea lo que se
+   escanee». Hasta hoy el barrido encendía el ALÁMBRICO —`ane-dome.png`,
+   una cáscara de alambre que no es ni la foto ni el casco— y el casco
+   entero sólo salía al pasar el ratón: dos gestos y dos piezas
+   distintas. Ahora la banda y el ratón abren LA MISMA, que es lo que
+   pedía la frase de arriba desde el principio. `ane-dome.png` se queda
+   en el repo y no lo referencia nadie; no se borra, por lo mismo que no
+   se borraron ane-glass.png y los otros.
+
+   CÓMO, EN UNA LÍNEA: el barrido ha dejado de ser un elemento que pinta
+   y ha pasado a ser UNA MÁSCARA MÁS del casco. `.cowl` lleva tres: la
+   forma (`ane-helm.png`), la banda que baja, y la ventana que sigue al
+   ratón. La forma se CRUZA con la SUMA de las otras dos. Suma y no
+   cruce, y esto es lo único que hay que entender para no romperlo: si
+   fuera cruce, el ratón sólo abriría por donde además estuviera pasando
+   la banda, y entre barridos no abriría nada.
+
+   Y LA VENTANA DEL RATÓN YA NO VIVE EN LA OPACIDAD. Antes la capa
+   entera valía `opacity:var(--rev)` y el ratón la encendía subiendo esa
+   opacidad. Eso ahora apagaría también el barrido —que tiene que correr
+   con el ratón lejos—, así que `--rev` se ha mudado DENTRO del radial:
+   es el alfa de su núcleo. Con `--rev` a cero el radial no suma nada y
+   sólo se ve la banda; con `--rev` a uno abre igual que abría. El bucle
+   de JS no ha cambiado ni una línea por esto.
+
+   LO QUE SÍ SE AÑADIÓ AL BUCLE es `--vis`, un 1/0 que escribe el mismo
+   IntersectionObserver que ya había. La capa valía cero cuando la cara
+   se iba de pantalla porque `--rev` valía cero; al sacar `--rev` de la
+   opacidad, esa guardia se habría perdido sin que se notara. Ver la nota
+   de «LA MASCARA SOLO EXISTE MIENTRAS SE VE», abajo en el JS: no cuesta
+   nada por fotograma y es lo único que apaga también lo que dejó puesto
+   el puntero.
+
+   OJO AL VOLVER A COPIAR EL ARTIFACT ENCIMA. Esto vive SÓLO en
+   aneugarte.com: Ane lo pidió así —«EN aneugarte.com, tu no toques
+   artefact solo aneugarte.com»—, de modo que el artifact sigue con el
+   alámbrico. Copiar el cuerpo del artifact sobre este fichero borra
+   todo este bloque sin avisar de nada.
 
    Y NO ES LO QUE HACE LA REFERENCIA. Va escrito aquí con su código
    delante, para que nadie lo «arregle» creyendo que lo acerca al
@@ -1104,6 +1144,17 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    aparece y vuelve a irse cuando acaba». Entre barridos no queda nada.
    La diferencia está medida y es deliberada.
 
+   LAS MEDIDAS DE ABAJO SON DEL ALÁMBRICO, que es lo que había cuando se
+   tomaron. Se quedan porque la que manda —el RITMO— no ha cambiado al
+   cambiar la tinta, y porque son la única prueba de por qué el suelo
+   tiene que ser cero. Lo que ya no aplica es todo lo que hablaba de
+   hacer VISIBLE una línea de alfa 0,075: la tinta nueva es el casco, que
+   es opaco, y el problema de visibilidad que costó dos palancas
+   —sumar la máscara consigo misma y pintar en negro en vez de en gris—
+   deja de existir con ella. Esas dos palancas se han ido con el
+   alámbrico; si alguna vez vuelve, están contadas en el historial de
+   este fichero.
+
    Medido en vivo sobre el dominio, 44 fotogramas en 10 s con el ratón
    lejos de su cara, y CONTRA SU PROPIO CERO —el mismo encuadre con las
    dos capas apagadas—: entre barridos el alambre se quedaba en 0,20
@@ -1123,17 +1174,9 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    existe, un tercio del pico. Se arregla fijando el rectángulo a mano en
    las dos pasadas.
 
-   La capa de reposo se ha ido entera. La que queda es ésta, que ya era
-   la banda recortada por el mismo alámbrico, y con ella el pico se
-   mantiene: 0,61 medido, contra los 0,59 que la banda aportaba antes
-   —0,79 menos los 0,20 del reposo—. Lo que desaparece es el suelo, que
-   pasa a 0,00.
-
-   EL ALÁMBRICO ES EL DEL CASCO, no el de un domo aparte —esto venía con
-   la capa que se ha ido y es lo único suyo que había que salvar—. Se
-   traza sobre EL MISMO POLÍGONO que rellena ane-helm.png, el perfil de
-   helmet.py, así que lo que la banda enciende es el alambre de la pieza
-   que luego se materializa al pasar el ratón. Cuánto se parecen los dos
+   EL ALÁMBRICO ERA EL DEL CASCO, y por eso el ritmo no se ha movido al
+   cambiar de tinta. Se trazaba sobre EL MISMO POLÍGONO que rellena
+   ane-helm.png, el perfil de helmet.py. Cuánto se parecen los dos
    cantos, medido llevando los dos PNG al cuadro de 928x1069 y
    comparándolos fila a fila: con el umbral de tinta en alfa>20 la
    mediana es 1 px, el p90 son 2 px y el máximo 3 px. Aquí ponía «no se
@@ -1146,10 +1189,16 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    alrededor de la cabeza, con el pelo dentro, y se amontona sola en el
    canto porque allí la superficie se gira.
 
-   DÓNDE EMPIEZA Y DÓNDE ACABA, que es aritmética y no gusto. El
-   alámbrico —medido sobre ane-dome.png, fila a fila— va de la fila 20 a
-   la 1185 de 1603, o sea del 1,25 % al 73,92 % del alto del cuadro. Ese
-   par de números manda todo lo demás.
+   DÓNDE EMPIEZA Y DÓNDE ACABA, que es aritmética y no gusto, y es el par
+   de números que manda todo lo demás. Medido fila a fila sobre el alfa
+   de ane-helm.png (464x534), la pieza va de la fila 6 a la 394, o sea
+   del 1,12 % al 73,78 % del alto del cuadro. El alámbrico que había
+   antes —ane-dome.png, 1392x1603, que es el mismo dibujo a 3x— daba
+   1,25 % y 73,92 %. Trece y catorce CENTÉSIMAS de punto de diferencia:
+   sobre un ciclo de 148 puntos en 4 s, menos de 2 ms en cada uno de los
+   cinco instantes de abajo. Por eso el reparto, los aparcamientos y las
+   dos peticiones de Ane sobre el ritmo siguen valiendo tal cual, sin
+   volver a medir nada: cambió la tinta, no la silueta.
 
    YA NO ES UNA BANDA QUE CRUZA, SINO UN NIVEL QUE BAJA Y LO VA DEJANDO
    TODO PINTADO. Lo pidió Ane con estas palabras: «haz que el escaneo sea
@@ -1165,27 +1214,28 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
 
    Ese corte seco es toda la pieza. Por debajo de la cabeza del barrido
    no hay nada encendido; por encima quedan 1,15 altos de cuadro de
-   estela. Una sola propiedad recta, `background-position`, hace
-   entonces las tres cosas seguidas: llenar de arriba abajo, quedarse
-   entera y vaciarse de arriba abajo. Sin animar una segunda propiedad y
-   sin una pausa programada: lo que parece pausa es el tramo en que la
-   cabeza ya ha salido por abajo y el borrado aún no ha entrado por
-   arriba.
+   estela. Una sola propiedad recta —`mask-position`, que antes era
+   `background-position` y hace exactamente lo mismo— hace entonces las
+   tres cosas seguidas: llenar de arriba abajo, quedarse entera y
+   vaciarse de arriba abajo. Sin animar una segunda propiedad y sin una
+   pausa programada: lo que parece pausa es el tramo en que la cabeza ya
+   ha salido por abajo y el borrado aún no ha entrado por arriba.
 
-   LAS CUENTAS. Con `background-size:100% 300%`, un `background-position`
-   del p % sube la imagen 0,02p altos de cuadro, así que la cabeza del
-   barrido —que va en los dos tercios de la imagen— cae en 2 − 0,02p. De
-   ahí salen los cinco instantes, y no hay ninguno elegido a ojo:
+   LAS CUENTAS. Con la banda a `100% 300%`, una posición del p % sube la
+   imagen 0,02p altos de cuadro, así que la cabeza del barrido —que va en
+   los dos tercios de la imagen— cae en 2 − 0,02p. De ahí salen los cinco
+   instantes, y no hay ninguno elegido a ojo (entre paréntesis, el mismo
+   instante con el alámbrico de antes):
      p = 100    la cabeza está clavada en el canto de arriba del cuadro
-     p =  99,4  toca el alambre por primera vez
-     p =  63,0  lo suelta por abajo: el casco está entero
-     p =  41,9  el borrado le muerde la coronilla
-     p =  −7,0  lo ha limpiado del todo
+     p =  99,4  toca el casco por primera vez          (99,4)
+     p =  63,1  lo suelta por abajo: está entero       (63,0)
+     p =  41,9  el borrado le muerde la coronilla      (41,9)
+     p =  −6,9  lo ha limpiado del todo                (−7,0)
    Aparca en 100 % y en −48 %, y el salto de vuelta cae con todo apagado,
    que es donde un salto no se ve.
 
    EL REPARTO, QUE YA NO ES EXACTAMENTE EL DE LA REFERENCIA. Encendida
-   de 99,4 a −7,0 son 106,3 puntos de los 148 que hay de 100 a −48: 72 %
+   de 99,4 a −6,9 son 106,3 puntos de los 148 que hay de 100 a −48: 72 %
    encendida contra 28 % apagada. La referencia da 77/23, y eso lo pone
    su shader y no la vista: `pow(fract(-vPosition.y * 10. - uTime), 4.)`
    repite cada 1,000 s, y con una cabeza de 0,0771 de alto contra un
@@ -1201,7 +1251,7 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    única condición que de verdad tiene que cumplir.
 
    EL CICLO ES DE 4 s, que es lo de «más lento» —había 1 s—. Repartidos:
-   1,00 s dibujándose, 0,57 s entera y quieta, 1,32 s deshaciéndose por
+   1,00 s dibujándose, 0,57 s entero y quieto, 1,32 s deshaciéndose por
    arriba y 1,11 s a oscuras. El tramo más largo sigue siendo el
    borrado, y por eso el casco se lee entero aunque sólo esté liso medio
    segundo: cuando empieza a irse todavía le queda casi todo. Y dura lo
@@ -1218,59 +1268,20 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    Y VA EN RECTA, no en curva: en recta el reparto no depende de la
    velocidad, así que el ciclo se puede volver a cambiar sin que se mueva
    la proporción de tiempo encendida. Con una curva lenta en los extremos
-   el barrido se pasa el rato fuera del alambre y lo cruza en un
+   el barrido se pasa el rato fuera de la pieza y la cruza en un
    fogonazo: medido con la curva que hubo aquí, el alambre sólo se
    encendía 400 ms.
 
    MEDIDO en esta misma página, con el puntero lejos de su cara y contra
    su propio cero: el periodo sale 3,91, 3,94, 4,06 y 4,13 s en cuatro
    vueltas seguidas —media 4,01— y el pico 0,76, contra los 0,60 que
-   daba la banda de 1 s; la barra maciza más la estela pintan más que la
-   banda sola. El reparto medido iba del 60 % al 84 % según dónde se
-   pusiera el umbral, y esa horquilla no es ruido de muestreo: la cola
-   del borrado se apaga despacio, así que cuánto cuenta como «encendida»
-   depende de dónde se corte. La cifra firme es la de la aritmética.
-   Esas cuatro vueltas se midieron con la estela larga y siguen
-   valiendo: al acortarla no se mueven ni el periodo ni el pico —ver
-   «LO QUE NO SE TOCA», abajo—, sólo el final.
-
-   SE VEÍA POCO, Y EL TECHO NO ERA EL DEGRADADO SINO LA MÁSCARA. Lo dijo
-   Ane en tres palabras: «debe verse y no se ve». Medido sobre
-   ane-dome.png, el alámbrico NO llega a opaco en ninguna parte —el
-   máximo es 208 de 255 y lo alcanzan DOS píxeles de 2,2 millones— y a la
-   medida a la que la página lo usa, 825x798 dentro del marco, el alfa
-   típico de la línea es 0,075 y el máximo 0,549. Con eso, una línea
-   cualquiera oscurecía el papel 9,8 puntos de luma bajo la barra y 3,4
-   bajo la estela. Tres puntos no se ven. Y subir el degradado no
-   arreglaba nada, porque ya estaba en 0,95 de 1: lo que topa es el otro
-   factor del producto.
-
-   DOS PALANCAS, Y LAS DOS SALEN DE LA REFERENCIA. La primera es PINTAR
-   EN NEGRO. Aquí el pigmento era rgb(96,96,104), un gris medio, y eso
-   regala contraste: la caída sobre el papel es (papel − pigmento) por
-   alfa, así que un gris a medio camino se come la mitad de lo que un
-   negro daría con el mismo alfa. Su shader pinta `vec3(0.0)` —negro puro
-   a alfa bajo— y el gris que se le ve es su fondo asomando por debajo;
-   eso ya estaba escrito ahí arriba y aquí no se estaba aplicando. Pasa a
-   rgb(24,24,28).
-
-   La segunda es SUMAR LA MÁSCARA CONSIGO MISMA. Ese 0,075 no es del
-   dibujo, es de la dilución: el archivo mide 1392x1603 y se pinta en
-   825x798, o sea que cada línea reparte su tinta entre cuatro píxeles de
-   origen y uno de destino. Declarada TRES VECES con
-   `mask-composite:add`, un alfa a pasa a 1 − (1−a)³ —de 0,075 a 0,208—
-   sin tocar el dibujo: es una remontada monótona, así que la forma y el
-   antialias se quedan exactamente donde estaban, sólo que con cuerpo. Y
-   la opacidad de la capa sube de 0,9 a 1, que era el último punto suelto
-   que quedaba.
-
-   MEDIDO, las dos juntas: la tinta del fotograma de pico pasa de 0,69 a
-   3,68 —5,3 veces— y la caída máxima en un píxel de 48 a 180 puntos de
-   luma. La línea típica queda en 45 bajo la barra y 15,6 bajo la estela,
-   o sea que la estela sola pinta ahora más de lo que pintaba antes la
-   barra entera. Si algún día hiciera falta más, la palanca que queda NO
-   es subir esto: es rehornear ane-dome.png con la línea más gruesa, que
-   es donde está el problema de verdad.
+   daba la banda de 1 s. Esas cifras son del alámbrico; el periodo vale
+   igual —es el mismo reloj— y el pico no, porque el pico depende de la
+   tinta y la tinta ha cambiado. El reparto medido iba del 60 % al 84 %
+   según dónde se pusiera el umbral, y esa horquilla no es ruido de
+   muestreo: la cola del borrado se apaga despacio, así que cuánto cuenta
+   como «encendida» depende de dónde se corte. La cifra firme es la de la
+   aritmética.
 
    Y EMPIEZA CUANDO SE ENTRA, NO CUANDO SE CARGA. También lo pidió ella:
    «quiero que en cuanto entres ya empiece». La animación arrancaba al
@@ -1288,8 +1299,8 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    Y SE VA UN PELÍN ANTES. Lo pidió ella así: «que desaparezca un pelín
    antes la máscara, solo un poco antes y ya lo tenemos». Con el ciclo y
    la recta intactos —los dos le gustaban— el único sitio donde se puede
-   tocar el final es la LONGITUD DE LA ESTELA: el instante en que el
-   alambre queda limpio lo fija el canto de ARRIBA de la estela al
+   tocar el final es la LONGITUD DE LA ESTELA: el instante en que la
+   pieza queda limpia lo fija el canto de ARRIBA de la estela al
    llegar a la barbilla, así que subirlo adelanta el final y no toca
    nada más. Los dos primeros topes del degradado suben cinco puntos —el
    15 % pasa a 20 % y el 23,3 % a 28,3 %— y la estela baja de 1,30 a
@@ -1311,15 +1322,14 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    entre las dos pasadas, no la cifra absoluta.)
 
    LO QUE NO SE TOCA, y conviene saberlo antes de volver a mover esto.
-   El FOTOGRAMA DE PICO es el mismo píxel a píxel: mientras el casco
-   está entero, el canto de arriba de la estela va todavía 0,66 altos de
+   El FOTOGRAMA DE PICO es el mismo píxel a píxel: mientras la pieza
+   está entera, el canto de arriba de la estela va todavía 0,66 altos de
    cuadro POR ENCIMA del cuadro, así que acortarla no le quita tinta a
-   nada de lo que se ve. Por eso las medidas de tinta de esta nota
-   siguen valiendo tal cual, y por eso este número se puede mover sin
-   volver a medir la visibilidad.
+   nada de lo que se ve. Por eso este número se puede mover sin volver a
+   medir la visibilidad.
 
    Y LA PRIMERA PETICIÓN SIGUE EN PIE, que es el límite de verdad de
-   esto. La cabeza suelta la barbilla en p = 63,0 y el borrado no muerde
+   esto. La cabeza suelta la barbilla en p = 63,1 y el borrado no muerde
    hasta p = 41,9: el casco se queda entero 0,57 s —antes 0,77— y no se
    empieza a borrar nada hasta mucho después de que el barrido haya
    llegado abajo del todo. Quedan 21,2 puntos de margen, que son catorce
@@ -1333,63 +1343,72 @@ body.on-dark .pill::after{ background:var(--accent-lt); }
    cada vuelta, y eso es lo que Ane pidió el primer día —«cuando se
    escanee aparece y vuelve a irse cuando acaba el escaneo»—. Mismo ritmo
    y misma estela, distinto suelo. */
-.scan{
+.cowl{
   position:absolute; inset:0;
-  pointer-events:none;
-  background:linear-gradient(180deg,
-             rgba(24,24,28,0) 0,
-             rgba(24,24,28,0) 20%,
-             rgba(24,24,28,.33) 28.333%,
-             rgba(24,24,28,.33) 61.333%,
-             rgba(24,24,28,.95) 64.667%,
-             rgba(24,24,28,.95) 66.667%,
-             rgba(24,24,28,0) 66.667%,
-             rgba(24,24,28,0) 100%);
-  background-size:100% 300%; background-repeat:no-repeat;
-  /* LA MISMA MASCARA TRES VECES, SUMADA. No es un descuido ni sobra
-     ninguna: el alfa del alambre a esta medida es 0,075 y sumandola
-     consigo misma pasa a 0,208, que es lo que hace que se vea. Ver la
-     cuenta en la nota de arriba. Quitar dos de las tres devuelve la
-     malla a invisible. */
-  -webkit-mask-image:url("ane-dome.png"),url("ane-dome.png"),url("ane-dome.png");
-          mask-image:url("ane-dome.png"),url("ane-dome.png"),url("ane-dome.png");
-  -webkit-mask-size:100% 100%,100% 100%,100% 100%;   mask-size:100% 100%,100% 100%,100% 100%;
+  /* `--vis` es la guardia de «la máscara sólo existe mientras se ve»:
+     la escribe el IntersectionObserver del bucle, 1 mientras la cara
+     está en pantalla y 0 cuando se va. Vale 1 por defecto para que sin
+     JS —y en el primer fotograma, antes de que el observador conteste—
+     la pieza esté puesta y no parpadee. */
+  opacity:var(--vis,1);
+  /* TRES MÁSCARAS: la forma del casco, la BANDA que baja y la ventana
+     que sigue al ratón. La forma se CRUZA con la SUMA de las otras dos,
+     y ese «suma» es lo que no se puede tocar: con un cruce, el ratón
+     sólo abriría por donde estuviera pasando la banda.
+     El radial lleva `--rev` DENTRO, en el alfa, y no fuera en la
+     opacidad de la capa: si estuviera fuera, apagaría también el
+     barrido. Sin ratón fino la ventana es enorme y lo abre entero,
+     porque en táctil manda el scroll. */
+  --mx:50%; --my:44%; --rw:200%; --rh:200%;
+  -webkit-mask-image:url("ane-helm.png"),
+    linear-gradient(180deg,
+             rgba(0,0,0,0) 0,
+             rgba(0,0,0,0) 20%,
+             rgba(0,0,0,.33) 28.333%,
+             rgba(0,0,0,.33) 61.333%,
+             rgba(0,0,0,.95) 64.667%,
+             rgba(0,0,0,.95) 66.667%,
+             rgba(0,0,0,0) 66.667%,
+             rgba(0,0,0,0) 100%),
+    radial-gradient(var(--rw) var(--rh) at var(--mx) var(--my),rgba(0,0,0,var(--rev,0)) 0 70%,rgba(0,0,0,calc(var(--rev,0) * .42)) 88%,transparent 100%);
+          mask-image:url("ane-helm.png"),
+    linear-gradient(180deg,
+             rgba(0,0,0,0) 0,
+             rgba(0,0,0,0) 20%,
+             rgba(0,0,0,.33) 28.333%,
+             rgba(0,0,0,.33) 61.333%,
+             rgba(0,0,0,.95) 64.667%,
+             rgba(0,0,0,.95) 66.667%,
+             rgba(0,0,0,0) 66.667%,
+             rgba(0,0,0,0) 100%),
+    radial-gradient(var(--rw) var(--rh) at var(--mx) var(--my),rgba(0,0,0,var(--rev,0)) 0 70%,rgba(0,0,0,calc(var(--rev,0) * .42)) 88%,transparent 100%);
+  -webkit-mask-size:100% 100%,100% 300%,100% 100%;   mask-size:100% 100%,100% 300%,100% 100%;
   -webkit-mask-repeat:no-repeat,no-repeat,no-repeat; mask-repeat:no-repeat,no-repeat,no-repeat;
-  -webkit-mask-composite:source-over,source-over;    mask-composite:add,add;
-  opacity:calc(1 - var(--rev,0));
-  /* y NACE EN PAUSA: la suelta la regla que hay justo debajo de los
-     aparcamientos, para que el ciclo no se gaste detras de la cortina */
-  animation:scansweep 4s linear infinite; animation-play-state:paused;
+  -webkit-mask-position:0 0,0 100%,0 0;              mask-position:0 0,0 100%,0 0;
+  -webkit-mask-composite:source-in,source-over,source-over;
+          mask-composite:intersect,add,add;
+  /* y NACE EN PAUSA: la suelta la regla que hay justo debajo, para que
+     el ciclo no se gaste detras de la cortina */
+  animation:cowlsweep 4s linear infinite; animation-play-state:paused;
 }
 /* El ciclo entero es recorrido: nada se detiene en ningún extremo. Del
    100 % al -48 % la cabeza del barrido baja, sale por abajo del cuadro y
    sigue bajando mientras el canto de arriba de la estela entra por la
-   coronilla y la borra. El salto de vuelta cae con todo fuera del
-   alambre, que es donde un salto no se ve. */
-@keyframes scansweep{
-  0%   { background-position:0 100%; }
-  100% { background-position:0 -48%; }
+   coronilla y la borra. El salto de vuelta cae con todo fuera de la
+   pieza, que es donde un salto no se ve.
+   Las tres capas van en la lista aunque sólo se mueva la de en medio:
+   una lista de posiciones sólo interpola contra otra de la misma
+   longitud. */
+@keyframes cowlsweep{
+  0%   { -webkit-mask-position:0 0,0 100%,0 0; mask-position:0 0,0 100%,0 0; }
+  100% { -webkit-mask-position:0 0,0 -48%,0 0; mask-position:0 0,0 -48%,0 0; }
 }
 /* EMPIEZA CUANDO SE ENTRA. `is-live` es el instante en que la portada
    empieza a existir, 260 ms despues de que la cortina se ponga en marcha
    y 810 ms antes de que acabe de irse. Ver la nota de arriba. */
-body.is-live .scan{ animation-play-state:running; }
-.cowl{
-  position:absolute; inset:0; opacity:var(--rev,0);
-  /* DOS máscaras cruzadas: la forma del casco Y la banda que sigue al
-     ratón. El casco se materializa sólo por donde pasa, que es lo que
-     hace la referencia. Sin ratón fino la banda es enorme y lo abre
-     entero, porque en táctil manda el scroll. */
-  --mx:50%; --my:44%; --rw:200%; --rh:200%;
-  -webkit-mask-image:url("ane-helm.png"),
-    radial-gradient(var(--rw) var(--rh) at var(--mx) var(--my),#000 0 70%,rgba(0,0,0,.42) 88%,transparent 100%);
-          mask-image:url("ane-helm.png"),
-    radial-gradient(var(--rw) var(--rh) at var(--mx) var(--my),#000 0 70%,rgba(0,0,0,.42) 88%,transparent 100%);
-  -webkit-mask-size:100% 100%,100% 100%;   mask-size:100% 100%,100% 100%;
-  -webkit-mask-repeat:no-repeat,no-repeat; mask-repeat:no-repeat,no-repeat;
-  -webkit-mask-composite:source-in;        mask-composite:intersect;
-}
+body.is-live .cowl{ animation-play-state:running; }
 body.has-cur .cowl{ --rw:46%; --rh:13%; }
+
 .cowl__fill{
   position:absolute; inset:0;
   /* La carcasa, en latón: el marco que rodea la placa. Plana a propósito:
@@ -1883,10 +1902,12 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    siendo (0,0,0). Cualquier propiedad que actúe AL COMPONER hay que
    servirla en el documento para medirla.
 
-   LAS TRES CLASES Y NO SÓLO `.cowl`: `.scan` y `.face__som` NO son sus
-   hijas, son sus HERMANAS dentro de `<figure class="hero__cut">`. Una
-   regla puesta sólo en `.cowl` deja fuera la malla del escaneo y la
-   sombra verde del retrato.
+   LAS DOS CLASES Y NO SÓLO `.cowl`: `.face__som` NO es su hija, es su
+   HERMANA dentro de `<figure class="hero__cut">`, así que una regla
+   puesta sólo en `.cowl` deja fuera la sombra verde del retrato. Aquí
+   había una tercera, `.scan`, que era el barrido cuando el barrido
+   todavía era una capa aparte: desde el 21-09-2026 el barrido es una
+   máscara de `.cowl` y entra con ella.
 
    Y POR QUÉ ESTO NO ES SALTARSE UNA PREFERENCIA DE ACCESIBILIDAD A LA
    LIGERA: `forced-color-adjust:none` existe justo para el contenido
@@ -1896,7 +1917,7 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    un modo que estaba estropeando una imagen, no una ayuda que estorbe.
    La decisión la tomó ella con las capturas delante. */
 @media (forced-colors: active){
-  .cowl, .scan, .face__som{ forced-color-adjust:none; }
+  .cowl, .face__som{ forced-color-adjust:none; }
 }
 
 /* Las esquinas. En pantalla ancha flotan sobre ella; en vertical
@@ -4383,19 +4404,23 @@ body.is-live .rise > i{ transform:none; }
 
 @media (prefers-reduced-motion:reduce){
   .hero__dot{ animation:none !important; }
-  /* Sin barrido, pero la malla NO se va: quien pide menos movimiento
-     pide eso y no menos pieza. Se queda la cáscara entera y quieta, que
-     es exactamente lo que se veía aquí antes de que el escaneo la
-     revelara por tramos —misma tinta y la fuerza de la estela—. Y ahora hace más
-     falta que antes: parada en el 0 % del ciclo, la banda vieja dejaba
-     una franja cruzándole la cara, pero el degradado nuevo arranca con
-     la cabeza clavada en el canto de arriba y no enciende NADA. Sin
-     este relleno plano, quien pide menos movimiento se quedaría sin
-     casco. */
-  .scan{
+  /* Sin barrido, pero el casco NO se va: quien pide menos movimiento
+     pide eso y no menos pieza. Se queda entero y quieto, que es
+     exactamente lo que enseña el barrido en su fotograma de pico y lo
+     que enseña el ratón al pasar. Y hay que decirlo aquí: parada en el
+     0 % del ciclo la banda tiene la cabeza clavada en el canto de
+     arriba y no enciende NADA, así que sin esta regla quien pide menos
+     movimiento se quedaría sin casco.
+     Se van las dos máscaras que se mueven —la banda y la ventana del
+     ratón— y queda la forma sola, que es la que dibuja la pieza. */
+  .cowl{
     animation:none !important;
-    background:rgba(24,24,28,.33) !important;
-    opacity:calc(.87 - .87 * var(--rev,0)) !important;
+    -webkit-mask-image:url("ane-helm.png") !important;
+            mask-image:url("ane-helm.png") !important;
+    -webkit-mask-size:100% 100% !important;        mask-size:100% 100% !important;
+    -webkit-mask-position:0 0 !important;          mask-position:0 0 !important;
+    -webkit-mask-repeat:no-repeat !important;      mask-repeat:no-repeat !important;
+    -webkit-mask-composite:source-over !important; mask-composite:add !important;
   }
   .pin{ height:auto !important; }
   /* `relative`, NO `static` —que es lo que habia y estaba mal—. Lo que
@@ -4437,7 +4462,7 @@ body.is-live .rise > i{ transform:none; }
      encontraron tres auditorias por separado, con tres metodos distintos.
      Con JS esta regla no llega a aplicarse nunca. -->
 <noscript><style>.load{ display:none !important; }
-  .scan{ animation-play-state:running !important; }</style></noscript>
+  .cowl{ animation-play-state:running !important; }</style></noscript>
 
 <div class="load" id="load" aria-hidden="true">
   <div class="load__in">
@@ -4515,7 +4540,6 @@ body.is-live .rise > i{ transform:none; }
         <img class="face__img" src="ane-cut.webp" width="928" height="1069"
              alt="Cut-out portrait of Ane Ugarte." fetchpriority="high">
         <div class="face__som" aria-hidden="true"></div>
-        <div class="scan" aria-hidden="true"></div>
 
         <div class="cowl" aria-hidden="true">
           <div class="cowl__fill"></div>
@@ -5518,7 +5542,15 @@ body.is-live .rise > i{ transform:none; }
     face.addEventListener("pointerleave", function(){ hoverT = 0; });
     face.addEventListener("pointercancel", function(){ hoverT = 0; });
     if (window.IntersectionObserver) {
-      new IntersectionObserver(function(es){ faceOn = es[0].isIntersecting; }).observe(face);
+      new IntersectionObserver(function(es){
+        faceOn = es[0].isIntersecting;
+        /* `--vis` apaga el casco cuando la cara se va de pantalla. Eso lo
+           hacia `--rev` desde la opacidad de la capa; al mudarse `--rev`
+           dentro del radial —para que el barrido pueda correr con el raton
+           lejos— la guardia se habria perdido sin que se notara. No cuesta
+           nada por fotograma: solo se escribe en los dos cruces. */
+        face.style.setProperty("--vis", faceOn ? "1" : "0");
+      }).observe(face);
     }
   }
 
