@@ -1395,8 +1395,22 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
   /* La carcasa, en latón: el marco que rodea la placa. Plana a propósito:
      el volumen lo pone .cowl__lit / .cowl__shade, que caen también sobre
      las calcas. Si el metal se modelara aparte, las banderas quedarían
-     planas encima de un metal redondo y se leerían pegadas. */
-  background:var(--brass);
+     planas encima de un metal redondo y se leerían pegadas.
+
+     Y DESDE EL 21-09-2026 NO PINTA: `transparent` en vez de `var(--brass)`.
+     Lo pidió ella con la pieza delante — «quiero que la mascara en vez de
+     verde sea completamente transparente»—, y la palabra que importa es
+     COMPLETAMENTE: no es bajarle el alfa al latón, es que el relleno deje
+     de existir. Lo que queda del casco es lo que lo dibuja: el canto de
+     metal, la malla, las dos luces horneadas, el mapamundi y las tres
+     calcas. Deja de ser una careta que le tapa la cara y pasa a ser un
+     vidrio: se le ve la cara a través.
+
+     LO QUE NO SE TOCA Y POR QUÉ: el volumen sigue estando en
+     .cowl__lit / .cowl__shade, que es donde estaba antes; si se quitaran
+     también, el casco se quedaría en contorno y dejaría de leerse como un
+     objeto delante de ella. */
+  background:transparent;
 }
 /* LAS MAQUINAS DE GUERRA DE LEONARDO, GRABADAS EN LA CHAPA. Lo pidió
    ella: «quiero que en la máscara verde oscura de la portada haya esta
@@ -1405,10 +1419,22 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    dado —la placa lleva el plano de la Tierra desde que ella lo pidió—,
    así que esto es el otro: la carcasa, que es el 73 % del área.
 
-   VA DEBAJO DE LA PLACA Y POR ESO SÓLO SE VE EN EL VERDE OSCURO. No hay
-   una segunda máscara que recorte la carcasa: la placa es opaca y le
-   pasa por encima, que es la forma de decir «sólo aquí» sin inventar
-   geometría nueva. Y va por DEBAJO de la malla y de la luz horneada, así
+   VA DEBAJO DE LA PLACA, y mientras la placa fue opaca eso quería decir
+   «sólo en el verde oscuro». No hay una segunda máscara que recorte la
+   carcasa: la placa le pasaba por encima, que es la forma de decir «sólo
+   aquí» sin inventar geometría nueva.
+
+   DESDE EL 21-09-2026 LA PLACA YA NO TAPA, porque no pinta, así que la
+   hoja se ve TAMBIÉN dentro de la visera y cae sobre su cara en vez de
+   sobre chapa. Medido en captura determinista —sello de color verificado
+   en cada fotograma, animaciones congeladas, suelo de ruido de 0 px—
+   encendiendo y apagando las tres calcas: con el verde pintaban 278.857
+   px con una diferencia media de 19,3 sobre el fondo; con la máscara
+   transparente pintan 344.041 px con 10,1 de media. O sea, MÁS SUPERFICIE
+   Y LA MITAD DE FUERZA: la tinta es clara y antes caía sobre latón oscuro,
+   y ahora cae sobre piel clara. No se han perdido —la primera medida dijo
+   que sí, y era falsa: faltaban los tres PNG en la copia local, y un
+   `mask-image` que no carga deja la capa invisible sin avisar. Y va por DEBAJO de la malla y de la luz horneada, así
    que recibe el mismo foco que el resto del casco — que es justo lo que
    hace que una calca se lea pintada y no pegada.
 
@@ -1438,7 +1464,13 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
 
    EL TONO ES EL DE LAS CALCAS y el alfa está medido sobre la pieza ya
    compuesta, con la luz encima: `--gold-ink` al 36 % da 2,22:1 contra la
-   carcasa. Fue el 30 % mientras la hoja estuvo arriba; al bajarla a
+   carcasa. ESE NÚMERO ES DE CUANDO DEBAJO HABÍA UN COLOR PLANO. Desde el
+   21-09-2026 debajo está su cara, que cambia píxel a píxel, así que la
+   pregunta deja de ser «cuánto contrasta la tinta con el fondo» y pasa a
+   ser «cuánto cambia la tinta lo que hay debajo». Medido así, píxel a
+   píxel y sobre las tres calcas a la vez: con el verde, mediana 1,15:1,
+   p90 1,87:1 y máximo 4,05:1; transparente, 1,05:1 · 1,34:1 · 2,95:1.
+   Se ven la mitad, y en más sitio. Fue el 30 % mientras la hoja estuvo arriba; al bajarla a
    y=229 su tinta entra en la banda que `ane-shade` oscurece y el mismo
    30 % cae a 1,89:1, por debajo del suelo de 2,0. Se conserva el
    CONTRASTE, no el número — la misma regla del mentón y de la Ariadna. Es el gemelo del 2,28:1 que el mapa tiene contra la placa
@@ -1662,7 +1694,11 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    arriba a la izquierda, el cuerpo es el oro y el canto se va a sombra. */
 .cowl__plate{
   position:absolute; inset:0;
-  background:var(--gold);
+  /* TRANSPARENTE DESDE EL 21-09-2026, con la carcasa. Era `var(--gold)`,
+     el verde claro. Las dos piezas tenían que irse juntas: dejar la placa
+     opaca sobre una carcasa que ya no pinta habría convertido la visera en
+     un antifaz verde suelto, que no es «completamente transparente». */
+  background:transparent;
   -webkit-mask-image:url("ane-plate.png"); mask-image:url("ane-plate.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
@@ -1799,10 +1835,15 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    `forced-colors: active` es el alto contraste de Windows. NO quita las
    máscaras: medido en vivo, la figura conserva sus 14 `mask-image` con
    el modo puesto y sin él. Lo que hace es forzar los COLORES a la paleta
-   del sistema — y de las doce capas del casco hay DOS sin `opacity`
-   propia, `.cowl__fill` y `.cowl__plate`, que sobreviven OPACAS, con su
+   del sistema — y de las doce capas del casco había DOS sin `opacity`
+   propia, `.cowl__fill` y `.cowl__plate`, que sobrevivían OPACAS, con su
    forma intacta y pintadas del color del fondo. Las otras diez se
-   pierden.
+   pierden. (DESDE EL 21-09-2026 esas dos son `transparent`, así que ya no
+   hay nada que forzar en ellas: la barra negra de sien a sien y la
+   silueta sin cabeza que se describen abajo eran SUYAS, y se van con el
+   relleno. La regla se queda porque lo que protege son las otras diez
+   capas — el mapamundi, las calcas y las dos luces —, que son las que
+   ahora dibujan el casco entero.)
 
    LO QUE SE VEÍA, medido en el píxel pintado y no en `getComputedStyle`:
      · escritorio con ratón fino → la ventana de revelado de `.cowl` es
@@ -4478,9 +4519,14 @@ body.is-live .rise > i{ transform:none; }
 
         <div class="cowl" aria-hidden="true">
           <div class="cowl__fill"></div>
-          <!-- ENTRE LA CARCASA Y LA PLACA, y ese sitio ES la regla: la
-               placa es opaca y le pasa por encima, asi que el dibujo
-               sale solo en el verde oscuro sin una segunda mascara. -->
+          <!-- ENTRE LA CARCASA Y LA PLACA. Ese sitio ERA la regla: la
+               placa era opaca y le pasaba por encima, asi que el dibujo
+               salia solo en el verde oscuro sin una segunda mascara.
+               DESDE EL 21-09-2026 LAS DOS SON TRANSPARENTES y no recortan
+               nada, asi que las tres calcas salen tambien dentro de la
+               visera. Siguen sin llevar mascara propia: el orden se
+               conserva porque las dos luces horneadas tienen que caer
+               encima de ellas, no porque tape ninguna. -->
           <div class="cowl__vinci"></div>
           <div class="cowl__adan"></div>
           <div class="cowl__ariadna"></div>
