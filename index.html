@@ -2669,6 +2669,55 @@ body.js .pf__col{ will-change:transform; }
    las piezas caen en una columna alternando lado.
    ============================================================ */
 .mont{ position:relative; }
+/* EN VERTICAL ANCHO HAY VIRAJE Y NO HAY CARRIL, Y ESO DEJA UN AGUJERO.
+   El alto de `.pass` lo pone `min-width:900px` a secas; el tiron de
+   -105svh que tapa su cola vive en la regla del carril, que pide ademas
+   proporcion >= 1/1. Un iPad Pro de pie (1024x1366 = 0,7496) cumple lo
+   primero y no lo segundo.
+
+   MEDIDO ahi, con la ventana en y = 3.415, 3.640, 4.095 y 4.550: las
+   cuatro pantallas al 0,0 % de tinta —ni una caja de texto, ni una
+   imagen—. El manifiesto se oculta hacia y=3.320 y el borde de arriba de
+   la primera pieza no entra por abajo hasta y=4.618: ~1.300 px, 0,95
+   pantallas sin nada. En los otros seis tamanios de tablet y en 1440x900
+   la cobertura minima es 5,1-12,5 % y no hay ninguna pantalla vacia.
+
+   Con esta regla: 4 pantallas vacias -> 0, cobertura minima 9,7 %, la
+   pagina pasa de 16.852 a 15.417 px y el manifiesto NO llega a chocar con
+   la primera pieza (cuando entra, ya esta en visibility:hidden).
+   Comprobado que no llega a quien no debe: a 820x1180 y a 1180x820 el
+   margen sigue en 0 y el alto no se mueve ni un pixel.
+
+   Es el mismo numero que el escritorio porque es la misma cuenta, no una
+   constante nueva. -105svh de 1366 son -1434,3 px; de 1000, -1050.
+
+   Y VA GEMELA DE LA DEL CARRIL, CON SU `position:relative; z-index:1`.
+   El `position:relative` es redundante —lo pone ya la regla de dos lineas
+   mas arriba— y se repite a proposito: las dos reglas que hacen la misma
+   cuenta se declaran igual, para que quien compare una con otra no tenga
+   que ir a buscar si la otra mitad esta en otro sitio.
+
+   HOY NO CAMBIA NADA, Y ESTA COMPROBADO. Los unicos posicionados que
+   cruzan la banda de `.mont` son `main#top` (z=2, su antepasado, no
+   compite) y `.pass` (z=auto y anterior en el documento, asi que `.mont`
+   pinta encima de las dos maneras); `.dk`, que va dentro de `.pass` con
+   z-index:3, sigue por encima con z-index:1 igual que con `auto`.
+   Comparados los PIXELES de las dos versiones en tres ventanas y ocho
+   posiciones de scroll, la diferencia es la misma que sale al comparar una
+   version CONSIGO MISMA en dos cargas —3,7 / 3,5 / 3,1 / 2,2 / 1,5 / 1,9 /
+   2,5 / 3,9 % contra 3,7 / 3,5 / 3,2 / 2,2 / 1,5 / 1,9 / 2,6 / 4,0 %—, o
+   sea el ruido de las animaciones que no paran (el mapa de curvas, las
+   bandas, el barrido), no el z-index. Alto de pagina y desbordes
+   identicos (`zindex.log`, `zcontrol.log`, `apila.log`).
+
+   SE PONE IGUALMENTE, Y POR EL MOTIVO BUENO: con `z-index` se abre
+   contexto de apilamiento y sin el no. Es una diferencia latente, y el dia
+   que muerda nadie va a mirar aqui: va a mirar la regla de al lado, va a
+   ver que si lo tiene, y va a concluir que esta es otra cosa. No quitarlo
+   por parecer redundante. */
+@media (min-width:900px) and (max-aspect-ratio:1/1){
+  body.js .mont{ position:relative; z-index:1; margin-top:-105svh; }
+}
 .mont__pin{ position:relative; }
 .mont__rail{
   display:grid; gap:clamp(38px,7vh,72px);
@@ -2741,7 +2790,56 @@ body.js .shot{ opacity:var(--fade,1); }
    asi que dos no rompe nada. El hueco se queda aunque hoy este en 42:
    devolverlo al racimo seria devolverla al suelo.
    ---------------------------------------------------------------- */
-@media (max-width:899px), (max-height:659px), (max-aspect-ratio:999/1000){
+/* SE ANIADE EL RANGO, NO SE SUSTITUYE EL 999/1000. ENTRE LOS DOS HABIA
+   UNA RENDIJA.
+   Esta condicion se escribio como «el complemento exacto» de la del
+   carril (`min-aspect-ratio:1/1`), y no lo era: en proporcion entre 0,999
+   y 1 no se cumplia NINGUNA de las dos. Son las ventanas con el alto un
+   pixel por encima del ancho — 1024x1025, 1180x1181, 1366x1367 — porque
+   los altos afectados son los del intervalo (ancho, ancho x 1,001001).
+
+   MEDIDO a 1024x1025: las nueve piezas salian todas de 420x420 px, con lo
+   que la composicion de nueve tamanios distintos se volvia nueve sellos
+   iguales. A 1024x1024 sale el carril; a 1024x1030, la paleta buena
+   [358,471,942,399,451,492,307,901,358]. Con el termino de rango anadido,
+   1024x1025 queda CALCADO a 1024x1030.
+
+   POR QUE LOS DOS TERMINOS Y NO SOLO EL RANGO. Se probaron las tres
+   formas sobre el fichero, servidas y medidas (`variantes.log`):
+     · `max-aspect-ratio:1/1` a secas arregla la rendija, pero en una
+       ventana EXACTAMENTE cuadrada pasa a aplicarse este bloque junto al
+       del carril y los rotulos de las piezas 1, 3, 5 y 8 se van de la
+       izquierda a la derecha (medido: `ssssssss` -> `rsrsrssr` a 1024x1024
+       y a 1180x1180). Es minusculo, pero es una decision de composicion.
+     · `(aspect-ratio < 1/1)` a secas arregla la rendija y respeta la
+       cuadrada, pero en un navegador que no entienda la sintaxis de rango
+       ese termino se evalua FALSO y, como los otros dos de la lista
+       tampoco se cumplen en una tablet de pie, el bloque entero deja de
+       aplicarse: medido simulandolo, un iPad Pro de pie (1024x1366) se
+       queda con las nueve piezas a 420 px y los rotulos planos. Seria
+       llevar el fallo de una rendija de un pixel a TODAS las tablets de
+       pie con Safari viejo.
+     · Los dos terminos juntos: arregla la rendija, no toca la cuadrada
+       (`ssssssss`, igual que hoy) y en el navegador viejo cae EXACTAMENTE
+       a lo de hoy, ni mejor ni peor. Es esta.
+
+   EL MECANISMO DE LA DEGRADACION, comprobado en el banco (`rango.log`):
+   en una LISTA separada por comas, un termino que el navegador no entiende
+   vale falso y los demas siguen valiendo —`(max-width:99999px),
+   (feature-inventada:1/1)` da `matches:true`—; con `and`, en cambio, se
+   cae la consulta entera. Por eso la de dentro tambien va por lista y no
+   por `and`. Lo comprobado es el MECANISMO, en Chrome 146; no se ha
+   probado un Safari viejo de verdad, que en este banco no hay.
+   DATO DE DOCUMENTACION, no medido aqui: la sintaxis de rango de Media
+   Queries 4 la admiten Chrome y Edge desde la 104 (agosto de 2022),
+   Firefox desde la 102 (junio de 2022) y Safari desde la 16.4 (marzo de
+   2023). Por debajo de eso manda el termino clasico.
+
+   TRAMPA PARA QUIEN VENGA A TOCAR ESTO: el tope de 420 px NO esta en
+   `max-width`, esta dentro del `width:clamp(110px, var(--wm), 420px)` de
+   `.shot`. Si lo buscas en `max-width` no lo encuentras y acabas
+   arreglando donde no es —a 1024x1025 `max-width` ya computa `none`—. */
+@media (max-width:899px), (max-height:659px), (max-aspect-ratio:999/1000), (aspect-ratio < 1/1){
   /* La condición es el complemento exacto de la del carril: esto vale
      siempre que el carril NO esté montado, y eso incluye la ventana
      ancha y baja del teléfono girado. */
@@ -2823,7 +2921,19 @@ body.js .shot{ opacity:var(--fade,1); }
      —932x430, que entra aqui por la rama `max-height:659`— pedia piezas
      de 92vw = 857 px en una pantalla de 430 de alto. Este regimen es de
      pantalla DE PIE y ancha; el telefono girado se queda en racimos. */
-  @media (min-width:600px) and (max-aspect-ratio:999/1000){
+  /* El mismo par de terminos que la de fuera, y por lo mismo. Va ANIDADA
+     dentro de aquella, asi que las dos condiciones tienen que moverse
+     juntas: con la de fuera arreglada y esta no, a 1024x1025 las piezas se
+     quedan en la paleta de `vmin` y las mayores vuelven al tope de 420 px
+     del `clamp`.
+     Y va por LISTA, repitiendo el `min-width:600px`, y no metiendo el
+     rango con un tercer `and`: comprobado en el banco que con `and` un
+     termino que el navegador no entiende tumba la consulta ENTERA, y
+     entonces en un Safari viejo esta regla se perderia en toda la franja
+     de tablet de pie, no solo en la rendija.
+     MEDIDO con las dos puestas: `column-gap` del carril 71,75px -> 0px y
+     los anchos [420 x9] -> [358,471,942,399,451,492,307,901,358]. */
+  @media (min-width:600px) and (max-aspect-ratio:999/1000), (min-width:600px) and (aspect-ratio < 1/1){
     /* Sin techo de 420 px: aqui el ancho ES la composicion. El 420 se
        escribio para el telefono y a 1024 igualaba cuatro de las nueve
        piezas en el mismo numero —la misma enfermedad que el suelo de
@@ -3182,6 +3292,23 @@ body.js.in-mont .wm{
 a.card__cue{
   color:var(--ink-3); text-decoration:none;
   transition:color .35s var(--ease);
+  /* 24 px DE ALTO TOCABLE, Y NI UN PIXEL DE TINTA MOVIDO. Estos dos enlaces
+     —kenitech.io e ia.kenitech.io, el reverso de la tarjeta de Keni— son un
+     renglon de 19 px de alto, y WCAG 2.5.8 pide 24 en el lado menor: medidos,
+     115,6x19 y 141,2x19. Son los dos unicos objetivos de la pagina por debajo
+     de la norma; el siguiente mas justo es la pildora, en 25,1.
+     Los 3 px de arriba y los 3 de abajo los devuelve el margen negativo, asi
+     que la caja crece para el dedo y la composicion no se entera. Comprobado
+     aplicando ESTE cambio sobre una copia del index.html y midiendo los siete
+     telefonos de la banda mas 1440x900 con marco: la caja pasa de 19 a 25 px,
+     la tinta se mueve 0,00 px en las tres medidas —arriba, izquierda y ancho—,
+     `.card__cues` sigue en 47 px, `scrollWidth` no cambia y el alto de pagina
+     tampoco, ni los 4.817 px del telefono mas pequenio ni los 11.068 del
+     escritorio.
+     Va con la `a` delante a proposito, y no es cosmetica del selector: el
+     `.card__cue` de dos lineas mas arriba viste tambien un <span> que no es
+     tocable y que no tiene por que crecer. */
+  padding-block:3px; margin-block:-3px;
 }
 a.card__cue:hover,a.card__cue:focus-visible{ color:var(--ink); }
 /* Con el teclado el foco pasa de la tarjeta a las lineas de detras, y
@@ -3321,6 +3448,47 @@ a.card__cue:hover,a.card__cue:focus-visible{ color:var(--ink); }
 .read__fig{ margin:0; }
 .read__fig img{ display:block; width:100%; height:auto; }
 @media (max-width:899px){ .read__fig img{ max-height:42svh; width:auto; } }
+/* Y EL ALTO, NO SOLO LA ANCHURA. El tope de aqui arriba esta escrito con
+   `max-width:899px` para un problema que es de ALTO, asi que en una ventana
+   ancha y baja no llega a dispararse y el cuadro se queda sin techo.
+
+   Y sin techo no se pega. `.read__fig` es `position:sticky`, y una caja
+   sticky MAS ALTA QUE SU CONTENEDOR DE DESPLAZAMIENTO no se puede pegar:
+   resbala exactamente lo que le sobra. Medido a 932x430: la figura mide
+   476,6 en un dialogo de 395,6 —le sobran 81—, y al final del texto se ha
+   ido a -117,4 px del borde de arriba, con solo el 54 % de la pintura a la
+   vista y el pie de foto fuera de pantalla. A 1280x560, -129,4 px y 57 %.
+   A 1366x600, -91,4. A 1920x620, -72,5. A 1440x900 se queda en 56 px y se
+   ve el 100 % durante todo el recorrido, que es lo que este cuadro tiene
+   que hacer: el texto habla de el.
+
+   EL TECHO ES 69svh Y NO OTRO, y las dos cosas que lo fijan van en las dos
+   direcciones:
+     · por abajo, es el MAYOR que deja la figura entera —cuadro mas pie—
+       por debajo de la cornisa en toda la banda baja: queda en 0,82-0,87
+       del dialogo, con 15 px de holgura en el caso mas apretado;
+     · por arriba, es el mayor que NO toca nada de 800 px de alto para
+       arriba, porque el cuadro mide 546,6 y 69svh de 800 son 552.
+   Comprobado en las dos direcciones sobre el dominio: a 1280x800, 1440x871,
+   1024x768, 1440x900, 1512x982 y 1920x1080 la figura mide lo mismo con y
+   sin esta regla, 0,0 px de diferencia.
+
+   EL LIMITE SUPERIOR, 871 y no 900: a 872 la consulta ya no casa, y a 871
+   si. Se eligio por el alto al que el techo deja de morder, no por la
+   pantalla de nadie.
+
+   LO QUE SOSTIENE ESTO, Y HAY QUE SABERLO ANTES DE TOCAR NADA:
+   `max-height` con `width:auto` solo es seguro MIENTRAS EXISTA el
+   `img{max-width:100%}` del preambulo del artifact. Sin el, `width:auto`
+   no limita nada y la imagen CRECE hasta el techo en vez de quedarse:
+   medido en una copia a la que le faltaba ese preambulo, esta misma regla
+   engordaba la figura +60,5 px a 1440x871 en vez de dejarla igual. En el
+   dominio el preambulo esta —`max-width:100%` sale dos veces— y por eso
+   aqui no crece. Si algun dia se toca el preambulo, esta regla es de las
+   que hay que volver a medir. */
+@media (min-width:900px) and (max-height:871px){
+  .read__fig img{ max-height:69svh; width:auto; }
+}
 .read__fig figcaption{ margin-top:10px; color:var(--ink-3); }
 .read__body p{ margin:0 0 1.05em; max-width:64ch; }
 .read__body p:last-child{ margin-bottom:0; }
@@ -3931,6 +4099,22 @@ html.is-reading{ overflow:hidden; }
      —y no el 100— es para que el subrayado del hover, que cuelga 13 px
      por debajo, también nazca fuera. */
   .mail__m{ display:block; overflow:hidden; padding-bottom:.06em; }
+  /* Y EL ANILLO DE FOCO SE LO COMIA ESA MASCARA. El `overflow:hidden` de la
+     linea de arriba —el que hace subir el correo desde debajo de su renglon—
+     recorta tambien el `outline` del enlace que lleva dentro. Medido sobre la
+     captura, con siete perfiles perpendiculares por lado: pintado en 7 de 28
+     puntos —0/7 arriba, 0/7 abajo, 0/7 izquierda, 7/7 derecha—, o sea una raya
+     debajo del texto que se confunde con el subrayado del raton. Pasa igual a
+     1440 y a 393. El color no era el problema: donde llega a pintarse mide
+     10,27:1. Asi que el anillo se le da al ENVOLTORIO, que no se recorta a si
+     mismo: vuelve a 28 de 28 puntos, con un minimo de 9,85:1.
+     Va aqui dentro a proposito: el `overflow:hidden` que lo estropea vive en
+     este bloque `no-preference`, asi que con `prefers-reduced-motion:reduce` no
+     hay nada que arreglar —medido: alli el anillo del enlace ya sale entero—. */
+  .mail__m:has(.mail:focus-visible){
+    outline:2px solid var(--accent); outline-offset:3px; border-radius:2px;
+  }
+  .mail:focus-visible{ outline:none; }
   .mail__m .mail{ transform:translate3d(0,calc((1 - var(--em,1)) * 108%),0); }
 
   /* EL CUADRO se destapa de izquierda a derecha, como quien corre una
@@ -3957,6 +4141,18 @@ body.in-cierre .wm{ color:var(--cream); }
 body.in-cierre .wm::after{ background:var(--accent-lt); }
 body.in-cierre .pill{ color:var(--cream); }
 body.in-cierre .pill::after{ background:var(--accent-lt); }
+/* Y EL ANILLO DE FOCO TAMBIEN SE DA LA VUELTA. Las dos esquinas ya cambian de
+   tinta aqui, pero el `outline` seguia en --accent, que es el naranja de fondo
+   claro, contra el verde casi negro del cierre. Medido sobre la captura con la
+   seccion ya en pantalla y `body.in-cierre` comprobado, 28 puntos por elemento:
+   el logotipo baja a 2,63:1 en su peor punto y la etiqueta a 1,90:1 —WCAG
+   1.4.11 pide 3—. Con --accent-lt suben a 7,41 y 3,57. No es un color nuevo:
+   es el mismo que ya usan las dos reglas de aqui arriba, y el que usan los
+   enlaces de dentro de #contacto, que en ese fondo llegan a 10,27:1.
+   Fuera del cierre no cambia nada: alli las dos esquinas siguen en 4,36:1 y
+   5,20:1 sobre el papel de la portada. */
+body.in-cierre .wm:focus-visible,
+body.in-cierre .pill:focus-visible{ outline-color:var(--accent-lt); }
 body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0,0,.26); }
 
 /* ============================================================
@@ -4009,9 +4205,31 @@ body.in-cierre .chat{ box-shadow:0 2px 6px rgba(0,0,0,.10), 0 18px 40px rgba(0,0
 .lk__fig img{ display:block; width:100%; height:100%; object-fit:cover;
   position:relative; z-index:1; }
 .lk__row{
-  display:flex; align-items:baseline; gap:16px; padding-block:15px;
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:16px; padding-block:15px;
   transition:padding .35s var(--ease);
 }
+/* ESTA FILA PONE EL SUELO DE ANCHO DE TODA LA PAGINA, y por eso lleva tres
+   redes. Su min-content son 288,9 px —68,1 de LINKEDIN, 180,3 de la direccion
+   (25 letras sin un solo espacio), 8,5 de la flecha y los dos huecos de 16— y
+   con los 40 px de medianil del .wrap deja la pagina en 328,9. Por debajo de
+   329 px de pantalla el navegador no puede recortar, porque el overflow-x del
+   body se propaga al viewport: a 320 quedan 9 px de desplazamiento lateral
+   —WCAG 1.4.10 pide cero a 320— y a 280 ALEJA LA VISTA, que es peor: la web
+   entera se dibuja al 85,1 %, tipografias incluidas.
+   Las tres redes, y cada una entra donde la anterior ya no llega:
+     · el `wrap` es el suelo: por debajo de ~300 px la flecha baja de renglon
+       antes de que nada se salga.
+     · el hueco de 10 px devuelve la fila a 276,9 y la deja EN UN RENGLON a 320
+       (56 px de alto en vez de 90), que es como se ve hoy.
+     · el `anywhere` es para cuando la letra la pone el visitante y no la hoja:
+       con la letra base del navegador en 32 px la direccion sola mide 352,7 y
+       no cabe ni partiendo la fila. Sin el, a 320 se salen 73 px; con el, 32
+       —y esos 32 ya no son de aqui, son las tarjetas de §Work—.
+   NO CAMBIA NADA POR ENCIMA DE 359 px: medido a 360, 393, 1280 y 1440, mismo
+   scrollWidth, mismo hueco de 16 px, misma altura de fila (56,2 / 56,5 / 60,1 /
+   60,1) y la pagina sigue en 11.068 px a 1440x900. */
+@media (max-width:359px){ .lk__row{ gap:10px; } }
+.lk__row span:not(.mono){ min-width:0; overflow-wrap:anywhere; }
 .links a.lk:hover .lk__row{ padding-left:12px; }
 @media (hover:hover) and (pointer:fine){
   .lk__fig img{ transform:scale(1.015); transition:transform .9s var(--ease); }
@@ -5374,7 +5592,44 @@ body.is-live .rise > i{ transform:none; }
         if (sigTrazos[qz][0]) sigTrazos[qz][0].style.strokeDashoffset = "";
       return;
     }
-    var vh = window.innerHeight;
+    /* EL RECORRIDO DE LA PORTADA, EN LA UNIDAD DE SU PROPIA HOJA. El CSS
+       dice `.pin{height:200svh}` y `.hero{height:100svh}`, y estas dos
+       lineas lo sobreescribian con `2 x window.innerHeight`, que SI se
+       mueve cuando la barra del navegador se retrae. Medido el
+       20-09-2026 sobre v274, mintiendole a la pagina solo en
+       `innerHeight`: a 932x430 una barra de 90 px empujaba la pagina
+       entera 180 px —exactamente 2 x 90— y a 1133x744 una de 75 px,
+       150 px. En VERTICAL DE TELEFONO el salto era 0,0 px —medido a
+       393x852 y a 430x932—: la postura mas comun no estaba rota. Por
+       debajo de 900 px de ancho esta rama ni siquiera corre.
+
+       ESTE `vh` NO ES SOLO EL ALTO DE `.pin`, y conviene saberlo antes
+       de tocarlo: dos lineas mas abajo alimenta `pinRun`, y de `pinRun`
+       cuelgan TRES cosas mas —el recorrido entero de la portada
+       (`pinP`, y con el todo el paso del retrato), el `inicioSuelo` a
+       partir del cual se enciende el suelo verde, y el `hTop` que
+       mantiene alineados los dos mapas topograficos a los dos lados del
+       borde del panel—. Eso es la MITAD BUENA del arreglo y no un daño
+       colateral: hoy `.hero` mide `100svh` (fijo) mientras `pinRun` vale
+       `innerHeight` (variable), asi que las dos YA DISCREPAN en cuanto la
+       barra se retrae; con este cambio pasan las dos a la unidad de la
+       hoja y quedan de acuerdo. Y `pinRun` queda ademas del mismo tipo
+       que `pinTop`, su vecino, que tambien sale de un rectangulo.
+
+       OJO AL OTRO `vh`: el de AQUI es el del RECORRIDO y va en svh; el
+       del BUCLE es el del RECTANGULO VISIBLE donde aterriza el retrato
+       (`ph`, `cy`) y ESE tiene que seguir siendo `window.innerHeight`.
+       No se toca.
+
+       Se mide aqui mismo, sin depender de que `layoutAs` haya corrido
+       antes: en el manejador de `resize` esta funcion va la primera. Y
+       EN CRUDO, sin dividir por `Z`, porque el `/ Z` ya esta puesto en
+       la linea que lo usa. */
+    var _svhP = document.createElement("div");
+    _svhP.style.cssText = "position:absolute;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none";
+    document.body.appendChild(_svhP);
+    var vh = _svhP.getBoundingClientRect().height || window.innerHeight;
+    _svhP.parentNode.removeChild(_svhP);
     pin.style.height = (Math.round(vh * 2) / Z) + "px";
     pinTop = pin.getBoundingClientRect().top + (window.scrollY || 0);
     pinRun = Math.max(1, vh);
@@ -5636,6 +5891,48 @@ body.is-live .rise > i{ transform:none; }
        `--cab` a partir del gutter y del cuerpo del logotipo; aqui no
        hace falta reconstruir nada porque la caja ya esta leida. */
     asCab = asWM ? asWM[3] : 0;
+    /* LA MEDIDA NUEVA HAY QUE PINTARLA. `pasoAs` se ahorra el trabajo
+       cuando el progreso no ha cambiado (`s === asLast`), y al cambiar
+       de ventana el progreso puede ser EL MISMO y el ancla no: entonces
+       el cuadro se queda clavado en el sitio de la ventana anterior.
+       Medido el 20-09-2026 sobre v274, estrechando 1440x900 -> 900x900:
+       80,5 px a la derecha durante 498 px de scroll CON EL CUADRO EN
+       PANTALLA, y un salto de 80,4 px en un fotograma al arrancar el
+       zoom; girando una tablet de 744x1133 a 1133x744, 94,4 px.
+       Se invalida AQUI, que es el unico sitio donde consta que el ancla
+       ha cambiado, y NUNCA dentro de `pasoAs`: alli reventaria la cache
+       de fotograma y el bucle escribiria seis propiedades personalizadas
+       en cada fotograma con la pagina quieta. */
+    asLast = "";
+    /* LA VENTANA PEQUEÑA, MEDIDA. El recorrido de esta seccion esta
+       escrito entero en `svh` —`.filo{height:calc(100svh + var(--zoom)
+       + var(--run))}`, `clip-path:inset(0 0 var(--run) 0)` con --run en
+       svh—, que es la altura CON la barra del navegador puesta y que NO
+       se mueve cuando la barra se retrae. `window.innerHeight` SI se
+       mueve, y `pasoAs` se lo restaba a una altura en svh: la resta
+       mezclaba las dos unidades y el recorrido cambiaba de largo a mitad
+       del viaje. Medido el 20-09-2026 sobre v274, mintiendole a la
+       pagina solo en `innerHeight` —que es exactamente lo que le hace el
+       navegador al esconder la barra—: a 852x393 una barra de 75 px
+       agrandaba el cuadro 632,4 px de golpe (2.341,1 -> 2.973,5); a
+       1133x744, 440,1 px; a 932x430 con 90 px de barra, 333,8 px; a
+       744x1133, 316,9 px. En VERTICAL DE TELEFONO el salto era 0,0 px
+       —medido a 393x852 y a 430x932—: la postura mas comun no estaba
+       rota, y por eso esto es importante sin ser urgente.
+       Se mide UNA VEZ POR TAMAÑO DE VENTANA, aqui, y no por fotograma:
+       el manejador de `resize` ya llama a esta funcion con 140 ms de
+       debounce. Se guarda en el propio nodo para no declarar nada nuevo,
+       y EN CRUDO —sin dividir por `Z`—, igual que `fr.height`, que es su
+       vecina en la resta de `pasoAs` y tambien sale de un rectangulo:
+       alli se dividen las dos a la vez. Dividirlo aqui dejaria las dos
+       ramas del `||` de `pasoAs` en unidades distintas. Si el navegador
+       no entiende `svh` el div mide 0 y `pasoAs` vuelve solo al
+       comportamiento de antes. */
+    var _svh = document.createElement("div");
+    _svh.style.cssText = "position:absolute;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none";
+    document.body.appendChild(_svh);
+    asFilo.__svh = _svh.getBoundingClientRect().height || 0;
+    _svh.parentNode.removeChild(_svh);
   }
 
   /* LA POSICION SE LEE, NO SE RECUERDA. Formación esta a siete pantallas
@@ -5657,7 +5954,15 @@ body.is-live .rise > i{ transform:none; }
        ya sale el `top`, asi que no cuesta ni una lectura mas. */
     var fr  = asFilo.getBoundingClientRect();
     var top = fr.top / Z;
-    var run = Math.max(1, fr.height / Z - (window.innerHeight || 1) / Z - asCut);
+    /* EL RECORRIDO, EN LA MISMA UNIDAD QUE SU ENVOLTORIO. `fr.height` y
+       `asCut` salen de `svh`; `window.innerHeight` no, y se movia con la
+       barra del navegador. La medida la deja `layoutAs` una vez por
+       tamaño de ventana, en crudo y del mismo tipo que `fr.height`, asi
+       que las dos se dividen por `Z` aqui y a la vez; ver alli la nota y
+       los numeros. El `|| window.innerHeight || 1` conserva el
+       comportamiento de antes si no hay medida —navegador sin `svh`, o
+       un fotograma anterior a la primera llamada a `layoutAs`—. */
+    var run = Math.max(1, fr.height / Z - (asFilo.__svh || window.innerHeight || 1) / Z - asCut);
     var e = tramo(-top / run, 0, 1);
     var s = e.toFixed(4);
     if (s === asLast) return;
