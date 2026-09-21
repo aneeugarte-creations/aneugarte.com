@@ -200,7 +200,15 @@
   --gold-2:#008750;                         /* la luz que le entra arriba */
   --gold-3:#00410C;                         /* el canto en sombra */
   --gold-lt:#00905C;
-  --gold-ink:#E4EFE6;                       /* tinta de las calcas sobre oro */
+  /* LA TINTA DE LAS CALCAS. Fue `--gold-ink:#E4EFE6` —un blanco verdoso—
+     mientras las calcas se apoyaban en la placa, que era verde oscuro.
+     El 21-09-2026 la placa paso a transparente y ese blanco se quedo sin
+     fondo: medido, las cuatro calcas caen a 1,23-1,57:1 contra lo que
+     tienen debajo ahora, que es su cara. Con el barrido encendiendo solo
+     las calcas eso es invisible, asi que la tinta pasa a ser la noche de
+     la casa. Cambia el nombre con el valor a proposito: una variable
+     llamada `--gold-ink` con casi negro dentro es una trampa esperando. */
+  --calca-ink:#0A0F00;
 
   /* La carcasa que la rodea, en latón envejecido: el mismo oro bajado
      de luz y subido de rojo. Tiene que ser bastante más oscuro que la
@@ -1482,8 +1490,10 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    que hacen los meridianos. Desplazamiento máximo medido, 30 px.
 
    EL TONO ES EL DE LAS CALCAS y el alfa está medido sobre la pieza ya
-   compuesta, con la luz encima: `--gold-ink` al 36 % da 2,22:1 contra la
-   carcasa. ESE NÚMERO ES DE CUANDO DEBAJO HABÍA UN COLOR PLANO. Desde el
+   compuesta, con la luz encima: `--gold-ink` al 36 % daba 2,22:1 contra
+   la carcasa. (La tinta se llama `--calca-ink` desde el 21-09-2026 y ya
+   no es aquel blanco verdoso, y el 36 % es ahora 61 %: ver la nota de
+   LAS CUATRO OPACIDADES, encima de `.cowl__casco`.) ESE NÚMERO ES DE CUANDO DEBAJO HABÍA UN COLOR PLANO. Desde el
    21-09-2026 debajo está su cara, que cambia píxel a píxel, así que la
    pregunta deja de ser «cuánto contrasta la tinta con el fondo» y pasa a
    ser «cuánto cambia la tinta lo que hay debajo». Medido así, píxel a
@@ -1539,11 +1549,13 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    eso son 0,006 de alfa final. */
 .cowl__vinci{
   position:absolute; inset:0;
-  background:var(--gold-ink);
+  background:var(--calca-ink);
   -webkit-mask-image:url("ane-vinci.png"); mask-image:url("ane-vinci.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  opacity:.36;
+  /* 61 % y no 36 %: otra tinta y otro fondo. Ver la nota de LAS CUATRO
+     OPACIDADES, encima de `.cowl__casco`. */
+  opacity:.61;
 }
 /* Y LA SEGUNDA HOJA: LA CREACIÓN DE ADÁN, en la copa del mentón. Ella la
    pidió «por al lado» de la de Leonardo, y el único hueco entero que le
@@ -1629,11 +1641,21 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    El horno es `dos/hornea_adan.py`. 80 kB, tinta en el 2,63 % del cuadro. */
 .cowl__adan{
   position:absolute; inset:0;
-  background:var(--gold-ink);
+  background:var(--calca-ink);
   -webkit-mask-image:url("ane-adan.png"); mask-image:url("ane-adan.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  opacity:.44;
+  /* LA BARBILLA. El 44 % de arriba existia por una razon que acaba de
+     desaparecer: el menton estaba EN SOMBRA —`ane-shade` al 52 % le
+     pasaba por encima— y alli la misma tinta rendia 2,5 veces menos, asi
+     que hubo que subirla del 30 al 44 para igualarla con las otras. Con
+     el barrido encendiendo solo las calcas, la sombra ya no esta: el
+     menton pasa a ser su piel, sin nada encima. Escalar el 44 % como si
+     tal cosa —que es lo que hacia la version que vio Ane, con un 72 %—
+     es arrastrar una correccion a un sitio donde ya no corrige nada.
+     El 68 % sale de medir contra el fondo nuevo. Ver la nota de LAS
+     CUATRO OPACIDADES, encima de `.cowl__casco`. */
+  opacity:.68;
 }
 /* Y LA TERCERA: ARIADNA ABANDONADA POR TESEO, de Angelica Kauffmann
    (h. 1774), en la corona. Ella la pidió «en la parte de arriba de la
@@ -1702,11 +1724,19 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    cualquier calca que entre aquí. El horno es `dos/hornea_ariadna.py`. */
 .cowl__ariadna{
   position:absolute; inset:0;
-  background:var(--gold-ink);
+  background:var(--calca-ink);
   -webkit-mask-image:url("ane-ariadna.png"); mask-image:url("ane-ariadna.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  opacity:.26;
+  /* Y LA CORONA ES EL MISMO CASO AL REVES, que es como se comprueba que
+     la regla es una y no dos. El 26 % existia porque la corona es justo
+     donde caia la LUZ horneada (`ane-lit` al 34 %) y alli la tinta rendia
+     de mas: hubo que BAJARLA del 30. Sin cascara no hay luz, y ademas
+     media corona cae sobre su pelo, que es oscuro. Es la calca que peor
+     lo tiene y la que fija el techo de las cuatro: 1,94:1 aunque se
+     ponga opaca. Va al 97 %, no porque si, sino porque es lo que hace
+     falta para alcanzar a las otras tres. */
+  opacity:.97;
 }
 /* La placa frontal, dorada. Es la que manda: lleva los ojos, la boca y
    casi toda la librea. Un metal no es un color plano: la luz entra por
@@ -1742,20 +1772,25 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    31,32 % la centra en la placa (que va de la fila 330 a la 599), donde
    cubre justo de canto a canto.
 
-   El tono va en --gold-ink, que es la tinta de esta placa, y el 46 %
-   sale de medir: la línea queda a 2,28:1 contra el verde, dentro de la
-   banda que ella ya aceptó para el reborde (2,0-3,0) y lejos del 8,15
-   del filete, que vio y rechazó por demasiado contraste. */
+   El tono va en la tinta de las calcas —`--calca-ink` desde el
+   21-09-2026; se llamaba `--gold-ink` y era un blanco verdoso— y el 46 %
+   de entonces salía de medir: la línea quedaba a 2,28:1 contra el verde,
+   dentro de la banda que ella ya aceptó para el reborde (2,0-3,0) y
+   lejos del 8,15 del filete, que vio y rechazó por demasiado contraste.
+   Ese verde ya no está debajo y ese 46 % es hoy 64 %: ver la nota de LAS
+   CUATRO OPACIDADES, encima de `.cowl__casco`. */
 .cowl__mapa{
   position:absolute; inset:0;
   -webkit-mask-image:url("ane-plate.png"); mask-image:url("ane-plate.png");
   -webkit-mask-size:100% 100%; mask-size:100% 100%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  opacity:.46;
+  /* 64 % y no 46 %. Ver la nota de LAS CUATRO OPACIDADES, encima de
+     `.cowl__casco`. */
+  opacity:.64;
 }
 .cowl__mapa i{
   position:absolute; left:0; top:31.32%; width:300%; height:24.26%;
-  background:var(--gold-ink);
+  background:var(--calca-ink);
   -webkit-mask-image:url("ane-map.png"); mask-image:url("ane-map.png");
   -webkit-mask-size:25% 100%; mask-size:25% 100%;
   -webkit-mask-repeat:repeat-x; mask-repeat:repeat-x;
@@ -1792,6 +1827,52 @@ body.has-cur .cowl{ --rw:46%; --rh:13%; }
    luz (ane-lit / ane-shade) y el alámbrico del fantasma (ane-dome.png)—:
    si no, la chapa se quedaba con tres calvas lisas por donde no cruza
    ninguna línea y los huecos se seguían viendo, en negativo. */
+/* LA CASCARA SALE SOLO CON EL RATON, Y LAS CALCAS CON EL BARRIDO.
+   Lo pidio Ane el 21-09-2026 con las seis versiones medidas delante:
+   «y si dejamos que solo escanee las pinturas sin el casco?». Asi que el
+   barrido enciende el mapamundi, las maquinas de Leonardo, Adan y
+   Ariadna, y el canto de metal con sus luces y su malla se queda para el
+   raton.
+
+   COMO. `.cowl` lleva la forma del casco CRUZADA con la SUMA de la banda
+   y la ventana del raton. Este grupo le pone encima, el solo, la ventana
+   del raton: las mascaras anidadas se multiplican, asi que la cascara
+   acaba siendo forma x (banda + raton) x raton = forma x raton. Las
+   calcas, que no estan aqui dentro, se quedan con la suma entera. La
+   misma ventana escrita dos veces, y ninguna de las dos se puede cambiar
+   sin cambiar la otra.
+
+   LAS CUATRO OPACIDADES, QUE NO SE HEREDAN: HAY QUE VOLVER A SACARLAS.
+   Esta es la regla de la pieza, escrita ya tres veces mas arriba: SE
+   CONSERVA EL CONTRASTE, NO LA OPACIDAD. Los cuatro numeros que habia
+   estaban calculados contra un fondo que este cambio borra —el 44 % de
+   Adan compensaba la SOMBRA del menton, el 26 % de Ariadna compensaba la
+   LUZ de la corona—, asi que escalarlos todos por el mismo factor
+   arrastra dos correcciones a un sitio donde ya no corrigen nada.
+
+   MEDIDO, capa a capa: dos capturas de la pieza compuesta —con la calca
+   y sin ella— dan, pixel a pixel, el fondo y cuanta tinta puso; con eso
+   el contraste a cualquier otra opacidad se despeja sin volver a
+   capturar, porque la composicion es lineal en el alfa. Contra el fondo
+   nuevo, con la tinta nueva y al 100 %, cada una llega como mucho a:
+   Leonardo 3,03:1 · Adan 2,65:1 · el mapamundi 2,84:1 · Ariadna 1,94:1.
+   El techo lo fija Ariadna, que cae sobre su pelo. Igualadas las cuatro
+   a 1,90:1 salen 61 / 68 / 97 / 64 %.
+
+   Y LAS CIFRAS DEL FICHERO —2,23, 2,25, 2,24 y 2,28— YA NO SE PUEDEN
+   USAR DE OBJETIVO: eran contra la placa de laton, y la placa es
+   transparente desde el 21-09-2026. Medidas hoy contra el fondo que de
+   verdad tienen, las cuatro estan en 1,23-1,57:1. No es que se hayan
+   estropeado ahora: se estropearon al volver transparente la placa, y
+   esto es lo primero que las vuelve a igualar. */
+.cowl__casco{
+  position:absolute; inset:0;
+  -webkit-mask-image:radial-gradient(var(--rw) var(--rh) at var(--mx) var(--my),rgba(0,0,0,var(--rev,0)) 0 70%,rgba(0,0,0,calc(var(--rev,0) * .42)) 88%,transparent 100%);
+          mask-image:radial-gradient(var(--rw) var(--rh) at var(--mx) var(--my),rgba(0,0,0,var(--rev,0)) 0 70%,rgba(0,0,0,calc(var(--rev,0) * .42)) 88%,transparent 100%);
+  -webkit-mask-size:100% 100%;   mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+}
+
 .cowl__rim{
   position:absolute; inset:0;
   background:linear-gradient(158deg,#F4F1E4,#D8D3C0 58%,#A8A492);
@@ -4412,7 +4493,11 @@ body.is-live .rise > i{ transform:none; }
      arriba y no enciende NADA, así que sin esta regla quien pide menos
      movimiento se quedaría sin casco.
      Se van las dos máscaras que se mueven —la banda y la ventana del
-     ratón— y queda la forma sola, que es la que dibuja la pieza. */
+     ratón— y queda la forma sola, que es la que dibuja la pieza.
+     Desde que el barrido enciende sólo las calcas, aquí se quedan las
+     calcas: la cáscara sigue colgando de la ventana del ratón, que es
+     donde vive desde el 21-09-2026, y sale al pasar por encima igual que
+     en la rama normal. Quieto no quiere decir distinto. */
   .cowl{
     animation:none !important;
     -webkit-mask-image:url("ane-helm.png") !important;
@@ -4556,12 +4641,21 @@ body.is-live .rise > i{ transform:none; }
           <div class="cowl__ariadna"></div>
           <div class="cowl__plate"></div>
           <div class="cowl__mapa"><i></i></div>
-          <div class="cowl__rim"></div>
-          <div class="cowl__lit"></div>
-          <div class="cowl__shade"></div>
+          <!-- LA CASCARA, APARTE DESDE EL 21-09-2026: el canto de metal,
+               las dos luces horneadas y la malla. Van juntas porque a
+               partir de ahora salen SOLO al pasar el raton, no con el
+               barrido, y eso se hace con una mascara sobre el grupo en
+               vez de con cinco mascaras sueltas. El orden de pintado no
+               cambia: siguen siendo las ultimas, asi que las dos luces
+               caen encima de las calcas igual que antes. -->
+          <div class="cowl__casco">
+            <div class="cowl__rim"></div>
+            <div class="cowl__lit"></div>
+            <div class="cowl__shade"></div>
 
-          <div class="cowl__lines"></div>
-          <div class="cowl__lines2"></div>
+            <div class="cowl__lines"></div>
+            <div class="cowl__lines2"></div>
+          </div>
         </div>
       </figure>
     </div>
